@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://my-pdf-tools.netlify.app/sitemap.xml
