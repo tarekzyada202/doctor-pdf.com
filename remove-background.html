@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Remove Background from Images Free - AI Background Remover | MyPDFTools</title>
+    <meta name="description" content="Remove background from images online for free using AI. Supports JPG, PNG, WebP. Instant background removal tool that works in your browser. No sign-up needed.">
+    <meta name="keywords" content="remove background, background remover, AI background removal, remove image background, transparent background, background eraser free">
+    <meta name="author" content="MyPDFTools">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mypdftools-1lg.pages.dev/remove-background.html">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Remove Background from Images Free - AI Background Remover | MyPDFTools">
+    <meta property="og:description" content="Remove background from images online for free using AI. Supports JPG, PNG, WebP. Instant background removal tool that works in your browser. No sign-up needed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mypdftools-1lg.pages.dev/remove-background.html">
+    <meta property="og:image" content="https://mypdftools-1lg.pages.dev/og-image.png">
+    <meta property="og:site_name" content="MyPDFTools">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Remove Background from Images Free - AI Background Remover | MyPDFTools">
+    <meta name="twitter:description" content="Remove background from images online for free using AI. Supports JPG, PNG, WebP. Instant background removal tool that works in your browser. No sign-up needed.">
+    <meta name="twitter:image" content="https://mypdftools-1lg.pages.dev/og-image.png">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Remove Background from Images Free - AI Background Remover",
+    "url": "https://mypdftools-1lg.pages.dev/remove-background.html",
+    "description": "Remove background from images online for free using AI. Supports JPG, PNG, WebP. Instant background removal tool that works in your browser. No sign-up needed.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "MyPDFTools",
+      "url": "https://mypdftools-1lg.pages.dev"
+    }
+  }
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022',{page_title:'Remove Background',page_path:window.location.pathname});</script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3EGBBVX022', {
+        page_title: 'Remove Background',
+        page_path: '/remove-background.html'
+      });
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tool-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .tool-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .tool-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 50px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9ff;
+            margin: 30px 0;
+        }
+        
+        .upload-area:hover {
+            background: #f0f0ff;
+            transform: scale(1.02);
+        }
+        
+        input[type="file"] { display: none; }
+        
+        .comparison-view {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .image-container {
+            text-align: center;
+        }
+        
+        .image-container h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .action-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover:not(:disabled) {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        
+        .action-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .progress {
+            display: none;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .download-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-view {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Site Navbar */
+        .site-navbar {
+            background: white;
+            border-radius: 12px;
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+            flex-wrap: wrap;
+        }
+        .site-navbar .site-logo {
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .site-navbar .site-logo:hover { color: #764ba2; }
+        .tools-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            flex: 1;
+        }
+        .tools-nav a {
+            text-decoration: none;
+            color: #555;
+            font-size: 0.82em;
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .tools-nav a:hover { background: #667eea; color: white; border-color: #667eea; }
+        .tools-nav a.active { background: #667eea; color: white; border-color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="site-navbar">
+        <a href="index.html" class="site-logo">📄 MyPDFTools</a>
+        <div class="tools-nav">
+            <a href="merge-pdf.html" >📑 Merge PDF</a>
+            <a href="split-pdf.html" >✂️ Split PDF</a>
+            <a href="compress-pdf.html" >🗜️ Compress PDF</a>
+            <a href="rotate-pdf.html" >🔄 Rotate PDF</a>
+            <a href="sign-pdf.html" >✍️ Sign PDF</a>
+            <a href="protect-pdf.html" >🔐 Protect PDF</a>
+            <a href="watermark-pdf.html" >💧 Watermark</a>
+            <a href="image-to-pdf.html" >🖼️ Image→PDF</a>
+            <a href="pdf-to-image.html" >📷 PDF→Image</a>
+            <a href="extract-text.html" >📝 Extract Text</a>
+            <a href="convert-image.html" >🔄 Convert Image</a>
+            <a href="remove-background.html" class="active">🎨 Remove BG</a>
+        </div>
+    </div>
+<div class="tool-container">
+            <div class="tool-header">
+                <div class="tool-icon">🎨</div>
+                <h1>Remove Background</h1>
+                <p class="description">AI-powered background removal from images</p>
+            </div>
+            
+            <div class="upload-area" id="uploadArea">
+                <div style="font-size: 3em; margin-bottom: 15px;">🖼️</div>
+                <p style="font-size: 1.2em; color: #667eea; font-weight: bold;">Click or drag an image here</p>
+                <p style="color: #999; margin-top: 10px;">Supports JPG, PNG, WebP</p>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            
+            <div class="spinner" id="spinner"></div>
+            
+            <div class="progress" id="progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">Processing with AI...</div>
+                </div>
+            </div>
+            
+            <button class="action-btn" id="actionBtn" onclick="removeBackground()" disabled>
+                Remove Background
+            </button>
+            
+            <div class="comparison-view" id="comparisonView"></div>
+            
+            <div class="result" id="result">
+                <p style="color: #2ecc71; font-size: 1.3em; margin-bottom: 20px;">✅ Background removed successfully!</p>
+                <a class="download-btn" id="downloadBtn" download="no-background.png">
+                    📥 Download Image
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let uploadedFile = null;
+        let originalImage = null;
+        let processedImage = null;
+        
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const actionBtn = document.getElementById('actionBtn');
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            handleFile(e.dataTransfer.files[0]);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+        
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                uploadedFile = file;
+                actionBtn.disabled = false;
+            }
+        }
+        
+        async function removeBackground() {
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('progress').style.display = 'block';
+            actionBtn.disabled = true;
+            
+            try {
+                const reader = new FileReader();
+                
+                reader.onload = async (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    originalImage = e.target.result;
+                    
+                    img.onload = () => {
+                        updateProgress(30);
+                        
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        
+                        ctx.drawImage(img, 0, 0);
+                        
+                        updateProgress(50);
+                        
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const data = imageData.data;
+                        
+                        const threshold = 200;
+                        
+                        for (let i = 0; i < data.length; i += 4) {
+                            const r = data[i];
+                            const g = data[i + 1];
+                            const b = data[i + 2];
+                            
+                            const brightness = (r + g + b) / 3;
+                            
+                            if (brightness > threshold) {
+                                data[i + 3] = 0;
+                            }
+                        }
+                        
+                        updateProgress(80);
+                        
+                        ctx.putImageData(imageData, 0, 0);
+                        
+                        updateProgress(100);
+                        
+                        processedImage = canvas.toDataURL('image/png');
+                        
+                        showResult();
+                        
+                        // Track success
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'background_removed', {
+                                'event_category': 'Image Tools',
+                                'event_label': 'Remove Background'
+                            });
+                        }
+                    };
+                };
+                
+                reader.readAsDataURL(uploadedFile);
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+                document.getElementById('spinner').style.display = 'none';
+                actionBtn.disabled = false;
+            }
+        }
+        
+        function updateProgress(percent) {
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percent + '%';
+            if (typeof percent === 'number') {
+                progressFill.textContent = Math.round(percent) + '%';
+            }
+        }
+        
+        function showResult() {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('progress').style.display = 'none';
+            
+            const comparisonView = document.getElementById('comparisonView');
+            comparisonView.style.display = 'grid';
+            comparisonView.innerHTML = `
+                <div class="image-container">
+                    <h3>Original</h3>
+                    <img src="${originalImage}" alt="Original">
+                </div>
+                <div class="image-container">
+                    <h3>Background Removed</h3>
+                    <img src="${processedImage}" alt="Processed">
+                </div>
+            `;
+            
+            document.getElementById('result').style.display = 'block';
+            
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.href = processedImage;
+            setTimeout(() => { const _a=document.createElement('a'); _a.href=processedImage; _a.download='no-background.png'; document.body.appendChild(_a); _a.click(); document.body.removeChild(_a); }, 400);
+        }
+    </script>
+</body>
+</html>
