@@ -3,101 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO Meta Tags -->
-    <title>Compress PDF Online Free - Reduce PDF File Size | MyPDFTools</title>
+    <title>Compress PDF Online Free - Reduce PDF File Size | Doctor PDF</title>
     <meta name="description" content="Compress PDF files online and reduce file size without losing quality. Free PDF compressor that works in your browser. No file upload required.">
     <meta name="keywords" content="compress PDF, reduce PDF size, PDF compressor, shrink PDF, optimize PDF, compress PDF online free">
-    <meta name="author" content="MyPDFTools">
+    <meta name="author" content="Doctor PDF">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://mypdftools-1lg.pages.dev/compress-pdf.html">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Compress PDF Online Free - Reduce PDF File Size | MyPDFTools">
+    <link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/compress-pdf.html">
+    <meta property="og:title" content="Compress PDF Online Free - Reduce PDF File Size | Doctor PDF">
     <meta property="og:description" content="Compress PDF files online and reduce file size without losing quality. Free PDF compressor that works in your browser. No file upload required.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mypdftools-1lg.pages.dev/compress-pdf.html">
-    <meta property="og:image" content="https://mypdftools-1lg.pages.dev/og-image.png">
-    <meta property="og:site_name" content="MyPDFTools">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter Card -->
+    <meta property="og:url" content="https://doctor-pdf-1lg.pages.dev/compress-pdf.html">
+    <meta property="og:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
+    <meta property="og:site_name" content="Doctor PDF">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Compress PDF Online Free - Reduce PDF File Size | MyPDFTools">
+    <meta name="twitter:title" content="Compress PDF Online Free - Reduce PDF File Size | Doctor PDF">
     <meta name="twitter:description" content="Compress PDF files online and reduce file size without losing quality. Free PDF compressor that works in your browser. No file upload required.">
-    <meta name="twitter:image" content="https://mypdftools-1lg.pages.dev/og-image.png">
+    <meta name="twitter:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
 
-    <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Compress PDF Online Free - Reduce PDF File Size",
-    "url": "https://mypdftools-1lg.pages.dev/compress-pdf.html",
-    "description": "Compress PDF files online and reduce file size without losing quality. Free PDF compressor that works in your browser. No file upload required.",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Web Browser",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "provider": {
-      "@type": "Organization",
-      "name": "MyPDFTools",
-      "url": "https://mypdftools-1lg.pages.dev"
-    }
-  }
-    </script>
-
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022',{page_title:'Compress PDF',page_path:window.location.pathname});</script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022',{page_title:'Compress PDF',page_path:'/compress-pdf.html'});</script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}.container{max-width:900px;margin:0 auto}.back-btn{display:inline-flex;align-items:center;gap:8px;background:white;color:#667eea;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:bold;margin-bottom:20px;transition:all .3s}.back-btn:hover{transform:translateX(-5px);box-shadow:0 5px 15px rgba(0,0,0,.2)}.tool-container{background:white;padding:40px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.15)}.tool-header{text-align:center;margin-bottom:30px}.tool-icon{font-size:4em;margin-bottom:10px}h1{color:#667eea;font-size:2.5em;margin-bottom:10px}.description{color:#666;font-size:1.1em}.upload-area{border:3px dashed #667eea;border-radius:15px;padding:50px;text-align:center;cursor:pointer;transition:all .3s;background:#f8f9ff;margin:30px 0}.upload-area:hover{background:#f0f0ff;transform:scale(1.02)}input[type=file]{display:none}.action-btn{background:#667eea;color:white;border:none;padding:15px 40px;border-radius:30px;font-size:1.1em;font-weight:bold;cursor:pointer;width:100%;transition:all .3s;margin-top:20px}.action-btn:hover:not(:disabled){background:#764ba2;transform:scale(1.05)}.action-btn:disabled{background:#ccc;cursor:not-allowed}.progress{display:none;margin:20px 0}.progress-bar{width:100%;height:30px;background:#f0f0f0;border-radius:15px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);width:0%;transition:width .3s;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold}.result{display:none;text-align:center;margin-top:30px}.download-btn{background:#2ecc71;color:white;border:none;padding:15px 40px;border-radius:30px;font-size:1.1em;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s}.download-btn:hover{background:#27ae60;transform:scale(1.05)}.spinner{border:4px solid #f3f3f3;border-top:4px solid #667eea;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:20px auto;display:none}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Navbar */
+        .site-navbar { background: white; border-radius: 12px; padding: 10px 20px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 3px 15px rgba(0,0,0,0.15); flex-wrap: wrap; }
+        .site-navbar .site-logo { text-decoration: none; font-size: 1.2em; font-weight: bold; color: #667eea; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+        .site-navbar .site-logo:hover { color: #764ba2; }
+        .tools-nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; flex: 1; }
+        .tools-nav a { text-decoration: none; color: #555; font-size: 0.82em; padding: 5px 10px; border-radius: 20px; border: 1px solid #ddd; white-space: nowrap; transition: all 0.2s; }
+        .tools-nav a:hover, .tools-nav a.active { background: #667eea; color: white; border-color: #667eea; }
+
+        .tool-container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+        .tool-header { text-align: center; margin-bottom: 30px; }
+        .tool-icon { font-size: 4em; margin-bottom: 10px; }
+        h1 { color: #667eea; font-size: 2.2em; margin-bottom: 10px; }
+        .description { color: #666; font-size: 1.1em; }
+
+        .upload-area { border: 3px dashed #667eea; border-radius: 15px; padding: 50px; text-align: center; cursor: pointer; transition: all 0.3s; background: #f8f9ff; margin: 30px 0; }
+        .upload-area:hover { background: #f0f0ff; transform: scale(1.02); }
+        input[type=file] { display: none; }
+
+        /* Compression level selector */
+        .level-selector { display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .level-btn { padding: 12px 25px; border: 2px solid #ddd; border-radius: 30px; cursor: pointer; font-size: 1em; font-weight: bold; background: white; transition: all 0.3s; text-align: center; }
+        .level-btn:hover { border-color: #667eea; color: #667eea; }
+        .level-btn.selected { background: #667eea; color: white; border-color: #667eea; }
+        .level-btn .level-desc { font-size: 0.75em; font-weight: normal; display: block; margin-top: 3px; opacity: 0.8; }
+
+        .action-btn { background: #667eea; color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.1em; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s; margin-top: 20px; }
+        .action-btn:hover:not(:disabled) { background: #764ba2; transform: scale(1.05); }
+        .action-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .progress { display: none; margin: 20px 0; }
+        .progress-bar { width: 100%; height: 30px; background: #f0f0f0; border-radius: 15px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9em; }
+        .progress-label { text-align: center; margin-top: 8px; color: #667eea; font-weight: bold; }
+
+        .result { display: none; text-align: center; margin-top: 30px; }
+        .stats-box { background: #f8f9ff; border-radius: 15px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat-label { color: #999; font-size: 0.9em; margin-bottom: 5px; }
+        .stat-value { font-size: 1.5em; font-weight: bold; color: #667eea; }
+        .stat-value.green { color: #2ecc71; }
+        .download-btn { background: #2ecc71; color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.1em; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; }
+        .download-btn:hover { background: #27ae60; transform: scale(1.05); }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="site-navbar">
-        <a href="index.html" class="site-logo">📄 MyPDFTools</a>
+<div class="container">
+    <div class="site-navbar">
+        <a href="index.html" class="site-logo">📄 Doctor PDF</a>
         <div class="tools-nav">
-            <a href="merge-pdf.html" >📑 Merge PDF</a>
-            <a href="split-pdf.html" >✂️ Split PDF</a>
+            <a href="merge-pdf.html">📑 Merge PDF</a>
+            <a href="split-pdf.html">✂️ Split PDF</a>
             <a href="compress-pdf.html" class="active">🗜️ Compress PDF</a>
-            <a href="rotate-pdf.html" >🔄 Rotate PDF</a>
-            <a href="sign-pdf.html" >✍️ Sign PDF</a>
-            <a href="protect-pdf.html" >🔐 Protect PDF</a>
-            <a href="watermark-pdf.html" >💧 Watermark</a>
-            <a href="image-to-pdf.html" >🖼️ Image→PDF</a>
-            <a href="pdf-to-image.html" >📷 PDF→Image</a>
-            <a href="extract-text.html" >📝 Extract Text</a>
-            <a href="convert-image.html" >🔄 Convert Image</a>
-            <a href="remove-background.html" >🎨 Remove BG</a>
+            <a href="rotate-pdf.html">🔄 Rotate PDF</a>
+            <a href="sign-pdf.html">✍️ Sign PDF</a>
+            <a href="protect-pdf.html">🔐 Protect PDF</a>
+            <a href="watermark-pdf.html">💧 Watermark</a>
+            <a href="image-to-pdf.html">🖼️ Image→PDF</a>
+            <a href="pdf-to-image.html">📷 PDF→Image</a>
+            <a href="extract-text.html">📝 Extract Text</a>
+            <a href="convert-image.html">🔄 Convert Image</a>
+            <a href="remove-background.html">🎨 Remove BG</a>
         </div>
     </div>
-<div class="tool-container">
-            <div class="tool-header">
-                <div class="tool-icon">🗜️</div>
-                <h1>Compress PDF</h1>
-                <p class="description">Reduce PDF file size without losing quality</p>
+
+    <div class="tool-container">
+        <div class="tool-header">
+            <div class="tool-icon">🗜️</div>
+            <h1>Compress PDF</h1>
+            <p class="description">Reduce PDF file size — works best on PDFs with images</p>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+            <div style="font-size:3em;margin-bottom:15px">📁</div>
+            <p style="font-size:1.2em;color:#667eea;font-weight:bold">Click or drag PDF file here</p>
+            <p style="color:#999;margin-top:8px" id="fileName">No file selected</p>
+            <input type="file" id="fileInput" accept=".pdf">
+        </div>
+
+        <!-- Compression Level -->
+        <div class="level-selector">
+            <div class="level-btn" onclick="selectLevel('low', this)">
+                🟢 Low
+                <span class="level-desc">Better quality<br>Less compression</span>
             </div>
-            <div class="upload-area" id="uploadArea">
-                <div style="font-size:3em;margin-bottom:15px">📁</div>
-                <p style="font-size:1.2em;color:#667eea;font-weight:bold">Click or drag PDF file here</p>
-                <input type="file" id="fileInput" accept=".pdf">
+            <div class="level-btn selected" onclick="selectLevel('medium', this)">
+                🟡 Medium
+                <span class="level-desc">Balanced<br>Recommended</span>
             </div>
-            <div class="spinner" id="spinner"></div>
-            <div class="progress" id="progress">
-                <div class="progress-bar"><div class="progress-fill" id="progressFill">0%</div></div>
-            </div>
-            <button class="action-btn" id="actionBtn" onclick="compressPDF()" disabled>Compress PDF</button>
-            <div class="result" id="result">
-                <p style="color:#2ecc71;font-size:1.3em;margin-bottom:20px">✅ PDF compressed successfully!</p>
-                <a class="download-btn" id="downloadBtn" download="compressed.pdf">📥 Download Compressed PDF</a>
+            <div class="level-btn" onclick="selectLevel('high', this)">
+                🔴 High
+                <span class="level-desc">Smaller size<br>Lower quality</span>
             </div>
         </div>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill">0%</div></div>
+            <div class="progress-label" id="progressLabel">Processing...</div>
+        </div>
+
+        <button class="action-btn" id="actionBtn" onclick="compressPDF()" disabled>🗜️ Compress PDF</button>
+
+        <div class="result" id="result">
+            <div class="stats-box">
+                <div class="stat">
+                    <div class="stat-label">Original Size</div>
+                    <div class="stat-value" id="originalSize">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Compressed Size</div>
+                    <div class="stat-value" id="compressedSize">-</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Reduction</div>
+                    <div class="stat-value green" id="reduction">-</div>
+                </div>
+            </div>
+            <a class="download-btn" id="downloadBtn" download="compressed.pdf">📥 Download Compressed PDF</a>
+        </div>
     </div>
-    <script>let uploadedFile=null,processedBlob=null;const uploadArea=document.getElementById("uploadArea"),fileInput=document.getElementById("fileInput"),actionBtn=document.getElementById("actionBtn");uploadArea.addEventListener("click",()=>fileInput.click()),uploadArea.addEventListener("dragover",e=>{e.preventDefault()}),uploadArea.addEventListener("drop",e=>{e.preventDefault(),handleFile(e.dataTransfer.files[0])}),fileInput.addEventListener("change",e=>{handleFile(e.target.files[0])});function handleFile(e){e&&"application/pdf"===e.type&&(uploadedFile=e,actionBtn.disabled=!1)}async function compressPDF(){document.getElementById("spinner").style.display="block",document.getElementById("progress").style.display="block",actionBtn.disabled=!0;try{const{PDFDocument:e}=PDFLib,t=await uploadedFile.arrayBuffer();updateProgress(50);const o=await e.load(t);updateProgress(80);const n=await o.save();processedBlob=new Blob([n],{type:"application/pdf"}),updateProgress(100),showResult(),"undefined"!=typeof gtag&&gtag("event","pdf_compressed",{event_category:"PDF Tools",event_label:"Compress PDF"})}catch(e){alert("Error: "+e.message),document.getElementById("spinner").style.display="none",actionBtn.disabled=!1}}function updateProgress(e){const t=document.getElementById("progressFill");t.style.width=e+"%",t.textContent=Math.round(e)+"%"}function showResult(){document.getElementById("spinner").style.display="none",document.getElementById("result").style.display="block";;const e=document.getElementById("downloadBtn");e.href=URL.createObjectURL(processedBlob);setTimeout(()=>{const _a=document.createElement('a');_a.href=e.href;_a.download=e.download||'download';document.body.appendChild(_a);_a.click();document.body.removeChild(_a);},400);}</script>
+</div>
+
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+    let uploadedFile = null;
+    let processedBlob = null;
+    let compressionLevel = 'medium';
+
+    // Level settings: scale (render resolution), jpeg quality
+    const levelSettings = {
+        low:    { scale: 1.5, quality: 0.85 },
+        medium: { scale: 1.2, quality: 0.70 },
+        high:   { scale: 1.0, quality: 0.50 }
+    };
+
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const actionBtn = document.getElementById('actionBtn');
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', e => e.preventDefault());
+    uploadArea.addEventListener('drop', e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+
+    function selectLevel(level, el) {
+        compressionLevel = level;
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function handleFile(file) {
+        if (!file || file.type !== 'application/pdf') return;
+        uploadedFile = file;
+        actionBtn.disabled = false;
+        document.getElementById('fileName').textContent = file.name + ' (' + formatSize(file.size) + ')';
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function updateProgress(pct, label) {
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressFill').textContent = Math.round(pct) + '%';
+        if (label) document.getElementById('progressLabel').textContent = label;
+    }
+
+    async function compressPDF() {
+        if (!uploadedFile) return;
+        const settings = levelSettings[compressionLevel];
+
+        document.getElementById('progress').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+        actionBtn.disabled = true;
+
+        try {
+            const originalSize = uploadedFile.size;
+            const arrayBuffer = await uploadedFile.arrayBuffer();
+
+            updateProgress(5, 'Loading PDF...');
+
+            // Load with PDF.js to render pages
+            const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const totalPages = pdfDoc.numPages;
+
+            // Create new PDF with pdf-lib
+            const { PDFDocument } = PDFLib;
+            const newPdf = await PDFDocument.create();
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            for (let i = 1; i <= totalPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const viewport = page.getViewport({ scale: settings.scale });
+
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // White background
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                await page.render({ canvasContext: ctx, viewport }).promise;
+
+                // Convert to JPEG
+                const jpegDataUrl = canvas.toDataURL('image/jpeg', settings.quality);
+                const jpegBase64 = jpegDataUrl.split(',')[1];
+                const jpegBytes = Uint8Array.from(atob(jpegBase64), c => c.charCodeAt(0));
+
+                const jpegImage = await newPdf.embedJpg(jpegBytes);
+                const newPage = newPdf.addPage([viewport.width, viewport.height]);
+                newPage.drawImage(jpegImage, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+
+                updateProgress(5 + (i / totalPages) * 90, `Compressing page ${i} of ${totalPages}...`);
+            }
+
+            updateProgress(97, 'Saving...');
+            const compressedBytes = await newPdf.save();
+            processedBlob = new Blob([compressedBytes], { type: 'application/pdf' });
+            updateProgress(100, 'Done!');
+
+            // Show stats
+            const compressedSize = processedBlob.size;
+            const reduction = ((1 - compressedSize / originalSize) * 100).toFixed(1);
+
+            document.getElementById('originalSize').textContent = formatSize(originalSize);
+            document.getElementById('compressedSize').textContent = formatSize(compressedSize);
+            document.getElementById('reduction').textContent = reduction > 0 ? '↓ ' + reduction + '%' : 'No change';
+
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.href = URL.createObjectURL(processedBlob);
+            document.getElementById('result').style.display = 'block';
+
+            // Auto-download
+            setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = downloadBtn.href;
+                a.download = 'compressed.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }, 400);
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'pdf_compressed', { event_category: 'PDF Tools', event_label: compressionLevel });
+            }
+
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+
+        actionBtn.disabled = false;
+    }
+</script>
 </body>
 </html>
