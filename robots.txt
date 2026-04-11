@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mypdftools-1lg.pages.dev/sitemap.xml
+Sitemap: https://doctor-pdf-1lg.pages.dev/sitemap.xml
