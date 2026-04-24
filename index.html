@@ -1,155 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Doctor PDF - Free Online PDF Tools | Merge, Split, Compress, Sign PDF</title>
-<meta name="description" content="Free online PDF tools: merge, split, compress, rotate, sign PDF, extract text, add watermark, remove background. 100% browser-based, secure & private.">
-<meta name="keywords" content="PDF tools, merge PDF, split PDF, compress PDF, sign PDF, rotate PDF, extract text, free PDF tools online">
-<meta name="author" content="Doctor PDF">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor PDF - أدوات PDF والصور المجانية | دمج، تقسيم، ضغط PDF</title>
+<meta name="description" content="أدوات PDF مجانية: دمج، تقسيم، ضغط، تدوير، توقيع PDF، تحويل Word إلى PDF، استخراج النصوص، إزالة الخلفية. 100% آمن وخاص.">
+<meta name="keywords" content="أدوات PDF مجانية, دمج PDF, تقسيم PDF, ضغط PDF, تحويل word إلى pdf, أدوات pdf عربي">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/">
-<meta property="og:title" content="Doctor PDF - Free Online PDF Tools">
-<meta property="og:description" content="Free online PDF tools. 100% browser-based, secure & private.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://doctor-pdf-1lg.pages.dev/">
-<meta property="og:site_name" content="Doctor PDF">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Doctor PDF","url":"https://doctor-pdf-1lg.pages.dev"}</script>
+<link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/ar/">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf-1lg.pages.dev/ar/">
+<link rel="alternate" hreflang="en" href="https://doctor-pdf-1lg.pages.dev/">
+<meta property="og:title" content="Doctor PDF - أدوات PDF والصور المجانية">
+<meta property="og:description" content="16+ أداة PDF مجانية. آمن وخاص وفوري.">
+<meta property="og:locale" content="ar_AR">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#6366f1;--secondary:#8b5cf6;--accent:#06b6d4;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8;--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2)}
+:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
-/* NAVBAR */
-.navbar{position:sticky;top:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.92)}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.15em;font-weight:800;color:var(--primary);letter-spacing:-.4px}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95em;box-shadow:0 3px 10px rgba(99,102,241,.3)}
-.nav-actions{display:flex;align-items:center;gap:8px}
-.btn-icon{width:34px;height:34px;border:1px solid var(--border);background:var(--surface);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary);transform:scale(1.05)}
-
-/* ── HERO (compact) ── */
-.hero{padding:28px 32px 20px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.2);color:var(--primary);padding:4px 14px;border-radius:100px;font-size:.78em;font-weight:600;margin-bottom:12px}
-.hero h1{font-size:clamp(1.5em,3.5vw,2.4em);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:10px;background:linear-gradient(135deg,var(--text) 0%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:.9em;color:var(--text-muted);max-width:480px;margin:0 auto 14px;line-height:1.6}
-.trust-bar{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.trust-item{display:flex;align-items:center;gap:6px;font-size:.78em;font-weight:500;color:var(--text-muted)}
-.trust-item .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
-
-/* ── TOOLS SECTION (full width) ── */
-.tools-section{padding:16px 24px 40px;width:100%}
-.section-label{text-align:center;font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:16px}
-.tools-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;width:100%}
-
-/* ── TOOL CARD ── */
-.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);position:relative;overflow:hidden;animation:fadeUp .5s ease both}
-.tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,.06),transparent);opacity:0;transition:opacity .3s}
-.tool-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(99,102,241,.4)}
-.tool-card:hover::before{opacity:1}
-.tool-emoji{font-size:1.8em;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1));transition:transform .3s}
-.tool-card:hover .tool-emoji{transform:scale(1.15) rotate(-5deg)}
-.tool-card h3{font-size:.82em;font-weight:700;color:var(--text);line-height:1.2}
-.tool-card p{font-size:.72em;color:var(--text-muted);line-height:1.4;flex:1}
-.tool-arrow{font-size:.72em;color:var(--primary);font-weight:700;opacity:0;transform:translateX(-6px);transition:all .25s}
-.tool-card:hover .tool-arrow{opacity:1;transform:translateX(0)}
-
-/* ── WHY SECTION ── */
-.why-section{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);margin:0 24px 40px;border-radius:20px;padding:36px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.why-item{text-align:center;color:white}
-.why-item .why-icon{font-size:2em;margin-bottom:8px}
-.why-item h3{font-size:1em;font-weight:700;margin-bottom:6px}
-.why-item p{font-size:.82em;opacity:.85;line-height:1.5}
-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.78em}
-
-/* ANIMATIONS */
-@keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-.tool-card:nth-child(1){animation-delay:.03s}.tool-card:nth-child(2){animation-delay:.06s}.tool-card:nth-child(3){animation-delay:.09s}.tool-card:nth-child(4){animation-delay:.12s}.tool-card:nth-child(5){animation-delay:.15s}.tool-card:nth-child(6){animation-delay:.18s}.tool-card:nth-child(7){animation-delay:.21s}.tool-card:nth-child(8){animation-delay:.24s}.tool-card:nth-child(9){animation-delay:.27s}.tool-card:nth-child(10){animation-delay:.30s}.tool-card:nth-child(11){animation-delay:.33s}.tool-card:nth-child(12){animation-delay:.36s}
-
-/* RESPONSIVE */
-@media(max-width:1200px){.tools-grid{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:900px){.tools-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:640px){.navbar{padding:0 16px}.hero{padding:18px 16px 14px}.tools-section{padding:12px 12px 30px}.tools-grid{grid-template-columns:repeat(2,1fr);gap:8px}.why-section{grid-template-columns:1fr;padding:28px 24px;margin:0 12px 30px;gap:20px}.tool-card{padding:16px 12px}}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);direction:rtl}
+.navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.1em;font-weight:800;color:var(--primary)}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85em}
+.nav-en{background:var(--primary);color:white;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:.8em;font-weight:700}
+.hero{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:40px 32px;text-align:center}
+.hero h1{font-size:clamp(1.6em,3.5vw,2.4em);font-weight:900;margin-bottom:10px;line-height:1.2}
+.hero p{opacity:.9;max-width:520px;margin:0 auto 18px;line-height:1.8;font-size:.95em}
+.trust-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:white;padding:4px 12px;border-radius:100px;font-size:.75em;font-weight:600}
+.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.stat{text-align:center}.stat-num{font-size:1.3em;font-weight:900;color:var(--primary)}.stat-label{font-size:.68em;color:var(--muted);font-weight:600}
+.tools-wrap{padding:24px 20px 40px;max-width:1200px;margin:0 auto}
+.sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:24px}
+.sec-badge{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:3px 14px;border-radius:100px;font-size:.72em;font-weight:700}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 14px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:7px;transition:all .25s;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(99,102,241,.18);border-color:rgba(99,102,241,.3)}
+.card-emoji{font-size:1.7em;transition:transform .3s}.card:hover .card-emoji{transform:scale(1.15)}
+.card-title{font-size:.82em;font-weight:700}.card-desc{font-size:.7em;color:var(--muted);line-height:1.4;flex:1}
+.card-new{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;font-size:.58em;font-weight:800;padding:2px 7px;border-radius:100px}
+.why{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;margin:0 20px 30px;border-radius:18px;padding:28px 36px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.why-item{text-align:center}.why-item .wi{font-size:1.8em;margin-bottom:7px}.why-item h3{font-size:.9em;font-weight:700;margin-bottom:5px}.why-item p{font-size:.75em;opacity:.88;line-height:1.5}
+footer{border-top:1px solid var(--border);padding:18px 32px;text-align:center;color:var(--muted);font-size:.76em}
+footer a{color:var(--primary);text-decoration:none}
+@media(max-width:640px){.navbar{padding:0 14px}.hero{padding:28px 16px}.why{grid-template-columns:1fr;margin:0 12px 20px}.tools-wrap{padding:16px 12px 30px}.grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <nav class="navbar">
-  <a href="/" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <div class="nav-actions">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn" title="Dark mode">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Language">🌐</button>
-  </div>
+  <a href="/ar/" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
+  <a href="/" class="nav-en">🌐 English</a>
 </nav>
-
 <section class="hero">
-  <div class="hero-badge">✨ 100% Free · No signup required</div>
-  <h1 id="heroTitle">All your PDF tools.<br>Right in your browser.</h1>
-  <p id="heroDesc">Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.</p>
-  <div class="trust-bar">
-    <div class="trust-item"><span class="dot"></span><span id="t1">No file uploads</span></div>
-    <div class="trust-item"><span class="dot"></span><span id="t2">Works offline</span></div>
-    <div class="trust-item"><span class="dot"></span><span id="t3">No registration</span></div>
-    <div class="trust-item"><span class="dot"></span><span id="t4">Completely free</span></div>
+  <h1>كل أدوات PDF والصور في مكان واحد</h1>
+  <p>ادمج وقسّم واضغط وحوّل ملفات PDF مجاناً وفورياً. ملفاتك تبقى في جهازك — لا رفع لأي خادم.</p>
+  <div class="trust-chips">
+    <span class="chip">✅ مجاني 100%</span>
+    <span class="chip">🔒 بدون رفع الملفات</span>
+    <span class="chip">⚡ فوري</span>
+    <span class="chip">📱 يعمل على الموبايل</span>
   </div>
 </section>
-
-<section class="tools-section">
-  <div class="section-label" id="toolsLabel">All Tools</div>
-  <div class="tools-grid">
-    <a href="merge-pdf.html" class="tool-card"><div class="tool-emoji">📑</div><h3 id="c1">Merge PDF</h3><p id="c1d">Combine multiple PDFs into one</p><span class="tool-arrow">→</span></a>
-    <a href="split-pdf.html" class="tool-card"><div class="tool-emoji">✂️</div><h3 id="c2">Split PDF</h3><p id="c2d">Extract pages visually</p><span class="tool-arrow">→</span></a>
-    <a href="compress-pdf.html" class="tool-card"><div class="tool-emoji">🗜️</div><h3 id="c3">Compress PDF</h3><p id="c3d">Reduce file size without quality loss</p><span class="tool-arrow">→</span></a>
-    <a href="rotate-pdf.html" class="tool-card"><div class="tool-emoji">🔄</div><h3 id="c4">Rotate PDF</h3><p id="c4d">Turn pages 90°, 180°, 270°</p><span class="tool-arrow">→</span></a>
-    <a href="sign-pdf.html" class="tool-card"><div class="tool-emoji">✍️</div><h3 id="c5">Sign PDF</h3><p id="c5d">Draw & add digital signature</p><span class="tool-arrow">→</span></a>
-    <a href="protect-pdf.html" class="tool-card"><div class="tool-emoji">🔐</div><h3 id="c6">Protect PDF</h3><p id="c6d">Add password to your PDF</p><span class="tool-arrow">→</span></a>
-    <a href="watermark-pdf.html" class="tool-card"><div class="tool-emoji">💧</div><h3 id="c7">Watermark</h3><p id="c7d">Add text watermark to pages</p><span class="tool-arrow">→</span></a>
-    <a href="image-to-pdf.html" class="tool-card"><div class="tool-emoji">🖼️</div><h3 id="c8">Image → PDF</h3><p id="c8d">Convert images to PDF</p><span class="tool-arrow">→</span></a>
-    <a href="pdf-to-image.html" class="tool-card"><div class="tool-emoji">📷</div><h3 id="c9">PDF → Image</h3><p id="c9d">Export PDF pages as PNG/JPG</p><span class="tool-arrow">→</span></a>
-    <a href="extract-text.html" class="tool-card"><div class="tool-emoji">📝</div><h3 id="c10">Extract Text</h3><p id="c10d">Copy text from any PDF</p><span class="tool-arrow">→</span></a>
-    <a href="convert-image.html" class="tool-card"><div class="tool-emoji">🔃</div><h3 id="c11">Convert Image</h3><p id="c11d">PNG · JPG · WebP · BMP · GIF</p><span class="tool-arrow">→</span></a>
-    <a href="remove-background.html" class="tool-card"><div class="tool-emoji">🎨</div><h3 id="c12">Remove BG</h3><p id="c12d">AI background removal</p><span class="tool-arrow">→</span></a>
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">2.4M+</div><div class="stat-label">ملف معالج</div></div>
+  <div class="stat"><div class="stat-num">180+</div><div class="stat-label">دولة</div></div>
+  <div class="stat"><div class="stat-num">16</div><div class="stat-label">أداة مجانية</div></div>
+  <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">تقييم المستخدمين</div></div>
+</div>
+<div class="tools-wrap">
+  <div class="sec-hdr"><div class="sec-badge">📄 أدوات PDF</div><div class="sec-line"></div></div>
+  <div class="grid">
+    <a href="/ar/دمج-pdf" class="card"><div class="card-emoji">📑</div><div class="card-title">دمج PDF</div><div class="card-desc">ادمج عدة ملفات PDF في واحد</div></a>
+    <a href="/ar/تقسيم-pdf" class="card"><div class="card-emoji">✂️</div><div class="card-title">تقسيم PDF</div><div class="card-desc">استخرج الصفحات بشكل مرئي</div></a>
+    <a href="/ar/ضغط-pdf" class="card"><div class="card-emoji">🗜️</div><div class="card-title">ضغط PDF</div><div class="card-desc">قلّل الحجم بدون فقدان الجودة</div></a>
+    <a href="/rotate-pdf.html" class="card"><div class="card-emoji">🔄</div><div class="card-title">تدوير PDF</div><div class="card-desc">دوّر الصفحات 90° أو 180°</div></a>
+    <a href="/sign-pdf.html" class="card"><div class="card-emoji">✍️</div><div class="card-title">توقيع PDF</div><div class="card-desc">ارسم وأضف توقيعك</div></a>
+    <a href="/protect-pdf.html" class="card"><div class="card-emoji">🔐</div><div class="card-title">حماية PDF</div><div class="card-desc">أضف كلمة مرور للملف</div></a>
+    <a href="/watermark-pdf.html" class="card"><div class="card-emoji">💧</div><div class="card-title">علامة مائية</div><div class="card-desc">أضف نصاً مائياً للصفحات</div></a>
+    <a href="/extract-text.html" class="card"><div class="card-emoji">📝</div><div class="card-title">استخراج نص</div><div class="card-desc">انسخ النص من أي PDF</div></a>
   </div>
-</section>
-
-<section class="why-section">
-  <div class="why-item"><div class="why-icon">🔒</div><h3 id="w1">100% Private</h3><p id="w1d">All processing in your browser. Files never uploaded to any server.</p></div>
-  <div class="why-item"><div class="why-icon">⚡</div><h3 id="w2">Lightning Fast</h3><p id="w2d">No server waiting. Everything runs instantly on your machine.</p></div>
-  <div class="why-item"><div class="why-icon">🆓</div><h3 id="w3">Always Free</h3><p id="w3d">No subscriptions, no limits, no hidden fees. Forever free.</p></div>
-</section>
-
-<footer><p>© 2026 Doctor PDF · All processing in your browser · Your files never leave your device</p></footer>
-
-<script>
-let dark=localStorage.getItem('dark')==='true';
-if(dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
-function toggleDark(){dark=!dark;document.body.classList.toggle('dark',dark);document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';localStorage.setItem('dark',dark);}
-
-let lang=localStorage.getItem('lang')||'en';
-const tr={
-  en:{heroTitle:'All your PDF tools.<br>Right in your browser.',heroDesc:'Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.',toolsLabel:'All Tools',t1:'No file uploads',t2:'Works offline',t3:'No registration',t4:'Completely free',c1:'Merge PDF',c1d:'Combine multiple PDFs into one',c2:'Split PDF',c2d:'Extract pages visually',c3:'Compress PDF',c3d:'Reduce file size without quality loss',c4:'Rotate PDF',c4d:'Turn pages 90°, 180°, 270°',c5:'Sign PDF',c5d:'Draw & add digital signature',c6:'Protect PDF',c6d:'Add password to your PDF',c7:'Watermark',c7d:'Add text watermark to pages',c8:'Image → PDF',c8d:'Convert images to PDF',c9:'PDF → Image',c9d:'Export PDF pages as PNG/JPG',c10:'Extract Text',c10d:'Copy text from any PDF',c11:'Convert Image',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'Remove BG',c12d:'AI background removal',w1:'100% Private',w1d:'All processing in your browser. Files never uploaded to any server.',w2:'Lightning Fast',w2d:'No server waiting. Everything runs instantly on your machine.',w3:'Always Free',w3d:'No subscriptions, no limits, no hidden fees. Forever free.'},
-  ar:{heroTitle:'كل أدوات PDF في مكان واحد.',heroDesc:'ادمج وقسّم واضغط ووقّع وحوّل ملفات PDF — مجاناً وفورياً. ملفاتك لا تغادر جهازك.',toolsLabel:'جميع الأدوات',t1:'بدون رفع ملفات',t2:'يعمل بدون إنترنت',t3:'بدون تسجيل',t4:'مجاني تماماً',c1:'دمج PDF',c1d:'ادمج عدة ملفات PDF في واحد',c2:'تقسيم PDF',c2d:'استخرج الصفحات بشكل مرئي',c3:'ضغط PDF',c3d:'قلّل الحجم بدون فقدان الجودة',c4:'تدوير PDF',c4d:'دوّر الصفحات 90° أو 180°',c5:'توقيع PDF',c5d:'ارسم وأضف توقيعك',c6:'حماية PDF',c6d:'أضف كلمة مرور للملف',c7:'علامة مائية',c7d:'أضف نصاً مائياً للصفحات',c8:'صورة ← PDF',c8d:'حوّل الصور إلى PDF',c9:'PDF ← صورة',c9d:'صدّر صفحات PDF كـ PNG/JPG',c10:'استخراج نص',c10d:'انسخ النص من أي PDF',c11:'تحويل صور',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'إزالة الخلفية',c12d:'إزالة الخلفية بالذكاء الاصطناعي',w1:'خصوصية تامة',w1d:'كل المعالجة في متصفحك. لا ترفع ملفاتك لأي خادم.',w2:'سرعة فائقة',w2d:'بدون انتظار. كل شيء يعمل فورياً على جهازك.',w3:'مجاني دائماً',w3d:'بدون اشتراكات أو رسوم خفية. مجاني للأبد.'}
-};
-function applyLang(){
-  document.documentElement.lang=lang;
-  document.body.dir=lang==='ar'?'rtl':'ltr';
-  const t=tr[lang];
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
-}
-function toggleLang(){lang=lang==='en'?'ar':'en';localStorage.setItem('lang',lang);applyLang();}
-applyLang();
-
-document.querySelectorAll('.tool-card').forEach(card=>{
-  card.addEventListener('click',()=>{if(typeof gtag!=='undefined')gtag('event','tool_clicked',{event_category:'Tools',event_label:card.href});});
-});
-</script>
+  <div class="sec-hdr"><div class="sec-badge">🔄 تحويل</div><div class="sec-line"></div></div>
+  <div class="grid">
+    <a href="/ar/تحويل-word-إلى-pdf" class="card"><div class="card-emoji">📝</div><div class="card-title">Word ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .docx إلى PDF</div></a>
+    <a href="/excel-to-pdf.html" class="card"><div class="card-emoji">📊</div><div class="card-title">Excel ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .xlsx إلى PDF</div></a>
+    <a href="/pptx-to-pdf.html" class="card"><div class="card-emoji">📊</div><div class="card-title">PPT ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .pptx إلى PDF</div></a>
+    <a href="/image-to-pdf.html" class="card"><div class="card-emoji">🖼️</div><div class="card-title">صورة ← PDF</div><div class="card-desc">JPG وPNG وWebP إلى PDF</div></a>
+    <a href="/pdf-to-image.html" class="card"><div class="card-emoji">📷</div><div class="card-title">PDF ← صورة</div><div class="card-desc">صدّر الصفحات كـ PNG/JPG</div></a>
+    <a href="/convert-image.html" class="card"><div class="card-emoji">🔃</div><div class="card-title">تحويل صور</div><div class="card-desc">PNG · JPG · WebP · BMP</div></a>
+  </div>
+  <div class="sec-hdr"><div class="sec-badge">🖼️ أدوات الصور</div><div class="sec-line"></div></div>
+  <div class="grid">
+    <a href="/compress-image.html" class="card"><div class="card-emoji">⚡</div><div class="card-title">ضغط الصور <span class="card-new">جديد</span></div><div class="card-desc">قلّل حجم الصور</div></a>
+    <a href="/ar/إزالة-خلفية-الصور" class="card"><div class="card-emoji">🎨</div><div class="card-title">إزالة الخلفية</div><div class="card-desc">إزالة الخلفية بالذكاء الاصطناعي</div></a>
+  </div>
+</div>
+<div class="why">
+  <div class="why-item"><div class="wi">🔒</div><h3>خصوصية تامة</h3><p>كل المعالجة في متصفحك. ملفاتك لا تُرفع لأي خادم أبداً.</p></div>
+  <div class="why-item"><div class="wi">⚡</div><h3>سرعة فائقة</h3><p>لا خوادم، لا انتظار. كل شيء يعمل فورياً على جهازك.</p></div>
+  <div class="why-item"><div class="wi">🆓</div><h3>مجاني دائماً</h3><p>بدون اشتراكات أو علامات مائية أو رسوم خفية. للأبد.</p></div>
+</div>
+<footer>
+  <p>© 2026 Doctor PDF · <a href="/ar/">الرئيسية</a> · <a href="/">English</a> · <a href="/sitemap.xml">Sitemap</a></p>
+  <p style="margin-top:6px">جميع الملفات تُعالَج في متصفحك — ملفاتك لا تغادر جهازك أبداً 🔒</p>
+</footer>
 </body>
 </html>
