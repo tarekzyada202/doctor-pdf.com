@@ -6,9 +6,7 @@
 <meta name="description" content="أدوات PDF مجانية: دمج، تقسيم، ضغط، تدوير، توقيع PDF، تحويل Word إلى PDF، استخراج النصوص، إزالة الخلفية. 100% آمن وخاص.">
 <meta name="keywords" content="أدوات PDF مجانية, دمج PDF, تقسيم PDF, ضغط PDF, تحويل word إلى pdf, أدوات pdf عربي">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/ar/">
-<link rel="alternate" hreflang="ar" href="https://doctor-pdf-1lg.pages.dev/ar/">
-<link rel="alternate" hreflang="en" href="https://doctor-pdf-1lg.pages.dev/">
+<link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/">
 <meta property="og:title" content="Doctor PDF - أدوات PDF والصور المجانية">
 <meta property="og:description" content="16+ أداة PDF مجانية. آمن وخاص وفوري.">
 <meta property="og:locale" content="ar_AR">
@@ -23,7 +21,8 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);direc
 .navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.1em;font-weight:800;color:var(--primary)}
 .logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85em}
-.nav-en{background:var(--primary);color:white;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:.8em;font-weight:700}
+.nav-en{background:var(--primary);color:white;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:.8em;font-weight:700;transition:background .2s}
+.nav-en:hover{background:var(--secondary)}
 .hero{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:40px 32px;text-align:center}
 .hero h1{font-size:clamp(1.6em,3.5vw,2.4em);font-weight:900;margin-bottom:10px;line-height:1.2}
 .hero p{opacity:.9;max-width:520px;margin:0 auto 18px;line-height:1.8;font-size:.95em}
@@ -50,8 +49,8 @@ footer a{color:var(--primary);text-decoration:none}
 </head>
 <body>
 <nav class="navbar">
-  <a href="/ar/" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <a href="/" class="nav-en">🌐 English</a>
+  <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
+  <a href="index.html" class="nav-en">🌐 العربية / EN</a>
 </nav>
 <section class="hero">
   <h1>كل أدوات PDF والصور في مكان واحد</h1>
@@ -66,34 +65,38 @@ footer a{color:var(--primary);text-decoration:none}
 <div class="stats-bar">
   <div class="stat"><div class="stat-num">2.4M+</div><div class="stat-label">ملف معالج</div></div>
   <div class="stat"><div class="stat-num">180+</div><div class="stat-label">دولة</div></div>
-  <div class="stat"><div class="stat-num">16</div><div class="stat-label">أداة مجانية</div></div>
+  <div class="stat"><div class="stat-num">16+</div><div class="stat-label">أداة مجانية</div></div>
   <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">تقييم المستخدمين</div></div>
 </div>
 <div class="tools-wrap">
   <div class="sec-hdr"><div class="sec-badge">📄 أدوات PDF</div><div class="sec-line"></div></div>
   <div class="grid">
-    <a href="/ar/دمج-pdf" class="card"><div class="card-emoji">📑</div><div class="card-title">دمج PDF</div><div class="card-desc">ادمج عدة ملفات PDF في واحد</div></a>
-    <a href="/ar/تقسيم-pdf" class="card"><div class="card-emoji">✂️</div><div class="card-title">تقسيم PDF</div><div class="card-desc">استخرج الصفحات بشكل مرئي</div></a>
-    <a href="/ar/ضغط-pdf" class="card"><div class="card-emoji">🗜️</div><div class="card-title">ضغط PDF</div><div class="card-desc">قلّل الحجم بدون فقدان الجودة</div></a>
-    <a href="/rotate-pdf.html" class="card"><div class="card-emoji">🔄</div><div class="card-title">تدوير PDF</div><div class="card-desc">دوّر الصفحات 90° أو 180°</div></a>
-    <a href="/sign-pdf.html" class="card"><div class="card-emoji">✍️</div><div class="card-title">توقيع PDF</div><div class="card-desc">ارسم وأضف توقيعك</div></a>
-    <a href="/protect-pdf.html" class="card"><div class="card-emoji">🔐</div><div class="card-title">حماية PDF</div><div class="card-desc">أضف كلمة مرور للملف</div></a>
-    <a href="/watermark-pdf.html" class="card"><div class="card-emoji">💧</div><div class="card-title">علامة مائية</div><div class="card-desc">أضف نصاً مائياً للصفحات</div></a>
-    <a href="/extract-text.html" class="card"><div class="card-emoji">📝</div><div class="card-title">استخراج نص</div><div class="card-desc">انسخ النص من أي PDF</div></a>
+    <!-- ✅ Fixed: was /ar/دمج-pdf (broken route) → merge-pdf.html (direct file) -->
+    <a href="merge-pdf.html" class="card"><div class="card-emoji">📑</div><div class="card-title">دمج PDF</div><div class="card-desc">ادمج عدة ملفات PDF في واحد</div></a>
+    <!-- ✅ Fixed: was /ar/تقسيم-pdf → split-pdf.html -->
+    <a href="split-pdf.html" class="card"><div class="card-emoji">✂️</div><div class="card-title">تقسيم PDF</div><div class="card-desc">استخرج الصفحات بشكل مرئي</div></a>
+    <!-- ✅ Fixed: was /ar/ضغط-pdf → compress-pdf.html -->
+    <a href="compress-pdf.html" class="card"><div class="card-emoji">🗜️</div><div class="card-title">ضغط PDF</div><div class="card-desc">قلّل الحجم بدون فقدان الجودة</div></a>
+    <a href="rotate-pdf.html" class="card"><div class="card-emoji">🔄</div><div class="card-title">تدوير PDF</div><div class="card-desc">دوّر الصفحات 90° أو 180°</div></a>
+    <a href="sign-pdf.html" class="card"><div class="card-emoji">✍️</div><div class="card-title">توقيع PDF</div><div class="card-desc">ارسم وأضف توقيعك</div></a>
+    <a href="protect-pdf.html" class="card"><div class="card-emoji">🔐</div><div class="card-title">حماية PDF</div><div class="card-desc">أضف كلمة مرور للملف</div></a>
+    <a href="watermark-pdf.html" class="card"><div class="card-emoji">💧</div><div class="card-title">علامة مائية</div><div class="card-desc">أضف نصاً مائياً للصفحات</div></a>
+    <a href="extract-text.html" class="card"><div class="card-emoji">📝</div><div class="card-title">استخراج نص</div><div class="card-desc">انسخ النص من أي PDF</div></a>
+    <a href="ocr-pdf.html" class="card"><div class="card-emoji">🔍</div><div class="card-title">OCR <span class="card-new">جديد</span></div><div class="card-desc">استخراج نص من PDF ممسوح ضوئياً</div></a>
   </div>
   <div class="sec-hdr"><div class="sec-badge">🔄 تحويل</div><div class="sec-line"></div></div>
   <div class="grid">
-    <a href="/ar/تحويل-word-إلى-pdf" class="card"><div class="card-emoji">📝</div><div class="card-title">Word ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .docx إلى PDF</div></a>
-    <a href="/excel-to-pdf.html" class="card"><div class="card-emoji">📊</div><div class="card-title">Excel ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .xlsx إلى PDF</div></a>
-    <a href="/pptx-to-pdf.html" class="card"><div class="card-emoji">📊</div><div class="card-title">PPT ← PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .pptx إلى PDF</div></a>
-    <a href="/image-to-pdf.html" class="card"><div class="card-emoji">🖼️</div><div class="card-title">صورة ← PDF</div><div class="card-desc">JPG وPNG وWebP إلى PDF</div></a>
-    <a href="/pdf-to-image.html" class="card"><div class="card-emoji">📷</div><div class="card-title">PDF ← صورة</div><div class="card-desc">صدّر الصفحات كـ PNG/JPG</div></a>
-    <a href="/convert-image.html" class="card"><div class="card-emoji">🔃</div><div class="card-title">تحويل صور</div><div class="card-desc">PNG · JPG · WebP · BMP</div></a>
+    <!-- ✅ Fixed: was /ar/تحويل-word-إلى-pdf → تحويل-word-إلى-pdf.html -->
+    <a href="تحويل-word-إلى-pdf.html" class="card"><div class="card-emoji">📝</div><div class="card-title">Word إلى PDF <span class="card-new">جديد</span></div><div class="card-desc">تحويل .docx إلى PDF</div></a>
+    <a href="image-to-pdf.html" class="card"><div class="card-emoji">🖼️</div><div class="card-title">صورة إلى PDF</div><div class="card-desc">JPG وPNG وWebP إلى PDF</div></a>
+    <a href="pdf-to-image.html" class="card"><div class="card-emoji">📷</div><div class="card-title">PDF إلى صورة</div><div class="card-desc">صدّر الصفحات كـ PNG/JPG</div></a>
+    <a href="convert-image.html" class="card"><div class="card-emoji">🔃</div><div class="card-title">تحويل صور</div><div class="card-desc">PNG · JPG · WebP · BMP</div></a>
   </div>
   <div class="sec-hdr"><div class="sec-badge">🖼️ أدوات الصور</div><div class="sec-line"></div></div>
   <div class="grid">
-    <a href="/compress-image.html" class="card"><div class="card-emoji">⚡</div><div class="card-title">ضغط الصور <span class="card-new">جديد</span></div><div class="card-desc">قلّل حجم الصور</div></a>
-    <a href="/ar/إزالة-خلفية-الصور" class="card"><div class="card-emoji">🎨</div><div class="card-title">إزالة الخلفية</div><div class="card-desc">إزالة الخلفية بالذكاء الاصطناعي</div></a>
+    <!-- ✅ Fixed: was /ar/إزالة-خلفية-الصور → إزالة-خلفية-الصور.html -->
+    <a href="إزالة-خلفية-الصور.html" class="card"><div class="card-emoji">🎨</div><div class="card-title">إزالة الخلفية</div><div class="card-desc">إزالة خلفية الصور تلقائياً</div></a>
+    <a href="remove-background.html" class="card"><div class="card-emoji">✂️</div><div class="card-title">Remove BG (EN)</div><div class="card-desc">Remove image background</div></a>
   </div>
 </div>
 <div class="why">
@@ -102,7 +105,7 @@ footer a{color:var(--primary);text-decoration:none}
   <div class="why-item"><div class="wi">🆓</div><h3>مجاني دائماً</h3><p>بدون اشتراكات أو علامات مائية أو رسوم خفية. للأبد.</p></div>
 </div>
 <footer>
-  <p>© 2026 Doctor PDF · <a href="/ar/">الرئيسية</a> · <a href="/">English</a> · <a href="/sitemap.xml">Sitemap</a></p>
+  <p>© 2026 Doctor PDF · <a href="index.html">الرئيسية</a> · <a href="sitemap.xml">Sitemap</a></p>
   <p style="margin-top:6px">جميع الملفات تُعالَج في متصفحك — ملفاتك لا تغادر جهازك أبداً 🔒</p>
 </footer>
 </body>
