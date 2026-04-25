@@ -1,209 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rotate PDF Pages Online Free - Turn PDF 90/180/270° | Doctor PDF</title>
-<meta name="description" content="Rotate PDF pages online for free. Turn pages 90, 180, or 270 degrees. Fast & secure, browser-based.">
-<meta name="keywords" content="rotate PDF, rotate PDF pages, turn PDF, flip PDF online free">
-<meta name="author" content="Doctor PDF">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotate PDF Pages Online Free | Doctor PDF</title>
+<meta name="description" content="Rotate PDF pages online for free. Rotate individual or all pages 90, 180 or 270 degrees.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/rotate-pdf.html">
-<meta property="og:title" content="Rotate PDF Pages Online Free - Turn PDF 90/180/270° | Doctor PDF">
-<meta property="og:description" content="Rotate PDF pages online for free. Turn pages 90, 180, or 270 degrees. Fast & secure, browser-based.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://doctor-pdf-1lg.pages.dev/rotate-pdf.html">
-<meta property="og:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
-<meta property="og:site_name" content="Doctor PDF">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Rotate PDF Pages Online Free - Turn PDF 90/180/270° | Doctor PDF">
-<meta name="twitter:description" content="Rotate PDF pages online for free. Turn pages 90, 180, or 270 degrees. Fast & secure, browser-based.">
-<meta name="twitter:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--radius:16px}
+:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b}
 .dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
-/* NAVBAR */
-.navbar{position:sticky;top:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.92)}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.2em;font-weight:800;color:var(--primary)}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1em;box-shadow:0 3px 10px rgba(99,102,241,.3)}
-.nav-actions{display:flex;align-items:center;gap:10px}
-.btn-icon{width:36px;height:36px;border:1px solid var(--border);background:var(--surface);border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary);transform:scale(1.05)}
-/* WRAPPER */
-.tool-wrapper{max-width:680px;margin:0 auto;padding:32px 20px 80px}
-.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.88em;margin-bottom:20px;transition:gap .2s;opacity:.85}
-.back-link:hover{gap:12px;opacity:1}
-/* CARD */
-.tool-card{background:var(--surface);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.tool-header{text-align:center;margin-bottom:28px}
-.tool-emoji{font-size:3em;margin-bottom:12px;display:block}
-.tool-card h1{color:var(--primary);font-size:1.9em;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
-.tool-desc{color:var(--text-muted);font-size:.95em;line-height:1.6}
-/* UPLOAD */
-.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:48px 20px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s;margin:24px 0}
-.upload-area:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.upload-area .up-icon{font-size:2.5em;margin-bottom:12px;display:block}
-.upload-area .up-title{color:var(--primary);font-weight:700;font-size:1em;margin-bottom:4px}
-.upload-area .up-sub{color:var(--text-muted);font-size:.82em}
-input[type=file]{display:none}
-/* OPTIONS */
-.options-box{background:var(--bg);border-radius:12px;padding:20px;margin:0 0 16px;border:1px solid var(--border)}
-.opt-label{display:block;font-weight:600;font-size:.8em;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.95em;background:var(--surface);color:var(--text);margin-bottom:14px;transition:border .2s;font-family:inherit}
-.opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opt-select:last-child,.opt-input:last-child,.opt-password:last-child{margin-bottom:0}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
-.format-option{background:var(--bg);padding:14px 8px;border-radius:10px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.85em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-.format-icon{font-size:1.5em;display:block;margin-bottom:4px}
-/* BUTTON */
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:14px 40px;border-radius:100px;font-size:1em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:16px;letter-spacing:.2px}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.35)}
-.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-/* PROGRESS */
-.progress-wrap{display:none;margin:16px 0}
-.progress-bar{width:100%;height:8px;background:var(--border);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.82em;color:var(--text-muted);margin-top:6px;text-align:center}
-/* RESULT */
-.result-box{display:none;text-align:center;margin-top:20px;padding:28px;background:rgba(16,185,129,.08);border-radius:var(--radius);border:1px solid rgba(16,185,129,.2)}
-.result-box .result-title{color:var(--success);font-weight:700;font-size:1.05em;margin-bottom:16px}
-.download-btn{background:var(--success);color:white;padding:13px 36px;border-radius:100px;font-size:.95em;font-weight:700;text-decoration:none;display:inline-block;transition:all .2s}
-.download-btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,185,129,.35)}
-/* FILE LIST */
-.file-list{margin:16px 0}
-.file-item{background:var(--bg);padding:12px 16px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)}
-.file-name{font-weight:500;color:var(--text);font-size:.88em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%}
-.remove-btn{background:none;border:1px solid #ff4757;color:#ff4757;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:.78em;font-weight:600;transition:all .2s;flex-shrink:0}
-.remove-btn:hover{background:#ff4757;color:white}
-/* SPINNER */
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:36px;height:36px;animation:spin 1s linear infinite;margin:16px auto;display:none}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
-.stat-box{background:var(--bg);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.72em;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.stat-value{font-size:1.15em;font-weight:800;color:var(--primary);margin-top:4px}
-/* CANVAS / SIGN */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;touch-action:none;background:white}
-.sign-controls{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s;font-family:inherit}
-.sign-btn:hover{border-color:var(--primary);color:var(--primary)}
-/* RESPONSIVE */
-@media(max-width:640px){.tool-card{padding:24px 16px}.navbar{padding:0 16px}.format-grid{grid-template-columns:repeat(3,1fr)}.stats-grid{grid-template-columns:repeat(2,1fr)}}
-/* RTL support */
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
+.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
+.dark .navbar{background:rgba(15,23,42,.95)}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
+.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
+.nav-right{display:flex;align-items:center;gap:8px}
+.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
+.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+.workspace{display:flex;flex:1;overflow:hidden}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+.panel{width:300px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 18px;gap:14px}
+[dir=rtl] .panel{border-left:none;border-right:1px solid var(--border)}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px;min-height:300px}
+.placeholder .ph-icon{font-size:5em;opacity:.2}
+.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
+.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
+.back-link:hover{opacity:1}
 [dir=rtl] .back-link{flex-direction:row-reverse}
-[dir=rtl] .back-link:hover{gap:12px}
+.tool-emoji-sm{font-size:2em;display:block;margin-bottom:6px}
+.tool-title{color:var(--primary);font-size:1.2em;font-weight:800;margin-bottom:3px}
+.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
+.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
+.up-icon{font-size:1.6em;display:block;margin-bottom:6px}
+.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
+.up-sub{color:var(--text-muted);font-size:.7em}
+input[type=file]{display:none}
+.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.opt-select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
+.opt-select:focus{outline:none;border-color:var(--primary)}
+.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s}
+.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
+.progress-wrap{display:none}
+.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
+.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
+.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
+.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
+.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
+.download-btn-full:hover{background:#059669}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.divider{height:1px;background:var(--border);margin:2px 0}
+.hint-box{background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.15);border-radius:7px;padding:9px;font-size:.72em;color:var(--text-muted);line-height:1.5}
+/* PAGE GRID */
+.pages-grid{display:flex;flex-wrap:wrap;gap:16px;align-content:flex-start;padding:4px 2px}
+.page-wrap{flex-shrink:0;text-align:center;position:relative}
+.page-canvas-wrap{position:relative;display:inline-block}
+.page-wrap canvas{display:block;border-radius:6px;border:2px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .4s ease,border-color .2s}
+.page-wrap canvas.rotated{border-color:var(--primary)}
+.page-num{font-size:.63em;color:var(--text-muted);margin-top:5px;font-weight:600}
+.rot-badge{position:absolute;top:4px;right:4px;background:var(--primary);color:white;border-radius:4px;font-size:.6em;font-weight:700;padding:2px 5px}
+/* ROT BUTTONS */
+.rot-btns{display:flex;gap:4px;justify-content:center;margin-top:6px}
+.rot-btn{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 7px;font-size:.65em;cursor:pointer;font-weight:700;color:var(--text-muted);transition:all .2s}
+.rot-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.06)}
+.rot-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+/* GLOBAL ROT TABS */
+.mode-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.mode-tab{flex:1;min-width:60px;padding:6px 4px;border:1.5px solid var(--border);border-radius:7px;font-size:.7em;font-weight:600;cursor:pointer;text-align:center;transition:all .2s;background:var(--bg);color:var(--text-muted)}
+.mode-tab:hover{border-color:var(--primary);color:var(--primary)}
+.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
+.drop-overlay.active{display:flex}
+.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
+@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-right:none;border-top:1px solid var(--border);max-height:50vh}.content{flex:none;min-height:50vh}}
 </style>
-
 </head>
 <body>
-
+<div class="drop-overlay" id="dropOverlay">
+  <div style="font-size:4em">📂</div>
+  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
+</div>
 <nav class="navbar">
   <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <div class="nav-actions">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn" title="Toggle dark mode">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Switch language">🌐</button>
+  <div class="nav-right">
+    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
+    <button class="btn-icon" onclick="toggleLang()" id="langBtn">🌐</button>
   </div>
 </nav>
-
-
-<div class="tool-wrapper">
-  <a href="index.html" class="back-link">← Back to all tools</a>
-  <div class="tool-card">
-    <div class="tool-header">
-      <span class="tool-emoji">🔄</span>
-      <h1 id="pageTitle">Rotate PDF</h1>
-      <p class="tool-desc" id="pageDesc">Rotate pages in your PDF document</p>
+<div class="workspace">
+  <div class="content">
+    <div class="placeholder" id="placeholder">
+      <span class="ph-icon">🔄</span>
+      <p id="phText">Upload a PDF to view and rotate its pages.<br>Click the rotation buttons under each page, or use global rotation.</p>
     </div>
-    <div class="upload-area" id="uploadArea">
+    <div class="pages-grid" id="pagesGrid" style="display:none"></div>
+  </div>
+  <div class="panel">
+    <a href="index.html" class="back-link" id="backLink">← All tools</a>
+    <div>
+      <span class="tool-emoji-sm">🔄</span>
+      <div class="tool-title" id="tool_title">Rotate PDF</div>
+      <div class="tool-desc" id="tool_desc">Click buttons under each page to rotate individually, or rotate all pages at once.</div>
+    </div>
+    <div class="upload-zone" id="uploadZone">
       <span class="up-icon">📁</span>
-      <p class="up-title" id="uploadTitle">Click or drag PDF file here</p>
-      <small class="up-sub" id="uploadSub">Supports any PDF file</small>
+      <p class="up-title" id="upload_title">Click or drag PDF here</p>
+      <small class="up-sub" id="upload_sub">Drop anywhere on screen</small>
       <input type="file" id="fileInput" accept=".pdf">
     </div>
-    <div class="options-box" id="optBox">
-      <label class="opt-label" id="angleLabel">Rotation Angle</label>
-      <select class="opt-select" id="rotateAngle">
-        <option value="90">90° Clockwise</option>
-        <option value="180">180°</option>
-        <option value="270">270° Counter-clockwise</option>
-      </select>
+    <div id="optBox" style="display:none;flex-direction:column;gap:10px">
+      <div class="divider"></div>
+      <label class="opt-label" id="allRotLabel">Rotate All Pages</label>
+      <div class="mode-tabs">
+        <div class="mode-tab" onclick="rotateAll(90)" id="tab90">↻ 90°</div>
+        <div class="mode-tab" onclick="rotateAll(180)" id="tab180">↺↻ 180°</div>
+        <div class="mode-tab" onclick="rotateAll(270)" id="tab270">↺ 270°</div>
+        <div class="mode-tab" onclick="rotateAll(0)" id="tabReset">✕ Reset</div>
+      </div>
+      <div class="hint-box" id="hintText">💡 Click ↻/↺ under each page for individual rotation, or use the buttons above to rotate all at once.</div>
     </div>
     <div class="spinner" id="spinner"></div>
     <div class="progress-wrap" id="progressWrap">
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <p class="progress-text" id="progressText">Processing…</p>
     </div>
-    <button class="action-btn" id="actionBtn" onclick="rotatePDF()" disabled><span id="actionLabel">Rotate PDF</span></button>
-    <div class="result-box" id="result">
-      <p class="result-title" id="resultTitle">✅ PDF rotated!</p>
-      <a class="download-btn" id="downloadBtn" download="rotated.pdf">📥 Download Rotated PDF</a>
+    <button class="action-btn" id="actionBtn" onclick="doRotate()" disabled style="margin-top:auto">
+      <span id="action_label">Save Rotated PDF</span>
+    </button>
+    <div class="result-box" id="resultBox">
+      <p class="result-title" id="result_title">✅ Saved!</p>
+      <a class="download-btn-full" id="downloadBtn" download="rotated.pdf">📥 <span id="dlLabel">Download Rotated PDF</span></a>
     </div>
   </div>
 </div>
 <script>
-let uploadedFile=null,processedBlob=null;
-const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),actionBtn=document.getElementById('actionBtn');
-uploadArea.addEventListener('click',()=>fileInput.click());
-uploadArea.addEventListener('dragover',e=>e.preventDefault());
-uploadArea.addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-fileInput.addEventListener('change',e=>handleFile(e.target.files[0]));
-function handleFile(f){if(!f||f.type!=='application/pdf')return;uploadedFile=f;document.getElementById('optBox').style.display='block';actionBtn.disabled=false;}
-function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=msg;}
-async function rotatePDF(){
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+let pdfJsDoc=null, pdfLibBytes=null;
+let pageRotations=[]; // per-page rotation in degrees (0,90,180,270)
+let pageCount=0;
+const THUMB_W=130;
+
+document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change',e=>loadPDF(e.target.files[0]));
+
+async function loadPDF(f){
+  if(!f||f.type!=='application/pdf')return;
   document.getElementById('spinner').style.display='block';
-  document.getElementById('progressWrap').style.display='block';
-  actionBtn.disabled=true;
+  showProgress(true);setProgress(5,'Loading…');
+  try{
+    pdfLibBytes=await f.arrayBuffer();
+    pdfJsDoc=await pdfjsLib.getDocument({data:pdfLibBytes.slice(0)}).promise;
+    pageCount=pdfJsDoc.numPages;
+    pageRotations=new Array(pageCount).fill(0);
+    document.getElementById('placeholder').style.display='none';
+    document.getElementById('pagesGrid').style.display='flex';
+    document.getElementById('optBox').style.display='flex';
+    document.getElementById('actionBtn').disabled=false;
+    await renderAllPages();
+    setProgress(100,'Done!');
+  }catch(e){alert('Error: '+e.message);}
+  document.getElementById('spinner').style.display='none';
+  setTimeout(()=>showProgress(false),500);
+}
+
+async function renderAllPages(){
+  const grid=document.getElementById('pagesGrid');
+  grid.innerHTML='';
+  for(let i=0;i<pageCount;i++){
+    setProgress(5+(i/pageCount)*85,(_lang==='ar'?`تحميل صفحة ${i+1}…`:`Loading page ${i+1}…`));
+    const page=await pdfJsDoc.getPage(i+1);
+    const vp0=page.getViewport({scale:1});
+    const scale=THUMB_W/vp0.width;
+    const vp=page.getViewport({scale});
+    const cv=document.createElement('canvas');
+    cv.width=vp.width;cv.height=vp.height;
+    await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+    const wrap=document.createElement('div');wrap.className='page-wrap';wrap.id='pw-'+i;
+    const cvWrap=document.createElement('div');cvWrap.className='page-canvas-wrap';
+    cv.id='cv-'+i;
+    cvWrap.appendChild(cv);
+    wrap.appendChild(cvWrap);
+    const num=document.createElement('div');num.className='page-num';
+    num.textContent=(_lang==='ar'?'ص ':'p.')+(i+1);
+    wrap.appendChild(num);
+    // Rotation buttons
+    const btns=document.createElement('div');btns.className='rot-btns';
+    [['↺','-90'],['↻','+90'],['⇅','180']].forEach(([icon,dir])=>{
+      const b=document.createElement('button');b.className='rot-btn';b.textContent=icon;
+      b.title=dir+'°';
+      b.onclick=()=>rotatePage(i,dir);
+      btns.appendChild(b);
+    });
+    const resetB=document.createElement('button');resetB.className='rot-btn';resetB.textContent='✕';
+    resetB.onclick=()=>{pageRotations[i]=0;updatePageVisual(i);};
+    btns.appendChild(resetB);
+    wrap.appendChild(btns);
+    grid.appendChild(wrap);
+  }
+}
+
+function rotatePage(i,dir){
+  if(dir==='+90')pageRotations[i]=(pageRotations[i]+90)%360;
+  else if(dir==='-90')pageRotations[i]=(pageRotations[i]+270)%360;
+  else if(dir==='180')pageRotations[i]=(pageRotations[i]+180)%360;
+  updatePageVisual(i);
+}
+
+function updatePageVisual(i){
+  const cv=document.getElementById('cv-'+i);
+  if(!cv)return;
+  const deg=pageRotations[i];
+  cv.style.transform=`rotate(${deg}deg)`;
+  const wrap=document.getElementById('pw-'+i);
+  const existing=wrap.querySelector('.rot-badge');
+  if(existing)existing.remove();
+  if(deg!==0){
+    const badge=document.createElement('div');badge.className='rot-badge';badge.textContent=deg+'°';
+    wrap.querySelector('.page-canvas-wrap').appendChild(badge);
+    cv.classList.add('rotated');
+  } else {cv.classList.remove('rotated');}
+}
+
+function rotateAll(deg){
+  for(let i=0;i<pageCount;i++){
+    if(deg===0)pageRotations[i]=0;
+    else pageRotations[i]=(pageRotations[i]+deg)%360;
+    updatePageVisual(i);
+  }
+}
+
+async function doRotate(){
+  document.getElementById('spinner').style.display='block';
+  showProgress(true);setProgress(5,_lang==='ar'?'جاري الحفظ…':'Processing…');
+  document.getElementById('actionBtn').disabled=true;
   try{
     const{PDFDocument,degrees}=PDFLib;
-    const bytes=await uploadedFile.arrayBuffer();
-    const pdf=await PDFDocument.load(bytes);
-    const angle=parseInt(document.getElementById('rotateAngle').value);
-    setProgress(50,'Rotating pages…');
-    pdf.getPages().forEach(p=>p.setRotation(degrees(angle)));
+    const pdf=await PDFDocument.load(pdfLibBytes);
+    const pages=pdf.getPages();
+    pages.forEach((p,i)=>{
+      const existingRot=p.getRotation().angle;
+      const newRot=(existingRot+pageRotations[i])%360;
+      p.setRotation(degrees(newRot));
+    });
     setProgress(90,'Saving…');
     const out=await pdf.save();
-    processedBlob=new Blob([out],{type:'application/pdf'});
-    setProgress(100,'Done!');
-    showResult('rotated.pdf');
+    const blob=new Blob([out],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const btn=document.getElementById('downloadBtn');btn.href=url;btn.download='rotated.pdf';
+    document.getElementById('resultBox').style.display='block';
+    setProgress(100,'✅');
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='rotated.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_rotated',{event_category:'PDF Tools'});
-  }catch(e){alert('Error: '+e.message);document.getElementById('spinner').style.display='none';actionBtn.disabled=false;}
-}
-function showResult(filename){
+  }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';
-  const btn=document.getElementById('downloadBtn');
-  btn.href=URL.createObjectURL(processedBlob);btn.download=filename;
-  document.getElementById('result').style.display='block';
-  setTimeout(()=>{const a=document.createElement('a');a.href=btn.href;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+  document.getElementById('actionBtn').disabled=false;
+  setTimeout(()=>showProgress(false),600);
 }
 
-// ── Dark Mode ──
-let dark = localStorage.getItem('dark') === 'true';
-if(dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-function toggleDark(){dark=!dark;document.body.classList.toggle('dark',dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=dark?'☀️':'🌙';localStorage.setItem('dark',dark);}
+function setProgress(p,m){document.getElementById('progressFill').style.width=p+'%';document.getElementById('progressText').textContent=m;}
+function showProgress(s){document.getElementById('progressWrap').style.display=s?'block':'none';}
 
-// ── Language ──
-let lang = localStorage.getItem('lang')||'en';
-const toolTr = {"en": {"pageTitle": "Rotate PDF", "pageDesc": "Rotate pages in your PDF document", "uploadTitle": "Click or drag PDF file here", "uploadSub": "Supports any PDF file", "actionLabel": "Rotate PDF", "resultTitle": "✅ PDF rotated!", "dlLabel": "📥 Download Rotated PDF", "angleLabel": "Rotation Angle"}, "ar": {"pageTitle": "تدوير PDF", "pageDesc": "قم بتدوير صفحات ملف PDF", "uploadTitle": "اضغط أو اسحب ملف PDF هنا", "uploadSub": "يدعم أي ملف PDF", "actionLabel": "تدوير الملف", "resultTitle": "✅ تم التدوير بنجاح!", "dlLabel": "📥 تحميل الملف المدوّر", "angleLabel": "زاوية التدوير"}};
+window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
+window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
+window.addEventListener('dragover',e=>e.preventDefault());
+window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');const f=[...e.dataTransfer.files].find(f=>f.type==='application/pdf');if(f)loadPDF(f);});
+
+let _dark=localStorage.getItem('dark')==='true';
+if(_dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
+function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);document.getElementById('themeBtn').textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
+
+let _lang=localStorage.getItem('lang')||'en';
+const _tr={
+  en:{tool_title:'Rotate PDF',tool_desc:'Click buttons under each page to rotate individually, or rotate all pages at once.',upload_title:'Click or drag PDF here',upload_sub:'Drop anywhere on screen',action_label:'Save Rotated PDF',result_title:'✅ Saved!',dlLabel:'Download Rotated PDF',drop_text:'Drop PDF file here',allRotLabel:'Rotate All Pages',hintText:'💡 Use ↻/↺ under each page for individual control, or click above buttons to rotate all.',backLink:'← All tools'},
+  ar:{tool_title:'تدوير PDF',tool_desc:'اضغط على الأزرار تحت كل صفحة للتدوير الفردي، أو دوّر كل الصفحات دفعة واحدة.',upload_title:'اضغط أو اسحب ملف PDF هنا',upload_sub:'اسحب في أي مكان على الشاشة',action_label:'حفظ الملف المدوّر',result_title:'✅ تم الحفظ!',dlLabel:'تحميل الملف المدوّر',drop_text:'أسقط ملف PDF هنا',allRotLabel:'تدوير كل الصفحات',hintText:'💡 استخدم ↻/↺ تحت كل صفحة للتحكم الفردي، أو اضغط الأزرار أعلاه لتدوير الكل.',backLink:'→ كل الأدوات'}
+};
 function applyLang(){
-  document.documentElement.lang=lang;
-  document.body.dir=lang==='ar'?'rtl':'ltr';
-  const t=toolTr[lang]||{};
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
+  document.documentElement.lang=_lang;document.body.dir=_lang==='ar'?'rtl':'ltr';
+  const t=_tr[_lang]||{};Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
+  document.getElementById('dropText').textContent=t.drop_text||'';
 }
-function toggleLang(){lang=lang==='en'?'ar':'en';localStorage.setItem('lang',lang);applyLang();}
+function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);applyLang();}
 applyLang();
 </script>
 </body>
