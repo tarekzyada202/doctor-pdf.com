@@ -103,14 +103,102 @@ input[type=file]{display:none}
 @media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
 
 body.lang-ar{font-family:'Cairo',sans-serif;}
+
+/* ── NAVBAR UPGRADED ── */
+.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
+.dark .navbar{background:rgba(15,23,42,.96)}
+.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
+.nav-sep{color:var(--border);font-size:1em;margin:0 2px;flex-shrink:0}
+.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.navbar-center{flex:1;display:flex;justify-content:center}
+/* QUICK TOOLS DROPDOWN */
+.quick-tools-wrap{position:relative}
+.quick-tools-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.quick-tools-btn:hover{border-color:var(--primary);color:var(--primary)}
+.qt-arrow{transition:transform .2s;font-size:.7em}
+.quick-tools-wrap.open .qt-arrow{transform:rotate(180deg)}
+.quick-tools-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
+.quick-tools-wrap.open .quick-tools-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
+.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
+.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* NAVBAR PROGRESS */
+.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s ease;border-radius:0 2px 2px 0}
+/* NAV RIGHT */
+.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
+.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+
 </style>
 </head>
 <body><nav class="navbar">
-  <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <div class="nav-right">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.72em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+  <div class="navbar-left">
+    <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-tool-name" id="navToolName">Rotate PDF</span>
   </div>
+  <div class="navbar-center">
+    <div class="quick-tools-wrap" id="qtWrap">
+      <button class="quick-tools-btn" onclick="toggleQT()" id="qtBtn">
+        <span id="qtLabel">All Tools</span> <span class="qt-arrow">▾</span>
+      </button>
+      <div class="quick-tools-drop" id="qtDrop">
+        <a href="merge-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <span class="qt-label" data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span>
+        </a>
+<a href="split-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
+          <span class="qt-label" data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span>
+        </a>
+<a href="compress-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+          <span class="qt-label" data-en="Compress PDF" data-ar="ضغط PDF">Compress PDF</span>
+        </a>
+<a href="sign-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <span class="qt-label" data-en="Sign PDF" data-ar="توقيع PDF">Sign PDF</span>
+        </a>
+<a href="protect-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <span class="qt-label" data-en="Protect PDF" data-ar="حماية PDF">Protect PDF</span>
+        </a>
+<a href="watermark-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
+          <span class="qt-label" data-en="Watermark" data-ar="علامة مائية">Watermark</span>
+        </a>
+<a href="image-to-pdf.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <span class="qt-label" data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span>
+        </a>
+<a href="pdf-to-image.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <span class="qt-label" data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span>
+        </a>
+<a href="extract-text.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>
+          <span class="qt-label" data-en="Extract Text" data-ar="استخراج نص">Extract Text</span>
+        </a>
+<a href="convert-image.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg></div>
+          <span class="qt-label" data-en="Convert Image" data-ar="تحويل صور">Convert Image</span>
+        </a>
+<a href="remove-background.html" class="qt-item">
+          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <span class="qt-label" data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
+    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+  </div>
+  <div class="navbar-progress" id="navProgress"></div>
 </nav><div class="drop-overlay" id="dropOverlay">
   <div class="drop-overlay-icon">📂</div>
   <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
@@ -232,6 +320,11 @@ function _applyLang(){
   const t=_tr[_lang]||{};
   Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
   
+
+  document.getElementById('navToolName').textContent=_lang==='ar'?'تدوير PDF':'Rotate PDF';
+  document.getElementById('qtLabel').textContent=_lang==='ar'?'كل الأدوات':'All Tools';
+  document.querySelectorAll('.qt-label').forEach(el=>el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en);
+  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
 }
 function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
 _applyLang();
