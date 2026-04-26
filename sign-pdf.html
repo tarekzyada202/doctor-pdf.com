@@ -1,163 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign PDF Online Free - Add Digital Signature | Doctor PDF</title>
-<meta name="description" content="Add your digital signature to PDF documents online for free. Draw & sign PDF instantly in your browser.">
-<meta name="keywords" content="sign PDF, digital signature, PDF signature online free, draw signature">
-<meta name="author" content="Doctor PDF">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign PDF Online Free | Doctor PDF</title>
+<meta name="description" content="Draw and add your signature to PDF documents online for free.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://doctor-pdf-1lg.pages.dev/sign-pdf.html">
-<meta property="og:title" content="Sign PDF Online Free - Add Digital Signature | Doctor PDF">
-<meta property="og:description" content="Add your digital signature to PDF documents online for free. Draw & sign PDF instantly in your browser.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://doctor-pdf-1lg.pages.dev/sign-pdf.html">
-<meta property="og:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
-<meta property="og:site_name" content="Doctor PDF">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sign PDF Online Free - Add Digital Signature | Doctor PDF">
-<meta name="twitter:description" content="Add your digital signature to PDF documents online for free. Draw & sign PDF instantly in your browser.">
-<meta name="twitter:image" content="https://doctor-pdf-1lg.pages.dev/og-image.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--radius:16px}
+
+:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
 .dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
 /* NAVBAR */
-.navbar{position:sticky;top:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.92)}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.2em;font-weight:800;color:var(--primary)}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1em;box-shadow:0 3px 10px rgba(99,102,241,.3)}
-.nav-actions{display:flex;align-items:center;gap:10px}
-.btn-icon{width:36px;height:36px;border:1px solid var(--border);background:var(--surface);border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary);transform:scale(1.05)}
-/* WRAPPER */
-.tool-wrapper{max-width:680px;margin:0 auto;padding:32px 20px 80px}
-.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.88em;margin-bottom:20px;transition:gap .2s;opacity:.85}
-.back-link:hover{gap:12px;opacity:1}
-/* CARD */
-.tool-card{background:var(--surface);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.tool-header{text-align:center;margin-bottom:28px}
-.tool-emoji{font-size:3em;margin-bottom:12px;display:block}
-.tool-card h1{color:var(--primary);font-size:1.9em;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
-.tool-desc{color:var(--text-muted);font-size:.95em;line-height:1.6}
-/* UPLOAD */
-.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:48px 20px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s;margin:24px 0}
-.upload-area:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.upload-area .up-icon{font-size:2.5em;margin-bottom:12px;display:block}
-.upload-area .up-title{color:var(--primary);font-weight:700;font-size:1em;margin-bottom:4px}
-.upload-area .up-sub{color:var(--text-muted);font-size:.82em}
+.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
+.dark .navbar{background:rgba(15,23,42,.95)}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
+.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
+.nav-right{display:flex;align-items:center;gap:8px}
+.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
+.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+/* LAYOUT */
+.workspace{display:flex;flex:1;overflow:hidden}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px;display:flex;flex-direction:column;gap:16px;position:relative}
+.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 20px;gap:14px}
+/* DROP OVERLAY */
+.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
+.drop-overlay.active{display:flex}
+.drop-overlay-icon{font-size:4em}
+.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
+/* PLACEHOLDER */
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
+.placeholder .ph-icon{font-size:5em;opacity:.2}
+.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
+/* PANEL ELEMENTS */
+.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
+.back-link:hover{opacity:1}
+.tool-title{color:var(--primary);font-size:1.15em;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
+.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
+.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
+.up-icon{font-size:1.5em;display:block;margin-bottom:5px}
+.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
+.up-sub{color:var(--text-muted);font-size:.7em}
 input[type=file]{display:none}
-/* OPTIONS */
-.options-box{background:var(--bg);border-radius:12px;padding:20px;margin:0 0 16px;border:1px solid var(--border)}
-.opt-label{display:block;font-weight:600;font-size:.8em;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.95em;background:var(--surface);color:var(--text);margin-bottom:14px;transition:border .2s;font-family:inherit}
+.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.opt-select,.opt-input,.opt-password{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
 .opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opt-select:last-child,.opt-input:last-child,.opt-password:last-child{margin-bottom:0}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
-.format-option{background:var(--bg);padding:14px 8px;border-radius:10px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.85em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-.format-icon{font-size:1.5em;display:block;margin-bottom:4px}
-/* BUTTON */
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:14px 40px;border-radius:100px;font-size:1em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:16px;letter-spacing:.2px}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.35)}
+.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
+.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
 .action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-/* PROGRESS */
-.progress-wrap{display:none;margin:16px 0}
-.progress-bar{width:100%;height:8px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-wrap{display:none}
+.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.82em;color:var(--text-muted);margin-top:6px;text-align:center}
-/* RESULT */
-.result-box{display:none;text-align:center;margin-top:20px;padding:28px;background:rgba(16,185,129,.08);border-radius:var(--radius);border:1px solid rgba(16,185,129,.2)}
-.result-box .result-title{color:var(--success);font-weight:700;font-size:1.05em;margin-bottom:16px}
-.download-btn{background:var(--success);color:white;padding:13px 36px;border-radius:100px;font-size:.95em;font-weight:700;text-decoration:none;display:inline-block;transition:all .2s}
-.download-btn:hover{background:#059669;transform:translateY(-2px);box-shadow:0 6px 18px rgba(16,185,129,.35)}
-/* FILE LIST */
-.file-list{margin:16px 0}
-.file-item{background:var(--bg);padding:12px 16px;border-radius:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)}
-.file-name{font-weight:500;color:var(--text);font-size:.88em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%}
-.remove-btn{background:none;border:1px solid #ff4757;color:#ff4757;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:.78em;font-weight:600;transition:all .2s;flex-shrink:0}
-.remove-btn:hover{background:#ff4757;color:white}
-/* SPINNER */
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:36px;height:36px;animation:spin 1s linear infinite;margin:16px auto;display:none}
+.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
+.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
+.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
+.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
+.download-btn-full:hover{background:#059669}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
 @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 /* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
-.stat-box{background:var(--bg);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.72em;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.stat-value{font-size:1.15em;font-weight:800;color:var(--primary);margin-top:4px}
-/* CANVAS / SIGN */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;touch-action:none;background:white}
-.sign-controls{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:600;transition:all .2s;font-family:inherit}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.stat-box{background:var(--bg);border-radius:7px;padding:8px;text-align:center;border:1px solid var(--border)}
+.stat-label{font-size:.62em;color:var(--text-muted);font-weight:600;text-transform:uppercase}
+.stat-value{font-size:.9em;font-weight:800;color:var(--primary);margin-top:2px}
+/* FORMAT GRID */
+.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.format-option{background:var(--bg);padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.78em;font-weight:600;color:var(--text-muted)}
+.format-option:hover{border-color:var(--primary);color:var(--primary)}
+.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
+/* FILE LIST IN PANEL */
+.panel-file-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.pfi-name{flex:1;font-size:.75em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pfi-pages{font-size:.68em;color:var(--text-muted)}
+.pfi-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8em;flex-shrink:0}
+/* SIGN CANVAS */
+#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;max-height:340px;touch-action:none;background:white}
+.sign-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8em;font-weight:600;transition:all .2s;font-family:inherit}
 .sign-btn:hover{border-color:var(--primary);color:var(--primary)}
+/* PREVIEW */
+.preview-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;padding:16px}
+.preview-wrap img,.preview-wrap canvas{max-width:100%;max-height:480px;border-radius:8px}
+/* EXTRACTED TEXT */
+#extractedTextArea{width:100%;height:100%;min-height:400px;border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:.85em;line-height:1.6;background:var(--surface);color:var(--text);font-family:monospace;resize:none;transition:border .2s}
+#extractedTextArea:focus{outline:none;border-color:var(--primary)}
+.copy-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:.8em;font-weight:700;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:var(--secondary)}
+/* IMAGE LIST */
+.img-list-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px}
+.img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
 /* RESPONSIVE */
-@media(max-width:640px){.tool-card{padding:24px 16px}.navbar{padding:0 16px}.format-grid{grid-template-columns:repeat(3,1fr)}.stats-grid{grid-template-columns:repeat(2,1fr)}}
-/* RTL support */
-[dir=rtl] .back-link{flex-direction:row-reverse}
-[dir=rtl] .back-link:hover{gap:12px}
+@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
+
+body.lang-ar{font-family:'Cairo',sans-serif;}
 </style>
-
 </head>
-<body>
-
-<nav class="navbar">
+<body><nav class="navbar">
   <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <div class="nav-actions">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn" title="Toggle dark mode">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Switch language">🌐</button>
+  <div class="nav-right">
+    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
+    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.72em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
   </div>
-</nav>
-
-
-<div class="tool-wrapper">
-  <a href="index.html" class="back-link">← Back to all tools</a>
-  <div class="tool-card">
-    <div class="tool-header">
-      <span class="tool-emoji">✍️</span>
-      <h1 id="pageTitle">Sign PDF</h1>
-      <p class="tool-desc" id="pageDesc">Draw and add your signature to PDF documents</p>
+</nav><div class="drop-overlay" id="dropOverlay">
+  <div class="drop-overlay-icon">📂</div>
+  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
+</div>
+<div class="workspace">
+  <div class="content" id="contentArea">
+    <div class="placeholder" id="placeholder">
+      <span class="ph-icon">✍️</span>
+      <p id="phText">Upload a PDF file first.<br>Then draw your signature below.</p>
     </div>
-    <div class="upload-area" id="uploadArea">
-      <span class="up-icon">📁</span>
-      <p class="up-title" id="uploadTitle">Click or drag PDF file here</p>
-      <small class="up-sub" id="uploadSub">Supports any PDF file</small>
-      <input type="file" id="fileInput" accept=".pdf">
-    </div>
-    <div class="options-box" id="optBox">
-      <label class="opt-label" id="drawLabel">Draw your signature below</label>
-      <canvas id="signCanvas" width="580" height="160"></canvas>
+    <div id="signArea" style="display:none;flex-direction:column;gap:14px;height:100%">
+      <p style="font-size:.82em;font-weight:700;color:var(--text-muted)" id="drawLabel">Draw your signature</p>
+      <canvas id="signCanvas" width="900" height="320"></canvas>
       <div class="sign-controls">
         <button class="sign-btn" onclick="clearCanvas()" id="clearBtn">🗑️ Clear</button>
         <label class="opt-label" style="margin:0 4px 0 12px" id="colorLabel">Color:</label>
         <input type="color" id="penColor" value="#1a1a2e" style="border:none;background:none;cursor:pointer;width:36px;height:36px">
         <label class="opt-label" style="margin:0 4px 0 8px" id="sizeLabel">Size:</label>
-        <select id="penSize" class="opt-select" style="width:80px;margin:0">
-          <option value="2">Thin</option>
-          <option value="3" selected>Normal</option>
-          <option value="5">Thick</option>
+        <select id="penSize" class="opt-select" style="width:90px;margin:0">
+          <option value="2" id="penThin">Thin</option>
+          <option value="3" selected id="penNorm">Normal</option>
+          <option value="5" id="penThick">Thick</option>
         </select>
       </div>
     </div>
-    <div class="spinner" id="spinner"></div>
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <p class="progress-text" id="progressText">Processing…</p>
+  </div>
+  <div class="panel">
+  <a href="index.html" class="back-link">← All tools</a>
+  <div>
+    <div style="font-size:2em;margin-bottom:6px">✍️</div>
+    <div class="tool-title" id="tool_title">Sign PDF</div>
+    <div class="tool-desc" id="tool_desc">Draw and add your signature to PDF</div>
+  </div>
+  <div class="upload-zone" id="uploadZone">
+    <span class="up-icon">📁</span>
+    <p class="up-title" id="upload_title">Click or drag PDF here</p>
+    <small class="up-sub" id="upload_sub">Any PDF file</small>
+    <input type="file" id="fileInput" accept=".pdf" >
+  </div>
+    <div class="opts-section" style="font-size:.78em;color:var(--text-muted)" id="signHint">
+      <p id="hintText">After uploading, draw your signature in the main area, then click the button below.</p>
     </div>
-    <button class="action-btn" id="actionBtn" onclick="signPDF()" disabled><span id="actionLabel">Add Signature to PDF</span></button>
-    <div class="result-box" id="result">
-      <p class="result-title" id="resultTitle">✅ Signature added!</p>
-      <a class="download-btn" id="downloadBtn" download="signed.pdf">📥 Download Signed PDF</a>
-    </div>
+  <div class="spinner" id="spinner"></div>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <p class="progress-text" id="progressText">Processing…</p>
+  </div>
+  <button class="action-btn" id="actionBtn" onclick="signPDF()" disabled>
+    <span id="actionLabel">Add Signature to PDF</span>
+  </button>
+  <div class="result-box" id="result">
+    <p class="result-title" id="resultTitle">✅ Signature added!</p>
+    <a class="download-btn-full" id="downloadBtn" download="signed.pdf" href="#">📥 Download Signed PDF</a>
+  </div>
   </div>
 </div>
 <script>
@@ -165,7 +172,7 @@ let uploadedFile=null,processedBlob=null,isDrawing=false,lastX=0,lastY=0;
 const canvas=document.getElementById('signCanvas');
 const ctx=canvas.getContext('2d');
 ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
-function getPos(e,canvas){const r=canvas.getBoundingClientRect();const src=e.touches?e.touches[0]:e;return{x:(src.clientX-r.left)*(canvas.width/r.width),y:(src.clientY-r.top)*(canvas.height/r.height)};}
+function getPos(e,cv){const r=cv.getBoundingClientRect();const src=e.touches?e.touches[0]:e;return{x:(src.clientX-r.left)*(cv.width/r.width),y:(src.clientY-r.top)*(cv.height/r.height)};}
 canvas.addEventListener('mousedown',e=>{isDrawing=true;const p=getPos(e,canvas);[lastX,lastY]=[p.x,p.y];});
 canvas.addEventListener('mousemove',e=>{if(!isDrawing)return;ctx.strokeStyle=document.getElementById('penColor').value;ctx.lineWidth=parseInt(document.getElementById('penSize').value);ctx.beginPath();ctx.moveTo(lastX,lastY);const p=getPos(e,canvas);ctx.lineTo(p.x,p.y);ctx.stroke();[lastX,lastY]=[p.x,p.y];});
 canvas.addEventListener('mouseup',()=>isDrawing=false);
@@ -173,64 +180,74 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();isDrawing=true;const
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!isDrawing)return;ctx.strokeStyle=document.getElementById('penColor').value;ctx.lineWidth=parseInt(document.getElementById('penSize').value);ctx.beginPath();ctx.moveTo(lastX,lastY);const p=getPos(e,canvas);ctx.lineTo(p.x,p.y);ctx.stroke();[lastX,lastY]=[p.x,p.y];},{passive:false});
 canvas.addEventListener('touchend',()=>isDrawing=false);
 function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);}
-const uploadArea=document.getElementById('uploadArea'),fileInput=document.getElementById('fileInput'),actionBtn=document.getElementById('actionBtn');
-uploadArea.addEventListener('click',()=>fileInput.click());
-uploadArea.addEventListener('dragover',e=>e.preventDefault());
-uploadArea.addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-fileInput.addEventListener('change',e=>handleFile(e.target.files[0]));
-function handleFile(f){if(!f||f.type!=='application/pdf')return;uploadedFile=f;document.getElementById('optBox').style.display='block';actionBtn.disabled=false;}
+document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
+document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
+document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
+function handleGlobalDrop(files){const f=[...files].find(f=>f.type==='application/pdf');if(f)handleFile(f);}
+function handleFile(f){
+  if(!f||f.type!=='application/pdf')return;
+  uploadedFile=f;
+  document.getElementById('actionBtn').disabled=false;
+  document.getElementById('placeholder').style.display='none';
+  document.getElementById('signArea').style.display='flex';
+}
 function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=msg;}
 async function signPDF(){
   document.getElementById('spinner').style.display='block';
   document.getElementById('progressWrap').style.display='block';
-  actionBtn.disabled=true;
+  document.getElementById('actionBtn').disabled=true;
   try{
+    const{PDFDocument,rgb}=PDFLib;
+    const bytes=await uploadedFile.arrayBuffer();
+    const pdf=await PDFDocument.load(bytes);
     const sigDataUrl=canvas.toDataURL('image/png');
-    const base64=sigDataUrl.split(',')[1];
-    const sigBytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));
-    setProgress(30,'Loading PDF…');
-    const{PDFDocument}=PDFLib;
-    const pdfBytes=await uploadedFile.arrayBuffer();
-    const pdf=await PDFDocument.load(pdfBytes);
-    setProgress(60,'Embedding signature…');
+    const sigBytes=await(await fetch(sigDataUrl)).arrayBuffer();
     const sigImg=await pdf.embedPng(sigBytes);
+    setProgress(50,'Adding signature…');
     const pages=pdf.getPages();
     const lastPage=pages[pages.length-1];
     const{width,height}=lastPage.getSize();
-    const sigW=200,sigH=sigW*(canvas.height/canvas.width);
-    lastPage.drawImage(sigImg,{x:width-sigW-40,y:40,width:sigW,height:sigH});
+    const sigW=Math.min(width*0.4,240);
+    const sigH=sigW*(canvas.height/canvas.width);
+    lastPage.drawImage(sigImg,{x:width-sigW-40,y:40,width:sigW,height:sigH,opacity:.9});
     setProgress(90,'Saving…');
     const out=await pdf.save();
     processedBlob=new Blob([out],{type:'application/pdf'});
+    const url=URL.createObjectURL(processedBlob);
+    document.getElementById('downloadBtn').href=url;
+    document.getElementById('result').style.display='block';
     setProgress(100,'Done!');
-    showResult('signed.pdf');
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='signed.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_signed',{event_category:'PDF Tools'});
-  }catch(e){alert('Error: '+e.message);document.getElementById('spinner').style.display='none';actionBtn.disabled=false;}
-}
-function showResult(filename){
+  }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';
-  const btn=document.getElementById('downloadBtn');
-  btn.href=URL.createObjectURL(processedBlob);btn.download=filename;
-  document.getElementById('result').style.display='block';
-  setTimeout(()=>{const a=document.createElement('a');a.href=btn.href;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+  document.getElementById('actionBtn').disabled=false;
+  setTimeout(()=>document.getElementById('progressWrap').style.display='none',600);
 }
 
-// ── Dark Mode ──
-let dark = localStorage.getItem('dark') === 'true';
-if(dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-function toggleDark(){dark=!dark;document.body.classList.toggle('dark',dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=dark?'☀️':'🌙';localStorage.setItem('dark',dark);}
+window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
+window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
+window.addEventListener('dragover',e=>e.preventDefault());
+window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');if(typeof handleGlobalDrop==='function')handleGlobalDrop(e.dataTransfer.files);});
 
-// ── Language ──
-let lang = localStorage.getItem('lang')||'en';
-const toolTr = {"en": {"pageTitle": "Sign PDF", "pageDesc": "Draw and add your signature to PDF documents", "uploadTitle": "Click or drag PDF file here", "uploadSub": "Supports any PDF file", "actionLabel": "Add Signature to PDF", "resultTitle": "✅ Signature added!", "dlLabel": "📥 Download Signed PDF", "drawLabel": "Draw your signature below", "clearBtn": "Clear", "colorLabel": "Pen Color", "sizeLabel": "Pen Size"}, "ar": {"pageTitle": "توقيع PDF", "pageDesc": "ارسم وأضف توقيعك إلى مستندات PDF", "uploadTitle": "اضغط أو اسحب ملف PDF هنا", "uploadSub": "يدعم أي ملف PDF", "actionLabel": "إضافة التوقيع", "resultTitle": "✅ تم إضافة التوقيع!", "dlLabel": "📥 تحميل الملف الموقّع", "drawLabel": "ارسم توقيعك أدناه", "clearBtn": "مسح", "colorLabel": "لون القلم", "sizeLabel": "حجم القلم"}};
-function applyLang(){
-  document.documentElement.lang=lang;
-  document.body.dir=lang==='ar'?'rtl':'ltr';
-  const t=toolTr[lang]||{};
+let _dark=localStorage.getItem('dark')==='true';
+if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
+function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
+let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
+if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
+
+const _tr={"en":{"tool_title":"Sign PDF","tool_desc":"Draw and add your signature to PDF","upload_title":"Click or drag PDF here","upload_sub":"Any PDF file","actionLabel":"Add Signature to PDF","resultTitle":"✅ Signature added!","phText":"Upload a PDF file first.<br>Then draw your signature below.","drawLabel":"Draw your signature","clearBtn":"🗑️ Clear","colorLabel":"Color:","sizeLabel":"Size:","penThin":"Thin","penNorm":"Normal","penThick":"Thick","hintText":"After uploading, draw your signature in the main area, then click the button below.","dropText":"Drop PDF file here"},"ar":{"tool_title":"توقيع PDF","tool_desc":"ارسم وأضف توقيعك لملف PDF","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي ملف PDF","actionLabel":"إضافة التوقيع للملف","resultTitle":"✅ تمت الإضافة!","phText":"ارفع ملف PDF أولاً.<br>ثم ارسم توقيعك في المنطقة الرئيسية.","drawLabel":"ارسم توقيعك","clearBtn":"🗑️ مسح","colorLabel":"اللون:","sizeLabel":"الحجم:","penThin":"رفيع","penNorm":"عادي","penThick":"سميك","hintText":"بعد الرفع، ارسم توقيعك في المنطقة الرئيسية ثم اضغط الزر.","dropText":"أسقط ملف PDF هنا"}};
+function _applyLang(){
+  document.documentElement.lang=_lang;
+  document.body.dir='ltr';
+  document.body.classList.toggle('lang-ar',_lang==='ar');
+  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
+  const t=_tr[_lang]||{};
   Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
+  
 }
-function toggleLang(){lang=lang==='en'?'ar':'en';localStorage.setItem('lang',lang);applyLang();}
-applyLang();
-</script>
-</body>
-</html>
+function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
+_applyLang();
+
+</script></body></html>
