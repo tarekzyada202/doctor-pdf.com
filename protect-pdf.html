@@ -201,6 +201,19 @@ function applyLang(){
 }
 function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);applyLang();}
 applyLang();
+
+// ═══ bfcache Navigation Fix ═══
+window.addEventListener("pageshow", function(e) {
+  if (e.persisted) { window.location.reload(); }
+});
+window.addEventListener("pagehide", function() {
+  try {
+    if (typeof pdfjsLib !== "undefined") {
+      var w = pdfjsLib.GlobalWorkerOptions._workerPort;
+      if (w) { w.terminate(); }
+    }
+  } catch(err) {}
+});
 </script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+# ✅ Direct routes for all tools — NO catch-all SPA redirect
+/merge-pdf          /merge-pdf.html          200
+/split-pdf          /split-pdf.html          200
+/compress-pdf       /compress-pdf.html       200
+/rotate-pdf         /rotate-pdf.html         200
+/sign-pdf           /sign-pdf.html           200
+/protect-pdf        /protect-pdf.html        200
+/watermark-pdf      /watermark-pdf.html      200
+/extract-text       /extract-text.html       200
+/ocr-pdf            /ocr-pdf.html            200
+/pdf-to-image       /pdf-to-image.html       200
+/image-to-pdf       /image-to-pdf.html       200
+/convert-image      /convert-image.html      200
+/remove-background  /remove-background.html  200

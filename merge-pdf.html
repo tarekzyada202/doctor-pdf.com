@@ -369,4 +369,17 @@ function _applyLang(){document.documentElement.lang=_lang;document.body.dir=_lan
 function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);_applyLang();}
 _applyLang();
 
+
+// ═══ bfcache Navigation Fix ═══
+window.addEventListener("pageshow", function(e) {
+  if (e.persisted) { window.location.reload(); }
+});
+window.addEventListener("pagehide", function() {
+  try {
+    if (typeof pdfjsLib !== "undefined") {
+      var w = pdfjsLib.GlobalWorkerOptions._workerPort;
+      if (w) { w.terminate(); }
+    }
+  } catch(err) {}
+});
 </script></body></html>
