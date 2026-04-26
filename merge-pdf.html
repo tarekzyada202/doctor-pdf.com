@@ -176,6 +176,7 @@ let pages=[];
 let files=[];  // {name, pdfLibBytes, pageCount}
 let dragSrcIdx=null;
 const THUMB_W=185;
+const FILE_COLORS=['#6366f1','#f59e0b','#10b981','#ef4444','#8b5cf6','#06b6d4','#f97316','#ec4899'];
 
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
 document.getElementById('fileInput').addEventListener('change',e=>addFiles(e.target.files));
@@ -218,33 +219,27 @@ async function addFiles(fileList){
 function renderGrid(){
   const grid=document.getElementById('mergeGrid');
   grid.innerHTML='';
-  let lastFileIdx=-1;
-  pages.forEach((pg,i)=>{
-    if(pg.fileIdx!==lastFileIdx){
-      lastFileIdx=pg.fileIdx;
-      const hdr=document.createElement('div');
-      hdr.className='file-section-hdr';
-      hdr.style.width='100%';
-      hdr.innerHTML=`<div class="file-section-badge">📄 ${pg.fileName}</div><div class="file-section-line"></div>`;
-      grid.appendChild(hdr);
-    }
-    grid.appendChild(makeThumbEl(i,pg));
-  });
+  pages.forEach((pg,i)=>grid.appendChild(makeThumbEl(i,pg)));
 }
 
 function makeThumbEl(i,pg){
+  const color=FILE_COLORS[pg.fileIdx%FILE_COLORS.length];
   const wrap=document.createElement('div');
   wrap.className='merge-wrap';
   wrap.dataset.idx=i;
   wrap.draggable=true;
-  // Clone canvas
+  // Clone canvas with colored border
   const cv=document.createElement('canvas');
   cv.width=pg.canvas.width;cv.height=pg.canvas.height;
   cv.getContext('2d').drawImage(pg.canvas,0,0);
+  cv.style.border=`3px solid ${color}`;
+  cv.style.borderRadius='6px';
+  cv.style.boxShadow=`0 2px 12px ${color}33`;
   wrap.appendChild(cv);
+  // Page info with color dot
   const info=document.createElement('div');
   info.className='page-info';
-  info.textContent='p.'+(pg.pageIdx+1)+' · '+pg.fileName.replace('.pdf','').substring(0,12);
+  info.innerHTML=`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${color};margin-right:4px;vertical-align:middle"></span>p.${pg.pageIdx+1} · ${pg.fileName.replace('.pdf','').substring(0,14)}`;
   wrap.appendChild(info);
   // Overlay
   const ov=document.createElement('div');
@@ -290,9 +285,10 @@ function renderPanelFiles(){
   const uniqueFiles=[...new Set(pages.map(p=>p.fileIdx))];
   uniqueFiles.forEach(fi=>{
     const f=files[fi];
+    const color=FILE_COLORS[fi%FILE_COLORS.length];
     const count=pages.filter(p=>p.fileIdx===fi).length;
     const item=document.createElement('div');item.className='panel-file-item';
-    item.innerHTML=`<span style="font-size:1.1em">📄</span><span class="pfi-name">${f.name}</span><span class="pfi-pages">${count}p</span><button class="pfi-remove" onclick="removeFile(${fi})">✕</button>`;
+    item.innerHTML=`<span style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0;display:inline-block"></span><span class="pfi-name">${f.name}</span><span class="pfi-pages">${count}p</span><button class="pfi-remove" onclick="removeFile(${fi})">✕</button>`;
     pfl.appendChild(item);
   });
 }
