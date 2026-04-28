@@ -408,7 +408,7 @@ function updateNavProgress(pct){
 function setProgress(pct,msg){
   document.getElementById('progressFill').style.width=pct+'%';
   document.getElementById('progressText').textContent=msg;
-  updateNavProgress(pct);
+  try{updateNavProgress(pct);}catch(e){}
 }
 
 function getBaseName(filename){
