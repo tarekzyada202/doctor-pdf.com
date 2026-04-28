@@ -132,6 +132,10 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
 .btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
 .btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
 
+
+.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
+.use-again-btn:hover{background:var(--primary);color:white}
+
 </style>
 </head>
 <body><nav class="navbar">
@@ -234,6 +238,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </button>
   <div class="result-box" id="result">
     <p class="result-title" id="resultTitle">✅ PDF created!</p>
+    <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Use Another File</button>
     <a class="download-btn-full" id="downloadBtn" download="images_img.pdf" href="#">📥 Download PDF</a>
   </div>
   </div>
@@ -302,12 +307,50 @@ window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('d
 
 let _dark=localStorage.getItem('dark')==='true';
 if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
+
+// ── Quick Tools Dropdown ──
+function toggleQT(){
+  const w=document.getElementById('qtWrap');
+  if(w)w.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const w=document.getElementById('qtWrap');
+  if(w&&!w.contains(e.target))w.classList.remove('open');
+});
+
+
+// ── Reset Tool ──
+function resetTool(){
+  uploadedFile=null;
+  // Reset upload zone
+  const fi=document.getElementById('fileInput');if(fi)fi.value='';
+  // Hide result
+  const res=document.getElementById('result');if(res)res.style.display='none';
+  // Hide progress
+  const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
+  const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
+  // Show placeholder
+  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
+  // Disable action button
+  const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
+  // Hide spinner
+  const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
+  // Tool-specific resets
+  if(typeof _toolReset==='function')_toolReset();
+
+  uploadedFiles=[];
+  const il=document.getElementById('imgListArea');if(il){il.style.display='none';il.innerHTML='';}
+
+}
+
 function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
 let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
 if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
 
 const _tr={"en":{"tool_title":"Image to PDF","tool_desc":"Convert images to PDF format easily","upload_title":"Click or drag images here","upload_sub":"JPG, PNG, WebP · Multiple allowed","actionLabel":"Convert to PDF","resultTitle":"✅ PDF created!","phText":"Upload images to convert to PDF.<br>You can add multiple images.","dropText":"Drop images here"},"ar":{"tool_title":"صورة إلى PDF","tool_desc":"حوّل الصور إلى ملف PDF بسهولة","upload_title":"اضغط أو اسحب الصور هنا","upload_sub":"JPG, PNG, WebP · متعدد","actionLabel":"تحويل إلى PDF","resultTitle":"✅ تم إنشاء PDF!","phText":"ارفع الصور لتحويلها إلى PDF.<br>يمكنك إضافة أكثر من صورة.","dropText":"أسقط الصور هنا"}};
 function _applyLang(){
+  const _ua=document.getElementById('useAgainBtn');
+  if(_ua)_ua.textContent=_lang==='ar'?'استخدام ملف آخر':'Use Another File';
   document.documentElement.lang=_lang;
   document.body.dir='ltr';
   document.body.classList.toggle('lang-ar',_lang==='ar');
