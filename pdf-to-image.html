@@ -401,6 +401,10 @@ function getSelectedPages(){
   return [...selectedPages].sort((a,b)=>a-b);
 }
 
+function updateNavProgress(pct){
+  const bar=document.getElementById('navProgress');
+  if(bar){bar.style.width=pct+'%';if(pct>=100)setTimeout(()=>bar.style.width='0%',800);}
+}
 function setProgress(pct,msg){
   document.getElementById('progressFill').style.width=pct+'%';
   document.getElementById('progressText').textContent=msg;
