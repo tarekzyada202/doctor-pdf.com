@@ -10,6 +10,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 
@@ -99,7 +100,21 @@ input[type=file]{display:none}
 .img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
 .img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
-/* RESPONSIVE */
+/* PAGE SELECTION */
+.page-sel-grid{display:flex;flex-wrap:wrap;gap:10px;padding:4px 0}
+.page-thumb-sel{position:relative;cursor:pointer;border-radius:8px;overflow:hidden;border:3px solid var(--border);transition:all .2s;flex-shrink:0}
+.page-thumb-sel:hover{border-color:var(--primary)}
+.page-thumb-sel.selected{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary)}
+.page-thumb-sel canvas{display:block;border-radius:5px}
+.page-thumb-sel .pg-num{position:absolute;bottom:0;left:0;right:0;background:rgba(15,23,42,.7);color:white;font-size:.65em;font-weight:700;text-align:center;padding:3px 0}
+.page-thumb-sel .pg-check{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:var(--primary);display:none;align-items:center;justify-content:center;color:white;font-size:.6em;font-weight:900}
+.page-thumb-sel.selected .pg-check{display:flex}
+.sel-mode-row{display:flex;gap:6px;margin-bottom:8px}
+.sel-mode-btn{flex:1;padding:6px 4px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-size:.72em;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.sel-mode-btn.active{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.07)}
+.range-input{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);font-family:inherit;transition:border .2s;margin-top:6px}
+.range-input:focus{outline:none;border-color:var(--primary)}
+.range-hint{font-size:.68em;color:var(--text-muted);margin-top:4px}
 @media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
 
 body.lang-ar{font-family:'Cairo',sans-serif;}
@@ -207,7 +222,23 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   <div class="content" id="contentArea">
     <div class="placeholder" id="placeholder">
       <span class="ph-icon">📷</span>
-      <p id="phText">Upload a PDF file.<br>Converted images will appear here.</p>
+      <p id="phText">Upload a PDF file.<br>Select pages and convert to images.</p>
+    </div>
+    <div id="thumbSelArea" style="display:none;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <p style="font-size:.82em;font-weight:700;color:var(--text-muted)" id="selLabel">Select pages to convert</p>
+        <div style="display:flex;gap:8px">
+          <button class="sel-mode-btn active" id="btnAll" onclick="setMode('all')" style="flex:none;padding:5px 12px" id="btnAllLabel">All Pages</button>
+          <button class="sel-mode-btn" id="btnPick" onclick="setMode('pick')" style="flex:none;padding:5px 12px" id="btnPickLabel">Pick Pages</button>
+          <button class="sel-mode-btn" id="btnRange" onclick="setMode('range')" style="flex:none;padding:5px 12px" id="btnRangeLabel">Range</button>
+        </div>
+      </div>
+      <div id="rangeBox" style="display:none;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px">
+        <label class="opt-label" id="rangeLabel">Page Range (e.g. 1-3, 5, 8-10)</label>
+        <input type="text" class="range-input" id="rangeInput" placeholder="e.g. 1-3, 5, 8-10">
+        <p class="range-hint" id="rangeHint">Use commas to separate pages or ranges</p>
+      </div>
+      <div class="page-sel-grid" id="pageSelGrid"></div>
     </div>
     <div id="imagesArea" style="display:none;flex-wrap:wrap;gap:16px;align-content:flex-start"></div>
   </div>
@@ -222,21 +253,22 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
     <span class="up-icon">📁</span>
     <p class="up-title" id="upload_title">Click or drag PDF here</p>
     <small class="up-sub" id="upload_sub">Any PDF file</small>
-    <input type="file" id="fileInput" accept=".pdf" >
+    <input type="file" id="fileInput" accept=".pdf">
   </div>
-    <div class="opts-section">
-      <label class="opt-label" id="fmtLabel">Output Format</label>
-      <select class="opt-select" id="imgFormat">
-        <option value="image/png" id="fmtPng">PNG (lossless)</option>
-        <option value="image/jpeg" id="fmtJpg">JPG (smaller size)</option>
-      </select>
-      <label class="opt-label" id="scaleLabel">Resolution</label>
-      <select class="opt-select" id="imgScale">
-        <option value="1" id="res72">Standard (72 DPI)</option>
-        <option value="2" selected id="res144">High (144 DPI)</option>
-        <option value="3" id="res216">Ultra (216 DPI)</option>
-      </select>
-    </div>
+  <div class="opts-section">
+    <label class="opt-label" id="fmtLabel">Output Format</label>
+    <select class="opt-select" id="imgFormat">
+      <option value="image/png" id="fmtPng">PNG (lossless)</option>
+      <option value="image/jpeg" id="fmtJpg">JPG (smaller size)</option>
+    </select>
+    <label class="opt-label" id="scaleLabel">Resolution</label>
+    <select class="opt-select" id="imgScale">
+      <option value="1" id="res72">Standard (72 DPI)</option>
+      <option value="2" selected id="res144">High (144 DPI)</option>
+      <option value="3" id="res216">Ultra (216 DPI)</option>
+    </select>
+  </div>
+  <div id="selSummary" style="display:none;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:8px 12px;font-size:.75em;font-weight:600;color:var(--primary)" id="selSummaryText"></div>
   <div class="spinner" id="spinner"></div>
   <div class="progress-wrap" id="progressWrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -247,65 +279,215 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </button>
   <div class="result-box" id="result">
     <p class="result-title" id="resultTitle">✅ PDF converted!</p>
-    <a class="download-btn-full" id="downloadBtn" download="pdf-images.zip" href="#">📥 Download Images (ZIP)</a>
+    <a class="download-btn-full" id="downloadBtn" href="#">📥 Download</a>
   </div>
   </div>
 </div>
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-let uploadedFile=null;
+let uploadedFile=null, pdfDoc=null, totalPages=0, selMode='all', selectedPages=new Set();
+const THUMB_PREVIEW_W=110;
+
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
 document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
 document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
 document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
 function handleGlobalDrop(files){const f=[...files].find(f=>f.type==='application/pdf');if(f)handleFile(f);}
-function handleFile(f){
+
+async function handleFile(f){
   if(!f||f.type!=='application/pdf')return;
   uploadedFile=f;
-  document.getElementById('actionBtn').disabled=false;
   document.getElementById('placeholder').style.display='none';
-  document.getElementById('imagesArea').style.display='flex';
+  document.getElementById('thumbSelArea').style.display='flex';
+  document.getElementById('actionBtn').disabled=false;
+  // Load PDF and render thumbnails
+  const bytes=await f.arrayBuffer();
+  pdfDoc=await pdfjsLib.getDocument({data:bytes}).promise;
+  totalPages=pdfDoc.numPages;
+  selectedPages=new Set([...Array(totalPages)].map((_,i)=>i+1));
+  await renderThumbnails();
+  updateSummary();
 }
-function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=msg;}
+
+async function renderThumbnails(){
+  const grid=document.getElementById('pageSelGrid');
+  grid.innerHTML='';
+  for(let i=1;i<=totalPages;i++){
+    const page=await pdfDoc.getPage(i);
+    const vp=page.getViewport({scale:1});
+    const scale=THUMB_PREVIEW_W/vp.width;
+    const vp2=page.getViewport({scale});
+    const cv=document.createElement('canvas');
+    cv.width=vp2.width;cv.height=vp2.height;
+    await page.render({canvasContext:cv.getContext('2d'),viewport:vp2}).promise;
+    const wrap=document.createElement('div');
+    wrap.className='page-thumb-sel selected';
+    wrap.dataset.page=i;
+    const check=document.createElement('div');check.className='pg-check';check.textContent='✓';
+    const num=document.createElement('div');num.className='pg-num';num.textContent='p.'+i;
+    wrap.appendChild(cv);wrap.appendChild(check);wrap.appendChild(num);
+    wrap.addEventListener('click',()=>{
+      if(selMode!=='pick')return;
+      if(selectedPages.has(i)){selectedPages.delete(i);wrap.classList.remove('selected');}
+      else{selectedPages.add(i);wrap.classList.add('selected');}
+      updateSummary();
+    });
+    grid.appendChild(wrap);
+  }
+}
+
+function setMode(mode){
+  selMode=mode;
+  ['all','pick','range'].forEach(m=>{
+    document.getElementById('btn'+m.charAt(0).toUpperCase()+m.slice(1)).classList.toggle('active',m===mode);
+  });
+  document.getElementById('rangeBox').style.display=mode==='range'?'block':'none';
+  // Update thumbnails clickability
+  document.querySelectorAll('.page-thumb-sel').forEach(el=>{
+    el.style.cursor=mode==='pick'?'pointer':'default';
+  });
+  if(mode==='all'){
+    selectedPages=new Set([...Array(totalPages)].map((_,i)=>i+1));
+    document.querySelectorAll('.page-thumb-sel').forEach(el=>el.classList.add('selected'));
+  }
+  updateSummary();
+}
+
+function parseRange(str){
+  const pages=new Set();
+  str.split(',').forEach(part=>{
+    part=part.trim();
+    if(part.includes('-')){
+      const [a,b]=part.split('-').map(Number);
+      for(let i=a;i<=b;i++)if(i>=1&&i<=totalPages)pages.add(i);
+    }else{
+      const n=parseInt(part);
+      if(n>=1&&n<=totalPages)pages.add(n);
+    }
+  });
+  return pages;
+}
+
+document.addEventListener('input',e=>{
+  if(e.target.id==='rangeInput'){
+    selectedPages=parseRange(e.target.value);
+    document.querySelectorAll('.page-thumb-sel').forEach(el=>{
+      const p=parseInt(el.dataset.page);
+      el.classList.toggle('selected',selectedPages.has(p));
+    });
+    updateSummary();
+  }
+});
+
+function updateSummary(){
+  const s=document.getElementById('selSummary');
+  const lang=typeof _lang!=='undefined'?_lang:'en';
+  if(!pdfDoc){s.style.display='none';return;}
+  const count=selMode==='all'?totalPages:selectedPages.size;
+  s.style.display='block';
+  s.textContent=lang==='ar'
+    ?`${count} صفحة من ${totalPages} سيتم تحويلها`
+    :`${count} of ${totalPages} pages selected`;
+}
+
+function getSelectedPages(){
+  if(selMode==='all')return [...Array(totalPages)].map((_,i)=>i+1);
+  if(selMode==='range')return [...parseRange(document.getElementById('rangeInput').value)].sort((a,b)=>a-b);
+  return [...selectedPages].sort((a,b)=>a-b);
+}
+
+function setProgress(pct,msg){
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent=msg;
+  updateNavProgress(pct);
+}
+
+function getBaseName(filename){
+  return filename.replace(/\.pdf$/i,'');
+}
+
 async function convertToImage(){
+  const pages=getSelectedPages();
+  if(!pages.length){alert('Please select at least one page!');return;}
   document.getElementById('spinner').style.display='block';
   document.getElementById('progressWrap').style.display='block';
   document.getElementById('actionBtn').disabled=true;
   document.getElementById('imagesArea').innerHTML='';
+  document.getElementById('thumbSelArea').style.display='none';
+  document.getElementById('imagesArea').style.display='flex';
+
+  const scale=parseFloat(document.getElementById('imgScale').value);
+  const format=document.getElementById('imgFormat').value;
+  const ext=format==='image/png'?'png':'jpg';
+  const baseName=getBaseName(uploadedFile.name);
+  const urls=[];
+
   try{
-    const bytes=await uploadedFile.arrayBuffer();
-    const pdfDoc=await pdfjsLib.getDocument({data:bytes}).promise;
-    const scale=parseFloat(document.getElementById('imgScale').value);
-    const format=document.getElementById('imgFormat').value;
-    const ext=format==='image/png'?'png':'jpg';
-    const urls=[];
-    for(let i=1;i<=pdfDoc.numPages;i++){
-      setProgress((i/pdfDoc.numPages)*90,`Rendering page ${i}/${pdfDoc.numPages}…`);
-      const page=await pdfDoc.getPage(i);
+    for(let idx=0;idx<pages.length;idx++){
+      const pageNum=pages[idx];
+      setProgress(10+(idx/pages.length)*85,`Rendering page ${pageNum}…`);
+      const page=await pdfDoc.getPage(pageNum);
       const vp=page.getViewport({scale});
       const cv=document.createElement('canvas');cv.width=vp.width;cv.height=vp.height;
       await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
-      const url=await new Promise(r=>cv.toBlob(b=>r(URL.createObjectURL(b)),format,0.92));
-      urls.push({url,ext,i});
-      // Show preview
+      const blob=await new Promise(r=>cv.toBlob(r,format,0.92));
+      const fname=pages.length===1?`${baseName}_img.${ext}`:`${baseName}_p${pageNum}_img.${ext}`;
+      const url=URL.createObjectURL(blob);
+      urls.push({url,fname,pageNum});
+
+      // Show preview card
       const wrap=document.createElement('div');
-      wrap.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center';
+      wrap.style.cssText='display:flex;flex-direction:column;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px';
       const img=document.createElement('img');
-      img.src=url;img.style.cssText='max-width:200px;border-radius:8px;border:2px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.1)';
-      const lbl=document.createElement('p');lbl.style.cssText='font-size:.72em;color:var(--text-muted);font-weight:600';lbl.textContent=`Page ${i}`;
-      const dl=document.createElement('a');dl.href=url;dl.download=`page-${i}.${ext}`;dl.style.cssText='font-size:.72em;color:var(--primary);font-weight:700;text-decoration:none';dl.textContent='↓ Download';
+      img.src=url;img.style.cssText='max-width:180px;border-radius:6px;border:2px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.1)';
+      const lbl=document.createElement('p');lbl.style.cssText='font-size:.7em;color:var(--text-muted);font-weight:600;text-align:center';lbl.textContent=`Page ${pageNum}`;
+      const dl=document.createElement('a');
+      dl.href=url;dl.download=fname;
+      dl.style.cssText='font-size:.72em;color:white;background:var(--primary);font-weight:700;text-decoration:none;padding:5px 14px;border-radius:100px';
+      dl.textContent='↓ Download';
       wrap.appendChild(img);wrap.appendChild(lbl);wrap.appendChild(dl);
       document.getElementById('imagesArea').appendChild(wrap);
     }
+
     setProgress(100,'Done!');
-    document.getElementById('result').style.display='block';
-    // Download first page directly
-    if(urls.length>0){const a=document.createElement('a');a.href=urls[0].url;a.download=`page-1.${urls[0].ext}`;document.body.appendChild(a);a.click();document.body.removeChild(a);}
-    if(typeof gtag!=='undefined')gtag('event','pdf_to_image',{event_category:'PDF Tools'});
+
+    // Download: single file or ZIP
+    if(urls.length===1){
+      const btn=document.getElementById('downloadBtn');
+      btn.href=urls[0].url;btn.download=urls[0].fname;
+      btn.textContent=`📥 ${urls[0].fname}`;
+      document.getElementById('result').style.display='block';
+      setTimeout(()=>{const a=document.createElement('a');a.href=urls[0].url;a.download=urls[0].fname;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    } else {
+      // Build ZIP using JSZip if available, else download all individually
+      if(typeof JSZip!=='undefined'){
+        const zip=new JSZip();
+        for(const{url,fname}of urls){
+          const res=await fetch(url);const buf=await res.arrayBuffer();
+          zip.file(fname,buf);
+        }
+        const zipBlob=await zip.generateAsync({type:'blob'});
+        const zipUrl=URL.createObjectURL(zipBlob);
+        const zipName=`${baseName}_img.zip`;
+        const btn=document.getElementById('downloadBtn');
+        btn.href=zipUrl;btn.download=zipName;btn.textContent=`📥 ${zipName}`;
+        document.getElementById('result').style.display='block';
+        setTimeout(()=>{const a=document.createElement('a');a.href=zipUrl;a.download=zipName;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+      } else {
+        // No JSZip — download each file
+        const zipName=`${baseName}_img.zip`;
+        const btn=document.getElementById('downloadBtn');
+        btn.textContent=`📥 ${zipName}`;btn.href='#';
+        btn.onclick=async()=>{for(const{url,fname}of urls){const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);await new Promise(r=>setTimeout(r,300));}};
+        document.getElementById('result').style.display='block';
+      }
+    }
+
+    if(typeof gtag!=='undefined')gtag('event','pdf_to_image',{event_category:'PDF Tools',value:pages.length});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';
   document.getElementById('actionBtn').disabled=false;
-  setTimeout(()=>document.getElementById('progressWrap').style.display='none',600);
+  setTimeout(()=>document.getElementById('progressWrap').style.display='none',800);
 }
 
 window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
@@ -319,7 +501,7 @@ function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);
 let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
 if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
 
-const _tr={"en":{"tool_title":"PDF to Image","tool_desc":"Convert PDF pages to PNG or JPG","upload_title":"Click or drag PDF here","upload_sub":"Any PDF file","actionLabel":"Convert to Images","resultTitle":"✅ PDF converted!","phText":"Upload a PDF file.<br>Converted images will appear here.","fmtLabel":"Output Format","fmtPng":"PNG (lossless)","fmtJpg":"JPG (smaller size)","scaleLabel":"Resolution","res72":"Standard (72 DPI)","res144":"High (144 DPI)","res216":"Ultra (216 DPI)","dropText":"Drop PDF file here"},"ar":{"tool_title":"PDF إلى صورة","tool_desc":"حوّل صفحات PDF إلى PNG أو JPG","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي ملف PDF","actionLabel":"تحويل إلى صور","resultTitle":"✅ تم التحويل!","phText":"ارفع ملف PDF.<br>الصور المحوّلة ستظهر هنا.","fmtLabel":"صيغة الإخراج","fmtPng":"PNG (بدون فقدان)","fmtJpg":"JPG (حجم أصغر)","scaleLabel":"الدقة","res72":"عادية (72 DPI)","res144":"عالية (144 DPI)","res216":"فائقة (216 DPI)","dropText":"أسقط ملف PDF هنا"}};
+const _tr={"en":{"tool_title":"PDF to Image","tool_desc":"Convert PDF pages to PNG or JPG","upload_title":"Click or drag PDF here","upload_sub":"Any PDF file","actionLabel":"Convert to Images","resultTitle":"✅ PDF converted!","phText":"Upload a PDF file.<br>Select pages and convert to images.","fmtLabel":"Output Format","fmtPng":"PNG (lossless)","fmtJpg":"JPG (smaller size)","scaleLabel":"Resolution","res72":"Standard (72 DPI)","res144":"High (144 DPI)","res216":"Ultra (216 DPI)","dropText":"Drop PDF file here","selLabel":"Select pages to convert","btnAllLabel":"All Pages","btnPickLabel":"Pick Pages","btnRangeLabel":"Range","rangeLabel":"Page Range (e.g. 1-3, 5, 8-10)","rangeHint":"Use commas to separate pages or ranges"},"ar":{"tool_title":"PDF إلى صورة","tool_desc":"حوّل صفحات PDF إلى PNG أو JPG","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي ملف PDF","actionLabel":"تحويل إلى صور","resultTitle":"✅ تم التحويل!","phText":"ارفع ملف PDF.<br>اختر الصفحات وحوّلها إلى صور.","fmtLabel":"صيغة الإخراج","fmtPng":"PNG (بدون فقدان)","fmtJpg":"JPG (حجم أصغر)","scaleLabel":"الدقة","res72":"عادية (72 DPI)","res144":"عالية (144 DPI)","res216":"فائقة (216 DPI)","dropText":"أسقط ملف PDF هنا","selLabel":"اختر الصفحات للتحويل","btnAllLabel":"كل الصفحات","btnPickLabel":"اختر يدوياً","btnRangeLabel":"نطاق","rangeLabel":"نطاق الصفحات (مثال: 1-3, 5, 8-10)","rangeHint":"استخدم الفاصلة للفصل بين الصفحات أو النطاقات"}};
 function _applyLang(){
   document.documentElement.lang=_lang;
   document.body.dir='ltr';

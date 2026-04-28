@@ -234,7 +234,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </button>
   <div class="result-box" id="result">
     <p class="result-title" id="resultTitle">✅ PDF created!</p>
-    <a class="download-btn-full" id="downloadBtn" download="images.pdf" href="#">📥 Download PDF</a>
+    <a class="download-btn-full" id="downloadBtn" download="images_img.pdf" href="#">📥 Download PDF</a>
   </div>
   </div>
 </div>
@@ -287,7 +287,7 @@ async function convertToPDF(){
     document.getElementById('downloadBtn').href=url;
     document.getElementById('result').style.display='block';
     setProgress(100,'Done!');
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='images.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(uploadedFiles[0]?_baseName(uploadedFiles[0].name):'images')+'_img.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','image_to_pdf',{event_category:'PDF Tools'});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';

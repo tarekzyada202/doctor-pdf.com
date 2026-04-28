@@ -252,6 +252,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 let uploadedFile=null,processedBlob=null;
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
 document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
@@ -284,7 +285,7 @@ async function protectPDF(){
     const url=URL.createObjectURL(processedBlob);
     document.getElementById('downloadBtn').href=url;
     document.getElementById('result').style.display='block';
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='protected.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_protected.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_protected',{event_category:'PDF Tools'});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';

@@ -240,11 +240,12 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </button>
   <div class="result-box" id="result">
     <p class="result-title" id="resultTitle">✅ Text extracted!</p>
-    <a class="download-btn-full" id="downloadBtn" download="extracted-text.txt" href="#">📥 Download Text File</a>
+    <a class="download-btn-full" id="downloadBtn" download="extracted_text.txt" href="#">📥 Download Text File</a>
   </div>
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 let uploadedFile=null;
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
@@ -287,7 +288,7 @@ async function extractText(){
     const url=URL.createObjectURL(blob);
     document.getElementById('downloadBtn').href=url;
     document.getElementById('result').style.display='block';
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='extracted-text.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'extracted')+'_text.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','text_extracted',{event_category:'PDF Tools'});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';

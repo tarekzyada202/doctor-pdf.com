@@ -250,11 +250,12 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </button>
   <div class="result-box" id="result">
     <p class="result-title" id="resultTitle">✅ Background removed!</p>
-    <a class="download-btn-full" id="downloadBtn" download="no-background.png" href="#">📥 Download PNG</a>
+    <a class="download-btn-full" id="downloadBtn" download="image_no_bg.png" href="#">📥 Download PNG</a>
   </div>
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 let uploadedFile=null,imgElement=null;
 document.getElementById('threshold').addEventListener('input',e=>document.getElementById('threshVal').textContent=e.target.value);
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
@@ -305,9 +306,9 @@ async function removeBackground(){
     rCtx.putImageData(newData,0,0);
     result.toBlob(blob=>{
       const url=URL.createObjectURL(blob);
-      document.getElementById('downloadBtn').href=url;document.getElementById('downloadBtn').download='no-background.png';
+      document.getElementById('downloadBtn').href=url;document.getElementById('downloadBtn').download=(_baseName(uploadedFile&&uploadedFile.name)||'image')+'_no_bg.png';
       document.getElementById('result').style.display='block';
-      setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='no-background.png';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+      setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'image')+'_no_bg.png';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     },'image/png');
     if(typeof gtag!=='undefined')gtag('event','bg_removed',{event_category:'Image Tools'});
   }catch(e){alert('Error: '+e.message);}

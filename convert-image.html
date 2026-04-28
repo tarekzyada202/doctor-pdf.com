@@ -252,6 +252,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 let uploadedFile=null,selectedFmt='png';
 const fmtMime={png:'image/png',jpg:'image/jpeg',webp:'image/webp',bmp:'image/bmp',gif:'image/gif'};
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
@@ -287,11 +288,11 @@ async function convertImage(){
         cv.toBlob(blob=>{
           const url=URL.createObjectURL(blob);
           const btn=document.getElementById('downloadBtn');
-          btn.href=url;btn.download=`converted.${selectedFmt}`;
+          btn.href=url;btn.download=`${_baseName(uploadedFile&&uploadedFile.name)}_converted.${selectedFmt}`;
           document.getElementById('result').style.display='block';
           document.getElementById('spinner').style.display='none';
           document.getElementById('actionBtn').disabled=false;
-          setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=`converted.${selectedFmt}`;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+          setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=`${_baseName(uploadedFile&&uploadedFile.name)}_converted.${selectedFmt}`;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
           if(typeof gtag!=='undefined')gtag('event','image_converted',{event_category:'Image Tools'});
         },mime,0.92);
       };

@@ -287,7 +287,8 @@ async function loadPDF(f){
   setProgress(5,'Loading…');showProgress(true);
   document.getElementById('spinner').style.display='block';
   try{
-    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     pdfLibBytes=await f.arrayBuffer();
     pdfJsDoc=await pdfjsLib.getDocument({data:pdfLibBytes.slice(0)}).promise;
     pageCount=pdfJsDoc.numPages;

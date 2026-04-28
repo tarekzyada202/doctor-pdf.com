@@ -256,6 +256,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 let uploadedFile=null,processedBlob=null,isDrawing=false,lastX=0,lastY=0;
 const canvas=document.getElementById('signCanvas');
 const ctx=canvas.getContext('2d');
@@ -306,7 +307,7 @@ async function signPDF(){
     document.getElementById('downloadBtn').href=url;
     document.getElementById('result').style.display='block';
     setProgress(100,'Done!');
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='signed.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_signed.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_signed',{event_category:'PDF Tools'});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';

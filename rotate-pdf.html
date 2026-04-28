@@ -250,6 +250,7 @@ body.lang-ar{font-family:'Cairo',sans-serif;}
   </div>
 </div>
 <script>
+function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 let uploadedFile=null;
 document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
@@ -292,7 +293,7 @@ async function rotatePDF(){
     document.getElementById('downloadBtn').href=url;
     document.getElementById('result').style.display='block';
     setProgress(100,'Done!');
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download='rotated.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_rotated.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_rotated',{event_category:'PDF Tools'});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';
