@@ -19,11 +19,12 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--primary:#6366f1;--secondary:#8b5cf6;--accent:#06b6d4;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
 .dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8;--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2)}
 *{margin:0;padding:0;box-sizing:border-box}
+body.lang-ar{font-family:'Cairo',sans-serif;}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
 /* NAVBAR */
 .navbar{position:sticky;top:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
@@ -35,11 +36,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary);transform:scale(1.05)}
 
 /* ── HERO (compact) ── */
-.hero{padding:28px 32px 20px;text-align:center;position:relative;overflow:hidden}
+.hero{padding:18px 32px 14px;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.2);color:var(--primary);padding:4px 14px;border-radius:100px;font-size:.78em;font-weight:600;margin-bottom:12px}
-.hero h1{font-size:clamp(1.5em,3.5vw,2.4em);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:10px;background:linear-gradient(135deg,var(--text) 0%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:.9em;color:var(--text-muted);max-width:480px;margin:0 auto 14px;line-height:1.6}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.2);color:var(--primary);padding:3px 12px;border-radius:100px;font-size:.74em;font-weight:600;margin-bottom:8px}
+.hero h1{font-size:clamp(1.2em,2.6vw,1.85em);font-weight:900;line-height:1.15;letter-spacing:-1px;margin-bottom:7px;white-space:nowrap;background:linear-gradient(135deg,var(--text) 0%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:.82em;color:var(--text-muted);max-width:420px;margin:0 auto 10px;line-height:1.55}
 .trust-bar{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
 .trust-item{display:flex;align-items:center;gap:6px;font-size:.78em;font-weight:500;color:var(--text-muted)}
 .trust-item .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
@@ -54,9 +55,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,.06),transparent);opacity:0;transition:opacity .3s}
 .tool-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(99,102,241,.4)}
 .tool-card:hover::before{opacity:1}
-.tool-emoji{font-size:1.8em;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1));transition:transform .3s}
-.tool-card:hover .tool-emoji{transform:scale(1.15) rotate(-5deg)}
-.tool-card h3{font-size:.82em;font-weight:700;color:var(--text);line-height:1.2}
+.tool-icon{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s;box-shadow:0 4px 12px rgba(99,102,241,.25)}
+.tool-icon svg{width:20px;height:20px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tool-card:hover .tool-icon{transform:scale(1.1);box-shadow:0 6px 18px rgba(99,102,241,.4)}
+.tool-card h3{font-size:1em;font-weight:700;color:var(--text);line-height:1.2}
 .tool-card p{font-size:.72em;color:var(--text-muted);line-height:1.4;flex:1}
 .tool-arrow{font-size:.72em;color:var(--primary);font-weight:700;opacity:0;transform:translateX(-6px);transition:all .25s}
 .tool-card:hover .tool-arrow{opacity:1;transform:translateX(0)}
@@ -86,13 +88,13 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;co
   <a href="/" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
   <div class="nav-actions">
     <button class="btn-icon" onclick="toggleDark()" id="themeBtn" title="Dark mode">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Language">🌐</button>
+    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Language" style="font-size:.75em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-badge">✨ 100% Free · No signup required</div>
-  <h1 id="heroTitle">All your PDF tools.<br>Right in your browser.</h1>
+  <h1 id="heroTitle">All your PDF tools. Right in your browser.</h1>
   <p id="heroDesc">Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.</p>
   <div class="trust-bar">
     <div class="trust-item"><span class="dot"></span><span id="t1">No file uploads</span></div>
@@ -105,18 +107,18 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;co
 <section class="tools-section">
   <div class="section-label" id="toolsLabel">All Tools</div>
   <div class="tools-grid">
-    <a href="merge-pdf.html" class="tool-card"><div class="tool-emoji">📑</div><h3 id="c1">Merge PDF</h3><p id="c1d">Combine multiple PDFs into one</p><span class="tool-arrow">→</span></a>
-    <a href="split-pdf.html" class="tool-card"><div class="tool-emoji">✂️</div><h3 id="c2">Split PDF</h3><p id="c2d">Extract pages visually</p><span class="tool-arrow">→</span></a>
-    <a href="compress-pdf.html" class="tool-card"><div class="tool-emoji">🗜️</div><h3 id="c3">Compress PDF</h3><p id="c3d">Reduce file size without quality loss</p><span class="tool-arrow">→</span></a>
-    <a href="rotate-pdf.html" class="tool-card"><div class="tool-emoji">🔄</div><h3 id="c4">Rotate PDF</h3><p id="c4d">Turn pages 90°, 180°, 270°</p><span class="tool-arrow">→</span></a>
-    <a href="sign-pdf.html" class="tool-card"><div class="tool-emoji">✍️</div><h3 id="c5">Sign PDF</h3><p id="c5d">Draw & add digital signature</p><span class="tool-arrow">→</span></a>
-    <a href="protect-pdf.html" class="tool-card"><div class="tool-emoji">🔐</div><h3 id="c6">Protect PDF</h3><p id="c6d">Add password to your PDF</p><span class="tool-arrow">→</span></a>
-    <a href="watermark-pdf.html" class="tool-card"><div class="tool-emoji">💧</div><h3 id="c7">Watermark</h3><p id="c7d">Add text watermark to pages</p><span class="tool-arrow">→</span></a>
-    <a href="image-to-pdf.html" class="tool-card"><div class="tool-emoji">🖼️</div><h3 id="c8">Image → PDF</h3><p id="c8d">Convert images to PDF</p><span class="tool-arrow">→</span></a>
-    <a href="pdf-to-image.html" class="tool-card"><div class="tool-emoji">📷</div><h3 id="c9">PDF → Image</h3><p id="c9d">Export PDF pages as PNG/JPG</p><span class="tool-arrow">→</span></a>
-    <a href="extract-text.html" class="tool-card"><div class="tool-emoji">📝</div><h3 id="c10">Extract Text</h3><p id="c10d">Copy text from any PDF</p><span class="tool-arrow">→</span></a>
-    <a href="convert-image.html" class="tool-card"><div class="tool-emoji">🔃</div><h3 id="c11">Convert Image</h3><p id="c11d">PNG · JPG · WebP · BMP · GIF</p><span class="tool-arrow">→</span></a>
-    <a href="remove-background.html" class="tool-card"><div class="tool-emoji">🎨</div><h3 id="c12">Remove BG</h3><p id="c12d">AI background removal</p><span class="tool-arrow">→</span></a>
+    <a href="merge-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><h3 id="c1">Merge PDF</h3><p id="c1d">Combine multiple PDFs into one</p><span class="tool-arrow">→</span></a>
+    <a href="split-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div><h3 id="c2">Split PDF</h3><p id="c2d">Extract pages visually</p><span class="tool-arrow">→</span></a>
+    <a href="compress-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><h3 id="c3">Compress PDF</h3><p id="c3d">Reduce file size without quality loss</p><span class="tool-arrow">→</span></a>
+    <a href="rotate-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><h3 id="c4">Rotate PDF</h3><p id="c4d">Turn pages 90°, 180°, 270°</p><span class="tool-arrow">→</span></a>
+    <a href="sign-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><h3 id="c5">Sign PDF</h3><p id="c5d">Draw & add digital signature</p><span class="tool-arrow">→</span></a>
+    <a href="protect-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3 id="c6">Protect PDF</h3><p id="c6d">Add password to your PDF</p><span class="tool-arrow">→</span></a>
+    <a href="watermark-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div><h3 id="c7">Watermark</h3><p id="c7d">Add text watermark to pages</p><span class="tool-arrow">→</span></a>
+    <a href="image-to-pdf.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><h3 id="c8">Image → PDF</h3><p id="c8d">Convert images to PDF</p><span class="tool-arrow">→</span></a>
+    <a href="pdf-to-image.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div><h3 id="c9">PDF → Image</h3><p id="c9d">Export PDF pages as PNG/JPG</p><span class="tool-arrow">→</span></a>
+    <a href="extract-text.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div><h3 id="c10">Extract Text</h3><p id="c10d">Copy text from any PDF</p><span class="tool-arrow">→</span></a>
+    <a href="convert-image.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></div><h3 id="c11">Convert Image</h3><p id="c11d">PNG · JPG · WebP · BMP · GIF</p><span class="tool-arrow">→</span></a>
+    <a href="remove-background.html" class="tool-card"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h3 id="c12">Remove BG</h3><p id="c12d">AI background removal</p><span class="tool-arrow">→</span></a>
   </div>
 </section>
 
@@ -133,14 +135,17 @@ let dark=localStorage.getItem('dark')==='true';
 if(dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
 function toggleDark(){dark=!dark;document.body.classList.toggle('dark',dark);document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';localStorage.setItem('dark',dark);}
 
-let lang=localStorage.getItem('lang')||'en';
+let lang;if(!localStorage.getItem('lang')){lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{lang=localStorage.getItem('lang');}
 const tr={
-  en:{heroTitle:'All your PDF tools.<br>Right in your browser.',heroDesc:'Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.',toolsLabel:'All Tools',t1:'No file uploads',t2:'Works offline',t3:'No registration',t4:'Completely free',c1:'Merge PDF',c1d:'Combine multiple PDFs into one',c2:'Split PDF',c2d:'Extract pages visually',c3:'Compress PDF',c3d:'Reduce file size without quality loss',c4:'Rotate PDF',c4d:'Turn pages 90°, 180°, 270°',c5:'Sign PDF',c5d:'Draw & add digital signature',c6:'Protect PDF',c6d:'Add password to your PDF',c7:'Watermark',c7d:'Add text watermark to pages',c8:'Image → PDF',c8d:'Convert images to PDF',c9:'PDF → Image',c9d:'Export PDF pages as PNG/JPG',c10:'Extract Text',c10d:'Copy text from any PDF',c11:'Convert Image',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'Remove BG',c12d:'AI background removal',w1:'100% Private',w1d:'All processing in your browser. Files never uploaded to any server.',w2:'Lightning Fast',w2d:'No server waiting. Everything runs instantly on your machine.',w3:'Always Free',w3d:'No subscriptions, no limits, no hidden fees. Forever free.'},
+  en:{heroTitle:'All your PDF tools. Right in your browser.',heroDesc:'Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.',toolsLabel:'All Tools',t1:'No file uploads',t2:'Works offline',t3:'No registration',t4:'Completely free',c1:'Merge PDF',c1d:'Combine multiple PDFs into one',c2:'Split PDF',c2d:'Extract pages visually',c3:'Compress PDF',c3d:'Reduce file size without quality loss',c4:'Rotate PDF',c4d:'Turn pages 90°, 180°, 270°',c5:'Sign PDF',c5d:'Draw & add digital signature',c6:'Protect PDF',c6d:'Add password to your PDF',c7:'Watermark',c7d:'Add text watermark to pages',c8:'Image → PDF',c8d:'Convert images to PDF',c9:'PDF → Image',c9d:'Export PDF pages as PNG/JPG',c10:'Extract Text',c10d:'Copy text from any PDF',c11:'Convert Image',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'Remove BG',c12d:'AI background removal',w1:'100% Private',w1d:'All processing in your browser. Files never uploaded to any server.',w2:'Lightning Fast',w2d:'No server waiting. Everything runs instantly on your machine.',w3:'Always Free',w3d:'No subscriptions, no limits, no hidden fees. Forever free.'},
   ar:{heroTitle:'كل أدوات PDF في مكان واحد.',heroDesc:'ادمج وقسّم واضغط ووقّع وحوّل ملفات PDF — مجاناً وفورياً. ملفاتك لا تغادر جهازك.',toolsLabel:'جميع الأدوات',t1:'بدون رفع ملفات',t2:'يعمل بدون إنترنت',t3:'بدون تسجيل',t4:'مجاني تماماً',c1:'دمج PDF',c1d:'ادمج عدة ملفات PDF في واحد',c2:'تقسيم PDF',c2d:'استخرج الصفحات بشكل مرئي',c3:'ضغط PDF',c3d:'قلّل الحجم بدون فقدان الجودة',c4:'تدوير PDF',c4d:'دوّر الصفحات 90° أو 180°',c5:'توقيع PDF',c5d:'ارسم وأضف توقيعك',c6:'حماية PDF',c6d:'أضف كلمة مرور للملف',c7:'علامة مائية',c7d:'أضف نصاً مائياً للصفحات',c8:'صورة ← PDF',c8d:'حوّل الصور إلى PDF',c9:'PDF ← صورة',c9d:'صدّر صفحات PDF كـ PNG/JPG',c10:'استخراج نص',c10d:'انسخ النص من أي PDF',c11:'تحويل صور',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'إزالة الخلفية',c12d:'إزالة الخلفية بالذكاء الاصطناعي',w1:'خصوصية تامة',w1d:'كل المعالجة في متصفحك. لا ترفع ملفاتك لأي خادم.',w2:'سرعة فائقة',w2d:'بدون انتظار. كل شيء يعمل فورياً على جهازك.',w3:'مجاني دائماً',w3d:'بدون اشتراكات أو رسوم خفية. مجاني للأبد.'}
 };
 function applyLang(){
+  document.body.dir='ltr';
+  document.body.classList.toggle('lang-ar',lang==='ar');
+  document.getElementById('langBtn').textContent=lang==='ar'?'EN':'عربي';
   document.documentElement.lang=lang;
-  document.body.dir=lang==='ar'?'rtl':'ltr';
+  
   const t=tr[lang];
   Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
 }
