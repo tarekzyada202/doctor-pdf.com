@@ -448,26 +448,25 @@ document.addEventListener('click',function(e){
 
 // ── Reset Tool ──
 function resetTool(){
-  let uploadedFile=null; // safe fallback
-  // Reset upload zone
+  // Reset files and pages
+  files=[];pages=[];
+  // Reset file input
   const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
+  // Hide result (merge uses resultBox not result)
+  const res=document.getElementById('resultBox');if(res)res.style.display='none';
   // Hide progress
   const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
   const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
-  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
   // Disable action button
   const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
   // Hide spinner
   const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
-
-  files=[];pages=[];
-  const mg=document.getElementById('mergeGrid');if(mg)mg.innerHTML='';
+  // Clear grid and file list
+  const mg=document.getElementById('mergeGrid');if(mg){mg.innerHTML='';mg.style.display='none';}
   const pfl=document.getElementById('panelFileList');if(pfl)pfl.innerHTML='';
+  // Show placeholder
+  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
+}
   const ep=document.getElementById('emptyPlaceholder');if(ep)ep.style.display='flex';
 
 }

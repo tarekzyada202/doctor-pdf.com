@@ -501,22 +501,16 @@ document.addEventListener('click',function(e){
 
 // ── Reset Tool ──
 function resetTool(){
-  uploadedFile=null;
-  // Reset upload zone
+  uploadedFile=null;pdfJsDoc=null;pdfLibBytes=null;
   const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
-  // Hide progress
+  const res=document.getElementById('resultBox');if(res)res.style.display='none';
   const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
   const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
   const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
-  // Disable action button
   const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
-  // Hide spinner
   const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
+  const pg=document.getElementById('pagesGrid');if(pg)pg.innerHTML='';
+  const pa=document.getElementById('previewArea');if(pa)pa.style.display='none';
 }
 
 function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
