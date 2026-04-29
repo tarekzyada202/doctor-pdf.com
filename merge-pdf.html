@@ -400,10 +400,10 @@ async function doMerge(){
     const blob=new Blob([out],{type:'application/pdf'});
     const url=URL.createObjectURL(blob);
     const btn=document.getElementById('downloadBtn');
-    btn.href=url;btn.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_merged.pdf';
+    btn.href=url;btn.download=(files[0]?_baseName(files[0].name):'merged')+'_merged.pdf';
     document.getElementById('resultBox').style.display='block';
     setProgress(100,'Done!');
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_merged.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(files[0]?_baseName(files[0].name):'merged')+'_merged.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
     if(typeof gtag!=='undefined')gtag('event','pdf_merged',{event_category:'PDF Tools',value:pages.length});
   }catch(e){alert('Error: '+e.message);}
   document.getElementById('spinner').style.display='none';
@@ -448,7 +448,7 @@ document.addEventListener('click',function(e){
 
 // ── Reset Tool ──
 function resetTool(){
-  uploadedFile=null;
+  let uploadedFile=null; // safe fallback
   // Reset upload zone
   const fi=document.getElementById('fileInput');if(fi)fi.value='';
   // Hide result
