@@ -314,67 +314,68 @@ async function addFiles(fileList){
   setTimeout(()=>showProgress(false),500);
 }
 
+// ── Global drag state (initialized once) ──
+let _dragEl=null,_ghost=null,_srcIdx=-1,_startX=0,_startY=0,_dragGrid=null;
+
+document.addEventListener('mousemove',e=>{
+  if(!_ghost||!_dragEl)return;
+  const dx=e.clientX-_startX,dy=e.clientY-_startY;
+  const rect=_dragEl.getBoundingClientRect();
+  _ghost.style.left=(rect.left+dx)+'px';
+  _ghost.style.top=(rect.top+dy)+'px';
+  _ghost.style.display='none';
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  _ghost.style.display='';
+  const target=el&&el.closest('.merge-wrap');
+  if(_dragGrid)_dragGrid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
+  if(target&&target!==_dragEl)target.classList.add('drag-over');
+});
+
+document.addEventListener('mouseup',e=>{
+  if(!_ghost)return;
+  _ghost.remove();_ghost=null;
+  if(_dragEl)_dragEl.style.opacity='';
+  document.body.style.cursor='';
+  document.body.style.userSelect='';
+  if(_dragGrid)_dragGrid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const target=el&&el.closest('.merge-wrap');
+  if(target&&target!==_dragEl&&_srcIdx>=0){
+    const toIdx=parseInt(target.dataset.idx);
+    if(!isNaN(toIdx)&&_srcIdx!==toIdx){
+      const moved=pages.splice(_srcIdx,1)[0];
+      const newTo=_srcIdx<toIdx?toIdx-1:toIdx;
+      pages.splice(newTo,0,moved);
+      _dragEl=null;_srcIdx=-1;
+      renderGrid();
+      return;
+    }
+  }
+  _dragEl=null;_srcIdx=-1;
+});
+
 function renderGrid(){
   const grid=document.getElementById('mergeGrid');
   grid.innerHTML='';
+  _dragGrid=grid;
   pages.forEach((pg,i)=>grid.appendChild(makeThumbEl(i,pg)));
-  initMouseDrag(grid);
-}
 
-function initMouseDrag(grid){
-  let dragEl=null,ghost=null,srcIdx=-1,startX=0,startY=0;
-
-  grid.addEventListener('mousedown',e=>{
+  // mousedown on grid (delegated)
+  grid.onmousedown=e=>{
     const wrap=e.target.closest('.merge-wrap');
     if(!wrap||e.target.closest('.ov-btn'))return;
     e.preventDefault();
-    srcIdx=parseInt(wrap.dataset.idx);
-    dragEl=wrap;
-    startX=e.clientX;startY=e.clientY;
-
+    _srcIdx=parseInt(wrap.dataset.idx);
+    _dragEl=wrap;
+    _startX=e.clientX;_startY=e.clientY;
     const rect=wrap.getBoundingClientRect();
-    ghost=wrap.cloneNode(true);
-    ghost.style.cssText='position:fixed;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;opacity:.75;pointer-events:none;z-index:9999;transform:scale(1.05);transition:none;box-shadow:0 8px 24px rgba(0,0,0,.3);border-radius:8px;';
-    document.body.appendChild(ghost);
-    wrap.style.opacity='.25';
+    _ghost=wrap.cloneNode(true);
+    _ghost.style.cssText='position:fixed;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;opacity:.8;pointer-events:none;z-index:9999;transform:scale(1.06) rotate(1deg);transition:none;box-shadow:0 12px 32px rgba(0,0,0,.35);border-radius:8px;';
+    document.body.appendChild(_ghost);
+    wrap.style.opacity='.2';
     document.body.style.userSelect='none';
     document.body.style.cursor='grabbing';
-  });
-
-  document.addEventListener('mousemove',e=>{
-    if(!ghost)return;
-    const dx=e.clientX-startX,dy=e.clientY-startY;
-    const rect=dragEl.getBoundingClientRect();
-    ghost.style.left=(rect.left+dx)+'px';
-    ghost.style.top=(rect.top+dy)+'px';
-    ghost.style.display='none';
-    const el=document.elementFromPoint(e.clientX,e.clientY);
-    ghost.style.display='';
-    const target=el&&el.closest('.merge-wrap');
-    grid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
-    if(target&&target!==dragEl)target.classList.add('drag-over');
-  });
-
-  document.addEventListener('mouseup',e=>{
-    if(!ghost)return;
-    ghost.remove();ghost=null;
-    if(dragEl)dragEl.style.opacity='';
-    document.body.style.cursor='';
-    document.body.style.userSelect='';
-    const el=document.elementFromPoint(e.clientX,e.clientY);
-    const target=el&&el.closest('.merge-wrap');
-    grid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
-    if(target&&target!==dragEl){
-      const toIdx=parseInt(target.dataset.idx);
-      if(!isNaN(srcIdx)&&!isNaN(toIdx)&&srcIdx!==toIdx){
-        const moved=pages.splice(srcIdx,1)[0];
-        const newTo=srcIdx<toIdx?toIdx-1:toIdx;
-        pages.splice(newTo,0,moved);
-        renderGrid();
-      }
-    }
-    dragEl=null;srcIdx=-1;
-  });
+  };
 }
 
 function makeThumbEl(i,pg){
