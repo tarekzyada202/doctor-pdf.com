@@ -9,7 +9,6 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -319,24 +318,62 @@ function renderGrid(){
   const grid=document.getElementById('mergeGrid');
   grid.innerHTML='';
   pages.forEach((pg,i)=>grid.appendChild(makeThumbEl(i,pg)));
-  // Init SortableJS
-  if(window._sortable)window._sortable.destroy();
-  window._sortable=new Sortable(grid,{
-    animation:150,
-    ghostClass:'drag-over',
-    chosenClass:'dragging',
-    dragClass:'dragging',
-    handle:'.drag-handle',
-    filter:'.ov-btn',
-    preventOnFilter:true,
-    onEnd:function(evt){
-      const from=evt.oldIndex;
-      const to=evt.newIndex;
-      if(from===to)return;
-      const moved=pages.splice(from,1)[0];
-      pages.splice(to,0,moved);
-      renderGrid();
+  initMouseDrag(grid);
+}
+
+function initMouseDrag(grid){
+  let dragEl=null,ghost=null,srcIdx=-1,startX=0,startY=0;
+
+  grid.addEventListener('mousedown',e=>{
+    const wrap=e.target.closest('.merge-wrap');
+    if(!wrap||e.target.closest('.ov-btn'))return;
+    e.preventDefault();
+    srcIdx=parseInt(wrap.dataset.idx);
+    dragEl=wrap;
+    startX=e.clientX;startY=e.clientY;
+
+    const rect=wrap.getBoundingClientRect();
+    ghost=wrap.cloneNode(true);
+    ghost.style.cssText='position:fixed;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;opacity:.75;pointer-events:none;z-index:9999;transform:scale(1.05);transition:none;box-shadow:0 8px 24px rgba(0,0,0,.3);border-radius:8px;';
+    document.body.appendChild(ghost);
+    wrap.style.opacity='.25';
+    document.body.style.userSelect='none';
+    document.body.style.cursor='grabbing';
+  });
+
+  document.addEventListener('mousemove',e=>{
+    if(!ghost)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    const rect=dragEl.getBoundingClientRect();
+    ghost.style.left=(rect.left+dx)+'px';
+    ghost.style.top=(rect.top+dy)+'px';
+    ghost.style.display='none';
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    ghost.style.display='';
+    const target=el&&el.closest('.merge-wrap');
+    grid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
+    if(target&&target!==dragEl)target.classList.add('drag-over');
+  });
+
+  document.addEventListener('mouseup',e=>{
+    if(!ghost)return;
+    ghost.remove();ghost=null;
+    if(dragEl)dragEl.style.opacity='';
+    document.body.style.cursor='';
+    document.body.style.userSelect='';
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const target=el&&el.closest('.merge-wrap');
+    grid.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
+    if(target&&target!==dragEl){
+      const toIdx=parseInt(target.dataset.idx);
+      if(!isNaN(srcIdx)&&!isNaN(toIdx)&&srcIdx!==toIdx){
+        const moved=pages.splice(srcIdx,1)[0];
+        const newTo=srcIdx<toIdx?toIdx-1:toIdx;
+        pages.splice(newTo,0,moved);
+        renderGrid();
+      }
     }
+    dragEl=null;srcIdx=-1;
   });
 }
 
