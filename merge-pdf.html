@@ -340,7 +340,8 @@ function makeThumbEl(i,pg){
   wrap.addEventListener('dragover',e=>{e.preventDefault();wrap.classList.add('drag-over');});
   wrap.addEventListener('dragleave',()=>wrap.classList.remove('drag-over'));
   wrap.addEventListener('drop',e=>{
-    e.preventDefault();wrap.classList.remove('drag-over');
+    e.preventDefault();e.stopPropagation();
+    wrap.classList.remove('drag-over');
     const targetIdx=parseInt(wrap.dataset.idx);
     if(dragSrcIdx===null||dragSrcIdx===targetIdx)return;
     const moved=pages.splice(dragSrcIdx,1)[0];
@@ -416,7 +417,8 @@ function showProgress(s){document.getElementById('progressWrap').style.display=s
 
 // ── Global drag-drop on entire window ──
 window.addEventListener('dragenter', e => {
-  if ([...e.dataTransfer.types].includes('Files')) {
+  // Only show overlay when dragging real files (not thumbnails)
+  if ([...e.dataTransfer.types].includes('Files') && dragSrcIdx===null) {
     document.getElementById('dropOverlay').classList.add('active');
   }
 });
@@ -427,9 +429,14 @@ window.addEventListener('dragleave', e => {
 });
 window.addEventListener('dragover', e => e.preventDefault());
 window.addEventListener('drop', e => {
-  e.preventDefault();
   document.getElementById('dropOverlay').classList.remove('active');
-  handleGlobalDrop(e.dataTransfer.files);
+  // If dropping on a merge-wrap, let that handler take over
+  if (e.target.closest && e.target.closest('.merge-wrap')) return;
+  // Only handle file drops
+  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    e.preventDefault();
+    handleGlobalDrop(e.dataTransfer.files);
+  }
 });
 
 let _dark=localStorage.getItem('dark')==='true';
