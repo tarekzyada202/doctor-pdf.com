@@ -9,6 +9,7 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -271,7 +272,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/p
 // pages = [{fileIdx, pageIdx(0-based), canvas, pdfLibBytes}]
 let pages=[];
 let files=[];  // {name, pdfLibBytes, pageCount}
-let dragSrcIdx=null;
 const THUMB_W=185;
 const FILE_COLORS=['#6366f1','#f59e0b','#10b981','#ef4444','#8b5cf6','#06b6d4','#f97316','#ec4899'];
 
@@ -317,6 +317,22 @@ function renderGrid(){
   const grid=document.getElementById('mergeGrid');
   grid.innerHTML='';
   pages.forEach((pg,i)=>grid.appendChild(makeThumbEl(i,pg)));
+  // Init SortableJS
+  if(window._sortable)window._sortable.destroy();
+  window._sortable=new Sortable(grid,{
+    animation:150,
+    ghostClass:'drag-over',
+    chosenClass:'dragging',
+    dragClass:'dragging',
+    onEnd:function(evt){
+      const from=evt.oldIndex;
+      const to=evt.newIndex;
+      if(from===to)return;
+      const moved=pages.splice(from,1)[0];
+      pages.splice(to,0,moved);
+      renderGrid();
+    }
+  });
 }
 
 function makeThumbEl(i,pg){
@@ -336,38 +352,6 @@ function makeThumbEl(i,pg){
   const delBtn=document.createElement('button');delBtn.className='ov-btn danger';delBtn.innerHTML='🗑 Delete page';
   delBtn.onclick=e=>{e.stopPropagation();deleteMergePage(i);};
   ov.appendChild(moveHint);ov.appendChild(delBtn);wrap.appendChild(ov);
-  wrap.addEventListener('dragstart',e=>{
-    dragSrcIdx=parseInt(wrap.dataset.idx);
-    e.dataTransfer.setData('text/plain', String(dragSrcIdx));
-    e.dataTransfer.effectAllowed='move';
-    setTimeout(()=>wrap.classList.add('dragging'),0);
-  });
-  wrap.addEventListener('dragend',()=>{
-    dragSrcIdx=null;
-    wrap.classList.remove('dragging');
-    document.querySelectorAll('.merge-wrap').forEach(w=>w.classList.remove('drag-over'));
-  });
-  wrap.addEventListener('dragover',e=>{
-    e.preventDefault();
-    e.dataTransfer.dropEffect='move';
-    wrap.classList.add('drag-over');
-  });
-  wrap.addEventListener('dragleave',e=>{
-    if(!wrap.contains(e.relatedTarget)) wrap.classList.remove('drag-over');
-  });
-  wrap.addEventListener('drop',e=>{
-    e.preventDefault();
-    e.stopPropagation();
-    wrap.classList.remove('drag-over');
-    const src=parseInt(e.dataTransfer.getData('text/plain'));
-    const targetIdx=parseInt(wrap.dataset.idx);
-    if(isNaN(src)||src===targetIdx)return;
-    const moved=pages.splice(src,1)[0];
-    const newTarget=src<targetIdx?targetIdx-1:targetIdx;
-    pages.splice(newTarget,0,moved);
-    dragSrcIdx=null;
-    renderGrid();
-  });
   return wrap;
 }
 
@@ -438,7 +422,7 @@ function showProgress(s){document.getElementById('progressWrap').style.display=s
 // ── Global drag-drop on entire window ──
 window.addEventListener('dragenter', e => {
   // Only show overlay when dragging real files (not thumbnails)
-  if ([...e.dataTransfer.types].includes('Files') && dragSrcIdx===null) {
+  if ([...e.dataTransfer.types].includes('Files')) {
     document.getElementById('dropOverlay').classList.add('active');
   }
 });
