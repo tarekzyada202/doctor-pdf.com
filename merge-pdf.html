@@ -285,23 +285,34 @@ async function addFiles(fileList){
   if(!arr.length)return;
   document.getElementById('spinner').style.display='block';
   showProgress(true);setProgress(5,'Loading…');
+  let totalPages=0;
   for(let fi=0;fi<arr.length;fi++){
     const f=arr[fi];
-    const bytes=await f.arrayBuffer();
-    const pdfJs=await pdfjsLib.getDocument({data:bytes.slice(0)}).promise;
-    const fileEntry={name:f.name,pdfLibBytes:bytes,pageCount:pdfJs.numPages};
-    const fileIdx=files.length;
-    files.push(fileEntry);
-    for(let pi=0;pi<pdfJs.numPages;pi++){
-      setProgress(5+((fi*pdfJs.numPages+pi)/(arr.length*pdfJs.numPages))*85,'Rendering…');
-      const page=await pdfJs.getPage(pi+1);
-      const vp=page.getViewport({scale:1});
-      const scale=THUMB_W/vp.width;
-      const vp2=page.getViewport({scale});
-      const canvas=document.createElement('canvas');
-      canvas.width=vp2.width;canvas.height=vp2.height;
-      await page.render({canvasContext:canvas.getContext('2d'),viewport:vp2}).promise;
-      pages.push({fileIdx,pageIdx:pi,canvas,fileName:f.name});
+    try{
+      // Read file only once for thumbnails, store File object (not bytes) for later merge
+      const bytes=await f.arrayBuffer();
+      const pdfJs=await pdfjsLib.getDocument({data:bytes}).promise;
+      const numPages=pdfJs.numPages;
+      totalPages+=numPages;
+      const fileEntry={name:f.name,file:f,pageCount:numPages}; // store File not bytes
+      const fileIdx=files.length;
+      files.push(fileEntry);
+      for(let pi=0;pi<numPages;pi++){
+        setProgress(5+((fi/arr.length + (pi/numPages)/arr.length)*90),'Rendering p.'+(pi+1)+'…');
+        const page=await pdfJs.getPage(pi+1);
+        const vp=page.getViewport({scale:1});
+        const scale=THUMB_W/vp.width;
+        const vp2=page.getViewport({scale});
+        const cv=document.createElement('canvas');
+        cv.width=vp2.width;cv.height=vp2.height;
+        await page.render({canvasContext:cv.getContext('2d'),viewport:vp2}).promise;
+        pages.push({fileIdx,pageIdx:pi,canvas:cv,fileName:f.name});
+      }
+      // Cleanup PDF.js document to free memory
+      pdfJs.destroy();
+    }catch(err){
+      console.error('Error loading file:',f.name,err);
+      alert('Error loading: '+f.name+'\n'+err.message);
     }
   }
   setProgress(100,'Done!');
@@ -452,7 +463,8 @@ async function doMerge(){
       setProgress(10+(i/pages.length)*85,`Page ${i+1}/${pages.length}…`);
       const pg=pages[i];
       if(!loadedDocs[pg.fileIdx]){
-        loadedDocs[pg.fileIdx]=await PDFDocument.load(files[pg.fileIdx].pdfLibBytes);
+        const fileBytes=await files[pg.fileIdx].file.arrayBuffer();
+        loadedDocs[pg.fileIdx]=await PDFDocument.load(fileBytes);
       }
       const src=loadedDocs[pg.fileIdx];
       const [copiedPage]=await merged.copyPages(src,[pg.pageIdx]);
