@@ -489,10 +489,15 @@ async function doMerge(){
 function setProgress(p,msg){document.getElementById('progressFill').style.width=p+'%';document.getElementById('progressText').textContent=msg;}
 function showProgress(s){document.getElementById('progressWrap').style.display=s?'block':'none';}
 
+// ── Prevent browser from opening PDFs when dropped ──
+document.addEventListener('dragover', e=>{e.preventDefault();e.stopPropagation();});
+document.addEventListener('drop', e=>{e.preventDefault();e.stopPropagation();});
+window.addEventListener('dragover', e=>{e.preventDefault();e.stopPropagation();});
+
 // ── Global drag-drop on entire window ──
 window.addEventListener('dragenter', e => {
-  // Only show overlay when dragging real files (not thumbnails)
-  if ([...e.dataTransfer.types].includes('Files')) {
+  e.preventDefault();
+  if(e.dataTransfer.types && [...e.dataTransfer.types].includes('Files')){
     document.getElementById('dropOverlay').classList.add('active');
   }
 });
@@ -503,12 +508,11 @@ window.addEventListener('dragleave', e => {
 });
 window.addEventListener('dragover', e => e.preventDefault());
 window.addEventListener('drop', e => {
+  e.preventDefault();
+  e.stopPropagation();
   document.getElementById('dropOverlay').classList.remove('active');
-  // If dropping on a merge-wrap, let that handler take over
-  if (e.target.closest && e.target.closest('.merge-wrap')) return;
-  // Only handle file drops
-  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-    e.preventDefault();
+  if(e.target.closest && e.target.closest('.merge-wrap')) return;
+  if(e.dataTransfer.files && e.dataTransfer.files.length > 0){
     handleGlobalDrop(e.dataTransfer.files);
   }
 });
