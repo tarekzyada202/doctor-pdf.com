@@ -127,7 +127,7 @@ input[type=file]{display:none}
 .merge-wrap.dragging{opacity:.35;transform:scale(.95);cursor:grabbing}
 .merge-wrap.dragging .merge-overlay{display:none!important}
 .merge-wrap.drag-over{outline:3px dashed var(--primary);outline-offset:3px;border-radius:8px}
-.merge-wrap canvas{display:block;border-radius:6px;transition:border-color .2s}
+.merge-wrap canvas{display:block;border-radius:6px;transition:border-color .2s;-webkit-user-drag:none;user-drag:none;}
 .drag-handle{position:absolute;top:6px;left:6px;width:26px;height:26px;background:rgba(0,0,0,.45);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:grab;color:white;font-size:.85em;z-index:10;opacity:0;transition:opacity .2s}
 .merge-wrap:hover .drag-handle{opacity:1}
 .merge-wrap.dragging .drag-handle{cursor:grabbing}
@@ -352,6 +352,7 @@ document.addEventListener('mouseup',e=>{
     }
   }
   _dragEl=null;_srcIdx=-1;
+  document.ondragstart=null;
 });
 
 function renderGrid(){
@@ -375,6 +376,7 @@ function renderGrid(){
     wrap.style.opacity='.2';
     document.body.style.userSelect='none';
     document.body.style.cursor='grabbing';
+    document.ondragstart=()=>false;
   };
 }
 
@@ -397,6 +399,8 @@ function makeThumbEl(i,pg){
   cv.style.borderRadius='6px';
   cv.style.boxShadow=`0 2px 12px ${color}33`;
   cv.style.display='block';
+  cv.setAttribute('draggable','false');
+  cv.ondragstart=()=>false;
   wrap.appendChild(cv);
   const info=document.createElement('div');info.className='page-info';
   info.innerHTML=`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${color};margin-right:4px;vertical-align:middle"></span>p.${pg.pageIdx+1} · ${pg.fileName.replace('.pdf','').substring(0,14)}`;
