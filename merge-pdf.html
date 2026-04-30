@@ -128,8 +128,10 @@ input[type=file]{display:none}
 .merge-wrap.dragging{opacity:.35;transform:scale(.95);cursor:grabbing}
 .merge-wrap.dragging .merge-overlay{display:none!important}
 .merge-wrap.drag-over{outline:3px dashed var(--primary);outline-offset:3px;border-radius:8px}
-.merge-wrap canvas{display:block;border-radius:6px;border:2px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.08);transition:border-color .2s;pointer-events:none}
-.merge-wrap:hover canvas{border-color:var(--primary)}
+.merge-wrap canvas{display:block;border-radius:6px;transition:border-color .2s}
+.drag-handle{position:absolute;top:6px;left:6px;width:26px;height:26px;background:rgba(0,0,0,.45);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:grab;color:white;font-size:.85em;z-index:10;opacity:0;transition:opacity .2s}
+.merge-wrap:hover .drag-handle{opacity:1}
+.merge-wrap.dragging .drag-handle{cursor:grabbing}
 .page-info{text-align:center;font-size:.72em;color:var(--text-muted);margin-top:5px;font-weight:600}
 /* HOVER OVERLAY */
 .merge-overlay{position:absolute;inset:0 0 24px 0;background:rgba(15,23,42,.65);border-radius:6px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(2px);pointer-events:none}
@@ -324,6 +326,9 @@ function renderGrid(){
     ghostClass:'drag-over',
     chosenClass:'dragging',
     dragClass:'dragging',
+    handle:'.drag-handle',
+    filter:'.ov-btn',
+    preventOnFilter:true,
     onEnd:function(evt){
       const from=evt.oldIndex;
       const to=evt.newIndex;
@@ -338,11 +343,22 @@ function renderGrid(){
 function makeThumbEl(i,pg){
   const color=FILE_COLORS[pg.fileIdx%FILE_COLORS.length];
   const wrap=document.createElement('div');
-  wrap.className='merge-wrap';wrap.dataset.idx=i;wrap.draggable=true;
+  wrap.className='merge-wrap';wrap.dataset.idx=i;
+
+  // Drag handle
+  const handle=document.createElement('div');
+  handle.className='drag-handle';
+  handle.innerHTML='⠿';
+  handle.title='Drag to reorder';
+  wrap.appendChild(handle);
+
   const cv=document.createElement('canvas');
   cv.width=pg.canvas.width;cv.height=pg.canvas.height;
   cv.getContext('2d').drawImage(pg.canvas,0,0);
-  cv.style.border=`3px solid ${color}`;cv.style.borderRadius='6px';cv.style.boxShadow=`0 2px 12px ${color}33`;
+  cv.style.border=`3px solid ${color}`;
+  cv.style.borderRadius='6px';
+  cv.style.boxShadow=`0 2px 12px ${color}33`;
+  cv.style.display='block';
   wrap.appendChild(cv);
   const info=document.createElement('div');info.className='page-info';
   info.innerHTML=`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${color};margin-right:4px;vertical-align:middle"></span>p.${pg.pageIdx+1} · ${pg.fileName.replace('.pdf','').substring(0,14)}`;
