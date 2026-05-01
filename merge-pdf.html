@@ -30,7 +30,6 @@ body{
   background:var(--bg);color:var(--text);
   height:100vh;display:flex;flex-direction:column;
   overflow:hidden;transition:background .3s,color .3s;
-  user-select:none;-webkit-user-select:none;
 }
 body.lang-ar{font-family:'Cairo',sans-serif;}
 
@@ -110,7 +109,7 @@ input[type=file]{display:none}
 /* ── PAGE THUMBNAIL ── */
 .page-wrap{
   position:relative;border-radius:8px;flex-shrink:0;
-  cursor:grab;
+  cursor:grab;user-select:none;-webkit-user-select:none;
 }
 .page-wrap.dragging-src{opacity:.25;transform:scale(.95)}
 .page-wrap.drag-target{outline:3px solid var(--primary);outline-offset:3px;border-radius:8px}
@@ -230,7 +229,7 @@ input[type=file]{display:none}
         <div class="drop-icon">📑</div>
         <div class="drop-title" id="dropTitle">Drop PDF files anywhere</div>
         <div class="drop-sub" id="dropSub">or click the button below to browse</div>
-        <button class="drop-btn" onclick="document.getElementById('fileInput').click()" id="browseBtn">
+        <button class="drop-btn" id="browseBtn" type="button">
           📁 <span id="browseBtnLabel">Browse Files</span>
         </button>
         <input type="file" id="fileInput" multiple accept=".pdf">
@@ -268,7 +267,7 @@ input[type=file]{display:none}
     </div>
 
     <!-- Add more button -->
-    <button class="add-more-btn" id="addMoreBtn" onclick="document.getElementById('fileInput').click()" style="display:none">
+    <button class="add-more-btn" id="addMoreBtn" type="button" style="display:none">
       <span class="add-icon">＋</span>
       <span id="addMoreLabel">Add More Files</span>
     </button>
@@ -345,6 +344,17 @@ function handleExternalDrop(e){
 }
 
 // File input change
+document.getElementById('addMoreBtn').addEventListener('click', function(e){
+  e.preventDefault();
+  document.getElementById('fileInput').click();
+});
+
+document.getElementById('browseBtn').addEventListener('click', function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  document.getElementById('fileInput').click();
+});
+
 document.getElementById('fileInput').addEventListener('change', e => {
   const pdfs = [...e.target.files].filter(f => f.type === 'application/pdf');
   if(pdfs.length) loadFiles(pdfs);
