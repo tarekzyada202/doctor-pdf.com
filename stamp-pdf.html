@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stamp PDF Online Free | Doctor PDF</title>
+<meta name="description" content="Add stamps to PDF files online free. Use ready-made stamps or upload your own stamp image.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://doctor-pdf.com/stamp-pdf.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--radius:12px}
+.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .3s,color .3s}
+body.lang-ar{font-family:'Cairo',sans-serif}
+
+/* NAV */
+.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
+.dark .navbar{background:rgba(15,23,42,.96)}
+.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
+.nav-sep{color:var(--border);margin:0 2px;flex-shrink:0}
+.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.navbar-center{flex:1;display:flex;justify-content:center}
+.qt-wrap{position:relative}
+.qt-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.qt-btn:hover{border-color:var(--primary);color:var(--primary)}
+.qt-arrow{transition:transform .2s;font-size:.7em}
+.qt-wrap.open .qt-arrow{transform:rotate(180deg)}
+.qt-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
+.qt-wrap.open .qt-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
+.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
+.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s;border-radius:0 2px 2px 0}
+.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
+.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+
+/* LAYOUT */
+.workspace{display:flex;flex:1;overflow:hidden}
+.content{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px;gap:14px}
+
+/* DROP OVERLAY */
+.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
+.drop-overlay.active{display:flex}
+.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
+
+/* PLACEHOLDER */
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
+.ph-icon{font-size:5em;opacity:.2}
+
+/* PREVIEW */
+.preview-area{display:none;flex-direction:column;gap:12px;position:relative}
+.preview-label{font-size:.8em;font-weight:700;color:var(--text-muted)}
+.canvas-container{position:relative;display:inline-block;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);cursor:crosshair}
+#previewCanvas{display:block;max-width:100%}
+/* Stamp overlay on canvas */
+.stamp-overlay{position:absolute;cursor:move;user-select:none;-webkit-user-select:none}
+.stamp-overlay img{display:block;max-width:100%;pointer-events:none}
+.stamp-overlay .resize-handle{position:absolute;bottom:-6px;right:-6px;width:14px;height:14px;background:var(--primary);border-radius:50%;cursor:se-resize;border:2px solid white}
+.page-nav{display:flex;align-items:center;gap:10px;justify-content:center}
+.page-nav-btn{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:5px 12px;cursor:pointer;font-size:.78em;font-weight:700;color:var(--text);transition:all .2s}
+.page-nav-btn:hover:not(:disabled){border-color:var(--primary);color:var(--primary)}
+.page-nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.page-info-txt{font-size:.8em;color:var(--text-muted);font-weight:600}
+
+/* PANEL */
+.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
+.back-link:hover{opacity:1}
+.tool-title{color:var(--primary);font-size:1.1em;font-weight:800;letter-spacing:-.3px}
+.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4;margin-top:3px}
+.divider{height:1px;background:var(--border)}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:16px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
+.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
+.up-icon{font-size:1.4em;display:block;margin-bottom:4px}
+.up-title{color:var(--primary);font-weight:700;font-size:.8em;margin-bottom:2px}
+.up-sub{color:var(--text-muted);font-size:.68em}
+input[type=file]{display:none!important;position:fixed;top:-9999px}
+.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.opt-select,.opt-input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
+.opt-select:focus,.opt-input:focus{outline:none;border-color:var(--primary)}
+.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+
+/* STAMP TYPE TABS */
+.stamp-tabs{display:flex;gap:6px;margin-bottom:12px}
+.stamp-tab{flex:1;padding:7px 4px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-size:.75em;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
+.stamp-tab.active{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.07)}
+
+/* PRESET STAMPS */
+.stamp-presets{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.stamp-preset{padding:8px 6px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;text-align:center;font-size:.72em;font-weight:800;transition:all .2s;letter-spacing:.5px}
+.stamp-preset:hover{transform:scale(1.04)}
+.stamp-preset.selected{border-width:2.5px}
+
+/* COLOR PICKER */
+.color-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s;flex-shrink:0}
+.color-dot.selected{border-color:var(--text);transform:scale(1.15)}
+
+/* STAMP IMAGE PREVIEW */
+.stamp-img-preview{background:repeating-conic-gradient(#ddd 0% 25%,#fff 0% 50%) 0 0/16px 16px;border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:center;min-height:80px;border:1px solid var(--border);margin-bottom:8px}
+.stamp-img-preview img{max-width:100%;max-height:80px;object-fit:contain}
+
+/* POSITION GRID */
+.pos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px}
+.pos-btn{aspect-ratio:1;border:1.5px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:.6em;color:var(--text-muted)}
+.pos-btn:hover,.pos-btn.selected{border-color:var(--primary);background:rgba(99,102,241,.08);color:var(--primary)}
+.pos-btn.selected{background:rgba(99,102,241,.15)}
+
+/* SLIDER */
+.slider-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.slider-row input[type=range]{flex:1;accent-color:var(--primary)}
+.slider-val{font-size:.72em;font-weight:700;color:var(--primary);min-width:32px;text-align:right}
+
+/* PAGES APPLY */
+.pages-apply{display:flex;gap:6px}
+.pages-btn{flex:1;padding:7px 4px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-muted);font-size:.72em;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
+.pages-btn.active{border-color:var(--primary);color:var(--primary);background:rgba(99,102,241,.07)}
+
+.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
+.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed}
+.progress-wrap{display:none}
+.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
+.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
+.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
+.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
+.download-btn-full:hover{background:#059669}
+.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
+.use-again-btn:hover{background:var(--primary);color:white}
+.threshold-section{display:none}
+
+@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh}.content{flex:none;min-height:45vh}}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-tool-name" id="navToolName">Stamp PDF</span>
+  </div>
+  <div class="navbar-center">
+    <div class="qt-wrap" id="qtWrap">
+      <button class="qt-btn" id="qtBtn"><span id="qtLabel">All Tools</span><span class="qt-arrow">▾</span></button>
+      <div class="qt-drop">
+        <a href="merge-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
+        <a href="split-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/></svg></div><span data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span></a>
+        <a href="compress-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><span data-en="Compress" data-ar="ضغط">Compress</span></a>
+        <a href="rotate-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
+        <a href="sign-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><span data-en="Sign" data-ar="توقيع">Sign</span></a>
+        <a href="watermark-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div><span data-en="Watermark" data-ar="علامة مائية">Watermark</span></a>
+        <a href="pdf-to-image.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><span data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span></a>
+        <a href="extract-text.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/></svg></div><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
+        <a href="protect-pdf.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><span data-en="Protect" data-ar="حماية">Protect</span></a>
+        <a href="remove-background.html" class="qt-item"><div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
+    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+  </div>
+  <div class="navbar-progress" id="navProgress"></div>
+</nav>
+
+<!-- DROP OVERLAY -->
+<div class="drop-overlay" id="dropOverlay">
+  <div style="font-size:4em">📂</div>
+  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+  <!-- CONTENT -->
+  <div class="content" id="contentArea">
+    <div class="placeholder" id="placeholder">
+      <span class="ph-icon">📋</span>
+      <p id="phText">Upload a PDF file.<br>Preview and position your stamp here.</p>
+    </div>
+    <div class="preview-area" id="previewArea">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <p class="preview-label" id="previewLabel">Preview — drag the stamp to position it</p>
+        <div class="page-nav">
+          <button class="page-nav-btn" id="prevPage" onclick="changePage(-1)">‹ Prev</button>
+          <span class="page-info-txt" id="pageInfoTxt">Page 1 / 1</span>
+          <button class="page-nav-btn" id="nextPage" onclick="changePage(1)">Next ›</button>
+        </div>
+      </div>
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="previewCanvas"></canvas>
+        <div class="stamp-overlay" id="stampOverlay" style="display:none">
+          <img id="stampImg" src="" alt="stamp">
+          <div class="resize-handle" id="resizeHandle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel">
+    <a href="index.html" class="back-link">← <span id="backLabel">All tools</span></a>
+    <div>
+      <div style="font-size:2em;margin-bottom:6px">📋</div>
+      <div class="tool-title" id="tool_title">Stamp PDF</div>
+      <div class="tool-desc" id="tool_desc">Add stamps to your PDF — preset or custom image</div>
+    </div>
+
+    <!-- PDF UPLOAD -->
+    <div class="upload-zone" id="pdfZone">
+      <span class="up-icon">📄</span>
+      <p class="up-title" id="pdfUpTitle">Click or drag PDF here</p>
+      <small class="up-sub" id="pdfUpSub">Any PDF file</small>
+      <input type="file" id="pdfInput" accept=".pdf">
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- STAMP TYPE -->
+    <div>
+      <label class="opt-label" id="stampTypeLabel">Stamp Type</label>
+      <div class="stamp-tabs">
+        <div class="stamp-tab active" id="tabPreset" onclick="switchTab('preset')" id="tabPresetL">Preset</div>
+        <div class="stamp-tab" id="tabCustom" onclick="switchTab('custom')" id="tabCustomL">Custom Image</div>
+      </div>
+
+      <!-- PRESET STAMPS -->
+      <div id="presetSection">
+        <div class="stamp-presets" id="stampPresets"></div>
+        <label class="opt-label" id="stampColorLabel">Color</label>
+        <div class="color-row" id="colorRow"></div>
+        <label class="opt-label" id="stampOpacityLabel">Opacity</label>
+        <div class="slider-row">
+          <input type="range" id="opacitySlider" min="20" max="100" value="70">
+          <span class="slider-val" id="opacityVal">70%</span>
+        </div>
+      </div>
+
+      <!-- CUSTOM IMAGE -->
+      <div id="customSection" style="display:none">
+        <div class="upload-zone" id="imgZone" style="margin-bottom:10px">
+          <span class="up-icon">🖼️</span>
+          <p class="up-title" id="imgUpTitle">Click or drag stamp image here</p>
+          <small class="up-sub" id="imgUpSub">PNG, JPG supported</small>
+          <input type="file" id="imgInput" accept="image/*">
+        </div>
+        <div class="stamp-img-preview" id="imgPreview" style="display:none">
+          <img id="stampImgPreview" src="" alt="stamp preview">
+        </div>
+        <!-- Background removal -->
+        <div class="threshold-section" id="thresholdSection">
+          <label class="opt-label" id="bgRemoveLabel">Background Removal Sensitivity</label>
+          <div class="slider-row">
+            <input type="range" id="thresholdSlider" min="5" max="100" value="30">
+            <span class="slider-val" id="thresholdVal">30</span>
+          </div>
+          <button class="use-again-btn" onclick="applyBgRemoval()" id="applyBgBtn" style="margin-top:0">Apply Background Removal</button>
+        </div>
+        <label class="opt-label" id="imgOpacityLabel">Opacity</label>
+        <div class="slider-row">
+          <input type="range" id="imgOpacitySlider" min="20" max="100" value="90">
+          <span class="slider-val" id="imgOpacityVal">90%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SIZE -->
+    <div>
+      <label class="opt-label" id="stampSizeLabel">Size</label>
+      <div class="slider-row">
+        <input type="range" id="sizeSlider" min="5" max="80" value="30">
+        <span class="slider-val" id="sizeVal">30%</span>
+      </div>
+    </div>
+
+    <!-- POSITION -->
+    <div>
+      <label class="opt-label" id="posLabel">Quick Position</label>
+      <div class="pos-grid" id="posGrid"></div>
+    </div>
+
+    <!-- APPLY TO PAGES -->
+    <div>
+      <label class="opt-label" id="applyPagesLabel">Apply To</label>
+      <div class="pages-apply">
+        <div class="pages-btn active" id="applyAll" onclick="setApply('all')"><span id="applyAllL">All Pages</span></div>
+        <div class="pages-btn" id="applyFirst" onclick="setApply('first')"><span id="applyFirstL">First Only</span></div>
+        <div class="pages-btn" id="applyLast" onclick="setApply('last')"><span id="applyLastL">Last Only</span></div>
+      </div>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-text" id="progressText">Processing…</p>
+    </div>
+
+    <button class="action-btn" id="actionBtn" onclick="applyStamp()" disabled>
+      <span id="actionLabel">Apply Stamp</span>
+    </button>
+
+    <div class="result-box" id="result">
+      <p class="result-title" id="resultTitle">✅ Stamp applied!</p>
+      <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Stamp Another File</button>
+      <a class="download-btn-full" id="downloadBtn" href="#">📥 Download PDF</a>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ── STATE ──────────────────────────────────────────────
+let pdfFile = null, pdfDoc = null, totalPages = 0, currentPage = 1;
+let stampType = 'preset';    // 'preset' | 'custom'
+let selectedPreset = 'APPROVED';
+let selectedColor = '#ef4444';
+let stampOpacity = 70;
+let imgOpacity = 90;
+let stampSizePct = 30;
+let stampPosition = 'center';
+let applyPages = 'all';
+let customStampDataUrl = null;  // processed (bg removed) image
+let rawStampDataUrl = null;     // original uploaded image
+
+// ── PRESET STAMPS ──────────────────────────────────────
+const PRESETS = [
+  {label:'APPROVED',   color:'#10b981'},
+  {label:'REJECTED',   color:'#ef4444'},
+  {label:'DRAFT',      color:'#f59e0b'},
+  {label:'CONFIDENTIAL', color:'#6366f1'},
+  {label:'REVIEWED',   color:'#06b6d4'},
+  {label:'VOID',       color:'#64748b'},
+];
+
+const COLORS = ['#ef4444','#10b981','#f59e0b','#6366f1','#06b6d4','#64748b','#000000','#1e40af'];
+
+const POSITIONS = [
+  {id:'top-left',     icon:'↖', x:'left',   y:'top'},
+  {id:'top-center',   icon:'↑', x:'center', y:'top'},
+  {id:'top-right',    icon:'↗', x:'right',  y:'top'},
+  {id:'center-left',  icon:'←', x:'left',   y:'center'},
+  {id:'center',       icon:'⊙', x:'center', y:'center'},
+  {id:'center-right', icon:'→', x:'right',  y:'center'},
+  {id:'bottom-left',  icon:'↙', x:'left',   y:'bottom'},
+  {id:'bottom-center',icon:'↓', x:'center', y:'bottom'},
+  {id:'bottom-right', icon:'↘', x:'right',  y:'bottom'},
+];
+
+// ── INIT UI ────────────────────────────────────────────
+function initUI(){
+  // Preset stamps grid
+  const presetsEl = document.getElementById('stampPresets');
+  PRESETS.forEach(p => {
+    const btn = document.createElement('div');
+    btn.className = 'stamp-preset' + (p.label === selectedPreset ? ' selected' : '');
+    btn.textContent = p.label;
+    btn.style.cssText = `color:${p.color};border-color:${p.color}33;`;
+    if(p.label === selectedPreset) { btn.style.borderColor = p.color; selectedColor = p.color; }
+    btn.onclick = () => {
+      selectedPreset = p.label;
+      selectedColor  = p.color;
+      document.querySelectorAll('.stamp-preset').forEach(el => {
+        el.classList.remove('selected');
+        el.style.borderColor = el.style.color + '33';
+      });
+      btn.classList.add('selected');
+      btn.style.borderColor = p.color;
+      document.querySelectorAll('.color-dot').forEach(el => el.classList.remove('selected'));
+      updateStampPreview();
+    };
+    presetsEl.appendChild(btn);
+  });
+
+  // Color dots
+  const colorRow = document.getElementById('colorRow');
+  COLORS.forEach(c => {
+    const dot = document.createElement('div');
+    dot.className = 'color-dot' + (c === selectedColor ? ' selected' : '');
+    dot.style.background = c;
+    dot.onclick = () => {
+      selectedColor = c;
+      document.querySelectorAll('.color-dot').forEach(el => el.classList.remove('selected'));
+      dot.classList.add('selected');
+      document.querySelectorAll('.stamp-preset').forEach(el => el.classList.remove('selected'));
+      selectedPreset = null;
+      updateStampPreview();
+    };
+    colorRow.appendChild(dot);
+  });
+
+  // Position grid
+  const posGrid = document.getElementById('posGrid');
+  POSITIONS.forEach(pos => {
+    const btn = document.createElement('div');
+    btn.className = 'pos-btn' + (pos.id === stampPosition ? ' selected' : '');
+    btn.textContent = pos.icon;
+    btn.title = pos.id;
+    btn.onclick = () => {
+      stampPosition = pos.id;
+      document.querySelectorAll('.pos-btn').forEach(el => el.classList.remove('selected'));
+      btn.classList.add('selected');
+      updateStampOverlayPosition();
+    };
+    posGrid.appendChild(btn);
+  });
+
+  // Sliders
+  document.getElementById('opacitySlider').addEventListener('input', function(){
+    stampOpacity = parseInt(this.value);
+    document.getElementById('opacityVal').textContent = stampOpacity + '%';
+    updateStampPreview();
+  });
+  document.getElementById('imgOpacitySlider').addEventListener('input', function(){
+    imgOpacity = parseInt(this.value);
+    document.getElementById('imgOpacityVal').textContent = imgOpacity + '%';
+    updateStampOverlay();
+  });
+  document.getElementById('sizeSlider').addEventListener('input', function(){
+    stampSizePct = parseInt(this.value);
+    document.getElementById('sizeVal').textContent = stampSizePct + '%';
+    updateStampOverlay();
+  });
+  document.getElementById('thresholdSlider').addEventListener('input', function(){
+    document.getElementById('thresholdVal').textContent = this.value;
+  });
+}
+
+// ── STAMP TAB SWITCH ───────────────────────────────────
+function switchTab(tab){
+  stampType = tab;
+  document.getElementById('presetSection').style.display  = tab==='preset' ? 'block' : 'none';
+  document.getElementById('customSection').style.display  = tab==='custom' ? 'block' : 'none';
+  document.getElementById('tabPreset').classList.toggle('active', tab==='preset');
+  document.getElementById('tabCustom').classList.toggle('active', tab==='custom');
+  updateStampPreview();
+}
+
+// ── APPLY PAGES ────────────────────────────────────────
+function setApply(v){
+  applyPages = v;
+  ['all','first','last'].forEach(k => {
+    document.getElementById('apply'+k.charAt(0).toUpperCase()+k.slice(1)).classList.toggle('active', k===v);
+  });
+}
+
+// ── FILE INPUTS ────────────────────────────────────────
+// Prevent browser from opening PDF
+window.addEventListener('dragover',  e=>e.preventDefault(), true);
+window.addEventListener('drop',      e=>e.preventDefault(), true);
+window.addEventListener('dragenter', e=>e.preventDefault(), true);
+window.addEventListener('drop', function(e){
+  document.getElementById('dropOverlay').classList.remove('active');
+  const pdfs = [...(e.dataTransfer.files||[])].filter(f=>f.type==='application/pdf');
+  const imgs = [...(e.dataTransfer.files||[])].filter(f=>f.type.startsWith('image/'));
+  if(pdfs.length) loadPDF(pdfs[0]);
+  else if(imgs.length) loadStampImage(imgs[0]);
+});
+window.addEventListener('dragenter', function(e){
+  if(e.dataTransfer && [...e.dataTransfer.types].includes('Files'))
+    document.getElementById('dropOverlay').classList.add('active');
+});
+window.addEventListener('dragleave', function(e){
+  if(!e.relatedTarget||e.relatedTarget===document.documentElement)
+    document.getElementById('dropOverlay').classList.remove('active');
+});
+
+function setupZone(zoneId, inputId, handler){
+  const zone  = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+  zone.addEventListener('click', ()=>input.click());
+  zone.addEventListener('dragover', e=>e.preventDefault());
+  zone.addEventListener('drop', e=>{e.preventDefault(); if(e.dataTransfer.files[0]) handler(e.dataTransfer.files[0]);});
+  input.addEventListener('change', function(){if(this.files[0]){handler(this.files[0]);this.value='';}});
+}
+
+setupZone('pdfZone', 'pdfInput', loadPDF);
+setupZone('imgZone',  'imgInput', loadStampImage);
+
+// ── LOAD PDF ───────────────────────────────────────────
+async function loadPDF(file){
+  if(!file || file.type!=='application/pdf') return;
+  pdfFile = file;
+  const bytes = await file.arrayBuffer();
+  pdfDoc = await pdfjsLib.getDocument({data:bytes}).promise;
+  totalPages = pdfDoc.numPages;
+  currentPage = 1;
+  document.getElementById('actionBtn').disabled = false;
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('previewArea').style.display = 'flex';
+  await renderPage(currentPage);
+  updateStampPreview();
+}
+
+async function renderPage(n){
+  const page = await pdfDoc.getPage(n);
+  const vp   = page.getViewport({scale:1});
+  const scale = Math.min(650/vp.width, 800/vp.height, 1.5);
+  const vp2  = page.getViewport({scale});
+  const cv   = document.getElementById('previewCanvas');
+  cv.width   = vp2.width;
+  cv.height  = vp2.height;
+  await page.render({canvasContext:cv.getContext('2d'), viewport:vp2}).promise;
+  document.getElementById('pageInfoTxt').textContent = `Page ${n} / ${totalPages}`;
+  document.getElementById('prevPage').disabled = n <= 1;
+  document.getElementById('nextPage').disabled = n >= totalPages;
+  updateStampOverlay();
+}
+
+async function changePage(dir){
+  const np = currentPage + dir;
+  if(np<1||np>totalPages) return;
+  currentPage = np;
+  await renderPage(currentPage);
+}
+
+// ── STAMP PREVIEW (canvas-based for preset) ────────────
+function generatePresetStampDataUrl(text, color, opacity){
+  const cv = document.createElement('canvas');
+  cv.width = 500; cv.height = 200;
+  const ctx = cv.getContext('2d');
+  ctx.globalAlpha = opacity/100;
+  // Border
+  const lw = 12;
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = lw;
+  ctx.strokeRect(lw/2, lw/2, cv.width-lw, cv.height-lw);
+  // Text
+  ctx.fillStyle = color;
+  ctx.font = 'bold 80px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, cv.width/2, cv.height/2);
+  return cv.toDataURL('image/png');
+}
+
+function updateStampPreview(){
+  if(!pdfDoc) return;
+  if(stampType==='preset'){
+    const text = selectedPreset || 'STAMP';
+    const url  = generatePresetStampDataUrl(text, selectedColor, stampOpacity);
+    document.getElementById('stampImg').src = url;
+    document.getElementById('stampOverlay').style.display = 'block';
+    document.getElementById('stampImg').style.opacity = '1'; // already baked in
+    updateStampOverlayPosition();
+  } else {
+    if(customStampDataUrl){
+      document.getElementById('stampImg').src = customStampDataUrl;
+      document.getElementById('stampImg').style.opacity = imgOpacity/100;
+      document.getElementById('stampOverlay').style.display = 'block';
+      updateStampOverlayPosition();
+    }
+  }
+}
+
+function updateStampOverlay(){
+  const cv = document.getElementById('previewCanvas');
+  const ov = document.getElementById('stampOverlay');
+  const img = document.getElementById('stampImg');
+  if(!cv.width) return;
+  // Size based on canvas width
+  const w = Math.round(cv.width * stampSizePct / 100);
+  img.style.width = w + 'px';
+  img.style.height = 'auto';
+  if(stampType==='custom') img.style.opacity = imgOpacity/100;
+  else img.style.opacity = '1';
+  updateStampOverlayPosition();
+}
+
+function updateStampOverlayPosition(){
+  const cv  = document.getElementById('previewCanvas');
+  const ov  = document.getElementById('stampOverlay');
+  const img = document.getElementById('stampImg');
+  if(!cv.width || ov.style.display==='none') return;
+
+  const pos = POSITIONS.find(p=>p.id===stampPosition) || POSITIONS[4];
+  const stampW = img.offsetWidth  || cv.width  * stampSizePct/100;
+  const stampH = img.offsetHeight || stampW * 0.4;
+  const pad = 12;
+  let x, y;
+
+  if(pos.x==='left')   x = pad;
+  else if(pos.x==='right')  x = cv.width - stampW - pad;
+  else x = (cv.width - stampW) / 2;
+
+  if(pos.y==='top')    y = pad;
+  else if(pos.y==='bottom') y = cv.height - stampH - pad;
+  else y = (cv.height - stampH) / 2;
+
+  ov.style.left = x + 'px';
+  ov.style.top  = y + 'px';
+}
+
+// ── DRAGGABLE STAMP OVERLAY ────────────────────────────
+let _drag = {on:false, startX:0, startY:0, origLeft:0, origTop:0};
+let _resize = {on:false, startX:0, startY:0, origW:0};
+
+document.getElementById('stampOverlay').addEventListener('mousedown', function(e){
+  if(e.target.id==='resizeHandle') return;
+  e.preventDefault();
+  const ov = document.getElementById('stampOverlay');
+  _drag = {on:true, startX:e.clientX, startY:e.clientY, origLeft:ov.offsetLeft, origTop:ov.offsetTop};
+});
+document.getElementById('resizeHandle').addEventListener('mousedown', function(e){
+  e.preventDefault(); e.stopPropagation();
+  const img = document.getElementById('stampImg');
+  _resize = {on:true, startX:e.clientX, origW:img.offsetWidth};
+});
+
+document.addEventListener('mousemove', function(e){
+  if(_drag.on){
+    const ov = document.getElementById('stampOverlay');
+    const cv = document.getElementById('previewCanvas');
+    const dx = e.clientX - _drag.startX;
+    const dy = e.clientY - _drag.startY;
+    const newL = Math.max(0, Math.min(_drag.origLeft+dx, cv.width - ov.offsetWidth));
+    const newT = Math.max(0, Math.min(_drag.origTop+dy,  cv.height - ov.offsetHeight));
+    ov.style.left = newL + 'px';
+    ov.style.top  = newT + 'px';
+  }
+  if(_resize.on){
+    const img = document.getElementById('stampImg');
+    const cv  = document.getElementById('previewCanvas');
+    const dx  = e.clientX - _resize.startX;
+    const newW = Math.max(50, Math.min(_resize.origW+dx, cv.width*0.9));
+    img.style.width = newW + 'px';
+  }
+});
+document.addEventListener('mouseup', function(){
+  _drag.on = false;
+  _resize.on = false;
+});
+
+// ── CUSTOM STAMP IMAGE ─────────────────────────────────
+function loadStampImage(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    rawStampDataUrl = e.target.result;
+    // Auto remove white/light background
+    removeBackground(rawStampDataUrl, 30, function(url){
+      customStampDataUrl = url;
+      document.getElementById('stampImgPreview').src = url;
+      document.getElementById('imgPreview').style.display = 'flex';
+      document.getElementById('thresholdSection').style.display = 'block';
+      switchTab('custom');
+      updateStampPreview();
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeBackground(dataUrl, threshold, callback){
+  const img = new Image();
+  img.onload = function(){
+    const cv  = document.createElement('canvas');
+    cv.width  = img.width; cv.height = img.height;
+    const ctx = cv.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const d = ctx.getImageData(0,0,cv.width,cv.height);
+    // Sample corners for BG color
+    let bgR=0,bgG=0,bgB=0;
+    [[0,0],[cv.width-1,0],[0,cv.height-1],[cv.width-1,cv.height-1]].forEach(([x,y])=>{
+      const i=(y*cv.width+x)*4;
+      bgR+=d.data[i];bgG+=d.data[i+1];bgB+=d.data[i+2];
+    });
+    bgR=Math.round(bgR/4);bgG=Math.round(bgG/4);bgB=Math.round(bgB/4);
+    for(let i=0;i<d.data.length;i+=4){
+      const dist=Math.sqrt((d.data[i]-bgR)**2+(d.data[i+1]-bgG)**2+(d.data[i+2]-bgB)**2);
+      if(dist<threshold) d.data[i+3]=0;
+    }
+    ctx.putImageData(d,0,0);
+    callback(cv.toDataURL('image/png'));
+  };
+  img.src = dataUrl;
+}
+
+function applyBgRemoval(){
+  if(!rawStampDataUrl) return;
+  const thr = parseInt(document.getElementById('thresholdSlider').value);
+  removeBackground(rawStampDataUrl, thr, function(url){
+    customStampDataUrl = url;
+    document.getElementById('stampImgPreview').src = url;
+    document.getElementById('stampImg').src = url;
+    updateStampPreview();
+  });
+}
+
+// ── APPLY STAMP TO PDF ────────────────────────────────
+function setProgress(pct,msg){
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent=msg;
+  const bar=document.getElementById('navProgress');
+  if(bar){bar.style.width=pct+'%';if(pct>=100)setTimeout(()=>bar.style.width='0%',800);}
+}
+
+async function applyStamp(){
+  if(!pdfFile) return;
+  document.getElementById('actionBtn').disabled=true;
+  document.getElementById('spinner').style.display='block';
+  document.getElementById('progressWrap').style.display='block';
+  setProgress(5,'Preparing stamp…');
+
+  try{
+    const {PDFDocument, rgb} = PDFLib;
+    const bytes = await pdfFile.arrayBuffer();
+    const pdf   = await PDFDocument.load(bytes);
+    const pages = pdf.getPages();
+
+    // Determine which pages to stamp
+    let targetPages = [];
+    if(applyPages==='all')   targetPages = pages.map((_,i)=>i);
+    else if(applyPages==='first') targetPages = [0];
+    else if(applyPages==='last')  targetPages = [pages.length-1];
+
+    // Get stamp image data
+    let stampImgBytes, isJpg=false;
+    if(stampType==='preset'){
+      const text = selectedPreset || 'STAMP';
+      const url  = generatePresetStampDataUrl(text, selectedColor, stampOpacity);
+      const resp = await fetch(url);
+      stampImgBytes = await resp.arrayBuffer();
+    } else {
+      if(!customStampDataUrl) throw new Error('Please upload a stamp image first');
+      const resp = await fetch(customStampDataUrl);
+      stampImgBytes = await resp.arrayBuffer();
+    }
+
+    setProgress(30,'Embedding stamp…');
+    const stampImg = await pdf.embedPng(stampImgBytes);
+
+    for(let i=0;i<targetPages.length;i++){
+      setProgress(30+Math.round((i/targetPages.length)*60), `Stamping page ${i+1}…`);
+      const page = pages[targetPages[i]];
+      const {width:pw, height:ph} = page.getSize();
+
+      // Calculate stamp size
+      const stampW = pw * stampSizePct/100;
+      const stampH = stampW * (stampImg.height/stampImg.width);
+
+      // Get position from overlay on canvas
+      const cv = document.getElementById('previewCanvas');
+      const ov = document.getElementById('stampOverlay');
+      const img = document.getElementById('stampImg');
+
+      let x, y;
+      if(cv.width > 0 && ov.style.display !== 'none'){
+        // Use actual overlay position (user dragged it)
+        const scaleX = pw / cv.width;
+        const scaleY = ph / cv.height;
+        x = ov.offsetLeft * scaleX;
+        y = ph - (ov.offsetTop * scaleY) - stampH;
+      } else {
+        // Fallback: use position setting
+        const pos = POSITIONS.find(p=>p.id===stampPosition) || POSITIONS[4];
+        const pad = pw * 0.04;
+        if(pos.x==='left')   x = pad;
+        else if(pos.x==='right')  x = pw - stampW - pad;
+        else x = (pw - stampW)/2;
+        if(pos.y==='top')    y = ph - stampH - pad;
+        else if(pos.y==='bottom') y = pad;
+        else y = (ph - stampH)/2;
+      }
+
+      const opacity = stampType==='preset' ? 1 : imgOpacity/100;
+      page.drawImage(stampImg, {x, y, width:stampW, height:stampH, opacity});
+    }
+
+    setProgress(95,'Saving…');
+    const out  = await pdf.save();
+    const blob = new Blob([out],{type:'application/pdf'});
+    const url  = URL.createObjectURL(blob);
+    const name = pdfFile.name.replace(/\.pdf$/i,'')+'_stamped.pdf';
+    const btn  = document.getElementById('downloadBtn');
+    btn.href=url; btn.download=name; btn.textContent='📥 '+name;
+    document.getElementById('result').style.display='block';
+    setProgress(100,'Done!');
+    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
+    if(typeof gtag!=='undefined') gtag('event','pdf_stamped',{event_category:'PDF Tools'});
+  }catch(err){
+    alert('Error: '+err.message);
+  }
+  document.getElementById('spinner').style.display='none';
+  document.getElementById('actionBtn').disabled=false;
+  setTimeout(()=>document.getElementById('progressWrap').style.display='none',800);
+}
+
+// ── RESET ──────────────────────────────────────────────
+function resetTool(){
+  pdfFile=null; pdfDoc=null; totalPages=0; currentPage=1;
+  customStampDataUrl=null; rawStampDataUrl=null;
+  document.getElementById('pdfInput').value='';
+  document.getElementById('imgInput').value='';
+  document.getElementById('result').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBtn').disabled=true;
+  document.getElementById('spinner').style.display='none';
+  document.getElementById('placeholder').style.display='flex';
+  document.getElementById('previewArea').style.display='none';
+  document.getElementById('stampOverlay').style.display='none';
+  document.getElementById('imgPreview').style.display='none';
+  document.getElementById('thresholdSection').style.display='none';
+}
+
+// ── NAVBAR ─────────────────────────────────────────────
+function toggleQT(){document.getElementById('qtWrap').classList.toggle('open');}
+document.addEventListener('click',e=>{const w=document.getElementById('qtWrap');if(w&&!w.contains(e.target))w.classList.remove('open');});
+document.getElementById('qtBtn').addEventListener('click',e=>{e.stopPropagation();toggleQT();});
+
+// ── DARK MODE ──────────────────────────────────────────
+let _dark=localStorage.getItem('dark')==='true';
+if(_dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
+function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);document.getElementById('themeBtn').textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
+
+// ── LANGUAGE ───────────────────────────────────────────
+let _lang;
+if(!localStorage.getItem('lang')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}
+else{_lang=localStorage.getItem('lang');}
+
+const TR={
+  en:{navToolName:'Stamp PDF',qtLabel:'All Tools',tool_title:'Stamp PDF',tool_desc:'Add stamps to your PDF — preset or custom image',
+      backLabel:'All tools',pdfUpTitle:'Click or drag PDF here',pdfUpSub:'Any PDF file',
+      imgUpTitle:'Click or drag stamp image here',imgUpSub:'PNG, JPG supported',
+      stampTypeLabel:'Stamp Type',stampColorLabel:'Color',stampOpacityLabel:'Opacity',
+      posLabel:'Quick Position',applyPagesLabel:'Apply To',
+      stampSizeLabel:'Size',bgRemoveLabel:'Background Removal Sensitivity',
+      applyBgBtn:'Apply Background Removal',actionLabel:'Apply Stamp',
+      resultTitle:'✅ Stamp applied!',useAgainBtn:'Stamp Another File',
+      phText:'Upload a PDF file.<br>Preview and position your stamp here.',
+      previewLabel:'Preview — drag the stamp to position it',
+      dropText:'Drop PDF file here',applyAllL:'All Pages',applyFirstL:'First Only',applyLastL:'Last Only',
+      imgOpacityLabel:'Opacity',langBtn:'عربي'},
+  ar:{navToolName:'ختم PDF',qtLabel:'كل الأدوات',tool_title:'ختم PDF',tool_desc:'أضف ختماً لملف PDF — جاهز أو صورة مخصصة',
+      backLabel:'كل الأدوات',pdfUpTitle:'اضغط أو اسحب ملف PDF هنا',pdfUpSub:'أي ملف PDF',
+      imgUpTitle:'اضغط أو اسحب صورة الختم هنا',imgUpSub:'PNG، JPG مدعوم',
+      stampTypeLabel:'نوع الختم',stampColorLabel:'اللون',stampOpacityLabel:'الشفافية',
+      posLabel:'الموضع السريع',applyPagesLabel:'تطبيق على',
+      stampSizeLabel:'الحجم',bgRemoveLabel:'حساسية إزالة الخلفية',
+      applyBgBtn:'تطبيق إزالة الخلفية',actionLabel:'تطبيق الختم',
+      resultTitle:'✅ تم إضافة الختم!',useAgainBtn:'ختم ملف آخر',
+      phText:'ارفع ملف PDF.<br>ستظهر المعاينة وتضع الختم هنا.',
+      previewLabel:'معاينة — اسحب الختم لتحديد موضعه',
+      dropText:'أسقط ملف PDF هنا',applyAllL:'كل الصفحات',applyFirstL:'الأولى فقط',applyLastL:'الأخيرة فقط',
+      imgOpacityLabel:'الشفافية',langBtn:'EN'},
+};
+function applyLang(){
+  document.documentElement.lang=_lang;
+  document.body.dir='ltr';
+  document.body.classList.toggle('lang-ar',_lang==='ar');
+  document.getElementById('langBtn').textContent=TR[_lang].langBtn;
+  const t=TR[_lang]||TR.en;
+  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
+  document.querySelectorAll('.qt-item span[data-en]').forEach(el=>{
+    el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en;
+  });
+}
+function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);applyLang();}
+
+// ── START ──────────────────────────────────────────────
+initUI();
+applyLang();
+</script>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script>
+</body>
+</html>
