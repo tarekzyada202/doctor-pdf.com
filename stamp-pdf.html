@@ -152,6 +152,33 @@ input[type=file]{display:none!important;position:fixed;top:-9999px}
 .opt-sel:focus{outline:none;border-color:var(--p)}
 
 @media(max-width:800px){.ws{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--bdr);max-height:50vh}.main{flex:none;min-height:50vh}}
+
+/* VIEW MODE TOGGLE */
+.view-toggle{display:none;gap:6px;align-items:center;margin-bottom:8px}
+.view-toggle.show{display:flex}
+.vt-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--txm);font-size:.74em;font-weight:700;cursor:pointer;transition:all .2s}
+.vt-btn.on{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.07)}
+.vt-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* GRID VIEW */
+.pages-grid{display:flex;flex-wrap:wrap;gap:14px;align-content:flex-start}
+
+/* READING VIEW */
+.reading-wrap{display:none;gap:0}
+.reading-main{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.reading-sidebar{width:90px;flex-shrink:0;background:var(--sur);border-left:1px solid var(--bdr);overflow-y:auto;padding:8px 6px;display:flex;flex-direction:column;gap:6px}
+.sidebar-thumb{position:relative;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid var(--bdr);transition:all .2s;flex-shrink:0}
+.sidebar-thumb:hover{border-color:var(--p)}
+.sidebar-thumb.active{border-color:var(--p);box-shadow:0 0 0 2px rgba(99,102,241,.3)}
+.sidebar-thumb canvas{display:block;width:100%;pointer-events:none}
+.sidebar-thumb-num{text-align:center;font-size:.6em;color:var(--txm);font-weight:700;padding:2px 0}
+.sidebar-thumb.active .sidebar-thumb-num{color:var(--p)}
+
+/* PAGE CARD in reading mode */
+.reading-page-card{position:relative;flex-shrink:0;border-radius:10px;overflow:visible;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.reading-page-card canvas{display:block;border-radius:8px;border:1px solid var(--bdr)}
+.reading-page-card:hover canvas{border-color:var(--p)}
+
 </style>
 </head>
 <body>
@@ -202,8 +229,24 @@ input[type=file]{display:none!important;position:fixed;top:-9999px}
       <span class="ph-ic">📋</span>
       <p id="phT">Click here or drop a PDF file<br>All pages will appear for stamping</p>
     </div>
-    <!-- Pages grid -->
+    <!-- View toggle (shown after file loaded) -->
+    <div class="view-toggle" id="viewToggle">
+      <button class="vt-btn on" id="btnGrid" onclick="setView('grid')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span id="btnGridL">Grid</span>
+      </button>
+      <button class="vt-btn" id="btnRead" onclick="setView('reading')">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span id="btnReadL">Reading</span>
+      </button>
+    </div>
+    <!-- Grid view -->
     <div class="pages-grid" id="pagesGrid" style="display:none"></div>
+  </div>
+  <!-- READING VIEW (outside .main, fills workspace) -->
+  <div class="reading-wrap" id="readingWrap">
+    <div class="reading-main" id="readingMain"></div>
+    <div class="reading-sidebar" id="readingSidebar"></div>
   </div>
 
   <!-- PANEL -->
@@ -382,6 +425,7 @@ async function loadPDF(file){
   pdfFile=file;
   document.getElementById('ph').style.display='none';
   document.getElementById('pagesGrid').style.display='flex';
+  document.getElementById('viewToggle').classList.add('show');
   document.getElementById('pagesGrid').innerHTML='<div style="color:var(--txm);font-size:.85em;padding:20px">Loading…</div>';
 
   const bytes=await file.arrayBuffer();
@@ -499,8 +543,9 @@ function placeStamp(pi, xPct, yPct, cv){
   const op=stampType==='preset'?opacity:imgOpacity;
   const st={dataUrl, xPct, yPct, wPct, opacity:op};
   pages[pi].stamps.push(st);
-  // Re-render just this card
-  renderGrid();
+  if(viewMode==='reading') renderReading();
+  else renderGrid();
+  deactivatePlacing();
 }
 
 function getStampDataUrl(){
@@ -556,7 +601,169 @@ function resetAllStamps(){
 }
 
 // Delete key
-document.addEventListener('keydown',function(e){
+
+// ── VIEW MODE ──────────────────────────────────────────
+let viewMode = 'grid'; // 'grid' | 'reading'
+let copiedStamp = null; // {dataUrl, xPct, yPct, wPct, opacity}
+let activeReadingPage = 0; // current page visible in reading mode
+
+function setView(mode){
+  viewMode = mode;
+  document.getElementById('btnGrid').classList.toggle('on', mode==='grid');
+  document.getElementById('btnRead').classList.toggle('on', mode==='reading');
+
+  // Show/hide areas
+  document.getElementById('pagesGrid').style.display     = mode==='grid'    ? 'flex' : 'none';
+  document.getElementById('readingWrap').style.display   = mode==='reading' ? 'flex' : 'none';
+  // Reading wrap needs to fill the workspace
+  const rw = document.getElementById('readingWrap');
+  if(mode==='reading'){
+    rw.style.cssText='display:flex;flex:1;overflow:hidden;';
+    renderReading();
+  } else {
+    renderGrid();
+  }
+}
+
+// ── READING RENDER ─────────────────────────────────────
+const READ_W = 620; // max page width in reading mode
+
+function renderReading(){
+  const main    = document.getElementById('readingMain');
+  const sidebar = document.getElementById('readingSidebar');
+  main.innerHTML='';
+  sidebar.innerHTML='';
+
+  pages.forEach(function(pg, i){
+    // ── Main page card ──
+    const scale  = Math.min(READ_W, main.clientWidth-48) / pg.canvas.width;
+    const card   = document.createElement('div');
+    card.className = 'reading-page-card';
+    card.dataset.pi = i;
+
+    const cv = document.createElement('canvas');
+    cv.width  = Math.round(pg.canvas.width  * scale);
+    cv.height = Math.round(pg.canvas.height * scale);
+    cv.getContext('2d').drawImage(pg.canvas, 0, 0, cv.width, cv.height);
+    card.appendChild(cv);
+
+    // Existing stamps
+    pg.stamps.forEach(function(st, si){
+      card.appendChild(makeStampEl(st, i, si, cv));
+    });
+
+    // Click to place stamp
+    card.addEventListener('click', function(e){
+      if(!placing) return;
+      if(e.target.closest('.stamp-el')) return;
+      const rect = cv.getBoundingClientRect();
+      const xPct = (e.clientX - rect.left)  / rect.width;
+      const yPct = (e.clientY - rect.top)   / rect.height;
+      placeStamp(i, xPct, yPct, cv);
+      deactivatePlacing();
+    });
+
+    main.appendChild(card);
+
+    // ── Sidebar thumbnail ──
+    const tb  = document.createElement('div');
+    tb.className = 'sidebar-thumb' + (i===activeReadingPage ? ' active' : '');
+    tb.dataset.pi = i;
+
+    const tcv = document.createElement('canvas');
+    const ts  = 78 / pg.canvas.width;
+    tcv.width  = Math.round(pg.canvas.width  * ts);
+    tcv.height = Math.round(pg.canvas.height * ts);
+    tcv.getContext('2d').drawImage(pg.canvas, 0, 0, tcv.width, tcv.height);
+    tb.appendChild(tcv);
+
+    const tnum = document.createElement('div');
+    tnum.className = 'sidebar-thumb-num';
+    tnum.textContent = i+1;
+    tb.appendChild(tnum);
+
+    // Click sidebar thumb → scroll to that page
+    tb.addEventListener('click', function(){
+      const target = main.querySelector(`.reading-page-card[data-pi="${i}"]`);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+
+    sidebar.appendChild(tb);
+  });
+
+  // Intersection Observer — highlight active page in sidebar
+  const observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        const pi = parseInt(entry.target.dataset.pi);
+        activeReadingPage = pi;
+        document.querySelectorAll('.sidebar-thumb').forEach(function(t,idx){
+          t.classList.toggle('active', idx===pi);
+        });
+        // Scroll sidebar to show active thumb
+        const activeTb = document.querySelector(`.sidebar-thumb[data-pi="${pi}"]`);
+        if(activeTb) activeTb.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }
+    });
+  },{root: main, threshold: 0.4});
+
+  main.querySelectorAll('.reading-page-card').forEach(function(card){
+    observer.observe(card);
+  });
+}
+
+// ── COPY / PASTE STAMPS ────────────────────────────────
+document.addEventListener('keydown', function(e){
+  // Delete selected
+  if((e.key==='Delete'||e.key==='Backspace') && selectedStamp && !e.target.matches('input,textarea')){
+    const pi = parseInt(selectedStamp.dataset.pi);
+    const si = parseInt(selectedStamp.dataset.si);
+    removeStamp(pi, si);
+    return;
+  }
+
+  // Ctrl+C — copy selected stamp
+  if(e.ctrlKey && e.key==='c' && selectedStamp){
+    const pi = parseInt(selectedStamp.dataset.pi);
+    const si = parseInt(selectedStamp.dataset.si);
+    if(pages[pi] && pages[pi].stamps[si]){
+      // Get current position from DOM
+      const card = selectedStamp.closest('.page-card, .reading-page-card');
+      const cv   = card ? card.querySelector('canvas') : null;
+      const st   = pages[pi].stamps[si];
+      copiedStamp = {
+        dataUrl: st.dataUrl,
+        opacity: st.opacity,
+        wPct:    cv ? selectedStamp.querySelector('img').offsetWidth / cv.width : st.wPct,
+        xPct:    cv ? selectedStamp.offsetLeft / cv.width : st.xPct,
+        yPct:    cv ? selectedStamp.offsetTop  / cv.height: st.yPct,
+      };
+      // Visual feedback
+      selectedStamp.style.outline='3px solid var(--ok)';
+      setTimeout(()=>{ if(selectedStamp) selectedStamp.style.outline=''; }, 600);
+    }
+    return;
+  }
+
+  // Ctrl+V — paste stamp on current/active page
+  if(e.ctrlKey && e.key==='v' && copiedStamp){
+    const pi = viewMode==='reading' ? activeReadingPage : 0;
+    const newSt = {
+      dataUrl: copiedStamp.dataUrl,
+      opacity: copiedStamp.opacity,
+      wPct:    copiedStamp.wPct,
+      xPct:    copiedStamp.xPct,
+      yPct:    copiedStamp.yPct,
+    };
+    pages[pi].stamps.push(newSt);
+    if(viewMode==='reading') renderReading();
+    else renderGrid();
+    return;
+  }
+});
+
+// ── OLD KEYDOWN (replaced above) ──
+// document.addEventListener('keydown',function(e){
   if((e.key==='Delete'||e.key==='Backspace')&&selectedStamp){
     const pi=parseInt(selectedStamp.dataset.pi);
     const si=parseInt(selectedStamp.dataset.si);
@@ -828,6 +1035,9 @@ function resetTool(){
   document.getElementById('actionBtn').disabled=true;
   document.getElementById('ph').style.display='flex';
   document.getElementById('pagesGrid').style.display='none';
+  document.getElementById('viewToggle').classList.remove('show');
+  document.getElementById('readingWrap').style.display='none';
+  viewMode='grid';
   document.getElementById('pagesGrid').innerHTML='';
   document.getElementById('simgPrev').style.display='none';
   document.getElementById('bgSec').style.display='none';
