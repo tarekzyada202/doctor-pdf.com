@@ -225,7 +225,7 @@ input[type=file]{display:none!important;position:fixed;top:-9999px}
   <!-- MAIN -->
   <div class="main" id="main">
     <!-- Placeholder -->
-    <div class="ph" id="ph" onclick="document.getElementById('pdfFi').click()">
+    <div class="ph" id="ph">
       <span class="ph-ic">📋</span>
       <p id="phT">Click here or drop a PDF file<br>All pages will appear for stamping</p>
     </div>
@@ -413,11 +413,26 @@ function setupZone(zoneId, fiId, handler){
   if(zone){zone.addEventListener('dragover',e=>e.preventDefault());zone.addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])handler(e.dataTransfer.files[0]);});}
   if(fi) fi.addEventListener('change',function(){if(this.files[0]){handler(this.files[0]);this.value='';}});
 }
-setupZone('pdfZone','pdfFi',loadPDF);
-setupZone('imgZone','imgFi',loadImg);
-document.getElementById('ph').addEventListener('click',function(e){
-  if(e.target===this||e.target.closest('.ph')===this) document.getElementById('pdfFi').click();
+// PDF zone and ph click
+document.getElementById('pdfZone').addEventListener('click', ()=>document.getElementById('pdfFi').click());
+document.getElementById('ph').addEventListener('click', function(e){
+  if(!e.target.closest('.stamp-el')) document.getElementById('pdfFi').click();
 });
+document.getElementById('pdfZone').addEventListener('dragover',e=>e.preventDefault());
+document.getElementById('pdfZone').addEventListener('drop',function(e){
+  e.preventDefault();e.stopPropagation();
+  if(e.dataTransfer.files[0]) loadPDF(e.dataTransfer.files[0]);
+});
+// Image zone
+document.getElementById('imgZone').addEventListener('click', ()=>document.getElementById('imgFi').click());
+document.getElementById('imgZone').addEventListener('dragover',e=>e.preventDefault());
+document.getElementById('imgZone').addEventListener('drop',function(e){
+  e.preventDefault();e.stopPropagation();
+  if(e.dataTransfer.files[0]) loadImg(e.dataTransfer.files[0]);
+});
+// File inputs
+document.getElementById('pdfFi').addEventListener('change',function(){if(this.files[0]){loadPDF(this.files[0]);this.value='';}});
+document.getElementById('imgFi').addEventListener('change',function(){if(this.files[0]){loadImg(this.files[0]);this.value='';}});
 
 // ── LOAD PDF ──
 async function loadPDF(file){
