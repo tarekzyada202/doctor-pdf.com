@@ -4,1124 +4,1258 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stamp PDF Online Free – Add Stamps to PDF | Doctor PDF</title>
-<meta name="description" content="Add professional stamps to PDF files online free. Choose from preset stamps (APPROVED, REJECTED, DRAFT, CONFIDENTIAL) or upload custom image stamps. 100% browser-based, no upload needed.">
-<meta name="keywords" content="stamp pdf online free, add stamp to pdf, pdf stamp tool, approved stamp pdf, confidential pdf, draft stamp">
-<meta property="og:title" content="Stamp PDF Online Free | Doctor PDF">
-<meta property="og:description" content="Add professional stamps to PDF files. Preset or custom image. Free, browser-based — nothing uploaded.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://doctor-pdf.com/stamp-pdf.html">
-<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/stamp-pdf.html">
-<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/stamp-pdf.html">
+<meta name="description" content="Add professional stamps to PDF files online free. Choose from preset stamps or upload custom image stamps. 100% browser-based, no file upload to server.">
 <link rel="canonical" href="https://doctor-pdf.com/stamp-pdf.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📋</text></svg>">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Stamp PDF – Doctor PDF","url":"https://doctor-pdf.com/stamp-pdf.html","description":"Add stamps to PDF files online for free","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/stamp-pdf.html">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--txm:#64748b}
-.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--txm:#94a3b8}
+:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--muted:#64748b}
+.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--muted:#94a3b8}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .3s,color .3s}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .25s,color .25s}
 body.ar{font-family:'Cairo',sans-serif}
-nav{height:52px;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;position:relative;z-index:200}
-.dark nav{background:rgba(15,23,42,.96)}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--p);flex-shrink:0}
-.logo-ic{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--bdr);margin:0 2px}
-.nav-nm{font-size:.8em;font-weight:700}
-.nav-c{flex:1;display:flex;justify-content:center}
-.nav-r{display:flex;gap:6px;align-items:center}
-.ic-btn{width:30px;height:30px;border:1px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:all .2s}
-.ic-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
+
+/* ── NAV ── */
+nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;z-index:300;position:relative}
+.dark nav{background:rgba(15,23,42,.97)}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-weight:800;font-size:.92em;color:var(--p)}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
+.nav-sep{color:var(--bdr)}
+.nav-title{font-size:.78em;font-weight:700}
+.nav-fill{flex:1;display:flex;justify-content:center}
+.nav-end{display:flex;gap:5px;align-items:center}
+.icon-btn{width:30px;height:30px;border:1.5px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit}
+.icon-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
 .lang-btn{width:auto;padding:0 10px;font-size:.68em;font-weight:700}
-.nav-prog{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--p),var(--s));width:0;transition:width .3s}
-[dir="rtl"] .nav-prog{left:auto;right:0}
+
+/* TOOLS DROPDOWN */
 .qt{position:relative}
-.qt-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--tx);cursor:pointer;transition:all .2s}
-.qt-btn:hover{border-color:var(--p);color:var(--p)}
-.qt-arr{font-size:.7em;transition:transform .2s}
+.qt-trigger{display:flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:4px 11px;font-size:.75em;font-weight:700;color:var(--tx);cursor:pointer;font-family:inherit;transition:.15s}
+.qt-trigger:hover{border-color:var(--p);color:var(--p)}
+.qt-arr{font-size:.65em;transition:transform .2s}
 .qt.open .qt-arr{transform:rotate(180deg)}
-.qt-drop{position:absolute;top:calc(100%+8px);left:50%;transform:translateX(-50%);background:var(--sur);border:1px solid var(--bdr);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
-.qt.open .qt-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qt-a{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--tx);font-size:.78em;font-weight:600;transition:background .15s}
-.qt-a:hover{background:rgba(99,102,241,.08);color:var(--p)}
-.qt-ic{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qt-ic svg{width:12px;height:12px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* LAYOUT */
-.ws{display:flex;flex:1;overflow:hidden;position:relative}
-.content-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
-/* VIEW TOGGLE BAR */
-.view-bar{display:none;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--bdr);background:var(--sur);flex-shrink:0}
-.view-bar.show{display:flex}
-.vb-btn{display:flex;align-items:center;gap:5px;padding:5px 14px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--txm);font-size:.76em;font-weight:700;cursor:pointer;transition:all .2s}
-.vb-btn.on{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.07)}
-.vb-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-/* MAIN SCROLL */
-.main-scroll{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
-/* PLACEHOLDER */
-.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--txm);text-align:center;gap:12px;padding:40px;border:2.5px dashed var(--bdr);border-radius:14px;background:var(--bg);cursor:pointer;transition:all .2s;min-height:200px}
-.ph:hover,.ph.drag{border-color:var(--p);background:rgba(99,102,241,.03)}
-.ph-ic{font-size:4em;opacity:.2}
-/* GRID */
-.pages-grid{display:flex;flex-wrap:wrap;gap:14px;align-content:flex-start}
-/* READING VIEW */
-.reading-layout{display:none;flex:1;overflow:hidden}
-.reading-pages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;gap:20px}
-.reading-sidebar{width:88px;flex-shrink:0;background:var(--sur);border-left:1px solid var(--bdr);overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:5px}
-[dir="rtl"] .reading-sidebar{border-left:none;border-right:1px solid var(--bdr)}
+.qt-menu{position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%);background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 10px 36px rgba(0,0,0,.13);padding:8px;display:none;z-index:999;width:260px}
+.qt.open .qt-menu{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.qt-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;text-decoration:none;color:var(--tx);font-size:.74em;font-weight:600;transition:.12s}
+.qt-item:hover{background:rgba(99,102,241,.08);color:var(--p)}
+.qt-item-ic{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85em}
+
+/* ── WORKSPACE ── */
+.workspace{display:flex;flex:1;overflow:hidden}
+
+/* CONTENT AREA */
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);cursor:pointer;z-index:2;border:2.5px dashed transparent;transition:.2s;border-radius:10px;margin:16px}
+.empty-state:hover,.empty-state.drag-over{border-color:var(--p);background:rgba(99,102,241,.02)}
+.empty-ic{font-size:4em;opacity:.18}
+.empty-main{font-size:.9em;font-weight:700;opacity:.55}
+.empty-sub{font-size:.72em;opacity:.4}
+.pages-area{flex:1;overflow-y:auto;padding:18px;display:flex;flex-wrap:wrap;gap:16px;align-content:flex-start}
+
 /* PAGE CARDS */
-.page-card{position:relative;flex-shrink:0;border-radius:8px;overflow:visible}
-.page-card canvas{display:block;border-radius:6px;border:2px solid var(--bdr);pointer-events:none}
-.page-card.placing{cursor:crosshair}
-.page-card.placing canvas{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-.page-card .pg-lbl{text-align:center;font-size:.68em;color:var(--txm);font-weight:600;margin-top:4px}
-/* STAMP COUNT BADGE */
-.st-badge{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;border-radius:10px;background:var(--p);color:#fff;font-size:.6em;font-weight:800;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:6;padding:0 5px;box-shadow:0 2px 6px rgba(99,102,241,.4)}
-[dir="rtl"] .st-badge{right:auto;left:-8px}
-/* SIDEBAR */
-.sb-thumb{border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid var(--bdr);transition:all .2s;flex-shrink:0}
-.sb-thumb:hover{border-color:var(--p)}
-.sb-thumb.active{border-color:var(--p);box-shadow:0 0 0 2px rgba(99,102,241,.3)}
-.sb-thumb canvas{display:block;width:100%;pointer-events:none}
-.sb-thumb .sb-num{text-align:center;font-size:.58em;color:var(--txm);font-weight:700;padding:2px 0}
-.sb-thumb.active .sb-num{color:var(--p)}
+.page-card{position:relative;flex-shrink:0;border-radius:8px}
+.page-card canvas{display:block;border-radius:6px;border:2px solid var(--bdr);transition:border-color .15s;pointer-events:none}
+.page-card.can-place{cursor:crosshair}
+.page-card.can-place canvas{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.14)}
+.pg-label{text-align:center;font-size:.65em;font-weight:700;color:var(--muted);margin-top:5px}
+.pg-badge{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;border-radius:10px;background:var(--p);color:#fff;font-size:.58em;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px;box-shadow:0 2px 6px rgba(99,102,241,.4);z-index:5;pointer-events:none}
+[dir=rtl] .pg-badge{right:auto;left:-8px}
+
 /* STAMP ELEMENTS */
-.st-el{position:absolute;cursor:move;user-select:none;-webkit-user-select:none;touch-action:none}
-.st-el img{display:block;pointer-events:none;border-radius:2px}
-.st-el.sel{outline:2px dashed var(--p);outline-offset:2px}
-.st-el .st-del{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:var(--err);color:#fff;border:none;cursor:pointer;font-size:.65em;font-weight:900;display:none;align-items:center;justify-content:center;z-index:10}
-.st-el.sel .st-del{display:flex}
-.st-el .st-sz{position:absolute;bottom:-5px;right:-5px;width:14px;height:14px;border-radius:50%;background:var(--p);cursor:se-resize;border:2px solid #fff;touch-action:none}
+.stamp-el{position:absolute;cursor:move;user-select:none;-webkit-user-select:none;touch-action:none}
+.stamp-el img{display:block;pointer-events:none}
+.stamp-el.selected{outline:2px dashed var(--p);outline-offset:3px}
+.stamp-del{position:absolute;top:-9px;right:-9px;width:19px;height:19px;border-radius:50%;background:var(--err);color:#fff;border:none;cursor:pointer;font-size:.64em;font-weight:900;display:none;align-items:center;justify-content:center;z-index:10;padding:0}
+.stamp-el.selected .stamp-del{display:flex}
+.stamp-rsz{position:absolute;bottom:-5px;right:-5px;width:14px;height:14px;background:var(--p);border-radius:50%;cursor:se-resize;border:2.5px solid #fff;touch-action:none;z-index:5}
+[dir=rtl] .stamp-del{right:auto;left:-9px}
+[dir=rtl] .stamp-rsz{right:auto;left:-5px;cursor:sw-resize}
+
 /* GHOST CURSOR */
-#ghost{position:fixed;pointer-events:none;display:none;z-index:9999;transform:translate(-50%,-60%)}
-#ghost img{display:block;opacity:.72;border-radius:3px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.25))}
-/* PANEL */
-.panel{width:310px;flex-shrink:0;background:var(--sur);border-left:1px solid var(--bdr);padding:14px;display:flex;flex-direction:column;gap:11px;overflow-y:auto}
-[dir="rtl"] .panel{border-left:none;border-right:1px solid var(--bdr)}
-.back{display:inline-flex;align-items:center;gap:5px;color:var(--p);text-decoration:none;font-size:.78em;font-weight:600;opacity:.8}
-.back:hover{opacity:1}
-.tool-h{font-size:1.05em;font-weight:800;color:var(--p);margin-top:4px}
-.tool-d{font-size:.72em;color:var(--txm);line-height:1.4;margin-top:2px}
-.hr{height:1px;background:var(--bdr)}
-.lbl{font-size:.69em;font-weight:700;color:var(--txm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.uz{border:2px dashed var(--bdr);border-radius:8px;padding:12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
-.uz:hover{border-color:var(--p);background:rgba(99,102,241,.04)}
-.uz-ic{font-size:1.3em;display:block;margin-bottom:3px}
-.uz-t{color:var(--p);font-weight:700;font-size:.78em}
-.uz-s{color:var(--txm);font-size:.66em}
+#ghost-cursor{position:fixed;pointer-events:none;display:none;z-index:9999;transform:translate(-50%,-55%)}
+#ghost-cursor img{display:block;opacity:.65;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
+
+/* ── PANEL ── */
+.panel{width:308px;flex-shrink:0;background:var(--sur);border-left:1.5px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column;padding:14px;gap:10px}
+[dir=rtl] .panel{border-left:none;border-right:1.5px solid var(--bdr)}
+.back-btn{font-size:.73em;font-weight:600;color:var(--p);text-decoration:none;opacity:.75;display:inline-flex;align-items:center;gap:4px}
+.back-btn:hover{opacity:1}
+.tool-emoji{font-size:1.9em}
+.tool-name{font-size:1.04em;font-weight:800;color:var(--p);margin-top:2px}
+.tool-desc{font-size:.7em;color:var(--muted);line-height:1.45;margin-top:2px}
+.divider{height:1px;background:var(--bdr);flex-shrink:0}
+.label{font-size:.66em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--bdr);border-radius:9px;padding:12px;text-align:center;cursor:pointer;background:var(--bg);transition:.15s}
+.upload-zone:hover{border-color:var(--p)}
+.uz-icon{font-size:1.25em;display:block;margin-bottom:3px}
+.uz-main{color:var(--p);font-weight:700;font-size:.76em}
+.uz-sub{color:var(--muted);font-size:.63em}
+
 /* TABS */
-.tabs{display:flex;gap:4px;margin-bottom:8px}
-.tab{flex:1;padding:6px 4px;border-radius:7px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--txm);font-size:.72em;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
-.tab.on{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.07)}
+.tab-row{display:flex;gap:4px;margin-bottom:8px}
+.tab-btn{flex:1;padding:5px 3px;border-radius:7px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--muted);font-size:.7em;font-weight:700;cursor:pointer;text-align:center;transition:.15s;font-family:inherit}
+.tab-btn.active{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.06)}
+
 /* PRESETS */
-.presets{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-.preset{padding:7px 4px;border-radius:8px;border:2px solid;cursor:pointer;text-align:center;font-size:.68em;font-weight:800;transition:all .2s;letter-spacing:.6px;background:var(--bg)}
-.preset:hover{transform:scale(1.04)}
-.preset.on{transform:scale(1.06);box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.presets-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+.preset-btn{padding:7px 4px;border-radius:8px;border:2px solid;cursor:pointer;text-align:center;font-size:.67em;font-weight:800;letter-spacing:.5px;background:var(--bg);transition:.15s;font-family:inherit}
+.preset-btn:hover,.preset-btn.active{transform:scale(1.04);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.preset-btn.active{box-shadow:0 3px 14px rgba(0,0,0,.18)}
+
 /* COLORS */
-.colors{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px}
-.cdot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s;flex-shrink:0}
-.cdot.on{border-color:var(--tx);transform:scale(1.15)}
+.color-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px}
+.color-dot{width:21px;height:21px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:.15s;flex-shrink:0}
+.color-dot.active{border-color:var(--tx);transform:scale(1.18)}
+
 /* SLIDERS */
-.sl-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.sl-row input[type=range]{flex:1;accent-color:var(--p)}
-.sl-v{font-size:.7em;font-weight:700;color:var(--p);min-width:32px;text-align:right}
-/* IMAGE PREVIEW */
-.simg-prev{background:repeating-conic-gradient(#ddd 0% 25%,#fff 0% 50%) 0 0/14px 14px;border-radius:7px;padding:8px;display:none;align-items:center;justify-content:center;min-height:55px;border:1px solid var(--bdr);margin-bottom:6px}
-.simg-prev img{max-width:100%;max-height:55px;object-fit:contain}
-/* HINT */
-.hint{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:8px;padding:8px;font-size:.7em;color:var(--txm);line-height:1.5}
+.slider-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.slider-row input[type=range]{flex:1;accent-color:var(--p);height:4px;cursor:pointer}
+.slider-val{font-size:.68em;font-weight:700;color:var(--p);min-width:30px;text-align:right}
+
 /* TEXT INPUT */
-.txt-inp{width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.82em;background:var(--sur);color:var(--tx);font-family:inherit;transition:border .2s;margin-bottom:7px;text-transform:uppercase}
-.txt-inp:focus{outline:none;border-color:var(--p)}
-.txt-inp::placeholder{color:var(--txm);text-transform:none}
+.text-field{width:100%;padding:7px 9px;border:1.5px solid var(--bdr);border-radius:7px;font-size:.8em;background:var(--sur);color:var(--tx);font-family:inherit;transition:.15s;margin-bottom:6px;text-transform:uppercase}
+.text-field:focus{outline:none;border-color:var(--p)}
+.text-field::placeholder{text-transform:none;color:var(--muted)}
+
+/* IMAGE PREVIEW */
+.img-prev-wrap{background:repeating-conic-gradient(#ccc 0 25%,#fff 0 50%) 0/14px 14px;border-radius:7px;padding:7px;display:none;align-items:center;justify-content:center;min-height:54px;border:1px solid var(--bdr);margin-bottom:5px}
+.img-prev-wrap img{max-width:100%;max-height:54px;object-fit:contain}
+
+/* HINT */
+.hint-box{background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.12);border-radius:7px;padding:7px 9px;font-size:.68em;color:var(--muted);line-height:1.5}
+
 /* BUTTONS */
-.btn-main{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:11px;border-radius:100px;font-size:.86em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto;font-family:inherit}
-.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.btn-main:disabled{background:var(--bdr);color:var(--txm);cursor:not-allowed;transform:none}
-.btn-danger{background:var(--bg);border:1.5px solid var(--bdr);color:var(--txm);padding:7px;border-radius:100px;font-size:.74em;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
-.btn-danger:hover:not(:disabled){border-color:var(--err);color:var(--err)}
-.btn-danger:disabled{opacity:.35;cursor:not-allowed}
-.btn-outline{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:7px;border-radius:100px;font-size:.76em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:all .2s;margin-bottom:5px}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:11px;border-radius:100px;font-size:.85em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit;margin-top:auto}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+.btn-primary:disabled{background:var(--bdr);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-outline{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:7px;border-radius:100px;font-size:.74em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s;margin-bottom:4px}
 .btn-outline:hover:not(:disabled){background:var(--p);color:#fff}
-.btn-outline:disabled{opacity:.38;cursor:not-allowed;border-color:var(--bdr);color:var(--txm)}
-.btn-outline.active{background:var(--p);color:#fff}
-.btns-row{display:flex;gap:5px}
-/* SPINNER / PROGRESS */
-.spin{width:24px;height:24px;border:3px solid var(--bdr);border-top-color:var(--p);border-radius:50%;animation:sp 1s linear infinite;margin:5px auto;display:none}
-@keyframes sp{to{transform:rotate(360deg)}}
-.pw{display:none}
-.pb{width:100%;height:4px;background:var(--bdr);border-radius:100px;overflow:hidden}
-.pf{height:100%;background:linear-gradient(90deg,var(--p),var(--s));width:0;transition:width .3s;border-radius:100px}
-.pt{font-size:.68em;color:var(--txm);margin-top:3px;text-align:center}
+.btn-outline:disabled{opacity:.35;cursor:not-allowed;border-color:var(--bdr);color:var(--muted)}
+.btn-outline.active-place{background:var(--p);color:#fff}
+.btn-sm-row{display:flex;gap:5px}
+.btn-sm{flex:1;background:var(--bg);border:1.5px solid var(--bdr);color:var(--muted);padding:6px 4px;border-radius:100px;font-size:.71em;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-sm:hover:not(:disabled){border-color:var(--err);color:var(--err)}
+.btn-sm:disabled{opacity:.3;cursor:not-allowed}
+
+/* PROGRESS */
+.progress-wrap{display:none}
+.progress-bar{width:100%;height:4px;background:var(--bdr);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));width:0;border-radius:100px;transition:width .25s}
+.progress-txt{font-size:.65em;color:var(--muted);margin-top:3px;text-align:center}
+
 /* RESULT */
-.result{display:none;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:9px;padding:11px}
-.result-t{color:var(--ok);font-weight:700;font-size:.78em;margin-bottom:7px;text-align:center}
-.dl-btn{background:var(--ok);color:#fff;padding:9px;border-radius:100px;font-size:.78em;font-weight:700;text-decoration:none;display:block;text-align:center;border:none;cursor:pointer;width:100%}
-.dl-btn:hover{background:#059669}
-.again-btn{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:7px;border-radius:100px;font-size:.74em;font-weight:700;cursor:pointer;width:100%;margin-top:6px;font-family:inherit;transition:all .2s}
+.result-wrap{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:9px;padding:10px}
+.result-title{color:var(--ok);font-weight:700;font-size:.76em;margin-bottom:7px;text-align:center}
+.download-link{background:var(--ok);color:#fff;padding:9px;border-radius:100px;font-size:.76em;font-weight:700;text-decoration:none;display:block;text-align:center}
+.download-link:hover{background:#059669}
+.again-btn{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:6px;border-radius:100px;font-size:.72em;font-weight:700;cursor:pointer;width:100%;margin-top:5px;font-family:inherit;transition:.15s}
 .again-btn:hover{background:var(--p);color:#fff}
-/* COPY HINT */
-.copy-hint{font-size:.64em;color:var(--txm);text-align:center;padding:5px;background:var(--bg);border-radius:6px;border:1px solid var(--bdr);line-height:1.6}
+
+/* KB HINT */
+.kb-hint{font-size:.61em;color:var(--muted);text-align:center;padding:4px;background:var(--bg);border-radius:6px;border:1px solid var(--bdr);line-height:1.6}
+
 /* MOBILE */
-@media(max-width:800px){
-  .ws{flex-direction:column-reverse}
-  .panel{width:100%;border-left:none;border-right:none;border-top:1px solid var(--bdr);max-height:52vh}
-  .content-area{flex:none;min-height:48vh}
-  .reading-sidebar{display:none}
+@media(max-width:780px){
+  .workspace{flex-direction:column-reverse}
+  .panel{width:100%;border-left:none;border-right:none;border-top:1.5px solid var(--bdr);max-height:56vh;padding:10px}
+  .content{flex:none;min-height:44vh}
 }
 </style>
 </head>
 <body>
 
-<!-- GHOST CURSOR: follows mouse when placing is active -->
-<div id="ghost"><img id="ghostImg" src="" alt="stamp preview"></div>
+<!-- Ghost cursor shown when placing stamps -->
+<div id="ghost-cursor"><img id="ghost-img" src="" alt=""></div>
 
+<!-- NAV -->
 <nav>
-  <div style="display:flex;align-items:center;gap:8px;min-width:0">
-    <a href="index.html" class="logo"><div class="logo-ic">📄</div>Doctor PDF</a>
+  <div style="display:flex;align-items:center;gap:8px;min-width:0;flex-shrink:0">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">📄</div>
+      Doctor PDF
+    </a>
     <span class="nav-sep">›</span>
-    <span class="nav-nm" id="ntn">Stamp PDF</span>
+    <span class="nav-title" id="T_pageTitle">Stamp PDF</span>
   </div>
-  <div class="nav-c">
-    <div class="qt" id="qt">
-      <button class="qt-btn" id="qtb"><span id="qtl">All Tools</span><span class="qt-arr">▾</span></button>
-      <div class="qt-drop">
-        <a href="merge-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
-        <a href="split-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/></svg></div><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
-        <a href="compress-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><span data-en="Compress" data-ar="ضغط">Compress</span></a>
-        <a href="rotate-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
-        <a href="sign-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><span data-en="Sign" data-ar="توقيع">Sign</span></a>
-        <a href="watermark-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div><span data-en="Watermark" data-ar="مائية">Watermark</span></a>
-        <a href="pdf-to-image.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
-        <a href="extract-text.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/></svg></div><span data-en="Extract Text" data-ar="نص">Extract Text</span></a>
-        <a href="protect-pdf.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><span data-en="Protect" data-ar="حماية">Protect</span></a>
-        <a href="remove-background.html" class="qt-a"><div class="qt-ic"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><span data-en="Remove BG" data-ar="خلفية">Remove BG</span></a>
+  <div class="nav-fill">
+    <div class="qt" id="qtMenu">
+      <button class="qt-trigger" id="qtTrigger">
+        <span id="T_allTools">All Tools</span>
+        <span class="qt-arr">▾</span>
+      </button>
+      <div class="qt-menu">
+        <a href="merge-pdf.html" class="qt-item"><span class="qt-item-ic">🔗</span><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
+        <a href="split-pdf.html" class="qt-item"><span class="qt-item-ic">✂️</span><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
+        <a href="compress-pdf.html" class="qt-item"><span class="qt-item-ic">🗜️</span><span data-en="Compress" data-ar="ضغط">Compress</span></a>
+        <a href="rotate-pdf.html" class="qt-item"><span class="qt-item-ic">🔄</span><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
+        <a href="sign-pdf.html" class="qt-item"><span class="qt-item-ic">✍️</span><span data-en="Sign" data-ar="توقيع">Sign</span></a>
+        <a href="watermark-pdf.html" class="qt-item"><span class="qt-item-ic">💧</span><span data-en="Watermark" data-ar="علامة مائية">Watermark</span></a>
+        <a href="protect-pdf.html" class="qt-item"><span class="qt-item-ic">🔐</span><span data-en="Protect" data-ar="حماية">Protect</span></a>
+        <a href="pdf-to-image.html" class="qt-item"><span class="qt-item-ic">🖼️</span><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
+        <a href="extract-text.html" class="qt-item"><span class="qt-item-ic">📝</span><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
+        <a href="remove-background.html" class="qt-item"><span class="qt-item-ic">🎨</span><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
       </div>
     </div>
   </div>
-  <div class="nav-r">
-    <button class="ic-btn" id="themeBtn">🌙</button>
-    <button class="ic-btn lang-btn" id="langBtn">عربي</button>
+  <div class="nav-end">
+    <button class="icon-btn" id="themeBtn">🌙</button>
+    <button class="icon-btn lang-btn" id="langBtn">عربي</button>
   </div>
-  <div class="nav-prog" id="np"></div>
 </nav>
 
-<div class="ws">
-  <div class="content-area">
-    <div class="view-bar" id="viewBar">
-      <button class="vb-btn on" id="btnGrid">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        <span id="btnGridL">Grid</span>
-      </button>
-      <button class="vb-btn" id="btnRead">
-        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span id="btnReadL">Reading</span>
-      </button>
+<!-- WORKSPACE -->
+<div class="workspace">
+
+  <!-- LEFT: PAGES -->
+  <div class="content" id="contentArea">
+    <div class="empty-state" id="emptyState">
+      <span class="empty-ic">📋</span>
+      <span class="empty-main" id="T_dropMain">Click or drop a PDF file here</span>
+      <span class="empty-sub" id="T_dropSub">Your file never leaves your browser</span>
     </div>
-    <div class="main-scroll" id="gridView" style="display:none">
-      <div class="ph" id="ph">
-        <span class="ph-ic">📋</span>
-        <p id="phT">Click here or drop a PDF file</p>
-      </div>
-      <div class="pages-grid" id="pagesGrid" style="display:none"></div>
-    </div>
-    <div class="reading-layout" id="readingView">
-      <div class="reading-pages" id="readingPages"></div>
-      <div class="reading-sidebar" id="readingSidebar"></div>
-    </div>
+    <div class="pages-area" id="pagesArea" style="display:none"></div>
   </div>
 
-  <!-- PANEL -->
+  <!-- RIGHT: PANEL -->
   <div class="panel">
-    <a href="index.html" class="back"><span id="backL">← All tools</span></a>
-    <div>
-      <div style="font-size:1.8em;margin-bottom:4px">📋</div>
-      <div class="tool-h" id="toolH">Stamp PDF</div>
-      <div class="tool-d" id="toolD">Click a stamp to place it on any page</div>
-    </div>
-    <div class="hr"></div>
-
-    <div class="uz" id="pdfZone">
-      <span class="uz-ic">📄</span>
-      <div class="uz-t" id="pdfUT">Click or drop PDF here</div>
-      <div class="uz-s" id="pdfUS">Any PDF file</div>
-    </div>
-    <div class="hr"></div>
+    <a href="index.html" class="back-btn" id="T_back">← All tools</a>
 
     <div>
-      <div class="lbl" id="stTypeLbl">Stamp Type</div>
-      <div class="tabs">
-        <div class="tab on" id="tabP"><span id="tabPL">Preset</span></div>
-        <div class="tab" id="tabC"><span id="tabCL">Image</span></div>
-        <div class="tab" id="tabT"><span id="tabTL">Text</span></div>
+      <div class="tool-emoji">📋</div>
+      <div class="tool-name" id="T_toolName">Stamp PDF</div>
+      <div class="tool-desc" id="T_toolDesc">Choose a stamp then click any page to place it</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PDF UPLOAD -->
+    <div>
+      <div class="label" id="T_pdfLabel">PDF File</div>
+      <div class="upload-zone" id="pdfZone">
+        <span class="uz-icon">📄</span>
+        <div class="uz-main" id="T_pdfBtn">Click or drop PDF here</div>
+        <div class="uz-sub" id="T_pdfSub">Any PDF — processed locally</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- STAMP TYPE TABS -->
+    <div>
+      <div class="label" id="T_stampType">Stamp Type</div>
+      <div class="tab-row">
+        <button class="tab-btn active" id="tabPreset" onclick="switchTab('preset')"><span id="T_tabPreset">Preset</span></button>
+        <button class="tab-btn" id="tabImage"  onclick="switchTab('image')"><span id="T_tabImage">Image</span></button>
+        <button class="tab-btn" id="tabText"   onclick="switchTab('text')"><span id="T_tabText">Text</span></button>
       </div>
 
-      <!-- PRESET SECTION -->
-      <div id="presetSec">
-        <div class="lbl" id="colorLbl">Color</div>
-        <div class="colors" id="colorRow"></div>
-        <div class="lbl" id="opLbl">Opacity</div>
-        <div class="sl-row">
-          <input type="range" id="opSl" min="20" max="100" value="75">
-          <span class="sl-v" id="opV">75%</span>
+      <!-- SEC: PRESET -->
+      <div id="secPreset">
+        <div class="label" id="T_colorLabel">Color</div>
+        <div class="color-row" id="colorRowPreset"></div>
+        <div class="label" id="T_opLabel">Opacity</div>
+        <div class="slider-row">
+          <input type="range" id="slOpPreset" min="20" max="100" value="70">
+          <span class="slider-val" id="valOpPreset">70%</span>
         </div>
-        <div class="hint" id="hint1">👆 <span id="hint1T">Click any stamp below to activate placing mode, then click on a page.</span></div>
-        <div class="presets" id="presetGrid" style="margin-top:9px"></div>
+        <div class="hint-box">👆 <span id="T_hint">Click a stamp below, then click on a page</span></div>
+        <div class="presets-grid" id="presetsGrid"></div>
       </div>
 
-      <!-- CUSTOM IMAGE SECTION -->
-      <div id="customSec" style="display:none">
-        <div class="uz" id="imgZone" style="margin-bottom:7px">
-          <span class="uz-ic">🖼️</span>
-          <div class="uz-t" id="imgUT">Click or drop stamp image</div>
-          <div class="uz-s" id="imgUS">PNG, JPG</div>
+      <!-- SEC: IMAGE -->
+      <div id="secImage" style="display:none">
+        <div class="upload-zone" id="imgZone" style="margin-bottom:7px">
+          <span class="uz-icon">🖼️</span>
+          <div class="uz-main" id="T_imgBtn">Click or drop image</div>
+          <div class="uz-sub" id="T_imgSub">PNG with transparent BG works best</div>
         </div>
-        <div class="simg-prev" id="simgPrev"><img id="simgEl" src="" alt=""></div>
-        <div id="bgSec" style="display:none">
-          <div class="lbl" id="bgLbl">BG Removal Sensitivity</div>
-          <div class="sl-row">
-            <input type="range" id="bgSl" min="5" max="120" value="30">
-            <span class="sl-v" id="bgV">30</span>
+        <div class="img-prev-wrap" id="imgPrev"><img id="imgPrevEl" src="" alt="stamp"></div>
+        <div id="bgSection" style="display:none">
+          <div class="label" id="T_bgLabel">BG removal threshold</div>
+          <div class="slider-row">
+            <input type="range" id="slBG" min="5" max="100" value="25">
+            <span class="slider-val" id="valBG">25</span>
           </div>
-          <button class="btn-outline" id="applyBgBtn"><span id="applyBgBtnL">Apply</span></button>
+          <button class="btn-outline" onclick="doRemoveBG()"><span id="T_applyBG">Remove Background</span></button>
         </div>
-        <div class="lbl" id="imgOpLbl">Opacity</div>
-        <div class="sl-row">
-          <input type="range" id="imgOpSl" min="20" max="100" value="90">
-          <span class="sl-v" id="imgOpV">90%</span>
+        <div class="label" id="T_imgOpLabel">Opacity</div>
+        <div class="slider-row">
+          <input type="range" id="slOpImage" min="20" max="100" value="90">
+          <span class="slider-val" id="valOpImage">90%</span>
         </div>
-        <button class="btn-outline" id="placeImgBtn" style="display:none">
-          <span id="placeImgL">📍 Click a page to place stamp</span>
-        </button>
+        <button class="btn-outline" id="placeImgBtn" style="display:none" onclick="beginPlacing()"><span id="T_placeImg">📍 Click a page to place stamp</span></button>
       </div>
 
-      <!-- TEXT STAMP SECTION -->
-      <div id="textSec" style="display:none">
-        <div class="lbl" id="txtLbl">Stamp Text</div>
-        <input type="text" class="txt-inp" id="txtInp" placeholder="e.g. APPROVED" maxlength="18" spellcheck="false">
-        <div class="lbl" id="txtColorLbl">Color</div>
-        <div class="colors" id="colorRowT"></div>
-        <div class="lbl" id="txtOpLbl">Opacity</div>
-        <div class="sl-row">
-          <input type="range" id="opSlT" min="20" max="100" value="75">
-          <span class="sl-v" id="opVT">75%</span>
+      <!-- SEC: TEXT -->
+      <div id="secText" style="display:none">
+        <div class="label" id="T_textLabel">Stamp Text</div>
+        <input type="text" class="text-field" id="textInput" placeholder="e.g. APPROVED" maxlength="16" spellcheck="false">
+        <div class="label" id="T_textColorLabel">Color</div>
+        <div class="color-row" id="colorRowText"></div>
+        <div class="label" id="T_textOpLabel">Opacity</div>
+        <div class="slider-row">
+          <input type="range" id="slOpText" min="20" max="100" value="70">
+          <span class="slider-val" id="valOpText">70%</span>
         </div>
-        <button class="btn-outline" id="placeTextBtn" disabled>
-          <span id="placeTextL">📍 Click page to place</span>
-        </button>
+        <button class="btn-outline" id="placeTextBtn" disabled onclick="beginPlacing()"><span id="T_placeText">📍 Click page to place</span></button>
       </div>
     </div>
 
-    <div class="hr"></div>
+    <div class="divider"></div>
 
+    <!-- SIZE + ALL PAGES -->
     <div>
-      <div class="lbl" id="sizeLbl">Stamp Size</div>
-      <div class="sl-row">
-        <input type="range" id="szSl" min="5" max="70" value="25">
-        <span class="sl-v" id="szV">25%</span>
+      <div class="label" id="T_sizeLabel">Stamp Size</div>
+      <div class="slider-row">
+        <input type="range" id="slSize" min="5" max="65" value="22">
+        <span class="slider-val" id="valSize">22%</span>
       </div>
-      <!-- ALL PAGES BUTTON -->
-      <button class="btn-outline" id="allPagesBtn" disabled style="margin-top:2px">
-        <span id="allPagesL">⬛ Apply to All Pages</span>
-      </button>
+      <button class="btn-outline" id="allPagesBtn" disabled onclick="applyToAll()"><span id="T_allPages">Apply to all pages</span></button>
     </div>
 
-    <div class="copy-hint" id="copyHint">Ctrl+C copy · Ctrl+V paste · Del delete · Ctrl+Z undo · Esc cancel</div>
+    <div class="kb-hint" id="T_kbHint">Ctrl+Z undo · Del remove stamp · Esc cancel</div>
 
-    <div class="btns-row">
-      <button class="btn-danger" id="undoBtn" disabled style="flex:1"><span id="undoL">↩ Undo</span></button>
-      <button class="btn-danger" id="resetBtn" style="flex:1"><span id="resetL">🗑 Reset</span></button>
-      <button class="btn-danger" id="delSelBtn" style="flex:1;border-color:var(--err);color:var(--err)"><span id="delSelL">✕ Del</span></button>
+    <!-- SMALL ACTIONS -->
+    <div class="btn-sm-row">
+      <button class="btn-sm" id="undoBtn" disabled onclick="doUndo()"><span id="T_undo">↩ Undo</span></button>
+      <button class="btn-sm" id="clearBtn" onclick="clearAll()"><span id="T_clear">🗑 Clear</span></button>
+      <button class="btn-sm" id="delBtn" style="border-color:var(--err);color:var(--err)" onclick="deleteSelected()"><span id="T_del">✕ Del</span></button>
     </div>
 
-    <div class="spin" id="spin"></div>
-    <div class="pw" id="pw"><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="pt">Processing…</div></div>
-    <button class="btn-main" id="actionBtn" disabled><span id="actionL">Apply Stamps & Download</span></button>
-    <div class="result" id="result">
-      <div class="result-t" id="resultT">✅ Done!</div>
-      <a class="dl-btn" id="dlBtn" href="#">📥 Download</a>
-      <button class="again-btn" id="againBtn"><span id="againL">Stamp Another File</span></button>
+    <!-- PROGRESS -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-txt" id="progressTxt">Processing…</div>
+    </div>
+
+    <!-- MAIN BUTTON -->
+    <button class="btn-primary" id="applyBtn" disabled onclick="doApply()">
+      <span id="T_applyBtn">Apply Stamps &amp; Download</span>
+    </button>
+
+    <!-- RESULT -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-title" id="T_resultTitle">✅ Stamps applied!</div>
+      <a class="download-link" id="downloadLink" href="#" download>📥 Download</a>
+      <button class="again-btn" onclick="resetAll()"><span id="T_again">Stamp another file</span></button>
     </div>
   </div>
 </div>
 
-<input type="file" id="pdfFi" accept=".pdf" style="display:none;position:fixed;top:-9999px;left:-9999px">
-<input type="file" id="imgFi" accept="image/*" style="display:none;position:fixed;top:-9999px;left:-9999px">
+<!-- Hidden file inputs -->
+<input type="file" id="pdfInput" accept=".pdf" style="position:fixed;top:-9999px;left:-9999px">
+<input type="file" id="imgInput" accept="image/*" style="position:fixed;top:-9999px;left:-9999px">
 
 <script>
-'use strict';
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+/* =====================================================
+   STAMP PDF – Doctor PDF
+   Key fix: dataUrl → bytes via atob() not fetch()
+   ===================================================== */
 
-const TW=140, READ_W=600;
-const COLORS=['#ef4444','#10b981','#f59e0b','#6366f1','#06b6d4','#64748b','#1e3a8a','#000'];
-const PRESETS=[
-  {txt:'APPROVED',color:'#10b981'},{txt:'REJECTED',color:'#ef4444'},
-  {txt:'DRAFT',color:'#f59e0b'},{txt:'CONFIDENTIAL',color:'#6366f1'},
-  {txt:'REVIEWED',color:'#06b6d4'},{txt:'VOID',color:'#64748b'},
-  {txt:'FINAL',color:'#1e3a8a'},{txt:'URGENT',color:'#ef4444'}
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+/* ── CONFIG ── */
+var THUMB_W = 150;
+var COLORS  = ['#ef4444','#10b981','#f59e0b','#6366f1','#06b6d4','#64748b','#1e3a8a','#000'];
+var PRESETS = [
+  {txt:'APPROVED',   col:'#10b981'},
+  {txt:'REJECTED',   col:'#ef4444'},
+  {txt:'DRAFT',      col:'#f59e0b'},
+  {txt:'CONFIDENTIAL',col:'#6366f1'},
+  {txt:'REVIEWED',   col:'#06b6d4'},
+  {txt:'VOID',       col:'#64748b'},
+  {txt:'FINAL',      col:'#1e3a8a'},
+  {txt:'URGENT',     col:'#ef4444'}
 ];
 
-// ── STATE ──
-let pdfFile=null, totalPages=0, pages=[];
-let viewMode='grid', stampType='preset';
-let selColor='#ef4444', txtColor='#ef4444';
-let opacity=75, imgOpacity=90, txtOpacity=75, sizePct=25;
-let customDataUrl=null, rawDataUrl=null;
-let placing=false, selStamp=null, copiedStamp=null, activeReadingPage=0;
-let _drag={on:false,el:null,sx:0,sy:0,ol:0,ot:0};
-let _rsz={on:false,el:null,sx:0,ow:0};
+/* ── STATE ── */
+var S = {
+  pdfFile:     null,
+  pages:       [],   /* [{canvas, stamps:[{dataUrl,xPct,yPct,wPct,opacity}]}] */
+  placing:     false,
+  type:        'preset', /* 'preset' | 'image' | 'text' */
+  presetColor: '#ef4444',
+  textColor:   '#ef4444',
+  presetOp:    70,
+  textOp:      70,
+  imageOp:     90,
+  sizePct:     22,
+  customUrl:   null,
+  rawImgUrl:   null,
+  selected:    null, /* DOM element of selected stamp */
+  copied:      null, /* stamp object copy */
+  undoStack:   [],
+  dark: localStorage.getItem('dpdf_dark') === '1',
+  lang: localStorage.getItem('dpdf_lang') || (navigator.language||'').slice(0,2) === 'ar' ? 'ar' : 'en'
+};
 
-// ── UNDO ──
-let undoStack=[];
-const MAX_UNDO=20;
-function pushUndo(){
-  undoStack.push(JSON.stringify(pages.map(function(p){return {stamps:p.stamps.map(function(s){return Object.assign({},s);})};})));
-  if(undoStack.length>MAX_UNDO) undoStack.shift();
-  document.getElementById('undoBtn').disabled=false;
-}
-function doUndo(){
-  if(!undoStack.length) return;
-  var snap=JSON.parse(undoStack.pop());
-  snap.forEach(function(s,i){if(pages[i]) pages[i].stamps=s.stamps;});
-  selStamp=null;
-  renderCurrent();
-  document.getElementById('undoBtn').disabled=(undoStack.length===0);
-}
+/* drag & resize */
+var DG = {on:false, el:null, ox:0, oy:0, sx:0, sy:0};
+var RS = {on:false, el:null, sw:0, sx:0};
 
-// ── DRAG PREVENTION ──
-window.addEventListener('dragover',function(e){e.preventDefault();e.stopPropagation();},true);
-window.addEventListener('drop',function(e){e.preventDefault();e.stopPropagation();},true);
-window.addEventListener('dragenter',function(e){e.preventDefault();},true);
-window.addEventListener('dragover',function(e){
-  if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files'))
-    document.getElementById('ph').classList.add('drag');
-});
-window.addEventListener('dragleave',function(e){
-  if(!e.relatedTarget||e.relatedTarget===document.documentElement)
-    document.getElementById('ph').classList.remove('drag');
-});
-window.addEventListener('drop',function(e){
-  document.getElementById('ph').classList.remove('drag');
-  var files=[...(e.dataTransfer.files||[])];
-  var pdfs=files.filter(function(f){return f.type==='application/pdf';});
-  var imgs=files.filter(function(f){return f.type.startsWith('image/');});
-  if(pdfs.length) loadPDF(pdfs[0]);
-  else if(imgs.length) loadImg(imgs[0]);
-});
+/* ── BOOT ── */
+(function boot(){
+  buildPresets();
+  buildColorRow('colorRowPreset', false);
+  buildColorRow('colorRowText',   true);
+  wireSliders();
+  wireDropZones();
+  wireKeyboard();
+  wireMouseTouch();
+  wireNav();
+  if (S.dark) applyDark();
+  applyLang();
+})();
 
-// ── FILE INPUTS ──
-var pdfFi=document.getElementById('pdfFi');
-var imgFi=document.getElementById('imgFi');
-pdfFi.addEventListener('change',function(){if(this.files&&this.files[0]){loadPDF(this.files[0]);this.value='';}});
-imgFi.addEventListener('change',function(){if(this.files&&this.files[0]){loadImg(this.files[0]);this.value='';}});
-document.getElementById('ph').addEventListener('click',function(){pdfFi.click();});
-document.getElementById('pdfZone').addEventListener('click',function(){pdfFi.click();});
-document.getElementById('imgZone').addEventListener('click',function(){imgFi.click();});
-document.getElementById('btnGrid').addEventListener('click',function(){setView('grid');});
-document.getElementById('btnRead').addEventListener('click',function(){setView('reading');});
-
-// ── PANEL CONTROLS ──
-document.getElementById('opSl').addEventListener('input',function(){
-  opacity=parseInt(this.value);
-  document.getElementById('opV').textContent=opacity+'%';
-  if(placing) updateGhost();
-});
-document.getElementById('imgOpSl').addEventListener('input',function(){
-  imgOpacity=parseInt(this.value);
-  document.getElementById('imgOpV').textContent=imgOpacity+'%';
-});
-document.getElementById('opSlT').addEventListener('input',function(){
-  txtOpacity=parseInt(this.value);
-  document.getElementById('opVT').textContent=txtOpacity+'%';
-});
-document.getElementById('szSl').addEventListener('input',function(){
-  sizePct=parseInt(this.value);
-  document.getElementById('szV').textContent=sizePct+'%';
-  updateGhostSize();
-});
-document.getElementById('bgSl').addEventListener('input',function(){
-  document.getElementById('bgV').textContent=this.value;
-});
-document.getElementById('applyBgBtn').addEventListener('click',doRemoveBg);
-document.getElementById('placeImgBtn').addEventListener('click',function(){
-  placing=true;
-  updatePlacingUI();
-  updateGhost();
-});
-document.getElementById('txtInp').addEventListener('input',function(){
-  var has=this.value.trim().length>0;
-  document.getElementById('placeTextBtn').disabled=!has;
-  if(placing) updateGhost();
-});
-document.getElementById('placeTextBtn').addEventListener('click',function(){
-  if(!document.getElementById('txtInp').value.trim()) return;
-  placing=true;
-  updatePlacingUI();
-  updateGhost();
-});
-document.getElementById('allPagesBtn').addEventListener('click',doAllPages);
-document.getElementById('resetBtn').addEventListener('click',function(){
-  if(!pages.some(function(p){return p.stamps.length>0;})) return;
-  pushUndo();
-  pages.forEach(function(pg){pg.stamps=[];});
-  selStamp=null;
-  renderCurrent();
-});
-document.getElementById('delSelBtn').addEventListener('click',deleteSelected);
-document.getElementById('undoBtn').addEventListener('click',doUndo);
-document.getElementById('actionBtn').addEventListener('click',doApply);
-document.getElementById('againBtn').addEventListener('click',resetTool);
-document.getElementById('tabP').addEventListener('click',function(){switchTab('preset');});
-document.getElementById('tabC').addEventListener('click',function(){switchTab('custom');});
-document.getElementById('tabT').addEventListener('click',function(){switchTab('text');});
-document.getElementById('themeBtn').addEventListener('click',toggleDark);
-document.getElementById('langBtn').addEventListener('click',toggleLang);
-document.getElementById('qtb').addEventListener('click',function(e){
-  e.stopPropagation();document.getElementById('qt').classList.toggle('open');
-});
-document.addEventListener('click',function(){document.getElementById('qt').classList.remove('open');});
-
-// ── KEYBOARD ──
-document.addEventListener('keydown',function(e){
-  if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
-  if(e.key==='Escape'){placing=false;updatePlacingUI();return;}
-  if((e.key==='Delete'||e.key==='Backspace')&&selStamp){e.preventDefault();deleteSelected();return;}
-  if(e.ctrlKey&&e.key.toLowerCase()==='c'&&selStamp){copyStamp();return;}
-  if(e.ctrlKey&&e.key.toLowerCase()==='v'&&copiedStamp){pasteStamp();return;}
-  if(e.ctrlKey&&e.key.toLowerCase()==='z'){e.preventDefault();doUndo();return;}
-});
-
-// ── GHOST CURSOR ──
-document.addEventListener('mousemove',function(e){
-  if(!placing) return;
-  var g=document.getElementById('ghost');
-  if(g.style.display==='block'){
-    g.style.left=e.clientX+'px';
-    g.style.top=e.clientY+'px';
-  }
-});
-function updateGhost(){
-  var url=getStampDataUrl();
-  var g=document.getElementById('ghost');
-  var gi=document.getElementById('ghostImg');
-  if(!url||!placing){g.style.display='none';return;}
-  if(gi.src!==url) gi.src=url;
-  gi.style.width=Math.max(36,Math.round(TW*sizePct/100))+'px';
-  g.style.display='block';
-}
-function updateGhostSize(){
-  var gi=document.getElementById('ghostImg');
-  gi.style.width=Math.max(36,Math.round(TW*sizePct/100))+'px';
-}
-function hideGhost(){document.getElementById('ghost').style.display='none';}
-
-// ── MOUSE DRAG & RESIZE ──
-document.addEventListener('mousemove',function(e){
-  if(_drag.on&&_drag.el){
-    var card=_drag.el.closest('.page-card');
-    var cv=card?card.querySelector('canvas'):null;
-    if(!cv) return;
-    var dx=e.clientX-_drag.sx, dy=e.clientY-_drag.sy;
-    _drag.el.style.left=Math.max(0,Math.min(_drag.ol+dx,cv.width-_drag.el.offsetWidth))+'px';
-    _drag.el.style.top=Math.max(0,Math.min(_drag.ot+dy,cv.height-_drag.el.offsetHeight))+'px';
-  }
-  if(_rsz.on&&_rsz.el){
-    var cv2=_rsz.el.closest('.page-card').querySelector('canvas');
-    var img=_rsz.el.querySelector('img');
-    if(img) img.style.width=Math.max(30,Math.min(_rsz.ow+(e.clientX-_rsz.sx),cv2?cv2.width*0.9:300))+'px';
-  }
-});
-document.addEventListener('mouseup',function(){
-  if(_drag.on&&_drag.el) saveStampPos(_drag.el);
-  if(_rsz.on&&_rsz.el) saveStampSize(_rsz.el);
-  _drag={on:false,el:null,sx:0,sy:0,ol:0,ot:0};
-  _rsz={on:false,el:null,sx:0,ow:0};
-});
-
-// ── TOUCH DRAG & RESIZE ──
-document.addEventListener('touchmove',function(e){
-  if(!_drag.on&&!_rsz.on) return;
-  e.preventDefault();
-  var t=e.touches[0];
-  if(_drag.on&&_drag.el){
-    var card=_drag.el.closest('.page-card');
-    var cv=card?card.querySelector('canvas'):null;
-    if(!cv) return;
-    _drag.el.style.left=Math.max(0,Math.min(_drag.ol+(t.clientX-_drag.sx),cv.width-_drag.el.offsetWidth))+'px';
-    _drag.el.style.top=Math.max(0,Math.min(_drag.ot+(t.clientY-_drag.sy),cv.height-_drag.el.offsetHeight))+'px';
-  }
-  if(_rsz.on&&_rsz.el){
-    var cv2=_rsz.el.closest('.page-card').querySelector('canvas');
-    var img2=_rsz.el.querySelector('img');
-    if(img2) img2.style.width=Math.max(30,Math.min(_rsz.ow+(t.clientX-_rsz.sx),cv2?cv2.width*0.9:300))+'px';
-  }
-},{passive:false});
-document.addEventListener('touchend',function(){
-  if(_drag.on&&_drag.el) saveStampPos(_drag.el);
-  if(_rsz.on&&_rsz.el) saveStampSize(_rsz.el);
-  _drag={on:false,el:null,sx:0,sy:0,ol:0,ot:0};
-  _rsz={on:false,el:null,sx:0,ow:0};
-});
-
-document.getElementById('pagesGrid').addEventListener('click',function(e){
-  if(!e.target.closest('.st-el')&&!e.target.closest('.page-card.placing')) deselect();
-});
-document.getElementById('readingPages').addEventListener('click',function(e){
-  if(!e.target.closest('.st-el')&&!e.target.closest('.page-card.placing')) deselect();
-});
-
-// ── LOAD PDF ──
-async function loadPDF(file){
-  if(!file||file.type!=='application/pdf') return;
-  pdfFile=file; pages=[]; undoStack=[];
-  document.getElementById('undoBtn').disabled=true;
-  document.getElementById('ph').style.display='none';
-  document.getElementById('pagesGrid').style.display='none';
-  document.getElementById('pagesGrid').innerHTML='';
-  document.getElementById('readingPages').innerHTML='';
-  document.getElementById('readingSidebar').innerHTML='';
-  var bytes=await file.arrayBuffer();
-  var doc=await pdfjsLib.getDocument({data:bytes}).promise;
-  totalPages=doc.numPages;
-  for(var i=0;i<totalPages;i++){
-    var page=await doc.getPage(i+1);
-    var vp=page.getViewport({scale:1});
-    var scale=TW/vp.width;
-    var vp2=page.getViewport({scale:scale});
-    var cv=document.createElement('canvas');
-    cv.width=Math.round(vp2.width);cv.height=Math.round(vp2.height);
-    await page.render({canvasContext:cv.getContext('2d'),viewport:vp2}).promise;
-    pages.push({canvas:cv,stamps:[]});
-  }
-  doc.destroy();
-  document.getElementById('viewBar').classList.add('show');
-  document.getElementById('actionBtn').disabled=false;
-  renderCurrent();
-  updateAllPagesBtn();
-}
-
-// ── VIEW ──
-function setView(mode){
-  viewMode=mode;
-  document.getElementById('btnGrid').classList.toggle('on',mode==='grid');
-  document.getElementById('btnRead').classList.toggle('on',mode==='reading');
-  renderCurrent();
-}
-function renderCurrent(){
-  if(viewMode==='grid') renderGrid(); else renderReading();
-}
-
-// ── GRID ──
-function renderGrid(){
-  document.getElementById('gridView').style.display='flex';
-  document.getElementById('readingView').style.display='none';
-  var grid=document.getElementById('pagesGrid');
-  grid.innerHTML='';
-  if(!pages.length){document.getElementById('ph').style.display='flex';return;}
-  document.getElementById('ph').style.display='none';
-  grid.style.display='flex';
-  pages.forEach(function(pg,i){grid.appendChild(makeCard(pg,i,TW,false));});
-}
-
-// ── READING ──
-function renderReading(){
-  document.getElementById('gridView').style.display='none';
-  document.getElementById('readingView').style.display='flex';
-  if(!pages.length) return;
-  var main=document.getElementById('readingPages');
-  var sidebar=document.getElementById('readingSidebar');
-  main.innerHTML='';sidebar.innerHTML='';
-  var maxW=Math.min(READ_W,main.clientWidth-40||READ_W);
-  pages.forEach(function(pg,i){
-    var scale=maxW/pg.canvas.width;
-    var card=makeCard(pg,i,pg.canvas.width*scale,true);
-    card.dataset.pi=i;main.appendChild(card);
-    var tb=document.createElement('div');
-    tb.className='sb-thumb'+(i===activeReadingPage?' active':'');
-    tb.dataset.pi=i;
-    var ts=76/pg.canvas.width;
-    var tcv=document.createElement('canvas');
-    tcv.width=Math.round(pg.canvas.width*ts);tcv.height=Math.round(pg.canvas.height*ts);
-    tcv.getContext('2d').drawImage(pg.canvas,0,0,tcv.width,tcv.height);
-    tb.appendChild(tcv);
-    var tnum=document.createElement('div');tnum.className='sb-num';tnum.textContent=i+1;
-    tb.appendChild(tnum);
-    tb.addEventListener('click',function(){
-      var target=main.querySelector('.page-card[data-pi="'+i+'"]');
-      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
-    });
-    sidebar.appendChild(tb);
-  });
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(en.isIntersecting){
-        activeReadingPage=parseInt(en.target.dataset.pi);
-        document.querySelectorAll('.sb-thumb').forEach(function(t,idx){
-          t.classList.toggle('active',idx===activeReadingPage);
-        });
-        var act=document.querySelector('.sb-thumb[data-pi="'+activeReadingPage+'"]');
-        if(act) act.scrollIntoView({behavior:'smooth',block:'nearest'});
-      }
-    });
-  },{root:main,threshold:0.3});
-  main.querySelectorAll('.page-card').forEach(function(c){obs.observe(c);});
-}
-
-// ── MAKE CARD ──
-function makeCard(pg,i,targetW,forReading){
-  var scale=targetW/pg.canvas.width;
-  var card=document.createElement('div');
-  card.className='page-card';card.dataset.pi=i;
-  var cv=document.createElement('canvas');
-  cv.width=Math.round(pg.canvas.width*scale);cv.height=Math.round(pg.canvas.height*scale);
-  cv.getContext('2d').drawImage(pg.canvas,0,0,cv.width,cv.height);
-  card.appendChild(cv);
-  if(!forReading){
-    var lbl=document.createElement('div');lbl.className='pg-lbl';lbl.textContent='p.'+(i+1);
-    card.appendChild(lbl);
-  }
-  // Stamp count badge
-  if(pg.stamps.length>0){
-    var badge=document.createElement('div');badge.className='st-badge';badge.textContent=pg.stamps.length;
-    card.appendChild(badge);
-  }
-  // Render existing stamps
-  pg.stamps.forEach(function(st,si){card.appendChild(makeStEl(st,i,si,cv));});
-  // Click to place
-  card.addEventListener('click',function(e){
-    if(!placing) return;
-    if(e.target.closest('.st-el')) return;
-    var rect=cv.getBoundingClientRect();
-    var xPct=Math.max(0.05,Math.min(0.95,(e.clientX-rect.left)/rect.width));
-    var yPct=Math.max(0.05,Math.min(0.95,(e.clientY-rect.top)/rect.height));
-    pushUndo();
-    placeStamp(i,xPct,yPct,cv);
-    if(stampType!=='preset'){placing=false;updatePlacingUI();}
-  });
-  if(placing) card.classList.add('placing');
-  return card;
-}
-
-// ── STAMP ELEMENT ──
-function makeStEl(st,pi,si,cv){
-  var el=document.createElement('div');el.className='st-el';el.dataset.pi=pi;el.dataset.si=si;
-  var img=document.createElement('img');
-  img.src=st.dataUrl;img.style.width=Math.round(cv.width*st.wPct)+'px';img.style.opacity=st.opacity/100;
-  el.appendChild(img);
-  var sz=document.createElement('div');sz.className='st-sz';el.appendChild(sz);
-  var del=document.createElement('button');del.className='st-del';del.textContent='✕';
-  del.addEventListener('click',function(e){
-    e.stopPropagation();pushUndo();pages[pi].stamps.splice(si,1);selStamp=null;renderCurrent();
-  });
-  el.appendChild(del);
-  el.style.left=Math.round(cv.width*st.xPct)+'px';
-  el.style.top=Math.round(cv.height*st.yPct)+'px';
-  // Mouse
-  el.addEventListener('mousedown',function(e){
-    if(e.target===sz){e.preventDefault();e.stopPropagation();selectSt(el);_rsz={on:true,el:el,sx:e.clientX,ow:img.offsetWidth};}
-    else{e.preventDefault();e.stopPropagation();selectSt(el);_drag={on:true,el:el,sx:e.clientX,sy:e.clientY,ol:el.offsetLeft,ot:el.offsetTop};}
-  });
-  // Touch
-  el.addEventListener('touchstart',function(e){
-    var t=e.touches[0];
-    if(e.target===sz){e.preventDefault();e.stopPropagation();selectSt(el);_rsz={on:true,el:el,sx:t.clientX,ow:img.offsetWidth};}
-    else{e.preventDefault();e.stopPropagation();selectSt(el);_drag={on:true,el:el,sx:t.clientX,sy:t.clientY,ol:el.offsetLeft,ot:el.offsetTop};}
-  },{passive:false});
-  return el;
-}
-function selectSt(el){if(selStamp) selStamp.classList.remove('sel');selStamp=el;el.classList.add('sel');}
-function deselect(){if(selStamp) selStamp.classList.remove('sel');selStamp=null;}
-function saveStampPos(el){
-  var card=el.closest('.page-card'),cv=card?card.querySelector('canvas'):null;
-  var pi=parseInt(el.dataset.pi),si=parseInt(el.dataset.si);
-  if(cv&&pages[pi]&&pages[pi].stamps[si]){
-    pages[pi].stamps[si].xPct=el.offsetLeft/cv.width;
-    pages[pi].stamps[si].yPct=el.offsetTop/cv.height;
-  }
-}
-function saveStampSize(el){
-  var card=el.closest('.page-card'),cv=card?card.querySelector('canvas'):null;
-  var pi=parseInt(el.dataset.pi),si=parseInt(el.dataset.si);
-  if(cv&&pages[pi]&&pages[pi].stamps[si]){
-    var img=el.querySelector('img');
-    if(img) pages[pi].stamps[si].wPct=img.offsetWidth/cv.width;
-  }
-}
-
-// ── PLACE STAMP ──
-function placeStamp(pi,xPct,yPct,cv){
-  var dataUrl=getStampDataUrl();if(!dataUrl) return;
-  var op=stampType==='preset'?opacity:(stampType==='text'?txtOpacity:imgOpacity);
-  var wPct=sizePct/100;
-  pages[pi].stamps.push({dataUrl:dataUrl,xPct:Math.max(0,xPct-wPct/2),yPct:Math.max(0,yPct-0.05),wPct:wPct,opacity:op});
-  renderCurrent();
-  updateAllPagesBtn();
-}
-
-function getStampDataUrl(){
-  if(stampType==='preset'){
-    var on=document.querySelector('.preset.on');
-    return on?genPreset(on.dataset.txt,selColor,opacity):null;
-  } else if(stampType==='text'){
-    var txt=document.getElementById('txtInp').value.trim();
-    return txt?genPreset(txt,txtColor,txtOpacity):null;
-  } else {
-    return customDataUrl||null;
-  }
-}
-
-function genPreset(txt,color,op){
-  var cv=document.createElement('canvas');
-  cv.width=520;cv.height=190;
-  var ctx=cv.getContext('2d');
-  ctx.globalAlpha=op/100;
-  ctx.strokeStyle=color;
-  // Outer border
-  ctx.lineWidth=9;ctx.strokeRect(8,8,cv.width-16,cv.height-16);
-  // Inner border
-  ctx.lineWidth=3;ctx.strokeRect(20,20,cv.width-40,cv.height-40);
-  // Text
-  ctx.fillStyle=color;
-  var fs=txt.length>12?44:txt.length>8?54:txt.length>5?66:80;
-  ctx.font='900 '+fs+'px Arial Black, Arial, sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(txt,cv.width/2,cv.height/2);
-  return cv.toDataURL('image/png');
-}
-
-// ── ALL PAGES ──
-function doAllPages(){
-  var dataUrl=getStampDataUrl();
-  if(!dataUrl||!pages.length) return;
-  pushUndo();
-  var op=stampType==='preset'?opacity:(stampType==='text'?txtOpacity:imgOpacity);
-  var wPct=sizePct/100;
-  pages.forEach(function(pg){
-    pg.stamps.push({dataUrl:dataUrl,xPct:Math.max(0,0.5-wPct/2),yPct:0.44,wPct:wPct,opacity:op});
-  });
-  renderCurrent();
-}
-function updateAllPagesBtn(){
-  document.getElementById('allPagesBtn').disabled=!(getStampDataUrl()&&pages.length>0);
-}
-
-// ── COPY / PASTE ──
-function copyStamp(){
-  if(!selStamp) return;
-  var pi=parseInt(selStamp.dataset.pi),si=parseInt(selStamp.dataset.si);
-  if(!pages[pi]||!pages[pi].stamps[si]) return;
-  var card=selStamp.closest('.page-card'),cv=card?card.querySelector('canvas'):null;
-  var st=pages[pi].stamps[si];
-  copiedStamp={dataUrl:st.dataUrl,opacity:st.opacity,
-    wPct:cv?selStamp.querySelector('img').offsetWidth/cv.width:st.wPct,
-    xPct:cv?selStamp.offsetLeft/cv.width:st.xPct,
-    yPct:cv?selStamp.offsetTop/cv.height:st.yPct};
-  selStamp.style.outline='3px solid var(--ok)';
-  setTimeout(function(){if(selStamp)selStamp.style.outline='';},600);
-}
-function pasteStamp(){
-  if(!copiedStamp) return;
-  // FIX: paste to the correct active page, not always 0
-  var pi=viewMode==='reading'?activeReadingPage:(selStamp?parseInt(selStamp.dataset.pi):0);
-  if(pi>=pages.length) pi=0;
-  pushUndo();
-  pages[pi].stamps.push({
-    dataUrl:copiedStamp.dataUrl,opacity:copiedStamp.opacity,wPct:copiedStamp.wPct,
-    xPct:Math.min(copiedStamp.xPct+0.03,0.88),yPct:Math.min(copiedStamp.yPct+0.03,0.88)
-  });
-  renderCurrent();
-}
-function deleteSelected(){
-  if(!selStamp) return;
-  var pi=parseInt(selStamp.dataset.pi),si=parseInt(selStamp.dataset.si);
-  pushUndo();if(pages[pi]) pages[pi].stamps.splice(si,1);selStamp=null;renderCurrent();
-}
-
-// ── INIT PRESETS ──
-function initPresets(){
-  var grid=document.getElementById('presetGrid');
-  PRESETS.forEach(function(p){
-    var btn=document.createElement('div');
-    btn.className='preset';btn.dataset.txt=p.txt;
-    btn.style.cssText='color:'+p.color+';border-color:'+p.color;
-    btn.textContent=p.txt;
-    btn.addEventListener('click',function(){
-      var wasOn=btn.classList.contains('on');
-      document.querySelectorAll('.preset').forEach(function(el){el.classList.remove('on');});
-      if(!wasOn){
-        btn.classList.add('on');
-        selColor=p.color;
-        // Sync color dots to match preset color
-        document.querySelectorAll('#colorRow .cdot').forEach(function(el){
-          el.classList.toggle('on',el.dataset.color===p.color);
-        });
-        placing=true;
-      } else {
-        placing=false;
-      }
-      updatePlacingUI();updateGhost();updateAllPagesBtn();
-    });
+/* ───────────────────────────────────────────────── */
+/* PRESET BUTTONS                                     */
+/* ───────────────────────────────────────────────── */
+function buildPresets() {
+  var grid = document.getElementById('presetsGrid');
+  PRESETS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.className   = 'preset-btn';
+    btn.textContent = p.txt;
+    btn.dataset.txt = p.txt;
+    btn.dataset.col = p.col;
+    btn.style.cssText = 'color:'+p.col+';border-color:'+p.col;
+    btn.addEventListener('click', function(){ togglePreset(btn, p.col); });
     grid.appendChild(btn);
   });
 }
 
-// ── INIT COLORS ──
-function initColors(){
-  function makeColorRow(rowId,colorVar,isTxt){
-    var row=document.getElementById(rowId);
-    COLORS.forEach(function(c){
-      var dot=document.createElement('div');
-      dot.className='cdot'+(c===selColor?' on':'');
-      dot.dataset.color=c;dot.style.background=c;
-      dot.addEventListener('click',function(){
-        if(isTxt) txtColor=c; else selColor=c;
-        document.querySelectorAll('#'+rowId+' .cdot').forEach(function(el){el.classList.remove('on');});
-        dot.classList.add('on');
-        if(!isTxt){
-          // Update active preset visual color
-          var ap=document.querySelector('.preset.on');
-          if(ap){ap.style.cssText='color:'+c+';border-color:'+c;}
-          if(placing) updateGhost();
-        }
-      });
-      row.appendChild(dot);
-    });
+function togglePreset(btn, col) {
+  var wasActive = btn.classList.contains('active');
+  document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (!wasActive) {
+    btn.classList.add('active');
+    S.presetColor = col;
+    highlightColorDot('colorRowPreset', col);
+    S.placing = true;
+    refreshPlacingUI();
+    showGhost();
+  } else {
+    S.placing = false;
+    refreshPlacingUI();
+    hideGhost();
   }
-  makeColorRow('colorRow','selColor',false);
-  makeColorRow('colorRowT','txtColor',true);
-}
-
-function updatePlacingUI(){
-  document.querySelectorAll('.page-card').forEach(function(c){c.classList.toggle('placing',placing);});
-  var plBtn=document.getElementById('placeImgBtn');
-  var ptBtn=document.getElementById('placeTextBtn');
-  if(plBtn) plBtn.classList.toggle('active',placing&&stampType==='custom');
-  if(ptBtn) ptBtn.classList.toggle('active',placing&&stampType==='text');
-  document.body.style.cursor=placing?'crosshair':'';
-  if(!placing) hideGhost();
-}
-
-function switchTab(t){
-  stampType=t;placing=false;updatePlacingUI();hideGhost();
-  document.getElementById('presetSec').style.display=t==='preset'?'block':'none';
-  document.getElementById('customSec').style.display=t==='custom'?'block':'none';
-  document.getElementById('textSec').style.display=t==='text'?'block':'none';
-  document.getElementById('tabP').classList.toggle('on',t==='preset');
-  document.getElementById('tabC').classList.toggle('on',t==='custom');
-  document.getElementById('tabT').classList.toggle('on',t==='text');
-  document.querySelectorAll('.preset').forEach(function(el){el.classList.remove('on');});
   updateAllPagesBtn();
 }
 
-// ── CUSTOM IMAGE ──
-function loadImg(file){
-  if(!file||!file.type.startsWith('image/')) return;
-  var reader=new FileReader();
-  reader.onload=function(e){rawDataUrl=e.target.result;doRemoveBg();switchTab('custom');};
+/* ───────────────────────────────────────────────── */
+/* COLOR ROWS                                         */
+/* ───────────────────────────────────────────────── */
+function buildColorRow(rowId, forText) {
+  var row = document.getElementById(rowId);
+  var initCol = forText ? S.textColor : S.presetColor;
+  COLORS.forEach(function(c) {
+    var dot = document.createElement('div');
+    dot.className   = 'color-dot' + (c === initCol ? ' active' : '');
+    dot.dataset.col = c;
+    dot.style.background = c;
+    dot.addEventListener('click', function(){
+      document.querySelectorAll('#' + rowId + ' .color-dot').forEach(function(d){ d.classList.remove('active'); });
+      dot.classList.add('active');
+      if (forText) {
+        S.textColor = c;
+      } else {
+        S.presetColor = c;
+        var on = document.querySelector('.preset-btn.active');
+        if (on) { on.style.color = c; on.style.borderColor = c; }
+        if (S.placing) showGhost();
+      }
+    });
+    row.appendChild(dot);
+  });
+}
+
+function highlightColorDot(rowId, col) {
+  document.querySelectorAll('#' + rowId + ' .color-dot').forEach(function(d){
+    d.classList.toggle('active', d.dataset.col === col);
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* SLIDERS                                            */
+/* ───────────────────────────────────────────────── */
+function wireSliders() {
+  bind('slOpPreset', 'input', function(){ S.presetOp = +this.value; setTxt('valOpPreset', this.value+'%'); if(S.placing) showGhost(); });
+  bind('slOpImage',  'input', function(){ S.imageOp  = +this.value; setTxt('valOpImage',  this.value+'%'); });
+  bind('slOpText',   'input', function(){ S.textOp   = +this.value; setTxt('valOpText',   this.value+'%'); if(S.placing) showGhost(); });
+  bind('slSize',     'input', function(){ S.sizePct  = +this.value; setTxt('valSize',     this.value+'%'); updateGhostSize(); });
+  bind('slBG',       'input', function(){ setTxt('valBG', this.value); });
+  bind('textInput',  'input', function(){
+    var hasText = this.value.trim().length > 0;
+    document.getElementById('placeTextBtn').disabled = !hasText;
+    if (S.placing && S.type === 'text') showGhost();
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* DROP ZONES                                         */
+/* ───────────────────────────────────────────────── */
+function wireDropZones() {
+  // PDF
+  bind('pdfInput', 'change', function(){ if (this.files && this.files[0]) { loadPDF(this.files[0]); this.value=''; } });
+  bind('pdfZone',    'click', function(){ document.getElementById('pdfInput').click(); });
+  bind('emptyState', 'click', function(){ document.getElementById('pdfInput').click(); });
+  // Image
+  bind('imgInput', 'change', function(){ if (this.files && this.files[0]) { loadImg(this.files[0]); this.value=''; } });
+  bind('imgZone',  'click',  function(){ document.getElementById('imgInput').click(); });
+  // Global drag-drop
+  document.body.addEventListener('dragover', function(e){ e.preventDefault(); document.getElementById('emptyState').classList.add('drag-over'); });
+  document.body.addEventListener('dragleave', function(){ document.getElementById('emptyState').classList.remove('drag-over'); });
+  document.body.addEventListener('drop', function(e){
+    e.preventDefault();
+    document.getElementById('emptyState').classList.remove('drag-over');
+    var files = Array.from(e.dataTransfer.files || []);
+    var pdf = files.find(function(f){ return f.type === 'application/pdf'; });
+    var img = files.find(function(f){ return f.type.startsWith('image/'); });
+    if (pdf) loadPDF(pdf);
+    else if (img) loadImg(img);
+  });
+  // Deselect when clicking empty space in pages area
+  document.getElementById('pagesArea').addEventListener('click', function(e){
+    if (!e.target.closest('.stamp-el')) deselect();
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* LOAD PDF                                           */
+/* ───────────────────────────────────────────────── */
+async function loadPDF(file) {
+  if (!file || file.type !== 'application/pdf') { alert('Please select a valid PDF file.'); return; }
+  S.pdfFile = file;
+  S.pages   = [];
+  S.undoStack = [];
+  document.getElementById('undoBtn').disabled = true;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('pagesArea').style.display  = 'none';
+  document.getElementById('pagesArea').innerHTML = '';
+  try {
+    var bytes = await file.arrayBuffer();
+    var doc   = await pdfjsLib.getDocument({ data: bytes }).promise;
+    for (var i = 0; i < doc.numPages; i++) {
+      var pg  = await doc.getPage(i + 1);
+      var vp0 = pg.getViewport({ scale: 1 });
+      var vp  = pg.getViewport({ scale: THUMB_W / vp0.width });
+      var cv  = document.createElement('canvas');
+      cv.width  = Math.round(vp.width);
+      cv.height = Math.round(vp.height);
+      await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      S.pages.push({ canvas: cv, stamps: [] });
+    }
+    await doc.destroy();
+    document.getElementById('applyBtn').disabled = false;
+    renderPages();
+  } catch (err) {
+    alert('Error reading PDF: ' + err.message);
+    document.getElementById('emptyState').style.display = 'flex';
+    S.pdfFile = null;
+  }
+}
+
+/* ───────────────────────────────────────────────── */
+/* LOAD IMAGE                                         */
+/* ───────────────────────────────────────────────── */
+function loadImg(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    S.rawImgUrl = e.target.result;
+    doRemoveBG();
+    switchTab('image');
+  };
   reader.readAsDataURL(file);
 }
-function doRemoveBg(){
-  if(!rawDataUrl) return;
-  var thr=parseInt(document.getElementById('bgSl').value);
-  var img=new Image();
-  img.onload=function(){
-    var cv=document.createElement('canvas');cv.width=img.width;cv.height=img.height;
-    var ctx=cv.getContext('2d');ctx.drawImage(img,0,0);
-    var d=ctx.getImageData(0,0,cv.width,cv.height);
-    var br=0,bg=0,bb=0;
+
+function doRemoveBG() {
+  if (!S.rawImgUrl) return;
+  var thr = +document.getElementById('slBG').value;
+  var img = new Image();
+  img.onload = function() {
+    var cv  = document.createElement('canvas');
+    cv.width = img.width; cv.height = img.height;
+    var ctx = cv.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    var id = ctx.getImageData(0, 0, cv.width, cv.height);
+    var d  = id.data;
+    /* sample 4 corners */
+    var rS=0, gS=0, bS=0;
     [[0,0],[cv.width-1,0],[0,cv.height-1],[cv.width-1,cv.height-1]].forEach(function(pt){
-      var ix=(pt[1]*cv.width+pt[0])*4;br+=d.data[ix];bg+=d.data[ix+1];bb+=d.data[ix+2];
+      var i = (pt[1]*cv.width + pt[0])*4;
+      rS += d[i]; gS += d[i+1]; bS += d[i+2];
     });
-    br=Math.round(br/4);bg=Math.round(bg/4);bb=Math.round(bb/4);
-    for(var i=0;i<d.data.length;i+=4){
-      var dist=Math.sqrt(Math.pow(d.data[i]-br,2)+Math.pow(d.data[i+1]-bg,2)+Math.pow(d.data[i+2]-bb,2));
-      if(dist<thr) d.data[i+3]=0;
+    rS = Math.round(rS/4); gS = Math.round(gS/4); bS = Math.round(bS/4);
+    for (var px = 0; px < d.length; px += 4) {
+      var dist = Math.sqrt(Math.pow(d[px]-rS,2)+Math.pow(d[px+1]-gS,2)+Math.pow(d[px+2]-bS,2));
+      if (dist < thr) d[px+3] = 0;
     }
-    ctx.putImageData(d,0,0);
-    customDataUrl=cv.toDataURL('image/png');
-    document.getElementById('simgEl').src=customDataUrl;
-    document.getElementById('simgPrev').style.display='flex';
-    document.getElementById('bgSec').style.display='block';
-    document.getElementById('placeImgBtn').style.display='block';
+    ctx.putImageData(id, 0, 0);
+    S.customUrl = cv.toDataURL('image/png');
+    document.getElementById('imgPrevEl').src = S.customUrl;
+    document.getElementById('imgPrev').style.display  = 'flex';
+    document.getElementById('bgSection').style.display = 'block';
+    document.getElementById('placeImgBtn').style.display = 'block';
     updateAllPagesBtn();
   };
-  img.src=rawDataUrl;
+  img.src = S.rawImgUrl;
 }
 
-// ── APPLY & DOWNLOAD ──
-async function doApply(){
-  var total=pages.reduce(function(a,pg){return a+pg.stamps.length;},0);
-  if(!pdfFile){alert('Please upload a PDF first');return;}
-  if(total===0){alert('Please add at least one stamp first');return;}
-  document.getElementById('actionBtn').disabled=true;
-  document.getElementById('spin').style.display='block';
-  document.getElementById('pw').style.display='block';
-  setP(5,'Preparing…');
-  try{
-    var pdf=await PDFLib.PDFDocument.load(await pdfFile.arrayBuffer());
-    var pdfPages=pdf.getPages();
-    for(var pi=0;pi<pages.length;pi++){
-      if(!pages[pi].stamps.length) continue;
-      setP(10+Math.round((pi/pages.length)*85),'Stamping page '+(pi+1)+'…');
-      var pdfPg=pdfPages[pi];
-      var pw=pdfPg.getWidth(),ph=pdfPg.getHeight();
-      var cv=pages[pi].canvas;
-      for(var si=0;si<pages[pi].stamps.length;si++){
-        var st=pages[pi].stamps[si];
-        var xPct=st.xPct,yPct=st.yPct,wPct=st.wPct;
-        var liveEl=document.querySelector('.st-el[data-pi="'+pi+'"][data-si="'+si+'"]');
-        if(liveEl){
-          var liveCv=liveEl.closest('.page-card').querySelector('canvas');
-          if(liveCv){
-            xPct=liveEl.offsetLeft/liveCv.width;yPct=liveEl.offsetTop/liveCv.height;
-            var li=liveEl.querySelector('img');if(li) wPct=li.offsetWidth/liveCv.width;
+/* ───────────────────────────────────────────────── */
+/* RENDER PAGES                                       */
+/* ───────────────────────────────────────────────── */
+function renderPages() {
+  var area = document.getElementById('pagesArea');
+  area.innerHTML = '';
+  area.style.display = 'flex';
+  S.pages.forEach(function(pg, i) {
+    area.appendChild(buildCard(pg, i));
+  });
+}
+
+function buildCard(pg, pi) {
+  var card = document.createElement('div');
+  card.className  = 'page-card';
+  card.dataset.pi = pi;
+  if (S.placing) card.classList.add('can-place');
+
+  /* thumbnail canvas */
+  var cv = document.createElement('canvas');
+  cv.width  = pg.canvas.width;
+  cv.height = pg.canvas.height;
+  cv.getContext('2d').drawImage(pg.canvas, 0, 0);
+  card.appendChild(cv);
+
+  /* label */
+  var lbl = document.createElement('div');
+  lbl.className   = 'pg-label';
+  lbl.textContent = 'Page ' + (pi + 1);
+  card.appendChild(lbl);
+
+  /* badge */
+  if (pg.stamps.length) {
+    var badge = document.createElement('div');
+    badge.className   = 'pg-badge';
+    badge.textContent = pg.stamps.length;
+    card.appendChild(badge);
+  }
+
+  /* existing stamps */
+  pg.stamps.forEach(function(st, si) {
+    card.appendChild(buildStampEl(st, pi, si, cv));
+  });
+
+  /* click to place */
+  card.addEventListener('click', function(e) {
+    if (!S.placing) return;
+    if (e.target.closest('.stamp-el')) return;
+    var rect = cv.getBoundingClientRect();
+    var xPct = Math.max(0.01, Math.min(0.95, (e.clientX - rect.left)  / rect.width));
+    var yPct = Math.max(0.01, Math.min(0.95, (e.clientY - rect.top)   / rect.height));
+    pushUndo();
+    placeStamp(pi, xPct, yPct, cv);
+    /* keep placing only for preset */
+    if (S.type !== 'preset') {
+      S.placing = false;
+      refreshPlacingUI();
+      hideGhost();
+    }
+  });
+
+  return card;
+}
+
+/* ───────────────────────────────────────────────── */
+/* STAMP ELEMENT                                      */
+/* ───────────────────────────────────────────────── */
+function buildStampEl(st, pi, si, cv) {
+  var el  = document.createElement('div');
+  el.className  = 'stamp-el';
+  el.dataset.pi = pi;
+  el.dataset.si = si;
+
+  var img = document.createElement('img');
+  img.src           = st.dataUrl;
+  img.style.width   = Math.round(cv.width * st.wPct) + 'px';
+  img.style.opacity = st.opacity / 100;
+  img.draggable     = false;
+  el.appendChild(img);
+
+  /* delete button */
+  var del = document.createElement('button');
+  del.className   = 'stamp-del';
+  del.textContent = '✕';
+  del.addEventListener('click', function(e) {
+    e.stopPropagation();
+    pushUndo();
+    S.pages[pi].stamps.splice(si, 1);
+    S.selected = null;
+    renderPages();
+  });
+  el.appendChild(del);
+
+  /* resize handle */
+  var rsz = document.createElement('div');
+  rsz.className = 'stamp-rsz';
+  rsz.addEventListener('mousedown', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    selectStamp(el);
+    RS = { on:true, el:el, sw:img.offsetWidth, sx:e.clientX };
+  });
+  rsz.addEventListener('touchstart', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    selectStamp(el);
+    RS = { on:true, el:el, sw:img.offsetWidth, sx:e.touches[0].clientX };
+  }, { passive:false });
+  el.appendChild(rsz);
+
+  /* position */
+  el.style.left = Math.round(cv.width  * st.xPct) + 'px';
+  el.style.top  = Math.round(cv.height * st.yPct) + 'px';
+
+  /* drag */
+  el.addEventListener('mousedown', function(e) {
+    if (e.target.classList.contains('stamp-rsz') || e.target.classList.contains('stamp-del')) return;
+    e.preventDefault(); e.stopPropagation();
+    selectStamp(el);
+    DG = { on:true, el:el, ox:el.offsetLeft, oy:el.offsetTop, sx:e.clientX, sy:e.clientY };
+  });
+  el.addEventListener('touchstart', function(e) {
+    if (e.target.classList.contains('stamp-rsz') || e.target.classList.contains('stamp-del')) return;
+    e.preventDefault(); e.stopPropagation();
+    var t = e.touches[0];
+    selectStamp(el);
+    DG = { on:true, el:el, ox:el.offsetLeft, oy:el.offsetTop, sx:t.clientX, sy:t.clientY };
+  }, { passive:false });
+
+  el.addEventListener('click', function(e) { e.stopPropagation(); selectStamp(el); });
+
+  return el;
+}
+
+function selectStamp(el) {
+  if (S.selected) S.selected.classList.remove('selected');
+  S.selected = el;
+  el.classList.add('selected');
+}
+
+function deselect() {
+  if (S.selected) S.selected.classList.remove('selected');
+  S.selected = null;
+}
+
+function savePos(el) {
+  var card = el.closest('.page-card');
+  if (!card) return;
+  var cv   = card.querySelector('canvas');
+  var pi   = +el.dataset.pi, si = +el.dataset.si;
+  var st   = S.pages[pi] && S.pages[pi].stamps[si];
+  if (!cv || !st) return;
+  var img  = el.querySelector('img');
+  st.xPct  = el.offsetLeft  / cv.width;
+  st.yPct  = el.offsetTop   / cv.height;
+  if (img) st.wPct = img.offsetWidth / cv.width;
+}
+
+/* ───────────────────────────────────────────────── */
+/* MOUSE / TOUCH                                      */
+/* ───────────────────────────────────────────────── */
+function wireMouseTouch() {
+  document.addEventListener('mousemove', function(e) {
+    /* ghost follows cursor */
+    if (S.placing) {
+      var g = document.getElementById('ghost-cursor');
+      g.style.left = e.clientX + 'px';
+      g.style.top  = e.clientY + 'px';
+    }
+    /* drag stamp */
+    if (DG.on && DG.el) {
+      var cv = DG.el.closest('.page-card').querySelector('canvas');
+      var nx = Math.max(0, Math.min(DG.ox + e.clientX - DG.sx, cv.width  - DG.el.offsetWidth));
+      var ny = Math.max(0, Math.min(DG.oy + e.clientY - DG.sy, cv.height - DG.el.offsetHeight));
+      DG.el.style.left = nx + 'px';
+      DG.el.style.top  = ny + 'px';
+    }
+    /* resize stamp */
+    if (RS.on && RS.el) {
+      var img = RS.el.querySelector('img');
+      var cv2 = RS.el.closest('.page-card').querySelector('canvas');
+      if (img) img.style.width = Math.max(28, Math.min(RS.sw + e.clientX - RS.sx, cv2 ? cv2.width * 0.9 : 400)) + 'px';
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (DG.on && DG.el) { savePos(DG.el); DG.on = false; DG.el = null; }
+    if (RS.on && RS.el) { savePos(RS.el); RS.on = false; RS.el = null; }
+  });
+
+  document.addEventListener('touchmove', function(e) {
+    var t = e.touches[0];
+    if (DG.on && DG.el) {
+      e.preventDefault();
+      var cv = DG.el.closest('.page-card').querySelector('canvas');
+      var nx = Math.max(0, Math.min(DG.ox + t.clientX - DG.sx, cv.width  - DG.el.offsetWidth));
+      var ny = Math.max(0, Math.min(DG.oy + t.clientY - DG.sy, cv.height - DG.el.offsetHeight));
+      DG.el.style.left = nx + 'px';
+      DG.el.style.top  = ny + 'px';
+    }
+    if (RS.on && RS.el) {
+      e.preventDefault();
+      var img = RS.el.querySelector('img');
+      var cv2 = RS.el.closest('.page-card').querySelector('canvas');
+      if (img) img.style.width = Math.max(28, Math.min(RS.sw + t.clientX - RS.sx, cv2 ? cv2.width * 0.9 : 400)) + 'px';
+    }
+  }, { passive:false });
+
+  document.addEventListener('touchend', function() {
+    if (DG.on && DG.el) { savePos(DG.el); DG.on = false; DG.el = null; }
+    if (RS.on && RS.el) { savePos(RS.el); RS.on = false; RS.el = null; }
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* KEYBOARD                                           */
+/* ───────────────────────────────────────────────── */
+function wireKeyboard() {
+  document.addEventListener('keydown', function(e) {
+    var tag = (e.target || {}).tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.key === 'Escape')  { S.placing = false; refreshPlacingUI(); hideGhost(); }
+    if ((e.key === 'Delete' || e.key === 'Backspace') && S.selected) { e.preventDefault(); deleteSelected(); }
+    if (e.ctrlKey && e.key.toLowerCase() === 'z') { e.preventDefault(); doUndo(); }
+    if (e.ctrlKey && e.key.toLowerCase() === 'c' && S.selected) copyStamp();
+    if (e.ctrlKey && e.key.toLowerCase() === 'v' && S.copied)   pasteStamp();
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* PLACE STAMP                                        */
+/* ───────────────────────────────────────────────── */
+function placeStamp(pi, xPct, yPct, cv) {
+  var url = getDataUrl();
+  if (!url) return;
+  var op   = S.type === 'text' ? S.textOp : S.type === 'image' ? S.imageOp : S.presetOp;
+  var wPct = S.sizePct / 100;
+  S.pages[pi].stamps.push({
+    dataUrl: url,
+    xPct:    Math.max(0, xPct - wPct / 2),
+    yPct:    Math.max(0, yPct - 0.06),
+    wPct:    wPct,
+    opacity: op
+  });
+  renderPages();
+  updateAllPagesBtn();
+}
+
+function getDataUrl() {
+  if (S.type === 'preset') {
+    var btn = document.querySelector('.preset-btn.active');
+    return btn ? makeStampCanvas(btn.dataset.txt, S.presetColor, S.presetOp) : null;
+  }
+  if (S.type === 'text') {
+    var txt = document.getElementById('textInput').value.trim();
+    return txt ? makeStampCanvas(txt, S.textColor, S.textOp) : null;
+  }
+  return S.customUrl || null;
+}
+
+function makeStampCanvas(text, color, opacity) {
+  var cv  = document.createElement('canvas');
+  cv.width = 520; cv.height = 186;
+  var ctx = cv.getContext('2d');
+  ctx.globalAlpha = opacity / 100;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 9;
+  ctx.strokeRect(6, 6, cv.width-12, cv.height-12);
+  ctx.lineWidth = 3;
+  ctx.strokeRect(18, 18, cv.width-36, cv.height-36);
+  ctx.fillStyle = color;
+  var len = text.length;
+  var fs  = len > 12 ? 46 : len > 8 ? 58 : len > 5 ? 70 : 82;
+  ctx.font = '900 '+fs+'px "Arial Black",Impact,Arial,sans-serif';
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text.toUpperCase(), cv.width/2, cv.height/2);
+  return cv.toDataURL('image/png');
+}
+
+/* ───────────────────────────────────────────────── */
+/* APPLY TO ALL PAGES                                 */
+/* ───────────────────────────────────────────────── */
+function applyToAll() {
+  var url = getDataUrl();
+  if (!url || !S.pages.length) return;
+  pushUndo();
+  var op   = S.type === 'text' ? S.textOp : S.type === 'image' ? S.imageOp : S.presetOp;
+  var wPct = S.sizePct / 100;
+  S.pages.forEach(function(pg) {
+    pg.stamps.push({ dataUrl:url, xPct:Math.max(0,0.5-wPct/2), yPct:0.42, wPct:wPct, opacity:op });
+  });
+  renderPages();
+}
+
+function updateAllPagesBtn() {
+  document.getElementById('allPagesBtn').disabled = !(getDataUrl() && S.pages.length > 0);
+}
+
+/* ───────────────────────────────────────────────── */
+/* COPY / PASTE / DELETE                              */
+/* ───────────────────────────────────────────────── */
+function copyStamp() {
+  if (!S.selected) return;
+  var pi = +S.selected.dataset.pi, si = +S.selected.dataset.si;
+  var st = S.pages[pi] && S.pages[pi].stamps[si];
+  if (!st) return;
+  /* sync live position first */
+  savePos(S.selected);
+  S.copied = Object.assign({}, S.pages[pi].stamps[si]);
+  /* flash green */
+  S.selected.style.outline = '2.5px dashed #10b981';
+  var el = S.selected;
+  setTimeout(function(){ if(el) el.style.outline = ''; }, 500);
+}
+
+function pasteStamp() {
+  if (!S.copied) return;
+  var pi = S.selected ? +S.selected.dataset.pi : 0;
+  if (pi >= S.pages.length) pi = 0;
+  pushUndo();
+  var cp = Object.assign({}, S.copied);
+  cp.xPct = Math.min(cp.xPct + 0.04, 0.86);
+  cp.yPct = Math.min(cp.yPct + 0.04, 0.86);
+  S.pages[pi].stamps.push(cp);
+  renderPages();
+}
+
+function deleteSelected() {
+  if (!S.selected) return;
+  var pi = +S.selected.dataset.pi, si = +S.selected.dataset.si;
+  pushUndo();
+  if (S.pages[pi]) S.pages[pi].stamps.splice(si, 1);
+  S.selected = null;
+  renderPages();
+}
+
+function clearAll() {
+  var any = S.pages.some(function(p){ return p.stamps.length > 0; });
+  if (!any) return;
+  pushUndo();
+  S.pages.forEach(function(p){ p.stamps = []; });
+  S.selected = null;
+  renderPages();
+}
+
+/* ───────────────────────────────────────────────── */
+/* UNDO                                               */
+/* ───────────────────────────────────────────────── */
+function pushUndo() {
+  var snap = JSON.stringify(S.pages.map(function(p){
+    return { stamps: p.stamps.map(function(s){ return Object.assign({}, s); }) };
+  }));
+  S.undoStack.push(snap);
+  if (S.undoStack.length > 25) S.undoStack.shift();
+  document.getElementById('undoBtn').disabled = false;
+}
+
+function doUndo() {
+  if (!S.undoStack.length) return;
+  var snap = JSON.parse(S.undoStack.pop());
+  snap.forEach(function(s, i){ if (S.pages[i]) S.pages[i].stamps = s.stamps; });
+  S.selected = null;
+  document.getElementById('undoBtn').disabled = S.undoStack.length === 0;
+  renderPages();
+}
+
+/* ───────────────────────────────────────────────── */
+/* PLACING UI                                         */
+/* ───────────────────────────────────────────────── */
+function beginPlacing() {
+  S.placing = true;
+  refreshPlacingUI();
+  showGhost();
+}
+
+function refreshPlacingUI() {
+  document.querySelectorAll('.page-card').forEach(function(c){ c.classList.toggle('can-place', S.placing); });
+  document.body.style.cursor = S.placing ? 'crosshair' : '';
+  var pib = document.getElementById('placeImgBtn');
+  var ptb = document.getElementById('placeTextBtn');
+  if (pib) pib.classList.toggle('active-place', S.placing && S.type === 'image');
+  if (ptb) ptb.classList.toggle('active-place', S.placing && S.type === 'text');
+  if (!S.placing) hideGhost();
+}
+
+/* ───────────────────────────────────────────────── */
+/* GHOST                                              */
+/* ───────────────────────────────────────────────── */
+function showGhost() {
+  var url = getDataUrl();
+  if (!url || !S.placing) { hideGhost(); return; }
+  var gi = document.getElementById('ghost-img');
+  if (gi.src !== url) gi.src = url;
+  gi.style.width = Math.max(32, Math.round(THUMB_W * S.sizePct / 100)) + 'px';
+  document.getElementById('ghost-cursor').style.display = 'block';
+}
+
+function updateGhostSize() {
+  document.getElementById('ghost-img').style.width =
+    Math.max(32, Math.round(THUMB_W * S.sizePct / 100)) + 'px';
+}
+
+function hideGhost() {
+  document.getElementById('ghost-cursor').style.display = 'none';
+}
+
+/* ───────────────────────────────────────────────── */
+/* TAB SWITCH                                         */
+/* ───────────────────────────────────────────────── */
+function switchTab(type) {
+  S.type = type; S.placing = false;
+  refreshPlacingUI(); hideGhost();
+  ['preset','image','text'].forEach(function(t) {
+    var cap = t.charAt(0).toUpperCase() + t.slice(1);
+    document.getElementById('sec'  + cap).style.display = t === type ? 'block' : 'none';
+    document.getElementById('tab'  + cap).classList.toggle('active', t === type);
+  });
+  document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+  updateAllPagesBtn();
+}
+
+/* ───────────────────────────────────────────────── */
+/* APPLY & DOWNLOAD — dataUrl→bytes via atob()       */
+/* ───────────────────────────────────────────────── */
+function dataUrlToBytes(dataUrl) {
+  var b64    = dataUrl.split(',')[1];
+  var binary = atob(b64);
+  var bytes  = new Uint8Array(binary.length);
+  for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+async function doApply() {
+  if (!S.pdfFile) { alert('Please upload a PDF file first.'); return; }
+  var total = S.pages.reduce(function(n,p){ return n + p.stamps.length; }, 0);
+  if (!total) { alert('Please add at least one stamp first.'); return; }
+
+  document.getElementById('applyBtn').disabled = true;
+  document.getElementById('progressWrap').style.display = 'block';
+  setProgress(5, 'Loading PDF…');
+
+  try {
+    var pdfBytes = await S.pdfFile.arrayBuffer();
+    var doc      = await PDFLib.PDFDocument.load(pdfBytes);
+    var pages    = doc.getPages();
+
+    for (var pi = 0; pi < S.pages.length; pi++) {
+      if (!S.pages[pi].stamps.length) continue;
+      setProgress(10 + Math.round(pi / S.pages.length * 82), 'Stamping page ' + (pi+1) + '…');
+
+      var pdfPage = pages[pi];
+      var W = pdfPage.getWidth();
+      var H = pdfPage.getHeight();
+
+      for (var si = 0; si < S.pages[pi].stamps.length; si++) {
+        var stamp = S.pages[pi].stamps[si];
+        var xPct = stamp.xPct, yPct = stamp.yPct, wPct = stamp.wPct;
+
+        /* read live DOM position if available */
+        var liveEl = document.querySelector('.stamp-el[data-pi="'+pi+'"][data-si="'+si+'"]');
+        if (liveEl) {
+          var liveCv = liveEl.closest('.page-card') ? liveEl.closest('.page-card').querySelector('canvas') : null;
+          if (liveCv) {
+            xPct = liveEl.offsetLeft / liveCv.width;
+            yPct = liveEl.offsetTop  / liveCv.height;
+            var li = liveEl.querySelector('img');
+            if (li) wPct = li.offsetWidth / liveCv.width;
           }
         }
-        var resp=await fetch(st.dataUrl);
-        var imgBytes=await resp.arrayBuffer();
+
+        /* ── KEY FIX: use atob() not fetch() ── */
+        var imgBytes = dataUrlToBytes(stamp.dataUrl);
         var emb;
-        try{emb=await pdf.embedPng(imgBytes);}catch(e2){emb=await pdf.embedJpg(imgBytes);}
-        var sW=pw*wPct,sH=sW*(emb.height/emb.width);
-        pdfPg.drawImage(emb,{x:pw*xPct,y:ph-(ph*yPct)-sH,width:sW,height:sH,opacity:st.opacity/100});
+        try       { emb = await doc.embedPng(imgBytes); }
+        catch(e)  { try { emb = await doc.embedJpg(imgBytes); } catch(e2) { continue; } }
+
+        var sW = W * wPct;
+        var sH = sW * (emb.height / emb.width);
+        pdfPage.drawImage(emb, {
+          x:       W * xPct,
+          y:       H - (H * yPct) - sH,
+          width:   sW,
+          height:  sH,
+          opacity: stamp.opacity / 100
+        });
       }
     }
-    setP(97,'Saving…');
-    var out=await pdf.save();
-    var url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
-    var name=pdfFile.name.replace(/\.pdf$/i,'')+'_stamped.pdf';
-    var btn=document.getElementById('dlBtn');
-    btn.href=url;btn.download=name;btn.textContent='📥 '+name;
-    document.getElementById('result').style.display='block';
-    setP(100,'Done!');
+
+    setProgress(96, 'Saving…');
+    var out  = await doc.save();
+    var blob = new Blob([out], { type:'application/pdf' });
+    var url  = URL.createObjectURL(blob);
+    var name = (S.pdfFile.name || 'document').replace(/\.pdf$/i, '') + '_stamped.pdf';
+
+    var link = document.getElementById('downloadLink');
+    link.href = url; link.download = name; link.textContent = '📥 ' + name;
+    document.getElementById('resultWrap').style.display = 'block';
+    setProgress(100, 'Done!');
+
+    /* auto-trigger download */
     setTimeout(function(){
-      var a=document.createElement('a');a.href=url;a.download=name;
-      document.body.appendChild(a);a.click();document.body.removeChild(a);
-    },400);
-    if(typeof gtag!=='undefined') gtag('event','pdf_stamped',{event_category:'PDF Tools',value:total});
-  }catch(err){
-    alert('Error: '+err.message);
+      var a = document.createElement('a');
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }, 300);
+
+    if (typeof gtag !== 'undefined') gtag('event','pdf_stamped',{event_category:'PDF Tools',value:total});
+
+  } catch(err) {
+    alert('Processing error: ' + err.message);
     console.error(err);
   }
-  document.getElementById('spin').style.display='none';
-  document.getElementById('actionBtn').disabled=false;
-  setTimeout(function(){document.getElementById('pw').style.display='none';},800);
+
+  document.getElementById('applyBtn').disabled = false;
+  setTimeout(function(){ document.getElementById('progressWrap').style.display = 'none'; }, 900);
 }
 
-function setP(pct,msg){
-  document.getElementById('pf').style.width=pct+'%';
-  document.getElementById('pt').textContent=msg;
-  var np=document.getElementById('np');np.style.width=pct+'%';
-  if(pct>=100) setTimeout(function(){np.style.width='0';},800);
+function setProgress(pct, msg) {
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressTxt').textContent  = msg;
 }
 
-function resetTool(){
-  pdfFile=null;pages=[];totalPages=0;
-  customDataUrl=null;rawDataUrl=null;placing=false;selStamp=null;copiedStamp=null;undoStack=[];
-  pdfFi.value='';imgFi.value='';
-  ['result','pw','bgSec','simgPrev','placeImgBtn','spin'].forEach(function(id){
-    document.getElementById(id).style.display='none';
-  });
-  document.getElementById('pf').style.width='0';
-  document.getElementById('actionBtn').disabled=true;
-  document.getElementById('undoBtn').disabled=true;
-  document.getElementById('allPagesBtn').disabled=true;
-  document.getElementById('viewBar').classList.remove('show');
-  document.getElementById('gridView').style.display='flex';
-  document.getElementById('readingView').style.display='none';
-  document.getElementById('pagesGrid').style.display='none';
-  document.getElementById('pagesGrid').innerHTML='';
-  document.getElementById('ph').style.display='flex';
-  document.getElementById('readingPages').innerHTML='';
-  document.getElementById('readingSidebar').innerHTML='';
-  document.getElementById('txtInp').value='';
-  document.getElementById('placeTextBtn').disabled=true;
-  document.querySelectorAll('.preset').forEach(function(el){el.classList.remove('on');});
-  viewMode='grid';
-  document.getElementById('btnGrid').classList.add('on');
-  document.getElementById('btnRead').classList.remove('on');
-  document.body.style.cursor='';
+/* ───────────────────────────────────────────────── */
+/* RESET                                              */
+/* ───────────────────────────────────────────────── */
+function resetAll() {
+  S.pdfFile=null; S.pages=[]; S.selected=null; S.customUrl=null;
+  S.rawImgUrl=null; S.placing=false; S.undoStack=[];
+  document.getElementById('pdfInput').value  = '';
+  document.getElementById('imgInput').value  = '';
+  document.getElementById('pagesArea').innerHTML = '';
+  document.getElementById('pagesArea').style.display  = 'none';
+  document.getElementById('emptyState').style.display = 'flex';
+  document.getElementById('applyBtn').disabled  = true;
+  document.getElementById('undoBtn').disabled   = true;
+  document.getElementById('resultWrap').style.display   = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('imgPrev').style.display    = 'none';
+  document.getElementById('bgSection').style.display  = 'none';
+  document.getElementById('placeImgBtn').style.display= 'none';
+  document.getElementById('textInput').value = '';
+  document.getElementById('placeTextBtn').disabled = true;
+  document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.body.style.cursor = '';
   hideGhost();
+  updateAllPagesBtn();
 }
 
-// ── DARK MODE ──
-var dark=localStorage.getItem('dark')==='true';
-if(dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
-function toggleDark(){
-  dark=!dark;document.body.classList.toggle('dark',dark);
-  document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';
-  localStorage.setItem('dark',dark);
+/* ───────────────────────────────────────────────── */
+/* DARK MODE                                          */
+/* ───────────────────────────────────────────────── */
+function applyDark() {
+  document.body.classList.add('dark');
+  document.getElementById('themeBtn').textContent = '☀️';
 }
+document.getElementById('themeBtn').addEventListener('click', function(){
+  S.dark = !S.dark;
+  document.body.classList.toggle('dark', S.dark);
+  this.textContent = S.dark ? '☀️' : '🌙';
+  localStorage.setItem('dpdf_dark', S.dark ? '1' : '0');
+});
 
-// ── LANGUAGE ──
-var lang=localStorage.getItem('lang')||((navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en');
-
-var TR={
-  en:{
-    ntn:'Stamp PDF',qtl:'All Tools',toolH:'Stamp PDF',
-    toolD:'Click a stamp to place it on any page',
-    backL:'← All tools',pdfUT:'Click or drop PDF here',pdfUS:'Any PDF file',
-    imgUT:'Click or drop stamp image',imgUS:'PNG, JPG',
-    stTypeLbl:'Stamp Type',tabPL:'Preset',tabCL:'Image',tabTL:'Text',
-    colorLbl:'Color',opLbl:'Opacity',sizeLbl:'Stamp Size',
-    bgLbl:'BG Removal Sensitivity',applyBgBtnL:'Apply',
-    placeImgL:'📍 Click a page to place stamp',
-    hint1T:'Click any stamp below, then click on a page.',
-    imgOpLbl:'Opacity',txtLbl:'Stamp Text',txtColorLbl:'Color',txtOpLbl:'Opacity',
-    placeTextL:'📍 Click page to place',
-    allPagesL:'⬛ Apply to All Pages',
-    undoL:'↩ Undo',resetL:'🗑 Reset',delSelL:'✕ Del',
-    actionL:'Apply Stamps & Download',resultT:'✅ Done!',
-    againL:'Stamp Another File',phT:'Click here or drop a PDF file',
-    btnGridL:'Grid',btnReadL:'Reading',
-    copyHint:'Ctrl+C copy · Ctrl+V paste · Del delete · Ctrl+Z undo · Esc cancel',
-    langBtn:'عربي'
+/* ───────────────────────────────────────────────── */
+/* LANGUAGE                                           */
+/* ───────────────────────────────────────────────── */
+var LANGS = {
+  en: {
+    T_pageTitle:'Stamp PDF', T_allTools:'All Tools', T_back:'← All tools',
+    T_toolName:'Stamp PDF', T_toolDesc:'Choose a stamp then click any page to place it',
+    T_dropMain:'Click or drop a PDF file here', T_dropSub:'Your file never leaves your browser',
+    T_pdfLabel:'PDF File', T_pdfBtn:'Click or drop PDF here', T_pdfSub:'Any PDF — processed locally',
+    T_stampType:'Stamp Type', T_tabPreset:'Preset', T_tabImage:'Image', T_tabText:'Text',
+    T_colorLabel:'Color', T_opLabel:'Opacity', T_hint:'Click a stamp below, then click on a page',
+    T_imgBtn:'Click or drop image', T_imgSub:'PNG with transparent BG works best',
+    T_bgLabel:'BG removal threshold', T_applyBG:'Remove Background', T_imgOpLabel:'Opacity',
+    T_placeImg:'📍 Click a page to place stamp', T_textLabel:'Stamp Text',
+    T_textColorLabel:'Color', T_textOpLabel:'Opacity', T_placeText:'📍 Click page to place',
+    T_sizeLabel:'Stamp Size', T_allPages:'Apply to all pages',
+    T_kbHint:'Ctrl+Z undo · Del remove stamp · Esc cancel',
+    T_undo:'↩ Undo', T_clear:'🗑 Clear', T_del:'✕ Del',
+    T_applyBtn:'Apply Stamps & Download',
+    T_resultTitle:'✅ Stamps applied!', T_again:'Stamp another file',
+    langBtn: 'عربي'
   },
-  ar:{
-    ntn:'ختم PDF',qtl:'كل الأدوات',toolH:'ختم PDF',
-    toolD:'اضغط على الختم لوضعه على أي صفحة',
-    backL:'كل الأدوات ←',pdfUT:'اضغط أو اسحب ملف PDF هنا',pdfUS:'أي ملف PDF',
-    imgUT:'اضغط أو اسحب صورة الختم',imgUS:'PNG، JPG',
-    stTypeLbl:'نوع الختم',tabPL:'جاهز',tabCL:'صورة',tabTL:'نص',
-    colorLbl:'اللون',opLbl:'الشفافية',sizeLbl:'حجم الختم',
-    bgLbl:'حساسية إزالة الخلفية',applyBgBtnL:'تطبيق',
-    placeImgL:'📍 اضغط على صفحة لوضع الختم',
-    hint1T:'اضغط على أي ختم لتفعيل وضع الوضع ثم اضغط على الصفحة.',
-    imgOpLbl:'الشفافية',txtLbl:'نص الختم',txtColorLbl:'اللون',txtOpLbl:'الشفافية',
-    placeTextL:'📍 اضغط على الصفحة للوضع',
-    allPagesL:'⬛ تطبيق على كل الصفحات',
-    undoL:'↩ تراجع',resetL:'🗑 مسح',delSelL:'✕ حذف',
-    actionL:'تطبيق الأختام وتحميل',resultT:'✅ تم!',
-    againL:'ختم ملف آخر',phT:'اضغط هنا أو أسقط ملف PDF',
-    btnGridL:'شبكة',btnReadL:'قراءة',
-    copyHint:'Ctrl+C نسخ · Ctrl+V لصق · Del حذف · Ctrl+Z تراجع · Esc إلغاء',
-    langBtn:'EN'
+  ar: {
+    T_pageTitle:'ختم PDF', T_allTools:'كل الأدوات', T_back:'كل الأدوات ←',
+    T_toolName:'ختم PDF', T_toolDesc:'اختر ختماً ثم اضغط على أي صفحة لوضعه',
+    T_dropMain:'اضغط هنا أو اسحب ملف PDF', T_dropSub:'ملفك يبقى في متصفحك دائماً',
+    T_pdfLabel:'ملف PDF', T_pdfBtn:'اضغط أو اسحب PDF هنا', T_pdfSub:'أي PDF — معالجة محلية',
+    T_stampType:'نوع الختم', T_tabPreset:'جاهز', T_tabImage:'صورة', T_tabText:'نص',
+    T_colorLabel:'اللون', T_opLabel:'الشفافية', T_hint:'اضغط على ختم أدناه ثم اضغط على الصفحة',
+    T_imgBtn:'اضغط أو اسحب صورة', T_imgSub:'PNG بخلفية شفافة يعطي أفضل نتيجة',
+    T_bgLabel:'حساسية إزالة الخلفية', T_applyBG:'إزالة الخلفية', T_imgOpLabel:'الشفافية',
+    T_placeImg:'📍 اضغط على صفحة لوضع الختم', T_textLabel:'نص الختم',
+    T_textColorLabel:'اللون', T_textOpLabel:'الشفافية', T_placeText:'📍 اضغط على صفحة',
+    T_sizeLabel:'حجم الختم', T_allPages:'تطبيق على كل الصفحات',
+    T_kbHint:'Ctrl+Z تراجع · Del حذف · Esc إلغاء',
+    T_undo:'↩ تراجع', T_clear:'🗑 مسح', T_del:'✕ حذف',
+    T_applyBtn:'تطبيق الأختام وتحميل',
+    T_resultTitle:'✅ تم تطبيق الأختام!', T_again:'ختم ملف آخر',
+    langBtn: 'EN'
   }
 };
 
-function applyLang(){
-  document.documentElement.lang=lang;
-  // FIX: actually set dir on html element for proper RTL support
-  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
-  document.body.classList.toggle('ar',lang==='ar');
-  var t=TR[lang]||TR.en;
-  Object.keys(t).forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=t[k];});
-  document.querySelectorAll('.qt-a span[data-en]').forEach(function(el){
-    el.textContent=lang==='ar'?el.dataset.ar:el.dataset.en;
+function applyLang() {
+  var t = LANGS[S.lang] || LANGS.en;
+  document.documentElement.lang = S.lang;
+  document.documentElement.dir  = S.lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('ar', S.lang === 'ar');
+  Object.keys(t).forEach(function(k) {
+    var el = document.getElementById(k);
+    if (el) el.textContent = t[k];
+  });
+  document.querySelectorAll('.qt-item span[data-en]').forEach(function(el) {
+    el.textContent = S.lang === 'ar' ? el.dataset.ar : el.dataset.en;
   });
 }
-function toggleLang(){lang=lang==='en'?'ar':'en';localStorage.setItem('lang',lang);applyLang();}
 
-// ── START ──
-initPresets();
-initColors();
-document.getElementById('gridView').style.display='flex';
-applyLang();
+document.getElementById('langBtn').addEventListener('click', function() {
+  S.lang = S.lang === 'en' ? 'ar' : 'en';
+  localStorage.setItem('dpdf_lang', S.lang);
+  applyLang();
+});
+
+/* ───────────────────────────────────────────────── */
+/* NAV DROPDOWN                                       */
+/* ───────────────────────────────────────────────── */
+function wireNav() {
+  document.getElementById('qtTrigger').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.getElementById('qtMenu').classList.toggle('open');
+  });
+  document.addEventListener('click', function() {
+    document.getElementById('qtMenu').classList.remove('open');
+  });
+}
+
+/* ───────────────────────────────────────────────── */
+/* UTILS                                              */
+/* ───────────────────────────────────────────────── */
+function bind(id, ev, fn) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener(ev, fn);
+}
+function setTxt(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
 </script>
-<!-- Cloudflare Web Analytics -->
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script>
 </body>
 </html>
