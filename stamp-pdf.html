@@ -54,11 +54,21 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
 .empty-ic{font-size:4em;opacity:.18}
 .empty-main{font-size:.9em;font-weight:700;opacity:.55}
 .empty-sub{font-size:.72em;opacity:.4}
-.pages-area{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.pages-area{flex:1;overflow-y:auto;padding:24px 20px 80px;display:flex;flex-direction:column;align-items:center;gap:20px}
 
 /* PAGE CARDS */
-.page-card{position:relative;width:100%;border-radius:8px}
-.page-card canvas{display:block;width:100%;height:auto;border-radius:6px;border:2px solid var(--bdr);transition:border-color .15s;pointer-events:none}
+.page-card{position:relative;flex-shrink:0;border-radius:8px}
+.page-card canvas{display:block;border-radius:6px;border:2px solid var(--bdr);transition:border-color .15s;pointer-events:none}
+.page-card.can-place canvas{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.14)}
+
+/* ZOOM BAR */
+.zoom-bar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:6px;background:rgba(15,23,42,.82);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:5px 10px;z-index:50;user-select:none}
+.zoom-bar.show{display:flex}
+.zb-btn{width:28px;height:28px;border:none;background:rgba(255,255,255,.1);color:#fff;border-radius:50%;cursor:pointer;font-size:1em;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.zb-btn:hover{background:rgba(99,102,241,.6)}
+.zb-pct{color:#fff;font-size:.72em;font-weight:700;min-width:38px;text-align:center;cursor:pointer}
+.zb-pct:hover{color:#a5b4fc}
+.zb-sep{width:1px;height:16px;background:rgba(255,255,255,.15);flex-shrink:0}
 .page-card.can-place{cursor:crosshair}
 .page-card.can-place canvas{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.14)}
 .pg-label{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:.65em;font-weight:700;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:20px;pointer-events:none;white-space:nowrap}
@@ -220,6 +230,17 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
       <span class="empty-sub" id="T_dropSub">Your file never leaves your browser</span>
     </div>
     <div class="pages-area" id="pagesArea" style="display:none"></div>
+
+    <!-- ZOOM BAR -->
+    <div class="zoom-bar" id="zoomBar">
+      <button class="zb-btn" title="Fit width" onclick="zoomFit()">⊡</button>
+      <div class="zb-sep"></div>
+      <button class="zb-btn" onclick="zoomOut()">−</button>
+      <span class="zb-pct" id="zoomPct" onclick="zoomFit()">100%</span>
+      <button class="zb-btn" onclick="zoomIn()">+</button>
+      <div class="zb-sep"></div>
+      <button class="zb-btn" title="Actual size (100%)" onclick="zoomTo(1)">⊠</button>
+    </div>
   </div>
 
   <!-- RIGHT: PANEL -->
@@ -358,12 +379,12 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
    Key fix: dataUrl → bytes via atob() not fetch()
    ===================================================== */
 
+/* ── PDF.js worker setup ── */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 /* ── CONFIG ── */
-/* Pages stored at high resolution, displayed at container width dynamically */
-var HIGH_RES = 1600;
+/* Pages stored as pdfPage objects and re-rendered at zoom × devicePixelRatio */
 var COLORS  = ['#ef4444','#10b981','#f59e0b','#6366f1','#06b6d4','#64748b','#1e3a8a','#000'];
 var PRESETS = [
   {txt:'APPROVED',   col:'#10b981'},
@@ -379,7 +400,9 @@ var PRESETS = [
 /* ── STATE ── */
 var S = {
   pdfFile:     null,
-  pages:       [],   /* [{canvas, stamps:[{dataUrl,xPct,yPct,wPct,opacity}]}] */
+  pdfDoc:      null,  /* keep pdf.js doc alive for re-render */
+  pages:       [],    /* [{pdfPage, nativeW, nativeH, canvas, stamps:[]}] */
+  zoom:        1.0,
   placing:     false,
   type:        'preset', /* 'preset' | 'image' | 'text' */
   presetColor: '#ef4444',
@@ -394,15 +417,15 @@ var S = {
   copied:      null, /* stamp object copy */
   undoStack:   [],
   dark: localStorage.getItem('dpdf_dark') === '1',
-  lang: localStorage.getItem('dpdf_lang') || (navigator.language||'').slice(0,2) === 'ar' ? 'ar' : 'en'
+  lang: localStorage.getItem('dpdf_lang') || ((navigator.language||'').slice(0,2) === 'ar' ? 'ar' : 'en'),
 };
 
 /* drag & resize */
 var DG = {on:false, el:null, ox:0, oy:0, sx:0, sy:0};
 var RS = {on:false, el:null, sw:0, sx:0};
 
-/* ── BOOT ── */
-(function boot(){
+/* ── BOOT — called at end of script after all vars defined ── */
+function boot(){
   buildPresets();
   buildColorRow('colorRowPreset', false);
   buildColorRow('colorRowText',   true);
@@ -413,7 +436,7 @@ var RS = {on:false, el:null, sw:0, sx:0};
   wireNav();
   if (S.dark) applyDark();
   applyLang();
-})();
+}
 
 /* ───────────────────────────────────────────────── */
 /* PRESET BUTTONS                                     */
@@ -536,27 +559,23 @@ async function loadPDF(file) {
   S.pdfFile = file;
   S.pages   = [];
   S.undoStack = [];
+  if (S.pdfDoc) { try { S.pdfDoc.destroy(); } catch(e){} S.pdfDoc = null; }
   document.getElementById('undoBtn').disabled = true;
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('pagesArea').style.display  = 'none';
   document.getElementById('pagesArea').innerHTML = '';
   try {
     var bytes = await file.arrayBuffer();
-    var doc   = await pdfjsLib.getDocument({ data: bytes }).promise;
-    for (var i = 0; i < doc.numPages; i++) {
-      var pg  = await doc.getPage(i + 1);
+    S.pdfDoc  = await pdfjsLib.getDocument({ data: bytes }).promise;
+    for (var i = 0; i < S.pdfDoc.numPages; i++) {
+      var pg  = await S.pdfDoc.getPage(i + 1);
       var vp0 = pg.getViewport({ scale: 1 });
-      /* Store at HIGH_RES for quality — display canvas will downscale to fit container */
-      var scale = Math.min(HIGH_RES / vp0.width, 3); // cap at 3x to avoid huge canvases
-      var vp  = pg.getViewport({ scale: scale });
-      var cv  = document.createElement('canvas');
-      cv.width  = Math.round(vp.width);
-      cv.height = Math.round(vp.height);
-      await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-      S.pages.push({ canvas: cv, stamps: [] });
+      S.pages.push({ pdfPage: pg, nativeW: vp0.width, nativeH: vp0.height, canvas: null, stamps: [] });
     }
-    await doc.destroy();
+    /* render all pages at current zoom + devicePixelRatio */
+    await rerenderAllPages();
     document.getElementById('applyBtn').disabled = false;
+    document.getElementById('zoomBar').classList.add('show');
     renderPages();
   } catch (err) {
     alert('Error reading PDF: ' + err.message);
@@ -613,16 +632,37 @@ function doRemoveBG() {
 }
 
 /* ───────────────────────────────────────────────── */
-/* CONTENT WIDTH HELPER                               */
+/* RE-RENDER ALL PAGES (HiDPI + zoom aware)           */
 /* ───────────────────────────────────────────────── */
-function getContentWidth() {
-  var area = document.getElementById('pagesArea');
-  /* subtract horizontal padding (20px each side) */
-  return Math.max(300, area.clientWidth - 40);
+async function rerenderAllPages() {
+  var dpr   = Math.min(window.devicePixelRatio || 1, 3); /* cap at 3× */
+  var baseW = getBaseWidth();
+  for (var i = 0; i < S.pages.length; i++) {
+    var pg       = S.pages[i];
+    var cssW     = Math.round(baseW * S.zoom);
+    var cssH     = Math.round(pg.nativeH * cssW / pg.nativeW);
+    var renderSc = (cssW / pg.nativeW) * dpr;   /* actual pixels = CSS × DPR */
+    var vp       = pg.pdfPage.getViewport({ scale: renderSc });
+    var cv       = document.createElement('canvas');
+    cv.width     = Math.round(vp.width);   /* physical pixels */
+    cv.height    = Math.round(vp.height);
+    cv._cssW     = cssW;                   /* CSS pixels — set on element */
+    cv._cssH     = cssH;
+    await pg.pdfPage.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+    pg.canvas = cv;
+  }
 }
 
 /* ───────────────────────────────────────────────── */
-/* RENDER PAGES                                       */
+/* BASE WIDTH — container width minus padding         */
+/* ───────────────────────────────────────────────── */
+function getBaseWidth() {
+  var area = document.getElementById('pagesArea');
+  return Math.max(300, area.clientWidth - 48);
+}
+
+/* ───────────────────────────────────────────────── */
+/* RENDER PAGES (sync — uses pre-rendered canvases)  */
 /* ───────────────────────────────────────────────── */
 function renderPages() {
   var area = document.getElementById('pagesArea');
@@ -633,17 +673,56 @@ function renderPages() {
   });
 }
 
-/* Re-render on resize so pages always fill the container width */
+/* Re-render on resize */
 (function initResizeObserver() {
   var timer;
   var ro = new ResizeObserver(function() {
     clearTimeout(timer);
-    timer = setTimeout(function() {
-      if (S.pages.length > 0) renderPages();
-    }, 120); /* debounce — wait for resize to settle */
+    timer = setTimeout(async function() {
+      if (S.pages.length > 0) {
+        await rerenderAllPages();
+        renderPages();
+      }
+    }, 150);
   });
   ro.observe(document.getElementById('pagesArea'));
 })();
+
+/* ───────────────────────────────────────────────── */
+/* ZOOM CONTROLS                                      */
+/* ───────────────────────────────────────────────── */
+var ZOOM_STEPS = [0.25, 0.33, 0.5, 0.67, 0.75, 0.9, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0];
+
+async function zoomTo(val) {
+  S.zoom = Math.max(0.25, Math.min(3.0, val));
+  document.getElementById('zoomPct').textContent = Math.round(S.zoom * 100) + '%';
+  if (!S.pages.length) return;
+  await rerenderAllPages();
+  renderPages();
+}
+
+function zoomIn() {
+  var next = ZOOM_STEPS.find(function(z) { return z > S.zoom + 0.01; });
+  zoomTo(next || 3.0);
+}
+
+function zoomOut() {
+  var prev = null;
+  ZOOM_STEPS.forEach(function(z) { if (z < S.zoom - 0.01) prev = z; });
+  zoomTo(prev || 0.25);
+}
+
+function zoomFit() {
+  /* fit = zoom:1 (100% = fills the container width) */
+  zoomTo(1.0);
+}
+
+/* Ctrl+scroll to zoom */
+document.getElementById('pagesArea').addEventListener('wheel', function(e) {
+  if (!e.ctrlKey) return;
+  e.preventDefault();
+  e.deltaY < 0 ? zoomIn() : zoomOut();
+}, { passive: false });
 
 function buildCard(pg, pi) {
   var card = document.createElement('div');
@@ -652,16 +731,12 @@ function buildCard(pg, pi) {
   if (S.placing) card.classList.add('can-place');
 
   /*
-   * Display canvas: scale the stored high-res page down to the container width.
-   * Stamps use percentage positions, so they'll re-align correctly every time
-   * renderPages() is called (e.g. after a window resize).
+   * pg.canvas has physical pixels = cssW × devicePixelRatio.
+   * We set CSS width/height explicitly so it displays crisp on HiDPI screens.
    */
-  var displayW = getContentWidth();
-  var displayH = Math.round(pg.canvas.height * (displayW / pg.canvas.width));
-  var cv = document.createElement('canvas');
-  cv.width  = displayW;
-  cv.height = displayH;
-  cv.getContext('2d').drawImage(pg.canvas, 0, 0, displayW, displayH);
+  var cv = pg.canvas;
+  cv.style.width  = cv._cssW + 'px';
+  cv.style.height = cv._cssH + 'px';
   card.appendChild(cv);
 
   /* label */
@@ -687,12 +762,11 @@ function buildCard(pg, pi) {
   card.addEventListener('click', function(e) {
     if (!S.placing) return;
     if (e.target.closest('.stamp-el')) return;
-    var rect = cv.getBoundingClientRect();
+    var rect = cv.getBoundingClientRect(); /* getBoundingClientRect = CSS pixels */
     var xPct = Math.max(0.01, Math.min(0.95, (e.clientX - rect.left)  / rect.width));
     var yPct = Math.max(0.01, Math.min(0.95, (e.clientY - rect.top)   / rect.height));
     pushUndo();
     placeStamp(pi, xPct, yPct, cv);
-    /* keep placing only for preset */
     if (S.type !== 'preset') {
       S.placing = false;
       refreshPlacingUI();
@@ -714,7 +788,7 @@ function buildStampEl(st, pi, si, cv) {
 
   var img = document.createElement('img');
   img.src           = st.dataUrl;
-  img.style.width   = Math.round(cv.width * st.wPct) + 'px';
+  img.style.width   = Math.round(cv._cssW * st.wPct) + 'px';
   img.style.opacity = st.opacity / 100;
   img.draggable     = false;
   el.appendChild(img);
@@ -747,9 +821,9 @@ function buildStampEl(st, pi, si, cv) {
   }, { passive:false });
   el.appendChild(rsz);
 
-  /* Position stamp using display canvas pixel dimensions */
-  el.style.left = Math.round(cv.width  * st.xPct) + 'px';
-  el.style.top  = Math.round(cv.height * st.yPct) + 'px';
+  /* Position stamp using CSS pixel dimensions (not physical canvas pixels) */
+  el.style.left = Math.round(cv._cssW * st.xPct) + 'px';
+  el.style.top  = Math.round(cv._cssH * st.yPct) + 'px';
 
   /* drag */
   el.addEventListener('mousedown', function(e) {
@@ -789,10 +863,12 @@ function savePos(el) {
   var pi   = +el.dataset.pi, si = +el.dataset.si;
   var st   = S.pages[pi] && S.pages[pi].stamps[si];
   if (!cv || !st) return;
+  var cW   = cv._cssW || cv.width;
+  var cH   = cv._cssH || cv.height;
   var img  = el.querySelector('img');
-  st.xPct  = el.offsetLeft  / cv.width;
-  st.yPct  = el.offsetTop   / cv.height;
-  if (img) st.wPct = img.offsetWidth / cv.width;
+  st.xPct  = el.offsetLeft  / cW;
+  st.yPct  = el.offsetTop   / cH;
+  if (img) st.wPct = img.offsetWidth / cW;
 }
 
 /* ───────────────────────────────────────────────── */
@@ -884,7 +960,6 @@ function placeStamp(pi, xPct, yPct, cv) {
   renderPages();
   updateAllPagesBtn();
 }
-
 function getDataUrl() {
   if (S.type === 'preset') {
     var btn = document.querySelector('.preset-btn.active');
@@ -1164,8 +1239,11 @@ function setProgress(pct, msg) {
 /* RESET                                              */
 /* ───────────────────────────────────────────────── */
 function resetAll() {
+  if (S.pdfDoc) { try { S.pdfDoc.destroy(); } catch(e){} S.pdfDoc = null; }
   S.pdfFile=null; S.pages=[]; S.selected=null; S.customUrl=null;
-  S.rawImgUrl=null; S.placing=false; S.undoStack=[];
+  S.rawImgUrl=null; S.placing=false; S.undoStack=[]; S.zoom=1.0;
+  document.getElementById('zoomPct').textContent = '100%';
+  document.getElementById('zoomBar').classList.remove('show');
   document.getElementById('pdfInput').value  = '';
   document.getElementById('imgInput').value  = '';
   document.getElementById('pagesArea').innerHTML = '';
@@ -1286,6 +1364,9 @@ function setTxt(id, val) {
   var el = document.getElementById(id);
   if (el) el.textContent = val;
 }
+
+/* ── START — all variables and functions defined above ── */
+boot();
 </script>
 </body>
 </html>
