@@ -168,6 +168,17 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
 .again-btn{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:6px;border-radius:100px;font-size:.72em;font-weight:700;cursor:pointer;width:100%;margin-top:5px;font-family:inherit;transition:.15s}
 .again-btn:hover{background:var(--p);color:#fff}
 
+/* CLONE BOX */
+.clone-box{background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(139,92,246,.07));border:1.5px solid rgba(99,102,241,.25);border-radius:10px;padding:11px;display:flex;flex-direction:column;gap:7px}
+.clone-title{font-size:.78em;font-weight:800;color:var(--p)}
+.clone-sub{font-size:.67em;color:var(--muted);line-height:1.4}
+.clone-preview{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:7px;padding:6px 8px;border:1px solid var(--bdr)}
+.clone-preview img{height:32px;object-fit:contain;border-radius:3px}
+.clone-preview-txt{font-size:.65em;color:var(--muted);line-height:1.4}
+.clone-btn{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:9px;border-radius:100px;font-size:.78em;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.clone-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(99,102,241,.35)}
+.clone-skip{background:none;border:none;color:var(--muted);font-size:.68em;cursor:pointer;font-family:inherit;padding:3px;transition:.15s;text-decoration:underline}
+.clone-skip:hover{color:var(--tx)}
 /* KB HINT */
 .kb-hint{font-size:.61em;color:var(--muted);text-align:center;padding:4px;background:var(--bg);border-radius:6px;border:1px solid var(--bdr);line-height:1.6}
 
@@ -335,15 +346,32 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
 
     <div class="divider"></div>
 
-    <!-- SIZE + ALL PAGES -->
+    <!-- SIZE -->
     <div>
       <div class="label" id="T_sizeLabel">Stamp Size</div>
       <div class="slider-row">
         <input type="range" id="slSize" min="5" max="65" value="22">
         <span class="slider-val" id="valSize">22%</span>
       </div>
-      <button class="btn-outline" id="allPagesBtn" disabled onclick="applyToAll()"><span id="T_allPages">Apply to all pages</span></button>
     </div>
+
+    <!-- CLONE TO ALL PAGES — smart workflow box -->
+    <div class="clone-box" id="cloneBox" style="display:none">
+      <div class="clone-title" id="T_cloneTitle">📋 Apply this stamp to all pages?</div>
+      <div class="clone-sub" id="T_cloneSub">Same position &amp; size will be copied to every page</div>
+      <div class="clone-preview" id="clonePreview"></div>
+      <button class="clone-btn" id="cloneBtn" onclick="cloneStampToAll()">
+        <span id="T_cloneBtn">✅ Yes — apply to all pages</span>
+      </button>
+      <button class="clone-skip" onclick="hideCloneBox()">
+        <span id="T_cloneSkip">No thanks, keep as is</span>
+      </button>
+    </div>
+
+    <!-- FALLBACK: place fresh stamp on all pages -->
+    <button class="btn-outline" id="allPagesBtn" disabled onclick="applyToAll()">
+      <span id="T_allPages">⬛ Place stamp on all pages</span>
+    </button>
 
     <div class="kb-hint" id="T_kbHint">Ctrl+Z undo · Del remove stamp · Esc cancel</div>
 
@@ -858,11 +886,14 @@ function selectStamp(el) {
   if (S.selected) S.selected.classList.remove('selected');
   S.selected = el;
   el.classList.add('selected');
+  /* Show clone box if stamp is on page 1 and doc has multiple pages */
+  showCloneBox(el);
 }
 
 function deselect() {
   if (S.selected) S.selected.classList.remove('selected');
   S.selected = null;
+  hideCloneBox();
 }
 
 function savePos(el) {
@@ -1004,6 +1035,9 @@ function makeStampCanvas(text, color, opacity) {
 /* ───────────────────────────────────────────────── */
 /* APPLY TO ALL PAGES                                 */
 /* ───────────────────────────────────────────────── */
+/* ───────────────────────────────────────────────── */
+/* APPLY TO ALL PAGES (fresh stamp at center)         */
+/* ───────────────────────────────────────────────── */
 function applyToAll() {
   var url = getDataUrl();
   if (!url || !S.pages.length) return;
@@ -1017,7 +1051,87 @@ function applyToAll() {
 }
 
 function updateAllPagesBtn() {
-  document.getElementById('allPagesBtn').disabled = !(getDataUrl() && S.pages.length > 0);
+  document.getElementById('allPagesBtn').disabled = !(getDataUrl() && S.pages.length > 1);
+}
+
+/* ───────────────────────────────────────────────── */
+/* CLONE BOX — copy exact stamp position to all pages */
+/* ───────────────────────────────────────────────── */
+function showCloneBox(el) {
+  /* Only show for page 0 stamps — UX: "set on page 1, clone everywhere" */
+  if (!el || +el.dataset.pi !== 0) { hideCloneBox(); return; }
+  if (S.pages.length < 2) { hideCloneBox(); return; }
+
+  /* Sync live position from DOM before reading */
+  savePos(el);
+  var pi = +el.dataset.pi, si = +el.dataset.si;
+  var st = S.pages[pi] && S.pages[pi].stamps[si];
+  if (!st) { hideCloneBox(); return; }
+
+  /* Show preview of stamp + position info */
+  var prev = document.getElementById('clonePreview');
+  var xPct = Math.round(st.xPct * 100);
+  var yPct = Math.round(st.yPct * 100);
+  var wPct = Math.round(st.wPct * 100);
+  var isAr = S.lang === 'ar';
+  prev.innerHTML =
+    '<img src="' + st.dataUrl + '" alt="stamp">' +
+    '<div class="clone-preview-txt">' +
+      (isAr
+        ? 'موضع: ' + xPct + '% أفقي · ' + yPct + '% عمودي<br>حجم: ' + wPct + '% · شفافية: ' + st.opacity + '%'
+        : 'Position: ' + xPct + '% across · ' + yPct + '% down<br>Size: ' + wPct + '% · Opacity: ' + st.opacity + '%'
+      ) +
+    '</div>';
+
+  /* Store reference to this stamp for clone operation */
+  document.getElementById('cloneBox').dataset.pi = pi;
+  document.getElementById('cloneBox').dataset.si = si;
+  document.getElementById('cloneBox').style.display = 'flex';
+}
+
+function hideCloneBox() {
+  document.getElementById('cloneBox').style.display = 'none';
+}
+
+function cloneStampToAll() {
+  var box = document.getElementById('cloneBox');
+  var pi  = +box.dataset.pi;
+  var si  = +box.dataset.si;
+
+  /* Sync latest DOM position before cloning */
+  if (S.selected) savePos(S.selected);
+
+  var st = S.pages[pi] && S.pages[pi].stamps[si];
+  if (!st) return;
+
+  pushUndo();
+
+  /* Copy stamp to every page EXCEPT the source page */
+  S.pages.forEach(function(pg, idx) {
+    if (idx === pi) return; /* skip source page */
+    pg.stamps.push({
+      dataUrl: st.dataUrl,
+      xPct:    st.xPct,
+      yPct:    st.yPct,
+      wPct:    st.wPct,
+      opacity: st.opacity
+    });
+  });
+
+  hideCloneBox();
+  renderPages();
+
+  /* Show confirmation flash on the button */
+  var btn = document.getElementById('cloneBtn');
+  var orig = btn.querySelector('span').textContent;
+  btn.style.background = 'var(--ok)';
+  btn.querySelector('span').textContent = S.lang === 'ar' ? '✅ تم التطبيق على ' + (S.pages.length-1) + ' صفحة!' : '✅ Applied to ' + (S.pages.length-1) + ' pages!';
+  setTimeout(function() {
+    btn.style.background = '';
+    btn.querySelector('span').textContent = orig;
+  }, 2000);
+
+  if (typeof gtag !== 'undefined') gtag('event', 'stamp_cloned_all', { event_category:'PDF Tools', value: S.pages.length });
 }
 
 /* ───────────────────────────────────────────────── */
@@ -1251,6 +1365,7 @@ function resetAll() {
   if (S.pdfDoc) { try { S.pdfDoc.destroy(); } catch(e){} S.pdfDoc = null; }
   S.pdfFile=null; S.pages=[]; S.selected=null; S.customUrl=null;
   S.rawImgUrl=null; S.placing=false; S.undoStack=[]; S.zoom=1.0;
+  hideCloneBox();
   document.getElementById('zoomPct').textContent = '100%';
   document.getElementById('zoomBar').classList.remove('show');
   document.getElementById('pagesArea').style.display = 'none';
@@ -1303,7 +1418,11 @@ var LANGS = {
     T_bgLabel:'BG removal threshold', T_applyBG:'Remove Background', T_imgOpLabel:'Opacity',
     T_placeImg:'📍 Click a page to place stamp', T_textLabel:'Stamp Text',
     T_textColorLabel:'Color', T_textOpLabel:'Opacity', T_placeText:'📍 Click page to place',
-    T_sizeLabel:'Stamp Size', T_allPages:'Apply to all pages',
+    T_sizeLabel:'Stamp Size', T_allPages:'⬛ Place stamp on all pages',
+    T_cloneTitle:'📋 Apply this stamp to all pages?',
+    T_cloneSub:'Same position & size will be copied to every page',
+    T_cloneBtn:'✅ Yes — apply to all pages',
+    T_cloneSkip:'No thanks, keep as is',
     T_kbHint:'Ctrl+Z undo · Del remove stamp · Esc cancel',
     T_undo:'↩ Undo', T_clear:'🗑 Clear', T_del:'✕ Del',
     T_applyBtn:'Apply Stamps & Download',
@@ -1322,7 +1441,11 @@ var LANGS = {
     T_bgLabel:'حساسية إزالة الخلفية', T_applyBG:'إزالة الخلفية', T_imgOpLabel:'الشفافية',
     T_placeImg:'📍 اضغط على صفحة لوضع الختم', T_textLabel:'نص الختم',
     T_textColorLabel:'اللون', T_textOpLabel:'الشفافية', T_placeText:'📍 اضغط على صفحة',
-    T_sizeLabel:'حجم الختم', T_allPages:'تطبيق على كل الصفحات',
+    T_sizeLabel:'حجم الختم', T_allPages:'⬛ وضع ختم على كل الصفحات',
+    T_cloneTitle:'📋 تطبيق هذا الختم على كل الصفحات؟',
+    T_cloneSub:'سيتم نسخ نفس الموضع والحجم على كل صفحة',
+    T_cloneBtn:'✅ نعم — تطبيق على كل الصفحات',
+    T_cloneSkip:'لا شكراً، إبقَ كما هو',
     T_kbHint:'Ctrl+Z تراجع · Del حذف · Esc إلغاء',
     T_undo:'↩ تراجع', T_clear:'🗑 مسح', T_del:'✕ حذف',
     T_applyBtn:'تطبيق الأختام وتحميل',
