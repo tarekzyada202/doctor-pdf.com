@@ -343,7 +343,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 /* ── STATE ── */
 var uploadedFile = null;
 var currentLevel = 'balanced';
-var levelQuality = { light: 0.72, balanced: 0.5, max: 0.28 };
+var levelQuality = { light: 0.72, balanced: 0.45, max: 0.22 };
+var levelScale   = { light: 1.0,  balanced: 0.75, max: 0.55 };
 var S = {
   dark: localStorage.getItem('dpdf_dark') === '1',
   lang: localStorage.getItem('dpdf_lang') || ((navigator.language||'').slice(0,2) === 'ar' ? 'ar' : 'en')
@@ -439,8 +440,7 @@ async function compressPDF() {
 
     /* ── STRATEGY 2: rasterize images only if file is image-heavy ── */
     /* Detect: if rasterizing at quality scale would help */
-    var renderScale = currentLevel === 'light' ? 1.4 :
-                      currentLevel === 'balanced' ? 1.1 : 0.85;
+    var renderScale = levelScale[currentLevel];
 
     var pdfJs = await pdfjsLib.getDocument({ data: origBytes.slice(0) }).promise;
     var total  = pdfJs.numPages;
@@ -452,7 +452,7 @@ async function compressPDF() {
       var vp0  = page.getViewport({ scale: 1 });
       var vp   = page.getViewport({ scale: renderScale });
       var cv   = document.createElement('canvas');
-      cv.width = vp.width; cv.height = vp.height;
+      cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
       await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
 
       var jpegBlob = await new Promise(function(res) {
@@ -468,16 +468,16 @@ async function compressPDF() {
     var s2Size = strategy2.length;
     setProgress(95, 'Choosing best result…');
 
-    /* ── PICK WINNER: whichever is actually smaller ── */
+    /* ── PICK WINNER: always the absolute smallest ── */
     var winner, winnerSize;
-    if (s1Size <= s2Size && s1Size < origSize) {
-      winner = strategy1; winnerSize = s1Size;
-    } else if (s2Size < origSize) {
-      winner = strategy2; winnerSize = s2Size;
-    } else {
-      /* Neither helped — return strategy1 (structure-compressed) */
-      winner = strategy1; winnerSize = s1Size;
-    }
+    var candidates = [
+      { data: strategy1, size: s1Size, name: 'structure' },
+      { data: strategy2, size: s2Size, name: 'raster' },
+      { data: new Uint8Array(origBytes), size: origSize, name: 'original' }
+    ];
+    candidates.sort(function(a,b){ return a.size - b.size; });
+    winner     = candidates[0].data;
+    winnerSize = candidates[0].size;
 
     setProgress(100, 'Done!');
     var blob = new Blob([winner], { type:'application/pdf' });
