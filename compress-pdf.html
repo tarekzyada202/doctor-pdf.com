@@ -416,46 +416,96 @@ async function compressPDF() {
   var quality = levelQuality[currentLevel];
 
   try {
-    var bytes = await uploadedFile.arrayBuffer();
-    var pdfJs = await pdfjsLib.getDocument({ data: bytes }).promise;
+    var origBytes = await uploadedFile.arrayBuffer();
+    var origSize  = uploadedFile.size;
+    setProgress(10, 'Analysing PDF…');
+
+    /* ── STRATEGY 1: pdf-lib object stream compression (best for text/vector PDFs) ── */
+    var pdfDoc = await PDFLib.PDFDocument.load(origBytes, { ignoreEncryption: true });
+    setProgress(30, 'Compressing structure…');
+
+    /* Remove metadata to save space */
+    pdfDoc.setTitle('');
+    pdfDoc.setAuthor('');
+    pdfDoc.setSubject('');
+    pdfDoc.setKeywords([]);
+    pdfDoc.setProducer('Doctor PDF');
+    pdfDoc.setCreator('Doctor PDF');
+
+    /* Save with object streams enabled — compresses cross-reference table */
+    var strategy1 = await pdfDoc.save({ useObjectStreams: true, addDefaultPage: false });
+    var s1Size = strategy1.length;
+    setProgress(55, 'Optimising images…');
+
+    /* ── STRATEGY 2: rasterize images only if file is image-heavy ── */
+    /* Detect: if rasterizing at quality scale would help */
+    var renderScale = currentLevel === 'light' ? 1.4 :
+                      currentLevel === 'balanced' ? 1.1 : 0.85;
+
+    var pdfJs = await pdfjsLib.getDocument({ data: origBytes.slice(0) }).promise;
+    var total  = pdfJs.numPages;
     var newPdf = await PDFLib.PDFDocument.create();
-    var total = pdfJs.numPages;
 
     for (var i = 1; i <= total; i++) {
-      setProgress(10 + Math.round((i/total) * 82), 'Page ' + i + ' / ' + total + '…');
+      setProgress(55 + Math.round((i / total) * 35), 'Page ' + i + ' / ' + total + '…');
       var page = await pdfJs.getPage(i);
-      var vp = page.getViewport({ scale: 1.5 }); /* render at 1.5x for quality */
-      var cv = document.createElement('canvas');
+      var vp0  = page.getViewport({ scale: 1 });
+      var vp   = page.getViewport({ scale: renderScale });
+      var cv   = document.createElement('canvas');
       cv.width = vp.width; cv.height = vp.height;
       await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-      var jpegBlob = await new Promise(function(res) { cv.toBlob(res, 'image/jpeg', quality); });
+
+      var jpegBlob = await new Promise(function(res) {
+        cv.toBlob(res, 'image/jpeg', quality);
+      });
       var jpegBuf = await jpegBlob.arrayBuffer();
       var img = await newPdf.embedJpg(jpegBuf);
-      var vp0 = page.getViewport({ scale: 1 });
-      var p = newPdf.addPage([vp0.width, vp0.height]);
+      var p   = newPdf.addPage([vp0.width, vp0.height]);
       p.drawImage(img, { x:0, y:0, width:vp0.width, height:vp0.height });
     }
 
-    setProgress(96, 'Saving…');
-    var out = await newPdf.save();
-    var blob = new Blob([out], { type:'application/pdf' });
-    var url = URL.createObjectURL(blob);
-    var name = uploadedFile.name.replace(/\.pdf$/i, '') + '_compressed.pdf';
+    var strategy2 = await newPdf.save({ useObjectStreams: true });
+    var s2Size = strategy2.length;
+    setProgress(95, 'Choosing best result…');
 
-    /* Update stats */
-    var origSize = uploadedFile.size;
-    var compSize = out.length;
-    var saved = Math.max(0, Math.round((1 - compSize/origSize) * 100));
+    /* ── PICK WINNER: whichever is actually smaller ── */
+    var winner, winnerSize;
+    if (s1Size <= s2Size && s1Size < origSize) {
+      winner = strategy1; winnerSize = s1Size;
+    } else if (s2Size < origSize) {
+      winner = strategy2; winnerSize = s2Size;
+    } else {
+      /* Neither helped — return strategy1 (structure-compressed) */
+      winner = strategy1; winnerSize = s1Size;
+    }
 
-    document.getElementById('statOrig').textContent = formatSize(origSize);
-    document.getElementById('statComp').textContent = formatSize(compSize);
-    document.getElementById('statSaved').textContent = saved + '%';
+    setProgress(100, 'Done!');
+    var blob = new Blob([winner], { type:'application/pdf' });
+    var url  = URL.createObjectURL(blob);
+    var name = uploadedFile.name.replace(/\.pdf$/i,'') + '_compressed.pdf';
+
+    /* Stats */
+    var saved = Math.max(0, Math.round((1 - winnerSize / origSize) * 100));
+    document.getElementById('statOrig').textContent  = formatSize(origSize);
+    document.getElementById('statComp').textContent  = formatSize(winnerSize);
+    document.getElementById('statSaved').textContent = saved > 0 ? saved + '%' : '0%';
+
+    /* Warn if file got bigger */
+    if (winnerSize >= origSize) {
+      document.getElementById('T_resultTitle').textContent =
+        S.lang === 'ar'
+          ? '⚠️ الملف لا يحتاج مزيداً من الضغط'
+          : '⚠️ File is already optimised — no further reduction possible';
+    } else {
+      document.getElementById('T_resultTitle').textContent =
+        S.lang === 'ar' ? '✅ تم الضغط بنجاح!' : '✅ Compressed successfully!';
+    }
 
     /* Visual bar */
     document.getElementById('compressVisual').style.display = 'flex';
     document.getElementById('barOrigTxt').textContent = formatSize(origSize);
-    document.getElementById('barCompTxt').textContent = formatSize(compSize);
-    document.getElementById('barComp').style.width = Math.max(5, 100 - saved) + '%';
+    document.getElementById('barCompTxt').textContent = formatSize(winnerSize);
+    document.getElementById('barComp').style.width = Math.max(5, Math.round(winnerSize / origSize * 100)) + '%';
 
     /* Download */
     var dl = document.getElementById('downloadLink');
@@ -463,14 +513,18 @@ async function compressPDF() {
     dl.textContent = '📥 ' + name;
     document.getElementById('resultWrap').style.display = 'flex';
 
-    setProgress(100, 'Done!');
-    setTimeout(function() {
-      var a = document.createElement('a');
-      a.href = url; a.download = name;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }, 350);
+    /* Auto-download only if we actually saved space */
+    if (winnerSize < origSize) {
+      setTimeout(function() {
+        var a = document.createElement('a');
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }, 350);
+    }
 
-    if (typeof gtag !== 'undefined') gtag('event','pdf_compressed',{event_category:'PDF Tools',value:saved});
+    if (typeof gtag !== 'undefined') {
+      gtag('event','pdf_compressed',{event_category:'PDF Tools', value: saved });
+    }
 
   } catch(err) {
     alert('Error: ' + err.message);
