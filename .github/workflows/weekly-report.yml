@@ -171,26 +171,54 @@ jobs:
           git diff --staged --quiet || git commit -m "📊 Weekly report $(date +%Y-%m-%d)"
           git push || true
 
-      - name: Send email notification
+      - name: Send email via Resend
         if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.REPORT_EMAIL }}
-          password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          to: ${{ secrets.REPORT_EMAIL }}
-          from: Doctor PDF Bot <${{ secrets.REPORT_EMAIL }}>
-          subject: "📊 Doctor PDF — تقرير أسبوعي $(date +%Y-%m-%d)"
-          body: |
-            مرحباً طارق،
-
-            التقرير الأسبوعي لـ Doctor PDF جاهز!
-
-            يمكنك مشاهدته كاملاً هنا:
-            https://github.com/tarekzyada202/doctor-pdf.com/actions
-
-            في مجلد reports/ في الـ repository.
-
-            Doctor PDF Bot 🤖
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+        run: |
+          python3 << 'PYEOF'
+          import os, requests, datetime
+          today = datetime.datetime.now().strftime('%Y-%m-%d')
+          api_key = os.environ['RESEND_API_KEY']
+          to_email = os.environ['REPORT_EMAIL']
+          
+          # Read the report if exists
+          report_path = f'reports/weekly-report-{today}.md'
+          report_body = ''
+          if os.path.exists(report_path):
+              with open(report_path, 'r', encoding='utf-8') as f:
+                  report_body = f.read()
+          
+          html_body = f"""
+          <div dir="rtl" style="font-family:Arial,sans-serif;max-width:700px;margin:auto;padding:20px">
+            <h2 style="color:#6366f1">📊 Doctor PDF — تقرير أسبوعي {today}</h2>
+            <hr>
+            <pre style="white-space:pre-wrap;font-size:14px;line-height:1.7;direction:rtl">{report_body}</pre>
+            <hr>
+            <p style="color:#888;font-size:12px">
+              🤖 تم الإنشاء تلقائياً | 
+              <a href="https://github.com/tarekzyada202/doctor-pdf.com/actions">عرض في GitHub</a>
+            </p>
+          </div>
+          """
+          
+          resp = requests.post(
+              'https://api.resend.com/emails',
+              headers={
+                  'Authorization': f'Bearer {api_key}',
+                  'Content-Type': 'application/json'
+              },
+              json={
+                  'from': 'Doctor PDF Bot <onboarding@resend.dev>',
+                  'to': [to_email],
+                  'subject': f'📊 Doctor PDF — تقرير أسبوعي {today}',
+                  'html': html_body
+              }
+          )
+          
+          if resp.status_code == 200:
+              print('✅ Email sent successfully!')
+          else:
+              print(f'❌ Email failed: {resp.status_code} — {resp.text}')
+          PYEOF
