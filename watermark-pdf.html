@@ -1,383 +1,419 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Watermark to PDF Online Free | Doctor PDF</title>
-<meta name="description" content="Add text watermark to PDF pages online for free.">
-<meta name="robots" content="index, follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watermark PDF Online Free – Add Watermark to PDF | Doctor PDF</title>
+<meta name="description" content="Add text watermark to PDF files online for free. Customize text, opacity, and position. 100% browser-based, no upload to server.">
 <link rel="canonical" href="https://doctor-pdf.com/watermark-pdf.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/watermark-pdf.html">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
-/* NAVBAR */
-.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.95)}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
-.nav-right{display:flex;align-items:center;gap:8px}
-.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-/* LAYOUT */
+:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--muted:#64748b}
+.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--muted:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .25s,color .25s}
+body.ar{font-family:'Cairo',sans-serif}
+nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;z-index:300}
+.dark nav{background:rgba(15,23,42,.97)}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-weight:800;font-size:.92em;color:var(--p)}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
+.nav-sep{color:var(--bdr)}.nav-title{font-size:.78em;font-weight:700}
+.nav-fill{flex:1;display:flex;justify-content:center}.nav-end{display:flex;gap:5px;align-items:center}
+.icon-btn{width:30px;height:30px;border:1.5px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit}
+.icon-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.lang-btn{width:auto;padding:0 10px;font-size:.68em;font-weight:700}
+.qt{position:relative}
+.qt-trigger{display:flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:4px 11px;font-size:.75em;font-weight:700;color:var(--tx);cursor:pointer;font-family:inherit;transition:.15s}
+.qt-trigger:hover{border-color:var(--p);color:var(--p)}
+.qt-arr{font-size:.65em;transition:transform .2s}.qt.open .qt-arr{transform:rotate(180deg)}
+.qt-menu{position:absolute;top:calc(100%+7px);left:50%;transform:translateX(-50%);background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 10px 36px rgba(0,0,0,.13);padding:8px;display:none;z-index:999;width:260px}
+.qt.open .qt-menu{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.qt-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;text-decoration:none;color:var(--tx);font-size:.74em;font-weight:600;transition:.12s}
+.qt-item:hover{background:rgba(99,102,241,.08);color:var(--p)}
+.qt-ic{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85em}
 .workspace{display:flex;flex:1;overflow:hidden}
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px;display:flex;flex-direction:column;gap:16px;position:relative}
-.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 20px;gap:14px}
-/* DROP OVERLAY */
-.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
-.drop-overlay.active{display:flex}
-.drop-overlay-icon{font-size:4em}
-.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
-/* PLACEHOLDER */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
-.placeholder .ph-icon{font-size:5em;opacity:.2}
-.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
-/* PANEL ELEMENTS */
-.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
-.back-link:hover{opacity:1}
-.tool-title{color:var(--primary);font-size:1.15em;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
-.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
-.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
-.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.up-icon{font-size:1.5em;display:block;margin-bottom:5px}
-.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
-.up-sub{color:var(--text-muted);font-size:.7em}
-input[type=file]{display:none}
-.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
-.opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-.progress-wrap{display:none}
-.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
-.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
-.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
-.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
-.download-btn-full:hover{background:#059669}
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.stat-box{background:var(--bg);border-radius:7px;padding:8px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.62em;color:var(--text-muted);font-weight:600;text-transform:uppercase}
-.stat-value{font-size:.9em;font-weight:800;color:var(--primary);margin-top:2px}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.format-option{background:var(--bg);padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.78em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-/* FILE LIST IN PANEL */
-.panel-file-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px}
-.pfi-name{flex:1;font-size:.75em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pfi-pages{font-size:.68em;color:var(--text-muted)}
-.pfi-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8em;flex-shrink:0}
-/* SIGN CANVAS */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;max-height:340px;touch-action:none;background:white}
-.sign-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8em;font-weight:600;transition:all .2s;font-family:inherit}
-.sign-btn:hover{border-color:var(--primary);color:var(--primary)}
+.content{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:24px;gap:16px;position:relative}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);text-align:center;cursor:pointer;padding:48px;border:2.5px dashed var(--bdr);border-radius:16px;width:100%;max-width:520px;transition:.2s;background:var(--sur);margin-top:20px}
+.empty-state:hover{border-color:var(--p);background:rgba(99,102,241,.02)}
+.empty-ic{font-size:4em;opacity:.2}.empty-main{font-size:.95em;font-weight:700;opacity:.6}.empty-sub{font-size:.74em;opacity:.4;line-height:1.5}
 /* PREVIEW */
-.preview-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;padding:16px}
-.preview-wrap img,.preview-wrap canvas{max-width:100%;max-height:480px;border-radius:8px}
-/* EXTRACTED TEXT */
-#extractedTextArea{width:100%;height:100%;min-height:400px;border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:.85em;line-height:1.6;background:var(--surface);color:var(--text);font-family:monospace;resize:none;transition:border .2s}
-#extractedTextArea:focus{outline:none;border-color:var(--primary)}
-.copy-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:.8em;font-weight:700;cursor:pointer;transition:all .2s}
-.copy-btn:hover{background:var(--secondary)}
-/* IMAGE LIST */
-.img-list-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px}
-.img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
-/* RESPONSIVE */
-@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
-
-body.lang-ar{font-family:'Cairo',sans-serif;}
-
-/* ── NAVBAR UPGRADED ── */
-.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
-.dark .navbar{background:rgba(15,23,42,.96)}
-.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--border);font-size:1em;margin:0 2px;flex-shrink:0}
-.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
-.navbar-center{flex:1;display:flex;justify-content:center}
-/* QUICK TOOLS DROPDOWN */
-.quick-tools-wrap{position:relative}
-.quick-tools-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
-.quick-tools-btn:hover{border-color:var(--primary);color:var(--primary)}
-.qt-arrow{transition:transform .2s;font-size:.7em}
-.quick-tools-wrap.open .qt-arrow{transform:rotate(180deg)}
-.quick-tools-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
-.quick-tools-wrap.open .quick-tools-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
-.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* NAVBAR PROGRESS */
-.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s ease;border-radius:0 2px 2px 0}
-/* NAV RIGHT */
-.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-
-
-.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
-.use-again-btn:hover{background:var(--primary);color:white}
-
+.preview-wrap{display:none;flex-direction:column;gap:12px;width:100%;max-width:700px}
+.preview-label{font-size:.72em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.preview-canvas-wrap{background:#fff;border:1.5px solid var(--bdr);border-radius:10px;overflow:hidden;position:relative}
+.preview-canvas-wrap canvas{display:block;width:100%;pointer-events:none}
+.panel{width:360px;flex-shrink:0;background:var(--sur);border-left:1.5px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column}
+[dir=rtl] .panel{border-left:none;border-right:1.5px solid var(--bdr)}
+.panel-section{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.panel-section+.panel-section{border-top:1px solid var(--bdr)}
+.panel-footer{padding:14px 16px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.back-btn{font-size:.73em;font-weight:600;color:var(--p);text-decoration:none;opacity:.75;display:inline-flex;align-items:center;gap:4px}
+.back-btn:hover{opacity:1}
+.tool-header{display:flex;align-items:center;gap:10px}
+.tool-emoji{font-size:1.7em;flex-shrink:0}.tool-name{font-size:1.0em;font-weight:800;color:var(--p)}.tool-desc{font-size:.7em;color:var(--muted);line-height:1.4;margin-top:2px}
+.label{font-size:.67em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.upload-zone{border:2px dashed var(--bdr);border-radius:10px;padding:14px;text-align:center;cursor:pointer;background:var(--bg);transition:.15s}
+.upload-zone:hover{border-color:var(--p)}.uz-icon{font-size:1.4em;display:block;margin-bottom:3px}.uz-main{color:var(--p);font-weight:700;font-size:.78em}.uz-sub{color:var(--muted);font-size:.64em;margin-top:2px}
+.file-info{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;padding:10px 12px}
+.file-icon{font-size:1.4em;flex-shrink:0}.file-name{font-size:.78em;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-change-btn{font-size:.67em;color:var(--p);font-weight:700;cursor:pointer;border:1.5px solid var(--p);background:none;border-radius:6px;padding:3px 8px;font-family:inherit;transition:.15s;flex-shrink:0}
+.file-change-btn:hover{background:var(--p);color:#fff}
+.text-field{width:100%;padding:9px 11px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84em;background:var(--sur);color:var(--tx);font-family:inherit;transition:.15s}
+.text-field:focus{outline:none;border-color:var(--p)}
+.slider-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.slider-row input[type=range]{flex:1;accent-color:var(--p);height:4px;cursor:pointer}
+.slider-val{font-size:.7em;font-weight:700;color:var(--p);min-width:34px;text-align:right}
+.color-row{display:flex;gap:5px;flex-wrap:wrap}
+.clr{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:.15s;flex-shrink:0}
+.clr.active{border-color:var(--tx);transform:scale(1.18)}
+.pos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.pos-btn{padding:7px 4px;border:1.5px solid var(--bdr);border-radius:7px;cursor:pointer;text-align:center;font-size:.7em;font-weight:700;background:var(--bg);color:var(--muted);transition:.15s;font-family:inherit}
+.pos-btn:hover{border-color:var(--p);color:var(--p)}.pos-btn.active{border-color:var(--p);color:var(--p);background:rgba(99,102,241,.06)}
+.progress-wrap{display:none;flex-direction:column;gap:5px}
+.progress-bar{width:100%;height:5px;background:var(--bdr);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));width:0;border-radius:100px;transition:width .25s}
+.progress-txt{font-size:.67em;color:var(--muted);text-align:center}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:13px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+.btn-primary:disabled{background:var(--bdr);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ok{background:var(--ok);color:#fff;border:none;padding:11px;border-radius:100px;font-size:.82em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-ok:hover{background:#059669}
+.btn-ghost{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:8px;border-radius:100px;font-size:.76em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s;margin-top:4px}
+.btn-ghost:hover{background:var(--p);color:#fff}
+.result-wrap{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:12px;flex-direction:column;gap:7px}
+.result-title{color:var(--ok);font-weight:800;font-size:.8em;text-align:center}
+@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-right:none;border-top:1.5px solid var(--bdr);max-height:58vh}.content{flex:none;min-height:42vh;padding:14px}}
 </style>
 </head>
-<body><nav class="navbar">
-  <div class="navbar-left">
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:8px;min-width:0;flex-shrink:0">
     <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-    <span class="nav-sep">›</span>
-    <span class="nav-tool-name" id="navToolName">Watermark PDF</span>
+    <span class="nav-sep">›</span><span class="nav-title" id="T_navTitle">Watermark PDF</span>
   </div>
-  <div class="navbar-center">
-    <div class="quick-tools-wrap" id="qtWrap">
-      <button class="quick-tools-btn" onclick="toggleQT()" id="qtBtn">
-        <span id="qtLabel">All Tools</span> <span class="qt-arrow">▾</span>
-      </button>
-      <div class="quick-tools-drop" id="qtDrop">
-        <a href="merge-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-          <span class="qt-label" data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span>
-        </a>
-<a href="split-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
-          <span class="qt-label" data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span>
-        </a>
-<a href="compress-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-          <span class="qt-label" data-en="Compress PDF" data-ar="ضغط PDF">Compress PDF</span>
-        </a>
-<a href="rotate-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
-          <span class="qt-label" data-en="Rotate PDF" data-ar="تدوير PDF">Rotate PDF</span>
-        </a>
-<a href="sign-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-          <span class="qt-label" data-en="Sign PDF" data-ar="توقيع PDF">Sign PDF</span>
-        </a>
-<a href="protect-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <span class="qt-label" data-en="Protect PDF" data-ar="حماية PDF">Protect PDF</span>
-        </a>
-<a href="image-to-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <span class="qt-label" data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span>
-        </a>
-<a href="pdf-to-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <span class="qt-label" data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span>
-        </a>
-<a href="extract-text.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>
-          <span class="qt-label" data-en="Extract Text" data-ar="استخراج نص">Extract Text</span>
-        </a>
-<a href="convert-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg></div>
-          <span class="qt-label" data-en="Convert Image" data-ar="تحويل صور">Convert Image</span>
-        </a>
-<a href="remove-background.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-          <span class="qt-label" data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span>
-        </a>
-
+  <div class="nav-fill">
+    <div class="qt" id="qtMenu">
+      <button class="qt-trigger" id="qtTrigger"><span id="T_allTools">All Tools</span><span class="qt-arr">▾</span></button>
+      <div class="qt-menu">
+        <a href="merge-pdf.html" class="qt-item"><span class="qt-ic">🔗</span><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
+        <a href="split-pdf.html" class="qt-item"><span class="qt-ic">✂️</span><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
+        <a href="compress-pdf.html" class="qt-item"><span class="qt-ic">🗜️</span><span data-en="Compress" data-ar="ضغط">Compress</span></a>
+        <a href="rotate-pdf.html" class="qt-item"><span class="qt-ic">🔄</span><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
+        <a href="sign-pdf.html" class="qt-item"><span class="qt-ic">✍️</span><span data-en="Sign" data-ar="توقيع">Sign</span></a>
+        <a href="stamp-pdf.html" class="qt-item"><span class="qt-ic">📋</span><span data-en="Stamp" data-ar="ختم">Stamp</span></a>
+        <a href="protect-pdf.html" class="qt-item"><span class="qt-ic">🔐</span><span data-en="Protect" data-ar="حماية">Protect</span></a>
+        <a href="pdf-to-image.html" class="qt-item"><span class="qt-ic">🖼️</span><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
+        <a href="image-to-pdf.html" class="qt-item"><span class="qt-ic">📄</span><span data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span></a>
+        <a href="extract-text.html" class="qt-item"><span class="qt-ic">📝</span><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
+        <a href="remove-background.html" class="qt-item"><span class="qt-ic">🎨</span><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
       </div>
     </div>
   </div>
-  <div class="navbar-right">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+  <div class="nav-end">
+    <button class="icon-btn" id="themeBtn">🌙</button>
+    <button class="icon-btn lang-btn" id="langBtn">عربي</button>
   </div>
-  <div class="navbar-progress" id="navProgress"></div>
-</nav><div class="drop-overlay" id="dropOverlay">
-  <div class="drop-overlay-icon">📂</div>
-  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
-</div>
+</nav>
+
 <div class="workspace">
-  <div class="content" id="contentArea">
-    <div class="placeholder" id="placeholder">
-      <span class="ph-icon">💧</span>
-      <p id="phText">Upload a PDF file.<br>Watermark settings are on the right.</p>
+  <div class="content">
+    <div class="empty-state" id="emptyState">
+      <span class="empty-ic">💧</span>
+      <span class="empty-main" id="T_emptyMain">Click or drop a PDF file here</span>
+      <span class="empty-sub" id="T_emptySub">Your file never leaves your browser · Free · No registration</span>
     </div>
-    <div id="infoArea" style="display:none;flex-direction:column;gap:12px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center">
-        <div style="font-size:3em;margin-bottom:12px">💧</div>
-        <p style="font-weight:700;font-size:.95em;margin-bottom:6px" id="readyText">Ready to add watermark</p>
-        <p style="font-size:.8em;color:var(--text-muted)" id="fileNameDisp"></p>
+    <div class="preview-wrap" id="previewWrap">
+      <div class="preview-label" id="T_previewLabel">Preview (Page 1)</div>
+      <div class="preview-canvas-wrap"><canvas id="previewCanvas"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-section">
+      <a href="index.html" class="back-btn" id="T_back">← All tools</a>
+      <div class="tool-header">
+        <div class="tool-emoji">💧</div>
+        <div><div class="tool-name" id="T_toolName">Watermark PDF</div><div class="tool-desc" id="T_toolDesc">Add text watermark to all pages</div></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="label" id="T_pdfLabel">PDF File</div>
+      <div class="upload-zone" id="uploadZone">
+        <span class="uz-icon">📁</span>
+        <div class="uz-main" id="T_pdfBtn">Click or drop PDF here</div>
+        <div class="uz-sub" id="T_pdfSub">Any PDF — processed locally</div>
+      </div>
+      <div class="file-info" id="fileInfo" style="display:none">
+        <span class="file-icon">📄</span>
+        <span class="file-name" id="fileName">document.pdf</span>
+        <button class="file-change-btn" onclick="resetTool()" id="T_changeFile">Change</button>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="label" id="T_textLabel">Watermark Text</div>
+      <input type="text" class="text-field" id="wmText" placeholder="e.g. CONFIDENTIAL" maxlength="30">
+
+      <div class="label" id="T_colorLabel">Color</div>
+      <div class="color-row" id="colorRow"></div>
+
+      <div class="label" id="T_opLabel">Opacity</div>
+      <div class="slider-row">
+        <input type="range" id="opSlider" min="5" max="60" value="20">
+        <span class="slider-val" id="opVal">20%</span>
+      </div>
+
+      <div class="label" id="T_sizeLabel">Font Size</div>
+      <div class="slider-row">
+        <input type="range" id="sizeSlider" min="20" max="120" value="60">
+        <span class="slider-val" id="sizeVal">60</span>
+      </div>
+
+      <div class="label" id="T_posLabel">Position</div>
+      <div class="pos-grid" id="posGrid"></div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-txt" id="progressTxt">Processing…</div>
+      </div>
+      <button class="btn-primary" id="actionBtn" disabled onclick="doWatermark()">
+        <span id="T_actionBtn">Add Watermark</span>
+      </button>
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-title" id="T_resultTitle">✅ Watermark added!</div>
+        <a class="btn-ok" id="downloadLink" href="#" download>📥 Download</a>
+        <button class="btn-ghost" onclick="resetTool()"><span id="T_again">Watermark another file</span></button>
       </div>
     </div>
   </div>
-  <div class="panel">
-  <a href="index.html" class="back-link">← All tools</a>
-  <div>
-    <div style="font-size:2em;margin-bottom:6px">💧</div>
-    <div class="tool-title" id="tool_title">Watermark PDF</div>
-    <div class="tool-desc" id="tool_desc">Add text watermark to your PDF</div>
-  </div>
-  <div class="upload-zone" id="uploadZone">
-    <span class="up-icon">📁</span>
-    <p class="up-title" id="upload_title">Click or drag PDF here</p>
-    <small class="up-sub" id="upload_sub">Any PDF file</small>
-    <input type="file" id="fileInput" accept=".pdf" >
-  </div>
-    <div class="opts-section">
-      <label class="opt-label" id="wmTextLabel">Watermark Text</label>
-      <input type="text" class="opt-input" id="watermarkText" value="CONFIDENTIAL" placeholder="Enter watermark text">
-      <label class="opt-label" id="posLabel">Position</label>
-      <select class="opt-select" id="position">
-        <option value="center" id="pCenter">Center (diagonal)</option>
-        <option value="topLeft" id="pTL">Top Left</option>
-        <option value="topRight" id="pTR">Top Right</option>
-        <option value="bottomLeft" id="pBL">Bottom Left</option>
-        <option value="bottomRight" id="pBR">Bottom Right</option>
-      </select>
-      <label class="opt-label" id="opacityLabel">Opacity</label>
-      <select class="opt-select" id="opacity">
-        <option value="0.15" id="opLight">Light (15%)</option>
-        <option value="0.3" selected id="opMed">Medium (30%)</option>
-        <option value="0.5" id="opStr">Strong (50%)</option>
-      </select>
-    </div>
-  <div class="spinner" id="spinner"></div>
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <p class="progress-text" id="progressText">Processing…</p>
-  </div>
-  <button class="action-btn" id="actionBtn" onclick="addWatermark()" disabled>
-    <span id="actionLabel">Add Watermark</span>
-  </button>
-  <div class="result-box" id="result">
-    <p class="result-title" id="resultTitle">✅ Watermark added!</p>
-    <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Use Another File</button>
-    <a class="download-btn-full" id="downloadBtn" download="watermarked.pdf" href="#">📥 Download Watermarked PDF</a>
-  </div>
-  </div>
 </div>
+
+<input type="file" id="pdfInput" accept=".pdf" style="position:fixed;top:-9999px;left:-9999px">
+
 <script>
-function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
-let uploadedFile=null;
-document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
-document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
-document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-function handleGlobalDrop(files){const f=[...files].find(f=>f.type==='application/pdf');if(f)handleFile(f);}
-function handleFile(f){
-  if(!f||f.type!=='application/pdf')return;
-  uploadedFile=f;
-  document.getElementById('actionBtn').disabled=false;
-  document.getElementById('placeholder').style.display='none';
-  document.getElementById('infoArea').style.display='flex';
-  document.getElementById('fileNameDisp').textContent=f.name;
-}
-async function addWatermark(){
-  document.getElementById('spinner').style.display='block';
-  document.getElementById('actionBtn').disabled=true;
-  try{
-    const{PDFDocument,rgb,degrees}=PDFLib;
-    const bytes=await uploadedFile.arrayBuffer();
-    const pdf=await PDFDocument.load(bytes);
-    const text=document.getElementById('watermarkText').value||'WATERMARK';
-    const pos=document.getElementById('position').value;
-    const opacity=parseFloat(document.getElementById('opacity').value);
-    const pages=pdf.getPages();
-    pages.forEach(page=>{
-      const{width,height}=page.getSize();
-      let x,y,rot=0,size=Math.min(width,height)/10;
-      if(pos==='center'){x=width/2;y=height/2;rot=45;}
-      else if(pos==='topLeft'){x=30;y=height-40;size=Math.min(width,height)/16;}
-      else if(pos==='topRight'){x=width-30;y=height-40;size=Math.min(width,height)/16;}
-      else if(pos==='bottomLeft'){x=30;y=30;size=Math.min(width,height)/16;}
-      else{x=width-30;y=30;size=Math.min(width,height)/16;}
-      page.drawText(text,{x,y,size,opacity,color:rgb(0.6,0.6,0.6),rotate:degrees(rot)});
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+var S={file:null,pdfDoc:null,color:'#6366f1',opacity:20,fontSize:60,position:'center',
+  dark:localStorage.getItem('dpdf_dark')==='1',lang:localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en')};
+
+var COLORS=['#6366f1','#ef4444','#10b981','#f59e0b','#64748b','#000000'];
+var POSITIONS=[
+  {id:'tl',en:'Top Left',ar:'أعلى يسار'},{id:'tc',en:'Top Center',ar:'أعلى وسط'},{id:'tr',en:'Top Right',ar:'أعلى يمين'},
+  {id:'ml',en:'Mid Left',ar:'وسط يسار'},{id:'center',en:'Center',ar:'الوسط'},{id:'mr',en:'Mid Right',ar:'وسط يمين'},
+  {id:'bl',en:'Bot Left',ar:'أسفل يسار'},{id:'bc',en:'Bot Center',ar:'أسفل وسط'},{id:'br',en:'Bot Right',ar:'أسفل يمين'}
+];
+
+function initColors(){
+  var row=document.getElementById('colorRow');
+  COLORS.forEach(function(c){
+    var dot=document.createElement('div');
+    dot.className='clr'+(c===S.color?' active':'');
+    dot.style.background=c;
+    dot.addEventListener('click',function(){
+      S.color=c;
+      document.querySelectorAll('.clr').forEach(function(d){d.classList.remove('active');});
+      dot.classList.add('active');
+      updatePreview();
     });
-    const out=await pdf.save();
-    const blob=new Blob([out],{type:'application/pdf'});
-    const url=URL.createObjectURL(blob);
-    document.getElementById('downloadBtn').href=url;
-    document.getElementById('result').style.display='block';
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_watermarked.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
-    if(typeof gtag!=='undefined')gtag('event','pdf_watermarked',{event_category:'PDF Tools'});
-  }catch(e){alert('Error: '+e.message);}
-  document.getElementById('spinner').style.display='none';
-  document.getElementById('actionBtn').disabled=false;
+    row.appendChild(dot);
+  });
 }
 
-window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
-window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
-window.addEventListener('dragover',e=>e.preventDefault());
-window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');if(typeof handleGlobalDrop==='function')handleGlobalDrop(e.dataTransfer.files);});
-
-let _dark=localStorage.getItem('dark')==='true';
-if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-
-// ── Quick Tools Dropdown ──
-function toggleQT(){
-  const w=document.getElementById('qtWrap');
-  if(w)w.classList.toggle('open');
+function initPositions(){
+  var grid=document.getElementById('posGrid');
+  POSITIONS.forEach(function(p){
+    var btn=document.createElement('button');
+    btn.className='pos-btn'+(p.id===S.position?' active':'');
+    btn.dataset.pos=p.id;
+    btn.textContent=S.lang==='ar'?p.ar:p.en;
+    btn.addEventListener('click',function(){
+      S.position=p.id;
+      document.querySelectorAll('.pos-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      updatePreview();
+    });
+    grid.appendChild(btn);
+  });
 }
-document.addEventListener('click',function(e){
-  const w=document.getElementById('qtWrap');
-  if(w&&!w.contains(e.target))w.classList.remove('open');
+
+document.getElementById('wmText').addEventListener('input',function(){updateActionBtn();updatePreview();});
+document.getElementById('opSlider').addEventListener('input',function(){S.opacity=+this.value;document.getElementById('opVal').textContent=this.value+'%';updatePreview();});
+document.getElementById('sizeSlider').addEventListener('input',function(){S.fontSize=+this.value;document.getElementById('sizeVal').textContent=this.value;updatePreview();});
+
+document.getElementById('pdfInput').onchange=function(){if(this.files&&this.files[0]){loadFile(this.files[0]);this.value='';}};
+document.getElementById('uploadZone').onclick=function(){document.getElementById('pdfInput').click();};
+document.getElementById('emptyState').onclick=function(){document.getElementById('pdfInput').click();};
+document.body.addEventListener('dragover',function(e){e.preventDefault();});
+document.body.addEventListener('drop',function(e){
+  e.preventDefault();
+  var pdf=Array.from(e.dataTransfer.files||[]).find(function(f){return f.type==='application/pdf';});
+  if(pdf)loadFile(pdf);
 });
 
+async function loadFile(f){
+  if(!f||f.type!=='application/pdf'){alert('Please select a valid PDF file.');return;}
+  S.file=f;
+  if(S.pdfDoc){try{S.pdfDoc.destroy();}catch(e){}}
+  var bytes=await f.arrayBuffer();
+  S.pdfDoc=await pdfjsLib.getDocument({data:bytes}).promise;
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('previewWrap').style.display='flex';
+  document.getElementById('uploadZone').style.display='none';
+  document.getElementById('fileInfo').style.display='flex';
+  document.getElementById('fileName').textContent=f.name;
+  updateActionBtn();
+  updatePreview();
+}
 
-// ── Reset Tool ──
+async function updatePreview(){
+  if(!S.pdfDoc)return;
+  var page=await S.pdfDoc.getPage(1);
+  var vp=page.getViewport({scale:1});
+  var wrap=document.getElementById('previewCanvas').parentElement;
+  var scale=(wrap.clientWidth||600)/vp.width;
+  var vp2=page.getViewport({scale:scale});
+  var cv=document.getElementById('previewCanvas');
+  cv.width=Math.round(vp2.width);cv.height=Math.round(vp2.height);
+  var ctx=cv.getContext('2d');
+  await page.render({canvasContext:ctx,viewport:vp2}).promise;
+  var txt=document.getElementById('wmText').value||'WATERMARK';
+  drawWatermarkOnCanvas(ctx,txt,cv.width,cv.height);
+}
+
+function drawWatermarkOnCanvas(ctx,text,w,h){
+  ctx.save();
+  ctx.globalAlpha=S.opacity/100;
+  ctx.fillStyle=S.color;
+  var fs=Math.round(S.fontSize*w/600);
+  ctx.font='bold '+fs+'px Arial';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  var pos=getXY(S.position,w,h,ctx.measureText(text).width,fs);
+  ctx.translate(pos.x,pos.y);
+  if(S.position==='center')ctx.rotate(-Math.PI/4);
+  ctx.fillText(text,0,0);
+  ctx.restore();
+}
+
+function getXY(pos,w,h,tw,fh){
+  var pad=20;
+  var map={
+    tl:{x:tw/2+pad,y:fh/2+pad},tc:{x:w/2,y:fh/2+pad},tr:{x:w-tw/2-pad,y:fh/2+pad},
+    ml:{x:tw/2+pad,y:h/2},center:{x:w/2,y:h/2},mr:{x:w-tw/2-pad,y:h/2},
+    bl:{x:tw/2+pad,y:h-fh/2-pad},bc:{x:w/2,y:h-fh/2-pad},br:{x:w-tw/2-pad,y:h-fh/2-pad}
+  };
+  return map[pos]||map.center;
+}
+
+function updateActionBtn(){document.getElementById('actionBtn').disabled=!S.file;}
+
+async function doWatermark(){
+  if(!S.file)return;
+  var text=document.getElementById('wmText').value.trim()||'WATERMARK';
+  document.getElementById('actionBtn').disabled=true;
+  document.getElementById('progressWrap').style.display='flex';
+  document.getElementById('resultWrap').style.display='none';
+  try{
+    setProgress(10,'Loading PDF…');
+    var bytes=await S.file.arrayBuffer();
+    var pdf=await PDFLib.PDFDocument.load(bytes);
+    var pages=pdf.getPages();
+    var font=await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    setProgress(40,'Adding watermark…');
+    var hex=S.color.replace('#','');
+    var r=parseInt(hex.slice(0,2),16)/255,g=parseInt(hex.slice(2,4),16)/255,b=parseInt(hex.slice(4,6),16)/255;
+    pages.forEach(function(page,i){
+      setProgress(40+Math.round(i/pages.length*50),'Page '+(i+1)+'…');
+      var W=page.getWidth(),H=page.getHeight();
+      var fs=S.fontSize;
+      var tw=font.widthOfTextAtSize(text,fs);
+      var pos=getXYPdf(S.position,W,H,tw,fs);
+      var angle=S.position==='center'?-Math.PI/4:0;
+      page.drawText(text,{x:pos.x,y:pos.y,size:fs,font:font,color:PDFLib.rgb(r,g,b),opacity:S.opacity/100,rotate:PDFLib.degrees(angle*180/Math.PI)});
+    });
+    setProgress(92,'Saving…');
+    var out=await pdf.save();
+    var url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+    var name=S.file.name.replace(/\.pdf$/i,'')+'_watermarked.pdf';
+    var dl=document.getElementById('downloadLink');
+    dl.href=url;dl.download=name;dl.textContent='📥 '+name;
+    document.getElementById('resultWrap').style.display='flex';
+    setProgress(100,'Done!');
+    setTimeout(function(){var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);},350);
+    if(typeof gtag!=='undefined')gtag('event','pdf_watermarked',{event_category:'PDF Tools'});
+  }catch(err){alert('Error: '+err.message);console.error(err);}
+  document.getElementById('actionBtn').disabled=false;
+  setTimeout(function(){document.getElementById('progressWrap').style.display='none';},900);
+}
+
+function getXYPdf(pos,W,H,tw,fh){
+  var pad=30;
+  var map={
+    tl:{x:pad,y:H-fh-pad},tc:{x:W/2-tw/2,y:H-fh-pad},tr:{x:W-tw-pad,y:H-fh-pad},
+    ml:{x:pad,y:H/2},center:{x:W/2-tw/2,y:H/2},mr:{x:W-tw-pad,y:H/2},
+    bl:{x:pad,y:pad},bc:{x:W/2-tw/2,y:pad},br:{x:W-tw-pad,y:pad}
+  };
+  return map[pos]||map.center;
+}
+
+function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressTxt').textContent=msg;}
+
 function resetTool(){
-  uploadedFile=null;
-  // Reset upload zone
-  const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
-  // Hide progress
-  const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
-  const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
-  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
-  // Disable action button
-  const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
-  // Hide spinner
-  const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
+  S.file=null;if(S.pdfDoc){try{S.pdfDoc.destroy();}catch(e){}}S.pdfDoc=null;
+  document.getElementById('pdfInput').value='';
+  document.getElementById('emptyState').style.display='flex';
+  document.getElementById('previewWrap').style.display='none';
+  document.getElementById('uploadZone').style.display='block';
+  document.getElementById('fileInfo').style.display='none';
+  document.getElementById('resultWrap').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('actionBtn').disabled=true;
 }
 
-function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
-let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
-if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
+if(S.dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
+document.getElementById('themeBtn').onclick=function(){S.dark=!S.dark;document.body.classList.toggle('dark',S.dark);this.textContent=S.dark?'☀️':'🌙';localStorage.setItem('dpdf_dark',S.dark?'1':'0');};
 
-const _tr={"en":{"tool_title":"Watermark PDF","tool_desc":"Add text watermark to your PDF","upload_title":"Click or drag PDF here","upload_sub":"Any PDF file","actionLabel":"Add Watermark","resultTitle":"✅ Watermark added!","phText":"Upload a PDF file.<br>Watermark settings are on the right.","readyText":"Ready to add watermark","wmTextLabel":"Watermark Text","posLabel":"Position","pCenter":"Center (diagonal)","pTL":"Top Left","pTR":"Top Right","pBL":"Bottom Left","pBR":"Bottom Right","opacityLabel":"Opacity","opLight":"Light (15%)","opMed":"Medium (30%)","opStr":"Strong (50%)","dropText":"Drop PDF file here"},"ar":{"tool_title":"علامة مائية PDF","tool_desc":"أضف نصاً مائياً لملف PDF","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي ملف PDF","actionLabel":"إضافة علامة مائية","resultTitle":"✅ تمت الإضافة!","phText":"ارفع ملف PDF.<br>إعدادات العلامة المائية على اليمين.","readyText":"جاهز لإضافة العلامة المائية","wmTextLabel":"نص العلامة المائية","posLabel":"الموضع","pCenter":"المنتصف (قطري)","pTL":"أعلى اليسار","pTR":"أعلى اليمين","pBL":"أسفل اليسار","pBR":"أسفل اليمين","opacityLabel":"الشفافية","opLight":"خفيف (15%)","opMed":"متوسط (30%)","opStr":"قوي (50%)","dropText":"أسقط ملف PDF هنا"}};
-function _applyLang(){
-  const _ua=document.getElementById('useAgainBtn');
-  if(_ua)_ua.textContent=_lang==='ar'?'استخدام ملف آخر':'Use Another File';
-  document.documentElement.lang=_lang;
-  document.body.dir='ltr';
-  document.body.classList.toggle('lang-ar',_lang==='ar');
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
-  const t=_tr[_lang]||{};
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
-  
+var LANGS={
+  en:{T_navTitle:'Watermark PDF',T_allTools:'All Tools',T_back:'← All tools',T_toolName:'Watermark PDF',T_toolDesc:'Add text watermark to all pages',
+    T_emptyMain:'Click or drop a PDF file here',T_emptySub:'Your file never leaves your browser · Free · No registration',
+    T_pdfLabel:'PDF File',T_pdfBtn:'Click or drop PDF here',T_pdfSub:'Any PDF — processed locally',T_changeFile:'Change',
+    T_previewLabel:'Preview (Page 1)',T_textLabel:'Watermark Text',T_colorLabel:'Color',T_opLabel:'Opacity',
+    T_sizeLabel:'Font Size',T_posLabel:'Position',
+    T_actionBtn:'Add Watermark',T_resultTitle:'✅ Watermark added!',T_again:'Watermark another file',langBtn:'عربي'},
+  ar:{T_navTitle:'علامة مائية PDF',T_allTools:'كل الأدوات',T_back:'كل الأدوات ←',T_toolName:'علامة مائية PDF',T_toolDesc:'أضف علامة مائية نصية لكل الصفحات',
+    T_emptyMain:'اضغط هنا أو أسقط ملف PDF',T_emptySub:'ملفك لا يغادر متصفحك · مجاني · بدون تسجيل',
+    T_pdfLabel:'ملف PDF',T_pdfBtn:'اضغط أو أسقط PDF هنا',T_pdfSub:'أي PDF — معالجة محلية',T_changeFile:'تغيير',
+    T_previewLabel:'معاينة (الصفحة 1)',T_textLabel:'نص العلامة المائية',T_colorLabel:'اللون',T_opLabel:'الشفافية',
+    T_sizeLabel:'حجم الخط',T_posLabel:'الموضع',
+    T_actionBtn:'إضافة العلامة المائية',T_resultTitle:'✅ تمت الإضافة!',T_again:'علامة مائية لملف آخر',langBtn:'EN'}
+};
 
-  document.getElementById('navToolName').textContent=_lang==='ar'?'علامة مائية':'Watermark PDF';
-  document.getElementById('qtLabel').textContent=_lang==='ar'?'كل الأدوات':'All Tools';
-  document.querySelectorAll('.qt-label').forEach(el=>el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en);
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
+function applyLang(){
+  var t=LANGS[S.lang]||LANGS.en;
+  document.documentElement.lang=S.lang;
+  document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('ar',S.lang==='ar');
+  Object.keys(t).forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=t[k];});
+  document.querySelectorAll('.qt-menu span[data-en]').forEach(function(el){el.textContent=S.lang==='ar'?el.dataset.ar:el.dataset.en;});
+  document.querySelectorAll('.pos-btn').forEach(function(btn){
+    var p=POSITIONS.find(function(x){return x.id===btn.dataset.pos;});
+    if(p)btn.textContent=S.lang==='ar'?p.ar:p.en;
+  });
 }
-function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
-_applyLang();
+document.getElementById('langBtn').onclick=function(){S.lang=S.lang==='en'?'ar':'en';localStorage.setItem('dpdf_lang',S.lang);applyLang();};
+document.getElementById('qtTrigger').onclick=function(e){e.stopPropagation();document.getElementById('qtMenu').classList.toggle('open');};
+document.addEventListener('click',function(){document.getElementById('qtMenu').classList.remove('open');});
 
-</script><!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
-</body></html>
+initColors();
+initPositions();
+applyLang();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
+</body>
+</html>

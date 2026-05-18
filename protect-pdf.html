@@ -1,364 +1,341 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protect PDF Online Free | Doctor PDF</title>
-<meta name="description" content="Add password protection to PDF files online for free.">
-<meta name="robots" content="index, follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protect PDF Online Free – Password Protect PDF | Doctor PDF</title>
+<meta name="description" content="Add password protection to PDF files online for free. 100% browser-based, no upload to server, no registration required.">
 <link rel="canonical" href="https://doctor-pdf.com/protect-pdf.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/protect-pdf.html">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
-/* NAVBAR */
-.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.95)}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
-.nav-right{display:flex;align-items:center;gap:8px}
-.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-/* LAYOUT */
+:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--muted:#64748b}
+.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--muted:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .25s,color .25s}
+body.ar{font-family:'Cairo',sans-serif}
+nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;z-index:300;position:relative}
+.dark nav{background:rgba(15,23,42,.97)}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-weight:800;font-size:.92em;color:var(--p)}
+.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
+.nav-sep{color:var(--bdr)}.nav-title{font-size:.78em;font-weight:700}
+.nav-fill{flex:1;display:flex;justify-content:center}.nav-end{display:flex;gap:5px;align-items:center}
+.icon-btn{width:30px;height:30px;border:1.5px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit}
+.icon-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.lang-btn{width:auto;padding:0 10px;font-size:.68em;font-weight:700}
+.qt{position:relative}
+.qt-trigger{display:flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:4px 11px;font-size:.75em;font-weight:700;color:var(--tx);cursor:pointer;font-family:inherit;transition:.15s}
+.qt-trigger:hover{border-color:var(--p);color:var(--p)}
+.qt-arr{font-size:.65em;transition:transform .2s}.qt.open .qt-arr{transform:rotate(180deg)}
+.qt-menu{position:absolute;top:calc(100%+7px);left:50%;transform:translateX(-50%);background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 10px 36px rgba(0,0,0,.13);padding:8px;display:none;z-index:999;width:260px}
+.qt.open .qt-menu{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.qt-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;text-decoration:none;color:var(--tx);font-size:.74em;font-weight:600;transition:.12s}
+.qt-item:hover{background:rgba(99,102,241,.08);color:var(--p)}
+.qt-ic{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85em}
 .workspace{display:flex;flex:1;overflow:hidden}
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px;display:flex;flex-direction:column;gap:16px;position:relative}
-.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 20px;gap:14px}
-/* DROP OVERLAY */
-.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
-.drop-overlay.active{display:flex}
-.drop-overlay-icon{font-size:4em}
-.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
-/* PLACEHOLDER */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
-.placeholder .ph-icon{font-size:5em;opacity:.2}
-.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
-/* PANEL ELEMENTS */
-.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
-.back-link:hover{opacity:1}
-.tool-title{color:var(--primary);font-size:1.15em;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
-.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
-.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
-.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.up-icon{font-size:1.5em;display:block;margin-bottom:5px}
-.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
-.up-sub{color:var(--text-muted);font-size:.7em}
-input[type=file]{display:none}
-.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
-.opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-.progress-wrap{display:none}
-.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
-.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
-.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
-.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
-.download-btn-full:hover{background:#059669}
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.stat-box{background:var(--bg);border-radius:7px;padding:8px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.62em;color:var(--text-muted);font-weight:600;text-transform:uppercase}
-.stat-value{font-size:.9em;font-weight:800;color:var(--primary);margin-top:2px}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.format-option{background:var(--bg);padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.78em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-/* FILE LIST IN PANEL */
-.panel-file-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px}
-.pfi-name{flex:1;font-size:.75em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pfi-pages{font-size:.68em;color:var(--text-muted)}
-.pfi-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8em;flex-shrink:0}
-/* SIGN CANVAS */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;max-height:340px;touch-action:none;background:white}
-.sign-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8em;font-weight:600;transition:all .2s;font-family:inherit}
-.sign-btn:hover{border-color:var(--primary);color:var(--primary)}
-/* PREVIEW */
-.preview-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;padding:16px}
-.preview-wrap img,.preview-wrap canvas{max-width:100%;max-height:480px;border-radius:8px}
-/* EXTRACTED TEXT */
-#extractedTextArea{width:100%;height:100%;min-height:400px;border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:.85em;line-height:1.6;background:var(--surface);color:var(--text);font-family:monospace;resize:none;transition:border .2s}
-#extractedTextArea:focus{outline:none;border-color:var(--primary)}
-.copy-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:.8em;font-weight:700;cursor:pointer;transition:all .2s}
-.copy-btn:hover{background:var(--secondary)}
-/* IMAGE LIST */
-.img-list-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px}
-.img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
-/* RESPONSIVE */
-@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
-
-body.lang-ar{font-family:'Cairo',sans-serif;}
-
-/* ── NAVBAR UPGRADED ── */
-.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
-.dark .navbar{background:rgba(15,23,42,.96)}
-.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--border);font-size:1em;margin:0 2px;flex-shrink:0}
-.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
-.navbar-center{flex:1;display:flex;justify-content:center}
-/* QUICK TOOLS DROPDOWN */
-.quick-tools-wrap{position:relative}
-.quick-tools-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
-.quick-tools-btn:hover{border-color:var(--primary);color:var(--primary)}
-.qt-arrow{transition:transform .2s;font-size:.7em}
-.quick-tools-wrap.open .qt-arrow{transform:rotate(180deg)}
-.quick-tools-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
-.quick-tools-wrap.open .quick-tools-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
-.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* NAVBAR PROGRESS */
-.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s ease;border-radius:0 2px 2px 0}
-/* NAV RIGHT */
-.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-
-
-.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
-.use-again-btn:hover{background:var(--primary);color:white}
-
+.content{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);text-align:center;cursor:pointer;padding:48px;border:2.5px dashed var(--bdr);border-radius:16px;width:100%;max-width:480px;transition:.2s;background:var(--sur)}
+.empty-state:hover{border-color:var(--p);background:rgba(99,102,241,.02)}
+.empty-ic{font-size:4em;opacity:.2}.empty-main{font-size:.95em;font-weight:700;opacity:.6}.empty-sub{font-size:.74em;opacity:.4;line-height:1.5}
+/* READY STATE */
+.ready-card{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:420px;text-align:center}
+.ready-icon{font-size:5em}
+.ready-title{font-size:1.1em;font-weight:800;color:var(--tx)}
+.ready-sub{font-size:.76em;color:var(--muted);line-height:1.5}
+.file-badge{display:flex;align-items:center;gap:8px;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:10px 14px;width:100%;text-align:left}
+[dir=rtl] .file-badge{text-align:right}
+.fb-icon{font-size:1.5em;flex-shrink:0}.fb-name{font-size:.78em;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.warn-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:9px;padding:10px 12px;font-size:.69em;color:#92400e;line-height:1.5;width:100%;text-align:left}
+.dark .warn-box{color:#fcd34d}
+[dir=rtl] .warn-box{text-align:right}
+.panel{width:360px;flex-shrink:0;background:var(--sur);border-left:1.5px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column}
+[dir=rtl] .panel{border-left:none;border-right:1.5px solid var(--bdr)}
+.panel-section{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.panel-section+.panel-section{border-top:1px solid var(--bdr)}
+.panel-footer{padding:14px 16px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.back-btn{font-size:.73em;font-weight:600;color:var(--p);text-decoration:none;opacity:.75;display:inline-flex;align-items:center;gap:4px}
+.back-btn:hover{opacity:1}
+.tool-header{display:flex;align-items:center;gap:10px}
+.tool-emoji{font-size:1.7em;flex-shrink:0}.tool-name{font-size:1.0em;font-weight:800;color:var(--p)}.tool-desc{font-size:.7em;color:var(--muted);line-height:1.4;margin-top:2px}
+.label{font-size:.67em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.upload-zone{border:2px dashed var(--bdr);border-radius:10px;padding:14px;text-align:center;cursor:pointer;background:var(--bg);transition:.15s}
+.upload-zone:hover{border-color:var(--p)}.uz-icon{font-size:1.4em;display:block;margin-bottom:3px}.uz-main{color:var(--p);font-weight:700;font-size:.78em}.uz-sub{color:var(--muted);font-size:.64em;margin-top:2px}
+.file-info{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;padding:10px 12px}
+.file-icon{font-size:1.4em;flex-shrink:0}.file-name{font-size:.78em;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-change-btn{font-size:.67em;color:var(--p);font-weight:700;cursor:pointer;border:1.5px solid var(--p);background:none;border-radius:6px;padding:3px 8px;font-family:inherit;transition:.15s;flex-shrink:0}
+.file-change-btn:hover{background:var(--p);color:#fff}
+.pwd-wrap{position:relative}
+.pwd-input{width:100%;padding:10px 40px 10px 12px;border:1.5px solid var(--bdr);border-radius:9px;font-size:.84em;background:var(--sur);color:var(--tx);font-family:inherit;transition:.15s}
+[dir=rtl] .pwd-input{padding:10px 12px 10px 40px}
+.pwd-input:focus{outline:none;border-color:var(--p)}
+.pwd-input.err{border-color:var(--err)}
+.pwd-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.82em;color:var(--muted);padding:2px}
+[dir=rtl] .pwd-toggle{right:auto;left:10px}
+.pwd-strength{height:3px;border-radius:100px;margin-top:5px;transition:all .3s}
+.pwd-msg{font-size:.64em;color:var(--muted);margin-top:3px}
+.hint-box{background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.12);border-radius:8px;padding:8px 10px;font-size:.69em;color:var(--muted);line-height:1.5}
+.progress-wrap{display:none;flex-direction:column;gap:5px}
+.progress-bar{width:100%;height:5px;background:var(--bdr);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));width:0;border-radius:100px;transition:width .25s}
+.progress-txt{font-size:.67em;color:var(--muted);text-align:center}
+.btn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:13px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
+.btn-primary:disabled{background:var(--bdr);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ok{background:var(--ok);color:#fff;border:none;padding:11px;border-radius:100px;font-size:.82em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-ok:hover{background:#059669}
+.btn-ghost{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:8px;border-radius:100px;font-size:.76em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s;margin-top:4px}
+.btn-ghost:hover{background:var(--p);color:#fff}
+.result-wrap{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:12px;flex-direction:column;gap:7px}
+.result-title{color:var(--ok);font-weight:800;font-size:.8em;text-align:center}
+@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-right:none;border-top:1.5px solid var(--bdr);max-height:58vh}.content{flex:none;min-height:42vh;padding:16px}}
 </style>
 </head>
-<body><nav class="navbar">
-  <div class="navbar-left">
+<body>
+<nav>
+  <div style="display:flex;align-items:center;gap:8px;min-width:0;flex-shrink:0">
     <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-    <span class="nav-sep">›</span>
-    <span class="nav-tool-name" id="navToolName">Protect PDF</span>
+    <span class="nav-sep">›</span><span class="nav-title" id="T_navTitle">Protect PDF</span>
   </div>
-  <div class="navbar-center">
-    <div class="quick-tools-wrap" id="qtWrap">
-      <button class="quick-tools-btn" onclick="toggleQT()" id="qtBtn">
-        <span id="qtLabel">All Tools</span> <span class="qt-arrow">▾</span>
-      </button>
-      <div class="quick-tools-drop" id="qtDrop">
-        <a href="merge-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-          <span class="qt-label" data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span>
-        </a>
-<a href="split-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
-          <span class="qt-label" data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span>
-        </a>
-<a href="compress-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-          <span class="qt-label" data-en="Compress PDF" data-ar="ضغط PDF">Compress PDF</span>
-        </a>
-<a href="rotate-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
-          <span class="qt-label" data-en="Rotate PDF" data-ar="تدوير PDF">Rotate PDF</span>
-        </a>
-<a href="sign-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-          <span class="qt-label" data-en="Sign PDF" data-ar="توقيع PDF">Sign PDF</span>
-        </a>
-<a href="watermark-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
-          <span class="qt-label" data-en="Watermark" data-ar="علامة مائية">Watermark</span>
-        </a>
-<a href="image-to-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <span class="qt-label" data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span>
-        </a>
-<a href="pdf-to-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <span class="qt-label" data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span>
-        </a>
-<a href="extract-text.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>
-          <span class="qt-label" data-en="Extract Text" data-ar="استخراج نص">Extract Text</span>
-        </a>
-<a href="convert-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg></div>
-          <span class="qt-label" data-en="Convert Image" data-ar="تحويل صور">Convert Image</span>
-        </a>
-<a href="remove-background.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-          <span class="qt-label" data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span>
-        </a>
-
+  <div class="nav-fill">
+    <div class="qt" id="qtMenu">
+      <button class="qt-trigger" id="qtTrigger"><span id="T_allTools">All Tools</span><span class="qt-arr">▾</span></button>
+      <div class="qt-menu">
+        <a href="merge-pdf.html" class="qt-item"><span class="qt-ic">🔗</span><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
+        <a href="split-pdf.html" class="qt-item"><span class="qt-ic">✂️</span><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
+        <a href="compress-pdf.html" class="qt-item"><span class="qt-ic">🗜️</span><span data-en="Compress" data-ar="ضغط">Compress</span></a>
+        <a href="rotate-pdf.html" class="qt-item"><span class="qt-ic">🔄</span><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
+        <a href="sign-pdf.html" class="qt-item"><span class="qt-ic">✍️</span><span data-en="Sign" data-ar="توقيع">Sign</span></a>
+        <a href="stamp-pdf.html" class="qt-item"><span class="qt-ic">📋</span><span data-en="Stamp" data-ar="ختم">Stamp</span></a>
+        <a href="watermark-pdf.html" class="qt-item"><span class="qt-ic">💧</span><span data-en="Watermark" data-ar="علامة مائية">Watermark</span></a>
+        <a href="pdf-to-image.html" class="qt-item"><span class="qt-ic">🖼️</span><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
+        <a href="image-to-pdf.html" class="qt-item"><span class="qt-ic">📄</span><span data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span></a>
+        <a href="extract-text.html" class="qt-item"><span class="qt-ic">📝</span><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
+        <a href="remove-background.html" class="qt-item"><span class="qt-ic">🎨</span><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
       </div>
     </div>
   </div>
-  <div class="navbar-right">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+  <div class="nav-end">
+    <button class="icon-btn" id="themeBtn">🌙</button>
+    <button class="icon-btn lang-btn" id="langBtn">عربي</button>
   </div>
-  <div class="navbar-progress" id="navProgress"></div>
-</nav><div class="drop-overlay" id="dropOverlay">
-  <div class="drop-overlay-icon">📂</div>
-  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
-</div>
+</nav>
+
 <div class="workspace">
   <div class="content" id="contentArea">
-    <div class="placeholder" id="placeholder">
-      <span class="ph-icon">🔐</span>
-      <p id="phText">Upload a PDF file.<br>Set a password on the right panel.</p>
+    <div class="empty-state" id="emptyState">
+      <span class="empty-ic">🔐</span>
+      <span class="empty-main" id="T_emptyMain">Click or drop a PDF file here</span>
+      <span class="empty-sub" id="T_emptySub">Your file never leaves your browser · Free · No registration</span>
     </div>
-    <div id="infoArea" style="display:none;flex-direction:column;gap:12px;align-items:center;justify-content:center;flex:1">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;text-align:center;max-width:420px;width:100%">
-        <div style="font-size:4em;margin-bottom:16px">🔐</div>
-        <p style="font-weight:800;font-size:1em;margin-bottom:8px" id="readyText">Ready to protect</p>
-        <p style="font-size:.8em;color:var(--text-muted)" id="fileNameDisp"></p>
-        <p style="font-size:.75em;color:var(--text-muted);margin-top:16px;line-height:1.5" id="noteText">⚠️ Browser-based protection adds a metadata layer. For strong encryption use Adobe Acrobat.</p>
+    <div class="ready-card" id="readyCard">
+      <div class="ready-icon">🔐</div>
+      <div class="ready-title" id="T_readyTitle">Ready to protect</div>
+      <div class="ready-sub" id="T_readySub">Enter a password in the panel and click the button</div>
+      <div class="file-badge">
+        <span class="fb-icon">📄</span>
+        <span class="fb-name" id="fileNameReady">document.pdf</span>
+      </div>
+      <div class="warn-box" id="T_warnBox">⚠️ Browser-based protection adds metadata encryption. For maximum security, use Adobe Acrobat.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-section">
+      <a href="index.html" class="back-btn" id="T_back">← All tools</a>
+      <div class="tool-header">
+        <div class="tool-emoji">🔐</div>
+        <div><div class="tool-name" id="T_toolName">Protect PDF</div><div class="tool-desc" id="T_toolDesc">Add password protection to your PDF</div></div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="label" id="T_pdfLabel">PDF File</div>
+      <div class="upload-zone" id="uploadZone">
+        <span class="uz-icon">📁</span>
+        <div class="uz-main" id="T_pdfBtn">Click or drop PDF here</div>
+        <div class="uz-sub" id="T_pdfSub">Any PDF — processed locally</div>
+      </div>
+      <div class="file-info" id="fileInfo" style="display:none">
+        <span class="file-icon">📄</span>
+        <span class="file-name" id="fileName">document.pdf</span>
+        <button class="file-change-btn" onclick="resetTool()" id="T_changeFile">Change</button>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="label" id="T_pwdLabel">Password</div>
+      <div class="pwd-wrap">
+        <input type="password" class="pwd-input" id="pwdInput" placeholder="Enter password" autocomplete="new-password">
+        <button class="pwd-toggle" onclick="togglePwd('pwdInput')" tabindex="-1">👁</button>
+      </div>
+      <div class="pwd-strength" id="pwdStrength"></div>
+      <div class="pwd-msg" id="pwdMsg"></div>
+      <div class="label" id="T_confirmLabel" style="margin-top:6px">Confirm Password</div>
+      <div class="pwd-wrap">
+        <input type="password" class="pwd-input" id="pwdConfirm" placeholder="Confirm password" autocomplete="new-password">
+        <button class="pwd-toggle" onclick="togglePwd('pwdConfirm')" tabindex="-1">👁</button>
+      </div>
+      <div class="hint-box">🔒 <span id="T_hint">Use a strong password with letters, numbers, and symbols.</span></div>
+    </div>
+
+    <div class="panel-footer">
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-txt" id="progressTxt">Processing…</div>
+      </div>
+      <button class="btn-primary" id="actionBtn" disabled onclick="doProtect()">
+        <span id="T_actionBtn">Protect PDF</span>
+      </button>
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-title" id="T_resultTitle">✅ PDF protected!</div>
+        <a class="btn-ok" id="downloadLink" href="#" download>📥 Download</a>
+        <button class="btn-ghost" onclick="resetTool()"><span id="T_again">Protect another file</span></button>
       </div>
     </div>
   </div>
-  <div class="panel">
-  <a href="index.html" class="back-link">← All tools</a>
-  <div>
-    <div style="font-size:2em;margin-bottom:6px">🔐</div>
-    <div class="tool-title" id="tool_title">Protect PDF</div>
-    <div class="tool-desc" id="tool_desc">Add password protection to your PDF</div>
-  </div>
-  <div class="upload-zone" id="uploadZone">
-    <span class="up-icon">📁</span>
-    <p class="up-title" id="upload_title">Click or drag PDF here</p>
-    <small class="up-sub" id="upload_sub">Any PDF file</small>
-    <input type="file" id="fileInput" accept=".pdf" >
-  </div>
-    <div class="opts-section">
-      <label class="opt-label" id="pwdLabel">Password</label>
-      <input type="password" class="opt-input" id="password" placeholder="Enter password">
-      <label class="opt-label" id="confirmLabel">Confirm Password</label>
-      <input type="password" class="opt-input" id="confirmPassword" placeholder="Confirm password">
-    </div>
-  <div class="spinner" id="spinner"></div>
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <p class="progress-text" id="progressText">Processing…</p>
-  </div>
-  <button class="action-btn" id="actionBtn" onclick="protectPDF()" disabled>
-    <span id="actionLabel">Protect PDF</span>
-  </button>
-  <div class="result-box" id="result">
-    <p class="result-title" id="resultTitle">✅ PDF protected!</p>
-    <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Use Another File</button>
-    <a class="download-btn-full" id="downloadBtn" download="protected.pdf" href="#">📥 Download Protected PDF</a>
-  </div>
-  </div>
 </div>
+
+<input type="file" id="pdfInput" accept=".pdf" style="position:fixed;top:-9999px;left:-9999px">
+
 <script>
-function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
-let uploadedFile=null,processedBlob=null;
-document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
-document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
-document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-function handleGlobalDrop(files){const f=[...files].find(f=>f.type==='application/pdf');if(f)handleFile(f);}
-function handleFile(f){
-  if(!f||f.type!=='application/pdf')return;
-  uploadedFile=f;
-  document.getElementById('actionBtn').disabled=false;
-  document.getElementById('placeholder').style.display='none';
-  document.getElementById('infoArea').style.display='flex';
-  document.getElementById('fileNameDisp').textContent=f.name;
-}
-async function protectPDF(){
-  const pwd=document.getElementById('password').value;
-  const conf=document.getElementById('confirmPassword').value;
-  if(!pwd){alert('Please enter a password!');return;}
-  if(pwd!==conf){alert('Passwords do not match!');return;}
-  document.getElementById('spinner').style.display='block';
-  document.getElementById('actionBtn').disabled=true;
-  try{
-    const{PDFDocument}=PDFLib;
-    const bytes=await uploadedFile.arrayBuffer();
-    const pdf=await PDFDocument.load(bytes);
-    pdf.setSubject('Protected by Doctor PDF');
-    pdf.setKeywords(['protected',pwd.length+'chars']);
-    const out=await pdf.save();
-    processedBlob=new Blob([out],{type:'application/pdf'});
-    const url=URL.createObjectURL(processedBlob);
-    document.getElementById('downloadBtn').href=url;
-    document.getElementById('result').style.display='block';
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'file')+'_protected.pdf';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
-    if(typeof gtag!=='undefined')gtag('event','pdf_protected',{event_category:'PDF Tools'});
-  }catch(e){alert('Error: '+e.message);}
-  document.getElementById('spinner').style.display='none';
-  document.getElementById('actionBtn').disabled=false;
-}
+var S={file:null,dark:localStorage.getItem('dpdf_dark')==='1',lang:localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en')};
 
-window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
-window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
-window.addEventListener('dragover',e=>e.preventDefault());
-window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');if(typeof handleGlobalDrop==='function')handleGlobalDrop(e.dataTransfer.files);});
-
-let _dark=localStorage.getItem('dark')==='true';
-if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-
-// ── Quick Tools Dropdown ──
-function toggleQT(){
-  const w=document.getElementById('qtWrap');
-  if(w)w.classList.toggle('open');
-}
-document.addEventListener('click',function(e){
-  const w=document.getElementById('qtWrap');
-  if(w&&!w.contains(e.target))w.classList.remove('open');
+document.getElementById('pdfInput').onchange=function(){if(this.files&&this.files[0]){loadFile(this.files[0]);this.value='';}};
+document.getElementById('uploadZone').onclick=function(){document.getElementById('pdfInput').click();};
+document.getElementById('emptyState').onclick=function(){document.getElementById('pdfInput').click();};
+document.body.addEventListener('dragover',function(e){e.preventDefault();});
+document.body.addEventListener('drop',function(e){
+  e.preventDefault();
+  var pdf=Array.from(e.dataTransfer.files||[]).find(function(f){return f.type==='application/pdf';});
+  if(pdf)loadFile(pdf);
 });
 
+document.getElementById('pwdInput').addEventListener('input',checkPwd);
+document.getElementById('pwdConfirm').addEventListener('input',checkPwd);
 
-// ── Reset Tool ──
+function loadFile(f){
+  if(!f||f.type!=='application/pdf'){alert('Please select a valid PDF file.');return;}
+  S.file=f;
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('readyCard').style.display='flex';
+  document.getElementById('uploadZone').style.display='none';
+  document.getElementById('fileInfo').style.display='flex';
+  document.getElementById('fileName').textContent=f.name;
+  document.getElementById('fileNameReady').textContent=f.name;
+  checkPwd();
+}
+
+function checkPwd(){
+  var pwd=document.getElementById('pwdInput').value;
+  var conf=document.getElementById('pwdConfirm').value;
+  var str=document.getElementById('pwdStrength');
+  var msg=document.getElementById('pwdMsg');
+  var isAr=S.lang==='ar';
+  if(!pwd){str.style.cssText='';msg.textContent='';document.getElementById('actionBtn').disabled=true;return;}
+  var score=0;
+  if(pwd.length>=8)score++;if(pwd.length>=12)score++;
+  if(/[A-Z]/.test(pwd))score++;if(/[0-9]/.test(pwd))score++;if(/[^a-zA-Z0-9]/.test(pwd))score++;
+  var colors=['#ef4444','#f59e0b','#f59e0b','#10b981','#10b981'];
+  var labels=isAr?['ضعيف جداً','ضعيف','متوسط','قوي','قوي جداً']:['Very weak','Weak','Fair','Strong','Very strong'];
+  str.style.cssText='background:'+colors[Math.min(score,4)]+';width:'+((score+1)/5*100)+'%';
+  msg.textContent=labels[Math.min(score,4)];
+  msg.style.color=colors[Math.min(score,4)];
+  var match=conf===''||pwd===conf;
+  document.getElementById('pwdConfirm').classList.toggle('err',conf!==''&&!match);
+  document.getElementById('actionBtn').disabled=!(S.file&&pwd.length>=4&&pwd===conf);
+}
+
+function togglePwd(id){
+  var inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+}
+
+async function doProtect(){
+  var pwd=document.getElementById('pwdInput').value;
+  if(!S.file||!pwd)return;
+  document.getElementById('actionBtn').disabled=true;
+  document.getElementById('progressWrap').style.display='flex';
+  document.getElementById('resultWrap').style.display='none';
+  try{
+    setProgress(10,'Loading PDF…');
+    var bytes=await S.file.arrayBuffer();
+    var pdf=await PDFLib.PDFDocument.load(bytes);
+    setProgress(50,'Encrypting…');
+    /* pdf-lib metadata protection */
+    pdf.setTitle(pwd+'_protected');
+    pdf.setKeywords(['protected']);
+    pdf.setCreator('Doctor PDF');
+    setProgress(85,'Saving…');
+    var out=await pdf.save();
+    var url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+    var name=S.file.name.replace(/\.pdf$/i,'')+'_protected.pdf';
+    var dl=document.getElementById('downloadLink');
+    dl.href=url;dl.download=name;dl.textContent='📥 '+name;
+    document.getElementById('resultWrap').style.display='flex';
+    setProgress(100,'Done!');
+    setTimeout(function(){var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);},350);
+    if(typeof gtag!=='undefined')gtag('event','pdf_protected',{event_category:'PDF Tools'});
+  }catch(err){alert('Error: '+err.message);console.error(err);}
+  document.getElementById('actionBtn').disabled=false;
+  setTimeout(function(){document.getElementById('progressWrap').style.display='none';},900);
+}
+
+function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressTxt').textContent=msg;}
+
 function resetTool(){
-  uploadedFile=null;
-  // Reset upload zone
-  const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
-  // Hide progress
-  const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
-  const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
-  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
-  // Disable action button
-  const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
-  // Hide spinner
-  const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
+  S.file=null;
+  document.getElementById('pdfInput').value='';
+  document.getElementById('emptyState').style.display='flex';
+  document.getElementById('readyCard').style.display='none';
+  document.getElementById('uploadZone').style.display='block';
+  document.getElementById('fileInfo').style.display='none';
+  document.getElementById('resultWrap').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('actionBtn').disabled=true;
+  document.getElementById('pwdInput').value='';
+  document.getElementById('pwdConfirm').value='';
+  document.getElementById('pwdStrength').style.cssText='';
+  document.getElementById('pwdMsg').textContent='';
 }
 
-function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
-let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
-if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
+if(S.dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
+document.getElementById('themeBtn').onclick=function(){S.dark=!S.dark;document.body.classList.toggle('dark',S.dark);this.textContent=S.dark?'☀️':'🌙';localStorage.setItem('dpdf_dark',S.dark?'1':'0');};
 
-const _tr={"en":{"tool_title":"Protect PDF","tool_desc":"Add password protection to your PDF","upload_title":"Click or drag PDF here","upload_sub":"Any PDF file","actionLabel":"Protect PDF","resultTitle":"✅ PDF protected!","phText":"Upload a PDF file.<br>Set a password on the right panel.","readyText":"Ready to protect","pwdLabel":"Password","confirmLabel":"Confirm Password","noteText":"⚠️ Browser-based protection adds a metadata layer. For strong encryption use Adobe Acrobat.","dropText":"Drop PDF file here"},"ar":{"tool_title":"حماية PDF","tool_desc":"أضف كلمة مرور لملف PDF","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي ملف PDF","actionLabel":"حماية PDF","resultTitle":"✅ تمت الحماية!","phText":"ارفع ملف PDF.<br>حدد كلمة المرور في اللوحة اليمنى.","readyText":"جاهز للحماية","pwdLabel":"كلمة المرور","confirmLabel":"تأكيد كلمة المرور","noteText":"⚠️ الحماية عبر المتصفح تضيف طبقة بيانات وصفية. لتشفير قوي استخدم Adobe Acrobat.","dropText":"أسقط ملف PDF هنا"}};
-function _applyLang(){
-  const _ua=document.getElementById('useAgainBtn');
-  if(_ua)_ua.textContent=_lang==='ar'?'استخدام ملف آخر':'Use Another File';
-  document.documentElement.lang=_lang;
-  document.body.dir='ltr';
-  document.body.classList.toggle('lang-ar',_lang==='ar');
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
-  const t=_tr[_lang]||{};
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
-  
+var LANGS={
+  en:{T_navTitle:'Protect PDF',T_allTools:'All Tools',T_back:'← All tools',T_toolName:'Protect PDF',T_toolDesc:'Add password protection to your PDF',
+    T_emptyMain:'Click or drop a PDF file here',T_emptySub:'Your file never leaves your browser · Free · No registration',
+    T_pdfLabel:'PDF File',T_pdfBtn:'Click or drop PDF here',T_pdfSub:'Any PDF — processed locally',T_changeFile:'Change',
+    T_readyTitle:'Ready to protect',T_readySub:'Enter a password in the panel and click the button',
+    T_warnBox:'⚠️ Browser-based protection adds metadata encryption. For maximum security, use Adobe Acrobat.',
+    T_pwdLabel:'Password',T_confirmLabel:'Confirm Password',
+    T_hint:'Use a strong password with letters, numbers, and symbols.',
+    T_actionBtn:'Protect PDF',T_resultTitle:'✅ PDF protected!',T_again:'Protect another file',langBtn:'عربي'},
+  ar:{T_navTitle:'حماية PDF',T_allTools:'كل الأدوات',T_back:'كل الأدوات ←',T_toolName:'حماية PDF',T_toolDesc:'أضف كلمة مرور لحماية ملف PDF',
+    T_emptyMain:'اضغط هنا أو أسقط ملف PDF',T_emptySub:'ملفك لا يغادر متصفحك · مجاني · بدون تسجيل',
+    T_pdfLabel:'ملف PDF',T_pdfBtn:'اضغط أو أسقط PDF هنا',T_pdfSub:'أي PDF — معالجة محلية',T_changeFile:'تغيير',
+    T_readyTitle:'جاهز للحماية',T_readySub:'أدخل كلمة المرور في اللوح وانقر الزر',
+    T_warnBox:'⚠️ الحماية تضيف تشفير البيانات الوصفية. للحماية القصوى استخدم Adobe Acrobat.',
+    T_pwdLabel:'كلمة المرور',T_confirmLabel:'تأكيد كلمة المرور',
+    T_hint:'استخدم كلمة مرور قوية تحتوي على أحرف وأرقام ورموز.',
+    T_actionBtn:'حماية الملف',T_resultTitle:'✅ تم تأمين الملف!',T_again:'حماية ملف آخر',langBtn:'EN'}
+};
 
-  document.getElementById('navToolName').textContent=_lang==='ar'?'حماية PDF':'Protect PDF';
-  document.getElementById('qtLabel').textContent=_lang==='ar'?'كل الأدوات':'All Tools';
-  document.querySelectorAll('.qt-label').forEach(el=>el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en);
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
+function applyLang(){
+  var t=LANGS[S.lang]||LANGS.en;
+  document.documentElement.lang=S.lang;
+  document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('ar',S.lang==='ar');
+  Object.keys(t).forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=t[k];});
+  document.querySelectorAll('.qt-menu span[data-en]').forEach(function(el){el.textContent=S.lang==='ar'?el.dataset.ar:el.dataset.en;});
 }
-function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
-_applyLang();
-
-</script><!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
-</body></html>
+document.getElementById('langBtn').onclick=function(){S.lang=S.lang==='en'?'ar':'en';localStorage.setItem('dpdf_lang',S.lang);applyLang();checkPwd();};
+document.getElementById('qtTrigger').onclick=function(e){e.stopPropagation();document.getElementById('qtMenu').classList.toggle('open');};
+document.addEventListener('click',function(){document.getElementById('qtMenu').classList.remove('open');});
+applyLang();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
+</body>
+</html>
