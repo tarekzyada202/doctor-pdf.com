@@ -49,6 +49,10 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .nav-sep{flex:1}
 .nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
 .nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+/* Privacy badge */
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap;cursor:default}
+.nav-privacy svg{width:12px;height:12px;flex-shrink:0}
+@media(max-width:700px){.nav-privacy span{display:none}}
 .tools-dropdown{position:relative}
 .tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
 [dir="rtl"] .tools-menu{left:auto;right:0}
@@ -189,6 +193,12 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
     </div>
   </div>
   <div class="nav-sep"></div>
+
+  <!-- Privacy badge -->
+  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">100% Private</span>
+  </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
