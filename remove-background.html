@@ -1,393 +1,834 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Remove Image Background Online Free | Doctor PDF</title>
-<meta name="description" content="AI-powered background removal from images online for free.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://doctor-pdf.com/remove-background.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remove Background from Image — Doctor PDF</title>
+<meta name="description" content="Remove image background online for free. No signup, no upload. Uses browser-based processing — your images never leave your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
 <style>
+:root{
+  --bg:#ffffff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;
+  --secondary:#8b5cf6;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --panel:360px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+  --checker:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='8' height='8' fill='%23ccc'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%23ccc'/%3E%3C/svg%3E");
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;
+  --danger-light:#2d1010;--success-light:#052e16;--warn-light:#1c1500;
+  --checker:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='8' height='8' fill='%23444'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%23444'/%3E%3C/svg%3E");
+}
+html[lang="ar"] *{font-family:var(--font-ar)}
+html[lang="en"] *{font-family:var(--font-en)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
-/* NAVBAR */
-.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.95)}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
-.nav-right{display:flex;align-items:center;gap:8px}
-.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-/* LAYOUT */
-.workspace{display:flex;flex:1;overflow:hidden}
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px;display:flex;flex-direction:column;gap:16px;position:relative}
-.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 20px;gap:14px}
-/* DROP OVERLAY */
-.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
-.drop-overlay.active{display:flex}
-.drop-overlay-icon{font-size:4em}
-.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
-/* PLACEHOLDER */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
-.placeholder .ph-icon{font-size:5em;opacity:.2}
-.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
-/* PANEL ELEMENTS */
-.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
-.back-link:hover{opacity:1}
-.tool-title{color:var(--primary);font-size:1.15em;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
-.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
-.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
-.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.up-icon{font-size:1.5em;display:block;margin-bottom:5px}
-.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
-.up-sub{color:var(--text-muted);font-size:.7em}
-input[type=file]{display:none}
-.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
-.opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-.progress-wrap{display:none}
-.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
-.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
-.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
-.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
-.download-btn-full:hover{background:#059669}
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.stat-box{background:var(--bg);border-radius:7px;padding:8px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.62em;color:var(--text-muted);font-weight:600;text-transform:uppercase}
-.stat-value{font-size:.9em;font-weight:800;color:var(--primary);margin-top:2px}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.format-option{background:var(--bg);padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.78em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-/* FILE LIST IN PANEL */
-.panel-file-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px}
-.pfi-name{flex:1;font-size:.75em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pfi-pages{font-size:.68em;color:var(--text-muted)}
-.pfi-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8em;flex-shrink:0}
-/* SIGN CANVAS */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;max-height:340px;touch-action:none;background:white}
-.sign-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8em;font-weight:600;transition:all .2s;font-family:inherit}
-.sign-btn:hover{border-color:var(--primary);color:var(--primary)}
-/* PREVIEW */
-.preview-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;padding:16px}
-.preview-wrap img,.preview-wrap canvas{max-width:100%;max-height:480px;border-radius:8px}
-/* EXTRACTED TEXT */
-#extractedTextArea{width:100%;height:100%;min-height:400px;border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:.85em;line-height:1.6;background:var(--surface);color:var(--text);font-family:monospace;resize:none;transition:border .2s}
-#extractedTextArea:focus{outline:none;border-color:var(--primary)}
-.copy-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:.8em;font-weight:700;cursor:pointer;transition:all .2s}
-.copy-btn:hover{background:var(--secondary)}
-/* IMAGE LIST */
-.img-list-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px}
-.img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
-/* RESPONSIVE */
-@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
+/* NAV */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
 
-body.lang-ar{font-family:'Cairo',sans-serif;}
+/* WORKSPACE */
+.workspace{flex:1;display:flex;overflow:hidden}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 
-/* ── NAVBAR UPGRADED ── */
-.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
-.dark .navbar{background:rgba(15,23,42,.96)}
-.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--border);font-size:1em;margin:0 2px;flex-shrink:0}
-.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
-.navbar-center{flex:1;display:flex;justify-content:center}
-/* QUICK TOOLS DROPDOWN */
-.quick-tools-wrap{position:relative}
-.quick-tools-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
-.quick-tools-btn:hover{border-color:var(--primary);color:var(--primary)}
-.qt-arrow{transition:transform .2s;font-size:.7em}
-.quick-tools-wrap.open .qt-arrow{transform:rotate(180deg)}
-.quick-tools-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
-.quick-tools-wrap.open .quick-tools-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
-.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* NAVBAR PROGRESS */
-.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s ease;border-radius:0 2px 2px 0}
-/* NAV RIGHT */
-.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+/* DROP ZONE */
+.dropzone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;padding:40px}
+.dropzone.hidden{display:none}
+.drop-icon{width:72px;height:72px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center}
+.drop-icon svg{width:36px;height:36px;color:var(--primary)}
+.drop-title{font-size:20px;font-weight:600;color:var(--text)}
+.drop-sub{font-size:14px;color:var(--text2);text-align:center;max-width:340px;line-height:1.6}
+.drop-formats{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.fmt-badge{padding:3px 10px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);font-size:11px;font-weight:500;color:var(--text2)}
+.browse-btn{height:40px;padding:0 24px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.browse-btn:hover{background:var(--primary-h)}
 
+/* EDITOR */
+.editor-area{flex:1;display:none;flex-direction:column;overflow:hidden}
+.editor-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.editor-title{font-size:14px;font-weight:500;color:var(--text)}
+.editor-actions{display:flex;gap:8px}
+.action-btn{height:30px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+.action-btn:hover{background:var(--bg3);color:var(--text)}
+.action-btn.primary-btn{background:var(--primary);color:#fff;border-color:var(--primary)}
+.action-btn.primary-btn:hover{background:var(--primary-h)}
 
-.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
-.use-again-btn:hover{background:var(--primary);color:white}
+/* Preview area */
+.preview-area{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg2)}
+.preview-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.preview-canvas{max-width:100%;max-height:calc(100vh - 200px);display:block;border-radius:var(--radius-sm);box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.preview-canvas.checker{background-image:var(--checker);background-size:16px 16px}
 
+/* Compare slider */
+.compare-wrap{position:relative;user-select:none;cursor:col-resize}
+.compare-original{position:absolute;top:0;left:0;width:50%;overflow:hidden}
+.compare-original canvas{max-width:none}
+.compare-line{position:absolute;top:0;left:50%;width:3px;background:var(--primary);height:100%;transform:translateX(-50%);cursor:col-resize;z-index:10}
+.compare-line::before,.compare-line::after{content:'';position:absolute;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:var(--primary);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.compare-line::before{top:50%;transform:translate(-50%,-50%)}
+.compare-label{position:absolute;top:10px;font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:20px;pointer-events:none}
+.label-before{left:10px}
+.label-after{right:10px}
+
+/* Processing overlay */
+.processing-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-radius:var(--radius-sm);z-index:20}
+.processing-overlay.hidden{display:none}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.processing-txt{color:#fff;font-size:14px;font-weight:500}
+
+/* PANEL */
+.panel-section{padding:16px;border-bottom:1px solid var(--border)}
+.panel-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;display:block}
+
+/* Threshold slider */
+.slider-row{display:flex;align-items:center;gap:10px}
+.thresh-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer}
+.thresh-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--primary);cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 2px var(--primary-light)}
+.thresh-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--primary);border:2px solid var(--bg);cursor:pointer}
+.slider-val{font-size:13px;font-weight:600;color:var(--primary);min-width:30px;text-align:end}
+
+/* Method buttons */
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.method-btn{height:40px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px}
+.method-btn small{font-size:10px;color:var(--text3);font-weight:400}
+.method-btn:hover{border-color:var(--border2);color:var(--text)}
+.method-btn.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.method-btn.active small{color:var(--primary)}
+
+/* BG replace */
+.bg-colors{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.bg-color-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:transform .1s;flex-shrink:0}
+.bg-color-btn:hover{transform:scale(1.15)}
+.bg-color-btn.active{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-light)}
+.bg-color-custom{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;overflow:hidden;padding:0}
+.bg-color-custom input[type="color"]{width:200%;height:200%;transform:translate(-25%,-25%);cursor:pointer;border:none;background:none}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.toggle-label{font-size:12px;color:var(--text)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
+
+.info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+
+/* PANEL FOOTER */
+.panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.download-btn{width:100%;height:48px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.download-btn:hover:not(:disabled){background:var(--primary-h)}
+.download-btn:disabled{opacity:.5;cursor:not-allowed}
+.reprocess-btn{width:100%;height:38px;background:var(--bg2);color:var(--text2);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.reprocess-btn:hover{background:var(--bg3);color:var(--text)}
+
+/* DRAG OVERLAY */
+.drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);border-radius:var(--radius-lg);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
+.drag-overlay.show{display:flex}
+.drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+[dir="rtl"] .toast-wrap{transform:translateX(50%)}
+.toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;pointer-events:all;animation:slideUp .2s ease}
+.toast.success{border-color:var(--success);color:var(--success);background:var(--success-light)}
+.toast.error{border-color:var(--danger);color:var(--danger);background:var(--danger-light)}
+.toast.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-light)}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:700px){
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
+  .workspace{flex-direction:column}
+}
 </style>
 </head>
-<body><nav class="navbar">
-  <div class="navbar-left">
-    <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-    <span class="nav-sep">›</span>
-    <span class="nav-tool-name" id="navToolName">Remove Background</span>
-  </div>
-  <div class="navbar-center">
-    <div class="quick-tools-wrap" id="qtWrap">
-      <button class="quick-tools-btn" onclick="toggleQT()" id="qtBtn">
-        <span id="qtLabel">All Tools</span> <span class="qt-arrow">▾</span>
-      </button>
-      <div class="quick-tools-drop" id="qtDrop">
-        <a href="merge-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-          <span class="qt-label" data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span>
-        </a>
-<a href="split-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
-          <span class="qt-label" data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span>
-        </a>
-<a href="compress-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-          <span class="qt-label" data-en="Compress PDF" data-ar="ضغط PDF">Compress PDF</span>
-        </a>
-<a href="rotate-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
-          <span class="qt-label" data-en="Rotate PDF" data-ar="تدوير PDF">Rotate PDF</span>
-        </a>
-<a href="sign-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-          <span class="qt-label" data-en="Sign PDF" data-ar="توقيع PDF">Sign PDF</span>
-        </a>
-<a href="protect-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <span class="qt-label" data-en="Protect PDF" data-ar="حماية PDF">Protect PDF</span>
-        </a>
-<a href="watermark-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
-          <span class="qt-label" data-en="Watermark" data-ar="علامة مائية">Watermark</span>
-        </a>
-<a href="image-to-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <span class="qt-label" data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span>
-        </a>
-<a href="pdf-to-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <span class="qt-label" data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span>
-        </a>
-<a href="extract-text.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>
-          <span class="qt-label" data-en="Extract Text" data-ar="استخراج نص">Extract Text</span>
-        </a>
-<a href="convert-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg></div>
-          <span class="qt-label" data-en="Convert Image" data-ar="تحويل صور">Convert Image</span>
-        </a>
+<body>
 
-      </div>
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn" aria-expanded="false">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_tools">All Tools</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
+      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
+      <a href="remove-background.html" style="color:var(--primary)"><span id="T_removebg">Remove Background</span></a>
+      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
     </div>
   </div>
-  <div class="navbar-right">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
-  </div>
-  <div class="navbar-progress" id="navProgress"></div>
-</nav><div class="drop-overlay" id="dropOverlay">
-  <div class="drop-overlay-icon">📂</div>
-  <div class="drop-overlay-text" id="dropText">Drop image here</div>
-</div>
-<div class="workspace">
-  <div class="content" id="contentArea">
-    <div class="placeholder" id="placeholder">
-      <span class="ph-icon">🎨</span>
-      <p id="phText">Upload an image.<br>Adjust sensitivity and remove background.</p>
-    </div>
-    <div id="previewArea" style="display:none;flex-direction:column;gap:16px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
-          <p style="font-size:.78em;font-weight:700;color:var(--text-muted)" id="beforeLabel">Before</p>
-          <div class="preview-wrap"><canvas id="previewCanvas"></canvas></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
-          <p style="font-size:.78em;font-weight:700;color:var(--text-muted)" id="afterLabel">After</p>
-          <div class="preview-wrap" style="background:repeating-conic-gradient(#ddd 0% 25%,#fff 0% 50%) 0 0/20px 20px"><canvas id="resultCanvas"></canvas></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="panel">
-  <a href="index.html" class="back-link">← All tools</a>
-  <div>
-    <div style="font-size:2em;margin-bottom:6px">🎨</div>
-    <div class="tool-title" id="tool_title">Remove BG</div>
-    <div class="tool-desc" id="tool_desc">AI background removal from images</div>
-  </div>
-  <div class="upload-zone" id="uploadZone">
-    <span class="up-icon">📁</span>
-    <p class="up-title" id="upload_title">Click or drag image here</p>
-    <small class="up-sub" id="upload_sub">PNG or JPG images</small>
-    <input type="file" id="fileInput" accept="image/*" >
-  </div>
-    <div class="opts-section">
-      <label class="opt-label" id="threshLabel">Sensitivity</label>
-      <input type="range" class="opt-input" id="threshold" min="10" max="80" value="30" style="padding:6px 0">
-      <div style="display:flex;justify-content:space-between;font-size:.72em;color:var(--text-muted)"><span id="lowLabel">Low</span><span id="threshVal">30</span><span id="highLabel">High</span></div>
-    </div>
-  <div class="spinner" id="spinner"></div>
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <p class="progress-text" id="progressText">Processing…</p>
-  </div>
-  <button class="action-btn" id="actionBtn" onclick="removeBackground()" disabled>
-    <span id="actionLabel">Remove Background</span>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
-  <div class="result-box" id="result">
-    <p class="result-title" id="resultTitle">✅ Background removed!</p>
-    <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Use Another File</button>
-    <a class="download-btn-full" id="downloadBtn" download="image_no_bg.png" href="#">📥 Download PNG</a>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">AR</span>
+  </button>
+</nav>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+  <div class="content">
+
+    <!-- Drop zone -->
+    <div class="dropzone" id="dropzone">
+      <div class="drop-icon">
+        <svg viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="32" height="32" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M2 26l8-8 6 6 5-5 13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M25 4l7 7M32 4l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
+      </div>
+      <div>
+        <div class="drop-title" id="T_dropTitle">Remove Image Background</div>
+        <div class="drop-sub" id="T_dropSub">Drop an image to automatically remove its background. Uses edge detection in your browser — no upload needed.</div>
+      </div>
+      <div class="drop-formats">
+        <span class="fmt-badge">JPG</span>
+        <span class="fmt-badge">PNG</span>
+        <span class="fmt-badge">WebP</span>
+      </div>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose Image</span></button>
+    </div>
+
+    <!-- Editor -->
+    <div class="editor-area" id="editorArea">
+      <div class="editor-header">
+        <span class="editor-title" id="editorFileName">image.png</span>
+        <div class="editor-actions">
+          <button class="action-btn" id="changeImgBtn">
+            <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span id="T_changeImg">Change image</span>
+          </button>
+          <button class="action-btn" id="compareBtn">
+            <svg viewBox="0 0 13 13" fill="none" width="12"><path d="M6.5 1v11M4 3H2M4 6.5H1M4 10H2M9 3h2M9 6.5h3M9 10h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span id="T_compareBtn">Compare</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-area">
+        <div class="preview-wrap" id="previewWrap">
+          <canvas id="resultCanvas" class="preview-canvas checker"></canvas>
+          <div class="processing-overlay hidden" id="processingOverlay">
+            <div class="spinner"></div>
+            <div class="processing-txt" id="T_processing">Removing background...</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
+
+  <!-- PANEL -->
+  <aside class="panel">
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_methodTitle">Detection Method</div>
+      <div class="method-grid">
+        <button class="method-btn active" data-method="flood"><span id="T_methodFlood">Smart Fill</span><small id="T_methodFloodHint">Solid backgrounds</small></button>
+        <button class="method-btn" data-method="edge"><span id="T_methodEdge">Edge Detect</span><small id="T_methodEdgeHint">Complex edges</small></button>
+        <button class="method-btn" data-method="bright"><span id="T_methodBright">Bright BG</span><small id="T_methodBrightHint">White/light BG</small></button>
+        <button class="method-btn" data-method="dark"><span id="T_methodDark">Dark BG</span><small id="T_methodDarkHint">Black/dark BG</small></button>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_sensitivityTitle">Sensitivity</div>
+      <div class="slider-row">
+        <input type="range" class="thresh-slider" id="threshSlider" min="5" max="120" value="35">
+        <span class="slider-val" id="threshVal">35</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
+        <span id="T_precise">Precise</span><span id="T_aggressive">Aggressive</span>
+      </div>
+      <div class="toggle-row" style="margin-top:10px">
+        <span class="toggle-label" id="T_featherEdge">Feather edges</span>
+        <label class="toggle"><input type="checkbox" id="featherToggle" checked><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_bgReplaceTitle">Background Replace</div>
+      <div class="field-label" id="T_bgColorLabel">Replacement color</div>
+      <div class="bg-colors">
+        <button class="bg-color-btn active" data-color="transparent" style="background:transparent;background-image:var(--checker);background-size:8px 8px" title="Transparent"></button>
+        <button class="bg-color-btn" data-color="#ffffff" style="background:#ffffff" title="White"></button>
+        <button class="bg-color-btn" data-color="#000000" style="background:#000000" title="Black"></button>
+        <button class="bg-color-btn" data-color="#6366f1" style="background:#6366f1" title="Purple"></button>
+        <button class="bg-color-btn" data-color="#22c55e" style="background:#22c55e" title="Green"></button>
+        <button class="bg-color-btn" data-color="#ef4444" style="background:#ef4444" title="Red"></button>
+        <button class="bg-color-btn" data-color="#f59e0b" style="background:#f59e0b" title="Yellow"></button>
+        <div class="bg-color-custom" title="Custom color" style="background:linear-gradient(135deg,#f0f,#0ff,#ff0)">
+          <input type="color" id="customColorPicker" value="#3b82f6">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_outputTitle">Output</div>
+      <div class="field">
+        <label class="field-label" id="T_fmtLabel">Format</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <button class="method-btn active" data-outfmt="png" style="height:34px"><span>PNG</span></button>
+          <button class="method-btn" data-outfmt="webp" style="height:34px"><span>WebP</span></button>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:8px">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span id="T_privacyNote">Background removal runs entirely in your browser using canvas pixel processing. No AI server, no upload.</span>
+      </div>
+    </div>
+
+    <div class="panel-footer">
+      <button class="reprocess-btn" id="reprocessBtn" disabled>
+        <span id="T_reprocessBtn">↺ Re-process with new settings</span>
+      </button>
+      <button class="download-btn" id="downloadBtn" disabled>
+        <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="T_downloadBtn">Download PNG</span>
+      </button>
+    </div>
+  </aside>
 </div>
+
+<!-- Drag overlay -->
+<div class="drag-overlay" id="dragOverlay">
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><circle cx="19" cy="19" r="7" stroke="#6366f1" stroke-width="2"/><path d="M24 24l10 10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+  <div class="drag-overlay-text" id="T_dropHere">Drop image here</div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/webp" style="display:none">
+
 <script>
-function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
-let uploadedFile=null,imgElement=null;
-document.getElementById('threshold').addEventListener('input',e=>document.getElementById('threshVal').textContent=e.target.value);
-document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
-document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
-document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-function handleGlobalDrop(files){const f=[...files].find(f=>f.type.startsWith('image/'));if(f)handleFile(f);}
-function handleFile(f){
-  if(!f||!f.type.startsWith('image/'))return;
-  uploadedFile=f;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    imgElement=new Image();
-    imgElement.onload=()=>{
-      const cv=document.getElementById('previewCanvas');
-      cv.width=imgElement.width;cv.height=imgElement.height;
-      cv.getContext('2d').drawImage(imgElement,0,0);
-      document.getElementById('placeholder').style.display='none';
-      document.getElementById('previewArea').style.display='flex';
-      document.getElementById('actionBtn').disabled=false;
-    };imgElement.src=e.target.result;
-  };reader.readAsDataURL(f);
+(function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
+</script>
+
+<script>
+// ══════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════
+const LANGS = {
+  en:{
+    T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
+    T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_convert:'Convert Image',
+    T_removebg:'Remove Background',T_extract:'Extract Text',
+    T_dropTitle:'Remove Image Background',
+    T_dropSub:'Drop an image to automatically remove its background. Uses edge detection in your browser — no upload needed.',
+    T_browse:'Choose Image',
+    T_changeImg:'Change image',T_compareBtn:'Compare',
+    T_methodTitle:'Detection Method',
+    T_methodFlood:'Smart Fill',T_methodFloodHint:'Solid backgrounds',
+    T_methodEdge:'Edge Detect',T_methodEdgeHint:'Complex edges',
+    T_methodBright:'Bright BG',T_methodBrightHint:'White/light BG',
+    T_methodDark:'Dark BG',T_methodDarkHint:'Black/dark BG',
+    T_sensitivityTitle:'Sensitivity',T_precise:'Precise',T_aggressive:'Aggressive',
+    T_featherEdge:'Feather edges',
+    T_bgReplaceTitle:'Background Replace',T_bgColorLabel:'Replacement color',
+    T_outputTitle:'Output',T_fmtLabel:'Format',
+    T_privacyNote:'Background removal runs entirely in your browser using canvas pixel processing. No AI server, no upload.',
+    T_reprocessBtn:'↺ Re-process with new settings',
+    T_downloadBtn:'Download PNG',
+    T_dropHere:'Drop image here',
+    T_processing:'Removing background...',
+    T_done:'Background removed! Downloading...',
+    T_errLoad:'Failed to load image.',
+    langLabel:'AR'
+  },
+  ar:{
+    T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
+    T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_convert:'تحويل الصور',
+    T_removebg:'إزالة الخلفية',T_extract:'استخراج النص',
+    T_dropTitle:'إزالة خلفية الصورة',
+    T_dropSub:'اسحب صورة لإزالة خلفيتها تلقائياً. يستخدم كشف الحواف في متصفحك — لا رفع مطلوب.',
+    T_browse:'اختر صورة',
+    T_changeImg:'تغيير الصورة',T_compareBtn:'مقارنة',
+    T_methodTitle:'طريقة الكشف',
+    T_methodFlood:'تعبئة ذكية',T_methodFloodHint:'خلفيات صلبة',
+    T_methodEdge:'كشف الحواف',T_methodEdgeHint:'حواف معقدة',
+    T_methodBright:'خلفية فاتحة',T_methodBrightHint:'خلفية بيضاء/فاتحة',
+    T_methodDark:'خلفية داكنة',T_methodDarkHint:'خلفية سوداء/داكنة',
+    T_sensitivityTitle:'الحساسية',T_precise:'دقيق',T_aggressive:'قوي',
+    T_featherEdge:'نعم الحواف',
+    T_bgReplaceTitle:'استبدال الخلفية',T_bgColorLabel:'لون الاستبدال',
+    T_outputTitle:'الإخراج',T_fmtLabel:'التنسيق',
+    T_privacyNote:'إزالة الخلفية تتم كلياً في متصفحك باستخدام معالجة البكسل. لا خادم AI، لا رفع ملفات.',
+    T_reprocessBtn:'↺ إعادة المعالجة بالإعدادات الجديدة',
+    T_downloadBtn:'تحميل PNG',
+    T_dropHere:'أفلت الصورة هنا',
+    T_processing:'جاري إزالة الخلفية...',
+    T_done:'!تمت إزالة الخلفية! جاري التحميل',
+    T_errLoad:'.فشل تحميل الصورة',
+    langLabel:'EN'
+  }
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentLang = localStorage.getItem('dpdf_lang') || 'en';
+let originalImage = null; // HTMLImageElement
+let originalFileName = 'image';
+let bgColor = 'transparent';
+let outputFmt = 'png';
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+function boot() {
+  applyLang(currentLang);
+  applyTheme(localStorage.getItem('dpdf_dark') === '1');
+  bindEvents();
 }
-function colorDistance(r1,g1,b1,r2,g2,b2){return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2);}
-async function removeBackground(){
-  document.getElementById('spinner').style.display='block';
-  document.getElementById('actionBtn').disabled=true;
-  await new Promise(r=>setTimeout(r,50));
-  try{
-    const src=document.getElementById('previewCanvas');
-    const ctx=src.getContext('2d');
-    const imageData=ctx.getImageData(0,0,src.width,src.height);
-    const{data}=imageData;
-    const threshold=parseInt(document.getElementById('threshold').value);
-    const corners=[[0,0],[src.width-1,0],[0,src.height-1],[src.width-1,src.height-1]];
-    let bgR=0,bgG=0,bgB=0;
-    corners.forEach(([x,y])=>{const idx=(y*src.width+x)*4;bgR+=data[idx];bgG+=data[idx+1];bgB+=data[idx+2];});
-    bgR=Math.round(bgR/4);bgG=Math.round(bgG/4);bgB=Math.round(bgB/4);
-    const result=document.getElementById('resultCanvas');
-    result.width=src.width;result.height=src.height;
-    const rCtx=result.getContext('2d');
-    const newData=ctx.createImageData(src.width,src.height);
-    for(let i=0;i<data.length;i+=4){
-      const d=colorDistance(data[i],data[i+1],data[i+2],bgR,bgG,bgB);
-      newData.data[i]=data[i];newData.data[i+1]=data[i+1];newData.data[i+2]=data[i+2];
-      newData.data[i+3]=d<threshold?0:255;
+
+// ══════════════════════════════════════════
+// LANG & THEME
+// ══════════════════════════════════════════
+function applyLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  Object.keys(t).forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = t[id];
+  });
+}
+function tr(k){ return (LANGS[currentLang]||LANGS.en)[k]||k; }
+
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('iconSun').style.display = dark ? 'none' : '';
+  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
+  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
+}
+
+// ══════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════
+function bindEvents() {
+  document.getElementById('themeBtn').onclick = () =>
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+  document.getElementById('langBtn').onclick = () => {
+    const next = currentLang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('dpdf_lang', next);
+    applyLang(next);
+  };
+  document.getElementById('toolsBtn').onclick = (e) => {
+    e.stopPropagation();
+    document.getElementById('toolsMenu').classList.toggle('open');
+  };
+  document.addEventListener('click', () => document.getElementById('toolsMenu').classList.remove('open'));
+
+  const fi = document.getElementById('fileInput');
+  document.getElementById('browseBtn').onclick = () => fi.click();
+  document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
+  document.getElementById('changeImgBtn').onclick = () => fi.click();
+  fi.onchange = (e) => { if(e.target.files[0]) loadImage(e.target.files[0]); fi.value=''; };
+
+  document.getElementById('reprocessBtn').onclick = () => processBackground();
+  document.getElementById('downloadBtn').onclick = downloadResult;
+  document.getElementById('compareBtn').onclick = toggleCompare;
+
+  // Method buttons
+  document.querySelectorAll('.method-btn[data-method]').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.method-btn[data-method]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+  });
+
+  // Output format buttons
+  document.querySelectorAll('.method-btn[data-outfmt]').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.method-btn[data-outfmt]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      outputFmt = btn.dataset.outfmt;
+      document.getElementById('downloadBtn').querySelector('#T_downloadBtn').textContent =
+        `Download ${outputFmt.toUpperCase()}`;
+    };
+  });
+
+  // Threshold slider
+  document.getElementById('threshSlider').oninput = (e) =>
+    document.getElementById('threshVal').textContent = e.target.value;
+
+  // BG color buttons
+  document.querySelectorAll('.bg-color-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.bg-color-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      bgColor = btn.dataset.color;
+      if(originalImage) processBackground();
+    };
+  });
+
+  // Custom color picker
+  document.getElementById('customColorPicker').oninput = (e) => {
+    document.querySelectorAll('.bg-color-btn').forEach(b=>b.classList.remove('active'));
+    bgColor = e.target.value;
+    if(originalImage) processBackground();
+  };
+
+  // Drag & drop
+  document.addEventListener('dragenter', (e) => {
+    if(e.dataTransfer.types.includes('Files')) document.getElementById('dragOverlay').classList.add('show');
+  });
+  document.addEventListener('dragleave', (e) => {
+    if(!e.relatedTarget||e.relatedTarget===document.documentElement)
+      document.getElementById('dragOverlay').classList.remove('show');
+  });
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    document.getElementById('dragOverlay').classList.remove('show');
+    const file = Array.from(e.dataTransfer.files).find(f=>f.type.startsWith('image/'));
+    if(file) loadImage(file);
+  });
+}
+
+// ══════════════════════════════════════════
+// LOAD IMAGE
+// ══════════════════════════════════════════
+function loadImage(file) {
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      originalImage = img;
+      originalFileName = file.name.replace(/\.[^.]+$/, '');
+      document.getElementById('editorFileName').textContent = file.name;
+      document.getElementById('dropzone').classList.add('hidden');
+      document.getElementById('editorArea').style.display = 'flex';
+      document.getElementById('reprocessBtn').disabled = false;
+      processBackground();
+    };
+    img.onerror = () => showToast(tr('T_errLoad'), 'error');
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════════════════
+// BACKGROUND REMOVAL
+// ══════════════════════════════════════════
+async function processBackground() {
+  if(!originalImage) return;
+  showProcessing(true);
+  await new Promise(r => setTimeout(r, 50)); // let UI update
+
+  try {
+    const method = document.querySelector('.method-btn.active[data-method]')?.dataset.method || 'flood';
+    const threshold = parseInt(document.getElementById('threshSlider').value);
+    const feather = document.getElementById('featherToggle').checked;
+
+    const srcCanvas = document.createElement('canvas');
+    srcCanvas.width = originalImage.naturalWidth;
+    srcCanvas.height = originalImage.naturalHeight;
+    const srcCtx = srcCanvas.getContext('2d');
+    srcCtx.drawImage(originalImage, 0, 0);
+
+    const imageData = srcCtx.getImageData(0, 0, srcCanvas.width, srcCanvas.height);
+    const data = imageData.data;
+    const w = srcCanvas.width;
+    const h = srcCanvas.height;
+
+    // Alpha mask array
+    const alpha = new Uint8Array(w * h);
+
+    if (method === 'flood') {
+      // Flood fill from corners — removes solid BG
+      const samples = [
+        [0,0],[w-1,0],[0,h-1],[w-1,h-1],
+        [Math.floor(w/2),0],[0,Math.floor(h/2)],
+        [w-1,Math.floor(h/2)],[Math.floor(w/2),h-1]
+      ];
+
+      // Get average bg color from corners
+      let sumR=0,sumG=0,sumB=0,cnt=0;
+      samples.forEach(([sx,sy]) => {
+        const i=(sy*w+sx)*4;
+        sumR+=data[i];sumG+=data[i+1];sumB+=data[i+2];cnt++;
+      });
+      const bgR=sumR/cnt, bgG=sumG/cnt, bgB=sumB/cnt;
+
+      // BFS flood fill from all corners
+      const visited = new Uint8Array(w*h);
+      const queue = [];
+      samples.forEach(([sx,sy]) => {
+        const idx=sy*w+sx;
+        if(!visited[idx]){ visited[idx]=1; queue.push(idx); }
+      });
+
+      while(queue.length) {
+        const idx = queue.shift();
+        const px=idx%w, py=Math.floor(idx/w);
+        const di=idx*4;
+        const dr=data[di]-bgR, dg=data[di+1]-bgG, db=data[di+2]-bgB;
+        const dist=Math.sqrt(dr*dr+dg*dg+db*db);
+
+        if(dist > threshold) continue;
+        alpha[idx] = 1; // mark for removal
+
+        const neighbors = [
+          py>0?idx-w:-1, py<h-1?idx+w:-1,
+          px>0?idx-1:-1, px<w-1?idx+1:-1
+        ];
+        neighbors.forEach(ni => {
+          if(ni>=0&&!visited[ni]){ visited[ni]=1; queue.push(ni); }
+        });
+      }
+
+    } else if (method === 'bright') {
+      // Remove bright/white pixels
+      for(let i=0;i<w*h;i++){
+        const di=i*4;
+        const brightness=(data[di]+data[di+1]+data[di+2])/3;
+        if(brightness > 255-threshold) alpha[i]=1;
+      }
+    } else if (method === 'dark') {
+      // Remove dark/black pixels
+      for(let i=0;i<w*h;i++){
+        const di=i*4;
+        const brightness=(data[di]+data[di+1]+data[di+2])/3;
+        if(brightness < threshold) alpha[i]=1;
+      }
+    } else if (method === 'edge') {
+      // Edge detection: keep areas near strong edges, remove smooth regions
+      // Step 1: detect edges using Sobel
+      const edges = new Float32Array(w*h);
+      for(let y=1;y<h-1;y++){
+        for(let x=1;x<w-1;x++){
+          const tl=getLum(data,w,x-1,y-1),t=getLum(data,w,x,y-1),tr=getLum(data,w,x+1,y-1);
+          const ml=getLum(data,w,x-1,y),  mr=getLum(data,w,x+1,y);
+          const bl=getLum(data,w,x-1,y+1),b=getLum(data,w,x,y+1),br=getLum(data,w,x+1,y+1);
+          const gx=(-tl-2*ml-bl)+(tr+2*mr+br);
+          const gy=(-tl-2*t-tr)+(bl+2*b+br);
+          edges[y*w+x]=Math.sqrt(gx*gx+gy*gy);
+        }
+      }
+      // Step 2: pixels with low edge are background
+      const maxEdge=edges.reduce((a,b)=>Math.max(a,b),0)||1;
+      const edgeThresh=(threshold/120)*maxEdge*0.3;
+      for(let i=0;i<w*h;i++){
+        if(edges[i]<edgeThresh) alpha[i]=1;
+      }
     }
-    rCtx.putImageData(newData,0,0);
-    result.toBlob(blob=>{
-      const url=URL.createObjectURL(blob);
-      document.getElementById('downloadBtn').href=url;document.getElementById('downloadBtn').download=(_baseName(uploadedFile&&uploadedFile.name)||'image')+'_no_bg.png';
-      document.getElementById('result').style.display='block';
-      setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'image')+'_no_bg.png';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
-    },'image/png');
-    if(typeof gtag!=='undefined')gtag('event','bg_removed',{event_category:'Image Tools'});
-  }catch(e){alert('Error: '+e.message);}
-  document.getElementById('spinner').style.display='none';
-  document.getElementById('actionBtn').disabled=false;
+
+    // Feather edges (soften transition)
+    if (feather) {
+      const feathered = new Uint8Array(w*h);
+      const radius = Math.max(1, Math.floor(threshold/15));
+      for(let y=0;y<h;y++){
+        for(let x=0;x<w;x++){
+          if(alpha[y*w+x]) { feathered[y*w+x]=1; continue; }
+          // Check neighbors for bg pixels
+          let hasNearby=false;
+          outer: for(let dy=-radius;dy<=radius;dy++){
+            for(let dx=-radius;dx<=radius;dx++){
+              const ny=y+dy, nx=x+dx;
+              if(ny>=0&&ny<h&&nx>=0&&nx<w&&alpha[ny*w+nx]){ hasNearby=true; break outer; }
+            }
+          }
+          if(hasNearby) feathered[y*w+x]=2; // semi-transparent
+        }
+      }
+      for(let i=0;i<w*h;i++){
+        if(feathered[i]===2) alpha[i]=2;
+        else if(feathered[i]===1) alpha[i]=1;
+      }
+    }
+
+    // Apply to result canvas
+    const resultCanvas = document.getElementById('resultCanvas');
+    resultCanvas.width = w;
+    resultCanvas.height = h;
+    const rCtx = resultCanvas.getContext('2d');
+    rCtx.clearRect(0, 0, w, h);
+
+    // Apply BG color
+    if(bgColor && bgColor !== 'transparent') {
+      rCtx.fillStyle = bgColor;
+      rCtx.fillRect(0, 0, w, h);
+    }
+
+    // Copy pixels with transparency
+    const resultData = rCtx.getImageData(0, 0, w, h);
+    const rd = resultData.data;
+
+    for(let i=0;i<w*h;i++){
+      const di=i*4;
+      if(alpha[i]===0) {
+        // Keep pixel
+        rd[di]=data[di]; rd[di+1]=data[di+1]; rd[di+2]=data[di+2]; rd[di+3]=data[di+3];
+      } else if(alpha[i]===2) {
+        // Semi-transparent feathered pixel
+        rd[di]=data[di]; rd[di+1]=data[di+1]; rd[di+2]=data[di+2]; rd[di+3]=Math.floor(data[di+3]*0.3);
+      } else {
+        // Transparent (bg removed)
+        if(bgColor && bgColor !== 'transparent') {
+          // Keep bg fill
+        } else {
+          rd[di+3]=0;
+        }
+      }
+    }
+    rCtx.putImageData(resultData, 0, 0);
+
+    document.getElementById('downloadBtn').disabled = false;
+    showProcessing(false);
+
+  } catch(err) {
+    console.error(err);
+    showProcessing(false);
+    showToast('Processing error: ' + err.message, 'error');
+  }
 }
 
-window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
-window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
-window.addEventListener('dragover',e=>e.preventDefault());
-window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');if(typeof handleGlobalDrop==='function')handleGlobalDrop(e.dataTransfer.files);});
-
-let _dark=localStorage.getItem('dark')==='true';
-if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-
-// ── Quick Tools Dropdown ──
-function toggleQT(){
-  const w=document.getElementById('qtWrap');
-  if(w)w.classList.toggle('open');
-}
-document.addEventListener('click',function(e){
-  const w=document.getElementById('qtWrap');
-  if(w&&!w.contains(e.target))w.classList.remove('open');
-});
-
-
-// ── Reset Tool ──
-function resetTool(){
-  uploadedFile=null;
-  // Reset upload zone
-  const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
-  // Hide progress
-  const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
-  const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
-  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
-  // Disable action button
-  const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
-  // Hide spinner
-  const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
-
-  imgElement=null;
-  const pa=document.getElementById('previewArea');if(pa)pa.style.display='none';
-  const rc=document.getElementById('resultCanvas');if(rc){const ctx=rc.getContext('2d');ctx.clearRect(0,0,rc.width,rc.height);}
-
+function getLum(data, w, x, y) {
+  const i=(y*w+x)*4;
+  return 0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
 }
 
-function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
-let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
-if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
-
-const _tr={"en":{"tool_title":"Remove BG","tool_desc":"AI background removal from images","upload_title":"Click or drag image here","upload_sub":"PNG or JPG images","actionLabel":"Remove Background","resultTitle":"✅ Background removed!","phText":"Upload an image.<br>Adjust sensitivity and remove background.","beforeLabel":"Before","afterLabel":"After","threshLabel":"Sensitivity","lowLabel":"Low","highLabel":"High","dropText":"Drop image here"},"ar":{"tool_title":"إزالة الخلفية","tool_desc":"إزالة خلفية الصور بالذكاء الاصطناعي","upload_title":"اضغط أو اسحب الصورة هنا","upload_sub":"صور PNG أو JPG","actionLabel":"إزالة الخلفية","resultTitle":"✅ تمت الإزالة!","phText":"ارفع صورة.<br>اضبط الحساسية وأزل الخلفية.","beforeLabel":"قبل","afterLabel":"بعد","threshLabel":"الحساسية","lowLabel":"منخفض","highLabel":"عالي","dropText":"أسقط الصورة هنا"}};
-function _applyLang(){
-  const _ua=document.getElementById('useAgainBtn');
-  if(_ua)_ua.textContent=_lang==='ar'?'استخدام ملف آخر':'Use Another File';
-  document.documentElement.lang=_lang;
-  document.body.dir='ltr';
-  document.body.classList.toggle('lang-ar',_lang==='ar');
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
-  const t=_tr[_lang]||{};
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
-  
-
-  document.getElementById('navToolName').textContent=_lang==='ar'?'إزالة الخلفية':'Remove Background';
-  document.getElementById('qtLabel').textContent=_lang==='ar'?'كل الأدوات':'All Tools';
-  document.querySelectorAll('.qt-label').forEach(el=>el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en);
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
+function showProcessing(show) {
+  document.getElementById('processingOverlay').classList.toggle('hidden', !show);
 }
-function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
-_applyLang();
 
-</script><!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
-</body></html>
+// ══════════════════════════════════════════
+// COMPARE MODE
+// ══════════════════════════════════════════
+let compareMode = false;
+function toggleCompare() {
+  compareMode = !compareMode;
+  const btn = document.getElementById('compareBtn');
+  btn.style.background = compareMode ? 'var(--primary-light)' : '';
+  btn.style.borderColor = compareMode ? 'var(--primary)' : '';
+  btn.style.color = compareMode ? 'var(--primary)' : '';
+
+  const resultCanvas = document.getElementById('resultCanvas');
+  const wrap = document.getElementById('previewWrap');
+
+  if(compareMode && originalImage) {
+    // Draw original on a second canvas overlaid
+    const origCanvas = document.createElement('canvas');
+    origCanvas.id = 'compareOrigCanvas';
+    origCanvas.style.position = 'absolute';
+    origCanvas.style.top = '0';
+    origCanvas.style.left = '0';
+    origCanvas.style.width = '50%';
+    origCanvas.style.height = '100%';
+    origCanvas.style.objectFit = 'contain';
+    origCanvas.style.clipPath = 'inset(0 50% 0 0)';
+    origCanvas.width = originalImage.naturalWidth;
+    origCanvas.height = originalImage.naturalHeight;
+    const ctx = origCanvas.getContext('2d');
+    ctx.drawImage(originalImage, 0, 0);
+    origCanvas.className = 'preview-canvas';
+    origCanvas.style.position='absolute';origCanvas.style.inset='0';
+    origCanvas.style.clipPath='inset(0 50% 0 0)';
+    wrap.appendChild(origCanvas);
+
+    const divider = document.createElement('div');
+    divider.id='compareDivider';
+    divider.style.cssText='position:absolute;top:0;left:50%;width:3px;height:100%;background:var(--primary);transform:translateX(-50%);cursor:col-resize;z-index:10';
+    wrap.appendChild(divider);
+    wrap.style.position='relative';
+  } else {
+    document.getElementById('compareOrigCanvas')?.remove();
+    document.getElementById('compareDivider')?.remove();
+  }
+}
+
+// ══════════════════════════════════════════
+// DOWNLOAD
+// ══════════════════════════════════════════
+function downloadResult() {
+  const canvas = document.getElementById('resultCanvas');
+  if(!canvas.width) return;
+  const mimeType = outputFmt === 'webp' ? 'image/webp' : 'image/png';
+  const dataUrl = canvas.toDataURL(mimeType, 0.95);
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = `${originalFileName}-nobg.${outputFmt}`;
+  a.click();
+  showToast(tr('T_done'), 'success');
+  if(typeof gtag!=='undefined') gtag('event','remove_background',{event_category:'remove_bg',event_label:'success'});
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type='success') {
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  const icons={
+    success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    warn:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+  };
+  t.innerHTML=(icons[type]||icons.success)+msg;
+  wrap.appendChild(t);
+  setTimeout(()=>t.remove(),3500);
+}
+
+// ══════════════════════════════════════════
+// RUN
+// ══════════════════════════════════════════
+boot();
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-3EGBBVX022');
+</script>
+</body>
+</html>

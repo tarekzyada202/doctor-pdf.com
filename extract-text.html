@@ -1,372 +1,765 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extract Text from PDF Online Free | Doctor PDF</title>
-<meta name="description" content="Extract text content from PDF files online for free.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://doctor-pdf.com/extract-text.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extract Text from PDF — Doctor PDF</title>
+<meta name="description" content="Extract text from PDF files online for free. Copy or download text from any PDF page. 100% private — runs entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
 <style>
+:root{
+  --bg:#ffffff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;
+  --secondary:#8b5cf6;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --panel:360px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;
+  --danger-light:#2d1010;--success-light:#052e16;--warn-light:#1c1500;
+}
+html[lang="ar"] *{font-family:var(--font-ar)}
+html[lang="en"] *{font-family:var(--font-en)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
 
-:root{--primary:#6366f1;--secondary:#8b5cf6;--success:#10b981;--danger:#ef4444;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;transition:background .3s,color .3s;overflow:hidden}
-/* NAVBAR */
-.navbar{background:rgba(248,250,252,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:200;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.95)}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:1.05em;font-weight:800;color:var(--primary)}
-.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8em}
-.nav-right{display:flex;align-items:center;gap:8px}
-.btn-icon{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
-/* LAYOUT */
-.workspace{display:flex;flex:1;overflow:hidden}
-.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 28px;display:flex;flex-direction:column;gap:16px;position:relative}
-.panel{width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:20px 20px;gap:14px}
-/* DROP OVERLAY */
-.drop-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;pointer-events:none}
-.drop-overlay.active{display:flex}
-.drop-overlay-icon{font-size:4em}
-.drop-overlay-text{font-size:1.3em;font-weight:700;color:var(--primary)}
-/* PLACEHOLDER */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--text-muted);text-align:center;gap:12px;padding:40px}
-.placeholder .ph-icon{font-size:5em;opacity:.2}
-.placeholder p{font-size:.88em;opacity:.5;line-height:1.6;max-width:320px}
-/* PANEL ELEMENTS */
-.back-link{display:inline-flex;align-items:center;gap:5px;color:var(--primary);text-decoration:none;font-weight:600;font-size:.78em;opacity:.8}
-.back-link:hover{opacity:1}
-.tool-title{color:var(--primary);font-size:1.15em;font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
-.tool-desc{color:var(--text-muted);font-size:.75em;line-height:1.4}
-.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg);transition:all .2s}
-.upload-zone:hover{border-color:var(--primary);background:rgba(99,102,241,.04)}
-.up-icon{font-size:1.5em;display:block;margin-bottom:5px}
-.up-title{color:var(--primary);font-weight:700;font-size:.82em;margin-bottom:2px}
-.up-sub{color:var(--text-muted);font-size:.7em}
-input[type=file]{display:none}
-.opt-label{display:block;font-weight:600;font-size:.72em;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.opt-select,.opt-input,.opt-password{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82em;background:var(--surface);color:var(--text);margin-bottom:10px;font-family:inherit;transition:border .2s}
-.opt-select:focus,.opt-input:focus,.opt-password:focus{outline:none;border-color:var(--primary)}
-.opts-section{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
-.action-btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:11px 20px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:all .2s;margin-top:auto}
-.action-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.action-btn:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;box-shadow:none}
-.progress-wrap{display:none}
-.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0%;transition:width .3s;border-radius:100px}
-.progress-text{font-size:.7em;color:var(--text-muted);margin-top:4px;text-align:center}
-.result-box{display:none;padding:12px;background:rgba(16,185,129,.08);border-radius:9px;border:1px solid rgba(16,185,129,.2)}
-.result-title{color:var(--success);font-weight:700;font-size:.8em;margin-bottom:8px;text-align:center}
-.download-btn-full{background:var(--success);color:white;padding:9px 20px;border-radius:100px;font-size:.82em;font-weight:700;text-decoration:none;display:block;text-align:center;transition:all .2s;border:none;cursor:pointer;width:100%}
-.download-btn-full:hover{background:#059669}
-.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:26px;height:26px;animation:spin 1s linear infinite;margin:6px auto;display:none}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.stat-box{background:var(--bg);border-radius:7px;padding:8px;text-align:center;border:1px solid var(--border)}
-.stat-label{font-size:.62em;color:var(--text-muted);font-weight:600;text-transform:uppercase}
-.stat-value{font-size:.9em;font-weight:800;color:var(--primary);margin-top:2px}
-/* FORMAT GRID */
-.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.format-option{background:var(--bg);padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid var(--border);transition:all .2s;font-size:.78em;font-weight:600;color:var(--text-muted)}
-.format-option:hover{border-color:var(--primary);color:var(--primary)}
-.format-option.selected{background:var(--primary);color:white;border-color:var(--primary)}
-/* FILE LIST IN PANEL */
-.panel-file-item{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px}
-.pfi-name{flex:1;font-size:.75em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pfi-pages{font-size:.68em;color:var(--text-muted)}
-.pfi-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8em;flex-shrink:0}
-/* SIGN CANVAS */
-#signCanvas{border:2px solid var(--border);border-radius:12px;cursor:crosshair;width:100%;max-height:340px;touch-action:none;background:white}
-.sign-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.sign-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8em;font-weight:600;transition:all .2s;font-family:inherit}
-.sign-btn:hover{border-color:var(--primary);color:var(--primary)}
-/* PREVIEW */
-.preview-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;padding:16px}
-.preview-wrap img,.preview-wrap canvas{max-width:100%;max-height:480px;border-radius:8px}
-/* EXTRACTED TEXT */
-#extractedTextArea{width:100%;height:100%;min-height:400px;border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:.85em;line-height:1.6;background:var(--surface);color:var(--text);font-family:monospace;resize:none;transition:border .2s}
-#extractedTextArea:focus{outline:none;border-color:var(--primary)}
-.copy-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:.8em;font-weight:700;cursor:pointer;transition:all .2s}
-.copy-btn:hover{background:var(--secondary)}
-/* IMAGE LIST */
-.img-list-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:10px}
-.img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-.img-name{flex:1;font-size:.78em;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.img-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85em}
-/* RESPONSIVE */
-@media(max-width:800px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-top:1px solid var(--border);max-height:55vh;overflow-y:auto}.content{flex:none;min-height:45vh}}
+/* NAV */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
 
-body.lang-ar{font-family:'Cairo',sans-serif;}
+/* WORKSPACE */
+.workspace{flex:1;display:flex;overflow:hidden}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 
-/* ── NAVBAR UPGRADED ── */
-.navbar{position:sticky;top:0;z-index:300;background:rgba(248,250,252,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .3s;flex-shrink:0}
-.dark .navbar{background:rgba(15,23,42,.96)}
-.navbar-left{display:flex;align-items:center;gap:8px;min-width:0}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:1em;font-weight:800;color:var(--primary);flex-shrink:0}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--border);font-size:1em;margin:0 2px;flex-shrink:0}
-.nav-tool-name{font-size:.8em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
-.navbar-center{flex:1;display:flex;justify-content:center}
-/* QUICK TOOLS DROPDOWN */
-.quick-tools-wrap{position:relative}
-.quick-tools-btn{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78em;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
-.quick-tools-btn:hover{border-color:var(--primary);color:var(--primary)}
-.qt-arrow{transition:transform .2s;font-size:.7em}
-.quick-tools-wrap.open .qt-arrow{transform:rotate(180deg)}
-.quick-tools-drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px;display:none;z-index:500;width:280px}
-.quick-tools-wrap.open .quick-tools-drop{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qt-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:.78em;font-weight:600;transition:background .15s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--primary)}
-.qt-item-icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qt-item-icon svg{width:12px;height:12px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* NAVBAR PROGRESS */
-.navbar-progress{position:absolute;bottom:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .3s ease;border-radius:0 2px 2px 0}
-/* NAV RIGHT */
-.navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn-icon{width:30px;height:30px;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.78em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary)}
+/* DROP ZONE */
+.dropzone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;padding:40px}
+.dropzone.hidden{display:none}
+.drop-icon{width:72px;height:72px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center}
+.drop-icon svg{width:36px;height:36px;color:var(--primary)}
+.drop-title{font-size:20px;font-weight:600;color:var(--text)}
+.drop-sub{font-size:14px;color:var(--text2);text-align:center;max-width:340px;line-height:1.6}
+.browse-btn{height:40px;padding:0 24px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.browse-btn:hover{background:var(--primary-h)}
 
+/* TEXT AREA */
+.text-area{flex:1;display:none;flex-direction:column;overflow:hidden}
+.text-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px;flex-wrap:wrap}
+.text-header-left{display:flex;align-items:center;gap:10px}
+.text-title{font-size:14px;font-weight:500;color:var(--text)}
+.text-stats{font-size:12px;color:var(--text3)}
+.text-actions{display:flex;gap:8px}
+.action-btn{height:32px;padding:0 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.action-btn:hover{background:var(--bg3);color:var(--text)}
+.action-btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.action-btn.primary:hover{background:var(--primary-h)}
+.action-btn svg{width:13px;height:13px}
+.change-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.change-btn:hover{background:var(--bg3);color:var(--text)}
 
-.use-again-btn{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);padding:8px 16px;border-radius:100px;font-size:.8em;font-weight:700;cursor:pointer;width:100%;margin-top:8px;transition:all .2s;font-family:inherit}
-.use-again-btn:hover{background:var(--primary);color:white}
+/* Page tabs */
+.page-tabs-wrap{border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;background:var(--bg)}
+.page-tabs{display:flex;gap:0;padding:0 16px;min-width:max-content}
+.page-tab{height:38px;padding:0 16px;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit}
+.page-tab:hover{color:var(--text);background:var(--bg2)}
+.page-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.page-tab-all{font-weight:500}
 
+/* Text output */
+.text-output{flex:1;overflow-y:auto;padding:24px;background:var(--bg2)}
+.text-block{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;min-height:200px;font-family:var(--font-en)}
+html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:right}
+.text-block.empty{color:var(--text3);font-style:italic;display:flex;align-items:center;justify-content:center;font-size:13px}
+.text-page-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin:16px 0 8px;padding:0 4px}
+.text-page-label:first-child{margin-top:0}
+
+/* Extracting overlay */
+.extracting-bar{display:none;padding:12px 20px;background:var(--primary-light);border-bottom:1px solid var(--border);align-items:center;gap:12px}
+.extracting-bar.show{display:flex}
+.ext-bar-fill-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.ext-bar-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .2s}
+.ext-bar-txt{font-size:12px;color:var(--primary);font-weight:500;white-space:nowrap}
+
+/* PANEL */
+.panel-section{padding:16px;border-bottom:1px solid var(--border)}
+.panel-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;display:block}
+.select-wrap{position:relative}
+.select-wrap select{width:100%;height:36px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:13px;outline:none;appearance:none;cursor:pointer;transition:border .15s}
+.select-wrap select:focus{border-color:var(--primary)}
+.select-wrap::after{content:'';position:absolute;top:50%;inset-inline-end:10px;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--text3);pointer-events:none}
+
+/* Toggle switch */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.toggle-label{font-size:13px;color:var(--text)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
+
+.info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+
+/* PANEL FOOTER */
+.panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
+.stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-item{text-align:center}
+.stat-val{font-size:18px;font-weight:600;color:var(--primary)}
+.stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.download-btn{width:100%;height:48px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.download-btn:hover:not(:disabled){background:var(--primary-h)}
+.download-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* DRAG OVERLAY */
+.drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);border-radius:var(--radius-lg);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
+.drag-overlay.show{display:flex}
+.drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+[dir="rtl"] .toast-wrap{transform:translateX(50%)}
+.toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;pointer-events:all;animation:slideUp .2s ease}
+.toast.success{border-color:var(--success);color:var(--success);background:var(--success-light)}
+.toast.error{border-color:var(--danger);color:var(--danger);background:var(--danger-light)}
+.toast.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-light)}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:700px){
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
+  .workspace{flex-direction:column}
+}
 </style>
 </head>
-<body><nav class="navbar">
-  <div class="navbar-left">
-    <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-    <span class="nav-sep">›</span>
-    <span class="nav-tool-name" id="navToolName">Extract Text</span>
-  </div>
-  <div class="navbar-center">
-    <div class="quick-tools-wrap" id="qtWrap">
-      <button class="quick-tools-btn" onclick="toggleQT()" id="qtBtn">
-        <span id="qtLabel">All Tools</span> <span class="qt-arrow">▾</span>
-      </button>
-      <div class="quick-tools-drop" id="qtDrop">
-        <a href="merge-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-          <span class="qt-label" data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span>
-        </a>
-<a href="split-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
-          <span class="qt-label" data-en="Split PDF" data-ar="تقسيم PDF">Split PDF</span>
-        </a>
-<a href="compress-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-          <span class="qt-label" data-en="Compress PDF" data-ar="ضغط PDF">Compress PDF</span>
-        </a>
-<a href="rotate-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
-          <span class="qt-label" data-en="Rotate PDF" data-ar="تدوير PDF">Rotate PDF</span>
-        </a>
-<a href="sign-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-          <span class="qt-label" data-en="Sign PDF" data-ar="توقيع PDF">Sign PDF</span>
-        </a>
-<a href="protect-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <span class="qt-label" data-en="Protect PDF" data-ar="حماية PDF">Protect PDF</span>
-        </a>
-<a href="watermark-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></div>
-          <span class="qt-label" data-en="Watermark" data-ar="علامة مائية">Watermark</span>
-        </a>
-<a href="image-to-pdf.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <span class="qt-label" data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span>
-        </a>
-<a href="pdf-to-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <span class="qt-label" data-en="PDF→Image" data-ar="PDF→صورة">PDF→Image</span>
-        </a>
-<a href="convert-image.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/></svg></div>
-          <span class="qt-label" data-en="Convert Image" data-ar="تحويل صور">Convert Image</span>
-        </a>
-<a href="remove-background.html" class="qt-item">
-          <div class="qt-item-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-          <span class="qt-label" data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span>
-        </a>
+<body>
 
-      </div>
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn" aria-expanded="false">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_tools">All Tools</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">Watermark PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
+      <a href="extract-text.html" style="color:var(--primary)"><span id="T_extract">Extract Text</span></a>
     </div>
   </div>
-  <div class="navbar-right">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" style="font-size:.68em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
-  </div>
-  <div class="navbar-progress" id="navProgress"></div>
-</nav><div class="drop-overlay" id="dropOverlay">
-  <div class="drop-overlay-icon">📂</div>
-  <div class="drop-overlay-text" id="dropText">Drop PDF file here</div>
-</div>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">AR</span>
+  </button>
+</nav>
+
+<!-- WORKSPACE -->
 <div class="workspace">
   <div class="content" id="contentArea">
-    <div class="placeholder" id="placeholder">
-      <span class="ph-icon">📝</span>
-      <p id="phText">Upload a PDF file.<br>Extracted text will appear here.</p>
-    </div>
-    <div id="textArea" style="display:none;flex-direction:column;gap:10px;height:100%">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <p style="font-size:.8em;font-weight:700;color:var(--text-muted)" id="textAreaLabel">Extracted Text</p>
-        <button class="copy-btn" onclick="copyText()" id="copyBtn">📋 Copy</button>
+
+    <!-- Drop zone -->
+    <div class="dropzone" id="dropzone">
+      <div class="drop-icon">
+        <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 16h16M10 21h10M10 26h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg>
       </div>
-      <textarea id="extractedTextArea" readonly placeholder="Text will appear here after extraction…"></textarea>
+      <div>
+        <div class="drop-title" id="T_dropTitle">Extract Text from PDF</div>
+        <div class="drop-sub" id="T_dropSub">Drag & drop your PDF file here, or click to browse. All text extraction runs locally in your browser — no upload, 100% private.</div>
+      </div>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+    </div>
+
+    <!-- Extracting progress bar -->
+    <div class="extracting-bar" id="extractingBar">
+      <div class="ext-bar-fill-wrap"><div class="ext-bar-fill" id="extBarFill"></div></div>
+      <span class="ext-bar-txt" id="extBarTxt">Extracting...</span>
+    </div>
+
+    <!-- Text area -->
+    <div class="text-area" id="textArea">
+      <div class="text-header">
+        <div class="text-header-left">
+          <span class="text-title" id="fileName">document.pdf</span>
+          <span class="text-stats" id="textStats"></span>
+        </div>
+        <div class="text-actions">
+          <button class="change-btn" id="changeFileBtn">
+            <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span id="T_changeFile">Change file</span>
+          </button>
+          <button class="action-btn" id="copyBtn">
+            <svg viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 9V2a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <span id="T_copyBtn">Copy All</span>
+          </button>
+          <button class="action-btn primary" id="downloadTxtBtn">
+            <svg viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M1 11h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span id="T_downloadTxt">Download .txt</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Page tabs -->
+      <div class="page-tabs-wrap">
+        <div class="page-tabs" id="pageTabs"></div>
+      </div>
+
+      <!-- Text output -->
+      <div class="text-output">
+        <div class="text-block" id="textBlock"></div>
+      </div>
     </div>
   </div>
-  <div class="panel">
-  <a href="index.html" class="back-link">← All tools</a>
-  <div>
-    <div style="font-size:2em;margin-bottom:6px">📝</div>
-    <div class="tool-title" id="tool_title">Extract Text</div>
-    <div class="tool-desc" id="tool_desc">Copy text from any PDF file</div>
-  </div>
-  <div class="upload-zone" id="uploadZone">
-    <span class="up-icon">📁</span>
-    <p class="up-title" id="upload_title">Click or drag PDF here</p>
-    <small class="up-sub" id="upload_sub">Any PDF with text content</small>
-    <input type="file" id="fileInput" accept=".pdf" >
-  </div>
-  <div class="spinner" id="spinner"></div>
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <p class="progress-text" id="progressText">Processing…</p>
-  </div>
-  <button class="action-btn" id="actionBtn" onclick="extractText()" disabled>
-    <span id="actionLabel">Extract Text</span>
-  </button>
-  <div class="result-box" id="result">
-    <p class="result-title" id="resultTitle">✅ Text extracted!</p>
-    <button class="use-again-btn" onclick="resetTool()" id="useAgainBtn">Use Another File</button>
-    <a class="download-btn-full" id="downloadBtn" download="extracted_text.txt" href="#">📥 Download Text File</a>
-  </div>
-  </div>
+
+  <!-- PANEL -->
+  <aside class="panel">
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_optionsTitle">Extraction Options</div>
+      <div class="toggle-row">
+        <span class="toggle-label" id="T_preserveLayout">Preserve layout spacing</span>
+        <label class="toggle"><input type="checkbox" id="toggleLayout" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" style="margin-top:6px">
+        <span class="toggle-label" id="T_pageNumbers">Add page numbers</span>
+        <label class="toggle"><input type="checkbox" id="togglePageNums" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" style="margin-top:6px">
+        <span class="toggle-label" id="T_trimEmpty">Remove empty lines</span>
+        <label class="toggle"><input type="checkbox" id="toggleTrimEmpty"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_outputTitle">Output Format</div>
+      <div class="field">
+        <label class="field-label" id="T_separatorLabel">Page separator</label>
+        <div class="select-wrap">
+          <select id="separatorSelect">
+            <option value="line" id="T_sepLine">Line separator</option>
+            <option value="label" id="T_sepLabel">Page label (— Page N —)</option>
+            <option value="none" id="T_sepNone">No separator</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" id="T_encodingLabel">Download encoding</label>
+        <div class="select-wrap">
+          <select id="encodingSelect">
+            <option value="utf8">UTF-8 (recommended)</option>
+            <option value="utf8bom">UTF-8 with BOM (Excel)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="info-box">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span id="T_privacyNote">Text is extracted directly in your browser using pdf.js. Your document never leaves your device.</span>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_aboutTitle">About Text Extraction</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">This tool extracts selectable text embedded in the PDF. Scanned documents without text layers will show no text — use OCR for those files.</p>
+    </div>
+
+    <div class="panel-footer">
+      <div class="stats-box" id="statsBox">
+        <div class="stat-item">
+          <div class="stat-val" id="statChars">—</div>
+          <div class="stat-label" id="T_statCharsLabel">Characters</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statWords">—</div>
+          <div class="stat-label" id="T_statWordsLabel">Words</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statPages">—</div>
+          <div class="stat-label" id="T_statPagesLabel">Pages</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statLines">—</div>
+          <div class="stat-label" id="T_statLinesLabel">Lines</div>
+        </div>
+      </div>
+      <button class="download-btn" id="downloadDocBtn" disabled>
+        <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="T_downloadDoc">Download Text File</span>
+      </button>
+    </div>
+  </aside>
 </div>
+
+<!-- Drag overlay -->
+<div class="drag-overlay" id="dragOverlay">
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M28 4v10h10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<input type="file" id="fileInput" accept="application/pdf,.pdf" style="display:none">
+
 <script>
-function _baseName(f){return f?f.replace(/\.pdf$/i,'').replace(/\.[^.]+$/,''):''}
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-let uploadedFile=null;
-document.getElementById('uploadZone').addEventListener('click',()=>document.getElementById('fileInput').click());
-document.getElementById('fileInput').addEventListener('change',e=>handleFile(e.target.files[0]));
-document.getElementById('uploadZone').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('uploadZone').addEventListener('drop',e=>{e.preventDefault();handleFile(e.dataTransfer.files[0]);});
-function handleGlobalDrop(files){const f=[...files].find(f=>f.type==='application/pdf');if(f)handleFile(f);}
-function handleFile(f){
-  if(!f||f.type!=='application/pdf')return;
-  uploadedFile=f;
-  document.getElementById('actionBtn').disabled=false;
-  document.getElementById('placeholder').style.display='none';
-  document.getElementById('textArea').style.display='flex';
+(function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+// ══════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════
+const LANGS = {
+  en:{
+    T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
+    T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_rotate:'Rotate PDF',
+    T_watermark:'Watermark PDF',T_protect:'Protect PDF',T_extract:'Extract Text',
+    T_dropTitle:'Extract Text from PDF',
+    T_dropSub:'Drag & drop your PDF file here, or click to browse. All text extraction runs locally in your browser — no upload, 100% private.',
+    T_browse:'Choose PDF File',
+    T_changeFile:'Change file',
+    T_copyBtn:'Copy All',T_downloadTxt:'Download .txt',
+    T_optionsTitle:'Extraction Options',
+    T_preserveLayout:'Preserve layout spacing',
+    T_pageNumbers:'Add page numbers',T_trimEmpty:'Remove empty lines',
+    T_outputTitle:'Output Format',
+    T_separatorLabel:'Page separator',
+    T_sepLine:'Line separator',T_sepLabel:'Page label (— Page N —)',T_sepNone:'No separator',
+    T_encodingLabel:'Download encoding',
+    T_privacyNote:'Text is extracted directly in your browser using pdf.js. Your document never leaves your device.',
+    T_aboutTitle:'About Text Extraction',
+    T_aboutText:'This tool extracts selectable text embedded in the PDF. Scanned documents without text layers will show no text — use OCR for those files.',
+    T_statCharsLabel:'Characters',T_statWordsLabel:'Words',T_statPagesLabel:'Pages',T_statLinesLabel:'Lines',
+    T_downloadDoc:'Download Text File',
+    T_dropHere:'Drop PDF here',
+    T_extracting:'Extracting page',
+    T_copied:'Text copied to clipboard!',
+    T_downloaded:'Text file downloaded!',
+    T_errLoad:'Failed to load PDF. The file may be corrupted or password-protected.',
+    T_noText:'No selectable text found on this page. The PDF may be scanned.',
+    T_page:'Page',T_tabAll:'All Pages',
+    langLabel:'AR'
+  },
+  ar:{
+    T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
+    T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
+    T_watermark:'علامة مائية',T_protect:'حماية PDF',T_extract:'استخراج النص',
+    T_dropTitle:'استخرج النص من PDF',
+    T_dropSub:'اسحب وأفلت ملف PDF هنا، أو اضغط للاختيار. كل الاستخراج يتم محلياً في متصفحك — بدون رفع، خصوصية كاملة.',
+    T_browse:'اختر ملف PDF',
+    T_changeFile:'تغيير الملف',
+    T_copyBtn:'نسخ الكل',T_downloadTxt:'تحميل .txt',
+    T_optionsTitle:'خيارات الاستخراج',
+    T_preserveLayout:'الحفاظ على تباعد التخطيط',
+    T_pageNumbers:'إضافة أرقام الصفحات',T_trimEmpty:'حذف الأسطر الفارغة',
+    T_outputTitle:'تنسيق الإخراج',
+    T_separatorLabel:'فاصل الصفحات',
+    T_sepLine:'فاصل سطر',T_sepLabel:'تسمية الصفحة (— صفحة N —)',T_sepNone:'بدون فاصل',
+    T_encodingLabel:'ترميز التحميل',
+    T_privacyNote:'يتم استخراج النص مباشرة في متصفحك باستخدام pdf.js. مستندك لا يغادر جهازك أبداً.',
+    T_aboutTitle:'عن استخراج النص',
+    T_aboutText:'تستخرج هذه الأداة النص المضمّن القابل للتحديد في PDF. المستندات الممسوحة ضوئياً بدون طبقة نصية لن تُظهر نصاً — استخدم OCR لتلك الملفات.',
+    T_statCharsLabel:'حرف',T_statWordsLabel:'كلمة',T_statPagesLabel:'صفحة',T_statLinesLabel:'سطر',
+    T_downloadDoc:'تحميل ملف النص',
+    T_dropHere:'أفلت PDF هنا',
+    T_extracting:'جاري استخراج الصفحة',
+    T_copied:'!تم نسخ النص إلى الحافظة',
+    T_downloaded:'!تم تحميل ملف النص',
+    T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو محمياً بكلمة مرور',
+    T_noText:'لا يوجد نص قابل للتحديد في هذه الصفحة. قد يكون PDF ممسوحاً ضوئياً.',
+    T_page:'صفحة',T_tabAll:'كل الصفحات',
+    langLabel:'EN'
+  }
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentLang = localStorage.getItem('dpdf_lang') || 'en';
+let pdfDoc = null;
+let pageTexts = []; // ['text of page 1', 'text of page 2', ...]
+let currentTab = 'all'; // 'all' | pageNum
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+function boot() {
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  applyLang(currentLang);
+  applyTheme(localStorage.getItem('dpdf_dark') === '1');
+  bindEvents();
 }
-function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressText').textContent=msg;}
-function copyText(){
-  const ta=document.getElementById('extractedTextArea');
-  ta.select();document.execCommand('copy');
-  const btn=document.getElementById('copyBtn');
-  btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);
+
+// ══════════════════════════════════════════
+// LANG & THEME
+// ══════════════════════════════════════════
+function applyLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  Object.keys(t).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t[id];
+  });
+  if (pageTexts.length) renderText();
 }
-async function extractText(){
-  document.getElementById('spinner').style.display='block';
-  document.getElementById('progressWrap').style.display='block';
-  document.getElementById('actionBtn').disabled=true;
-  try{
-    const bytes=await uploadedFile.arrayBuffer();
-    const pdf=await pdfjsLib.getDocument({data:bytes}).promise;
-    let fullText='';
-    for(let i=1;i<=pdf.numPages;i++){
-      setProgress((i/pdf.numPages)*90,`Extracting page ${i}/${pdf.numPages}…`);
-      const page=await pdf.getPage(i);
-      const tc=await page.getTextContent();
-      const pageText=tc.items.map(item=>item.str).join(' ');
-      fullText+=`--- Page ${i} ---\n${pageText}\n\n`;
+
+function tr(k) { return (LANGS[currentLang]||LANGS.en)[k]||k; }
+
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('iconSun').style.display = dark ? 'none' : '';
+  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
+  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
+}
+
+// ══════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════
+function bindEvents() {
+  document.getElementById('themeBtn').onclick = () =>
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+
+  document.getElementById('langBtn').onclick = () => {
+    const next = currentLang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('dpdf_lang', next);
+    applyLang(next);
+  };
+
+  document.getElementById('toolsBtn').onclick = (e) => {
+    e.stopPropagation();
+    document.getElementById('toolsMenu').classList.toggle('open');
+  };
+  document.addEventListener('click', () => document.getElementById('toolsMenu').classList.remove('open'));
+
+  const fi = document.getElementById('fileInput');
+  document.getElementById('browseBtn').onclick = () => fi.click();
+  document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
+  fi.onchange = (e) => { if(e.target.files[0]) loadPDF(e.target.files[0]); fi.value=''; };
+  document.getElementById('changeFileBtn').onclick = () => fi.click();
+
+  document.getElementById('copyBtn').onclick = copyText;
+  document.getElementById('downloadTxtBtn').onclick = downloadText;
+  document.getElementById('downloadDocBtn').onclick = downloadText;
+
+  // Option toggles → re-render
+  ['toggleLayout','togglePageNums','toggleTrimEmpty'].forEach(id => {
+    document.getElementById(id).onchange = () => { if(pageTexts.length) renderText(); };
+  });
+  document.getElementById('separatorSelect').onchange = () => { if(pageTexts.length) renderText(); };
+
+  // Drag & drop
+  document.addEventListener('dragenter', (e) => {
+    if(e.dataTransfer.types.includes('Files')) document.getElementById('dragOverlay').classList.add('show');
+  });
+  document.addEventListener('dragleave', (e) => {
+    if(!e.relatedTarget||e.relatedTarget===document.documentElement)
+      document.getElementById('dragOverlay').classList.remove('show');
+  });
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    document.getElementById('dragOverlay').classList.remove('show');
+    const file = Array.from(e.dataTransfer.files).find(f=>f.type==='application/pdf'||f.name.endsWith('.pdf'));
+    if(file) loadPDF(file);
+  });
+}
+
+// ══════════════════════════════════════════
+// LOAD & EXTRACT
+// ══════════════════════════════════════════
+async function loadPDF(file) {
+  if(!file) return;
+  if(typeof pdfjsLib === 'undefined') { showToast('pdf.js not loaded','error'); return; }
+
+  pdfDoc = null;
+  pageTexts = [];
+  currentTab = 'all';
+
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('textArea').style.display = 'none';
+  document.getElementById('extractingBar').classList.add('show');
+  document.getElementById('extBarFill').style.width = '0';
+
+  try {
+    const buf = await file.arrayBuffer();
+    pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+    const numPages = pdfDoc.numPages;
+
+    document.getElementById('fileName').textContent = file.name;
+
+    for (let i = 1; i <= numPages; i++) {
+      const pct = Math.round((i / numPages) * 100);
+      document.getElementById('extBarFill').style.width = pct + '%';
+      document.getElementById('extBarTxt').textContent = `${tr('T_extracting')} ${i} / ${numPages}`;
+
+      const page = await pdfDoc.getPage(i);
+      const content = await page.getTextContent();
+      const text = extractTextFromContent(content);
+      pageTexts.push(text);
+      await new Promise(r => setTimeout(r, 0));
     }
-    setProgress(100,'Done!');
-    document.getElementById('extractedTextArea').value=fullText;
-    const blob=new Blob([fullText],{type:'text/plain'});
-    const url=URL.createObjectURL(blob);
-    document.getElementById('downloadBtn').href=url;
-    document.getElementById('result').style.display='block';
-    setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=(_baseName(uploadedFile&&uploadedFile.name)||'extracted')+'_text.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);},400);
-    if(typeof gtag!=='undefined')gtag('event','text_extracted',{event_category:'PDF Tools'});
-  }catch(e){alert('Error: '+e.message);}
-  document.getElementById('spinner').style.display='none';
-  document.getElementById('actionBtn').disabled=false;
-  setTimeout(()=>document.getElementById('progressWrap').style.display='none',600);
+
+    document.getElementById('extractingBar').classList.remove('show');
+    document.getElementById('textArea').style.display = 'flex';
+
+    buildTabs(numPages);
+    renderText();
+    updateStats();
+    document.getElementById('downloadDocBtn').disabled = false;
+
+    if(typeof gtag!=='undefined') {
+      gtag('event','extract_text',{event_category:'extract_text',event_label:'success',value:numPages});
+    }
+
+  } catch(err) {
+    console.error(err);
+    document.getElementById('extractingBar').classList.remove('show');
+    document.getElementById('dropzone').classList.remove('hidden');
+    showToast(tr('T_errLoad'), 'error');
+  }
 }
 
-window.addEventListener('dragenter',e=>{if([...e.dataTransfer.types].includes('Files'))document.getElementById('dropOverlay').classList.add('active');});
-window.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('dropOverlay').classList.remove('active');});
-window.addEventListener('dragover',e=>e.preventDefault());
-window.addEventListener('drop',e=>{e.preventDefault();document.getElementById('dropOverlay').classList.remove('active');if(typeof handleGlobalDrop==='function')handleGlobalDrop(e.dataTransfer.files);});
+function extractTextFromContent(content) {
+  let text = '';
+  let lastY = null;
+  const preserveLayout = document.getElementById('toggleLayout').checked;
 
-let _dark=localStorage.getItem('dark')==='true';
-if(_dark){document.body.classList.add('dark');const tb=document.getElementById('themeBtn');if(tb)tb.textContent='☀️';}
-
-// ── Quick Tools Dropdown ──
-function toggleQT(){
-  const w=document.getElementById('qtWrap');
-  if(w)w.classList.toggle('open');
-}
-document.addEventListener('click',function(e){
-  const w=document.getElementById('qtWrap');
-  if(w&&!w.contains(e.target))w.classList.remove('open');
-});
-
-
-// ── Reset Tool ──
-function resetTool(){
-  uploadedFile=null;
-  // Reset upload zone
-  const fi=document.getElementById('fileInput');if(fi)fi.value='';
-  // Hide result
-  const res=document.getElementById('result');if(res)res.style.display='none';
-  // Hide progress
-  const pw=document.getElementById('progressWrap');if(pw)pw.style.display='none';
-  const pf=document.getElementById('progressFill');if(pf)pf.style.width='0%';
-  // Show placeholder
-  const ph=document.getElementById('placeholder');if(ph)ph.style.display='flex';
-  // Disable action button
-  const ab=document.getElementById('actionBtn');if(ab)ab.disabled=true;
-  // Hide spinner
-  const sp=document.getElementById('spinner');if(sp)sp.style.display='none';
-  // Tool-specific resets
-  if(typeof _toolReset==='function')_toolReset();
-
-  const ta=document.getElementById('textArea');if(ta)ta.style.display='none';
-  const eta=document.getElementById('extractedTextArea');if(eta)eta.value='';
-
+  content.items.forEach(item => {
+    if (!item.str) return;
+    if (preserveLayout && lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+      text += '\n';
+    }
+    text += item.str;
+    if (item.hasEOL) text += '\n';
+    lastY = item.transform[5];
+  });
+  return text;
 }
 
-function toggleDark(){_dark=!_dark;document.body.classList.toggle('dark',_dark);const tb=document.getElementById('themeBtn');if(tb)tb.textContent=_dark?'☀️':'🌙';localStorage.setItem('dark',_dark);}
-let _lang=localStorage.getItem('lang')||(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';
-if(!localStorage.getItem('_langSet')){_lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{_lang=localStorage.getItem('lang')||'en';}
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function buildTabs(numPages) {
+  const tabs = document.getElementById('pageTabs');
+  tabs.innerHTML = '';
 
-const _tr={"en":{"tool_title":"Extract Text","tool_desc":"Copy text from any PDF file","upload_title":"Click or drag PDF here","upload_sub":"Any PDF with text content","actionLabel":"Extract Text","resultTitle":"✅ Text extracted!","phText":"Upload a PDF file.<br>Extracted text will appear here.","textAreaLabel":"Extracted Text","dropText":"Drop PDF file here"},"ar":{"tool_title":"استخراج النص","tool_desc":"انسخ النص من أي ملف PDF","upload_title":"اضغط أو اسحب ملف PDF هنا","upload_sub":"أي PDF يحتوي نصاً","actionLabel":"استخراج النص","resultTitle":"✅ تم الاستخراج!","phText":"ارفع ملف PDF.<br>النص المستخرج سيظهر هنا.","textAreaLabel":"النص المستخرج","dropText":"أسقط ملف PDF هنا"}};
-function _applyLang(){
-  const _ua=document.getElementById('useAgainBtn');
-  if(_ua)_ua.textContent=_lang==='ar'?'استخدام ملف آخر':'Use Another File';
-  document.documentElement.lang=_lang;
-  document.body.dir='ltr';
-  document.body.classList.toggle('lang-ar',_lang==='ar');
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
-  const t=_tr[_lang]||{};
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
-  
+  const allTab = document.createElement('button');
+  allTab.className = 'page-tab page-tab-all active';
+  allTab.dataset.tab = 'all';
+  allTab.textContent = tr('T_tabAll');
+  allTab.onclick = () => switchTab('all');
+  tabs.appendChild(allTab);
 
-  document.getElementById('navToolName').textContent=_lang==='ar'?'استخراج النص':'Extract Text';
-  document.getElementById('qtLabel').textContent=_lang==='ar'?'كل الأدوات':'All Tools';
-  document.querySelectorAll('.qt-label').forEach(el=>el.textContent=_lang==='ar'?el.dataset.ar:el.dataset.en);
-  document.getElementById('langBtn').textContent=_lang==='ar'?'EN':'عربي';
+  for (let i = 1; i <= numPages; i++) {
+    const tab = document.createElement('button');
+    tab.className = 'page-tab';
+    tab.dataset.tab = i;
+    tab.textContent = `${tr('T_page')} ${i}`;
+    tab.onclick = () => switchTab(i);
+    tabs.appendChild(tab);
+  }
 }
-function toggleLang(){_lang=_lang==='en'?'ar':'en';localStorage.setItem('lang',_lang);localStorage.setItem('_langSet','1');_applyLang();}
-_applyLang();
 
-</script><!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
-</body></html>
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.page-tab').forEach(t => {
+    t.classList.toggle('active', String(t.dataset.tab) === String(tab));
+  });
+  renderText();
+}
+
+// ══════════════════════════════════════════
+// RENDER TEXT
+// ══════════════════════════════════════════
+function renderText() {
+  const block = document.getElementById('textBlock');
+  const separator = document.getElementById('separatorSelect').value;
+  const addPageNums = document.getElementById('togglePageNums').checked;
+  const trimEmpty = document.getElementById('toggleTrimEmpty').checked;
+
+  let output = '';
+
+  const pages = currentTab === 'all'
+    ? pageTexts.map((t,i) => ({text:t, num:i+1}))
+    : [{text: pageTexts[currentTab-1] || '', num: currentTab}];
+
+  pages.forEach(({text, num}, idx) => {
+    let t = text;
+    if (trimEmpty) t = t.replace(/\n{3,}/g, '\n\n').trim();
+
+    if (pages.length > 1 || addPageNums) {
+      if (separator === 'line') {
+        if (idx > 0) output += '\n' + '─'.repeat(40) + '\n\n';
+      } else if (separator === 'label') {
+        const label = currentLang === 'ar' ? `── صفحة ${num} ──` : `── Page ${num} ──`;
+        if (idx > 0) output += '\n';
+        output += label + '\n\n';
+      }
+    }
+
+    output += t || '';
+    if (idx < pages.length - 1) output += '\n\n';
+  });
+
+  if (output.trim()) {
+    block.textContent = output;
+    block.classList.remove('empty');
+  } else {
+    block.textContent = tr('T_noText');
+    block.classList.add('empty');
+  }
+
+  updateStats();
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+function updateStats() {
+  const text = document.getElementById('textBlock').textContent;
+  const isEmptyMsg = document.getElementById('textBlock').classList.contains('empty');
+  if (isEmptyMsg) return;
+
+  const chars = text.length;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const lines = text.split('\n').length;
+  const pages = pageTexts.length;
+
+  document.getElementById('statChars').textContent = chars.toLocaleString();
+  document.getElementById('statWords').textContent = words.toLocaleString();
+  document.getElementById('statPages').textContent = pages;
+  document.getElementById('statLines').textContent = lines.toLocaleString();
+  document.getElementById('textStats').textContent = `${chars.toLocaleString()} chars · ${words.toLocaleString()} words`;
+}
+
+// ══════════════════════════════════════════
+// COPY & DOWNLOAD
+// ══════════════════════════════════════════
+function getFullText() {
+  const block = document.getElementById('textBlock');
+  return block.classList.contains('empty') ? '' : block.textContent;
+}
+
+async function copyText() {
+  const text = getFullText();
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(tr('T_copied'), 'success');
+  } catch {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    showToast(tr('T_copied'), 'success');
+  }
+}
+
+function downloadText() {
+  const text = getFullText();
+  if (!text) return;
+  const encoding = document.getElementById('encodingSelect').value;
+  let bytes;
+  if (encoding === 'utf8bom') {
+    bytes = '\uFEFF' + text;
+  } else {
+    bytes = text;
+  }
+  const blob = new Blob([bytes], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const fname = (document.getElementById('fileName').textContent.replace('.pdf','') || 'extracted') + '.txt';
+  a.href = url;
+  a.download = fname;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(tr('T_downloaded'), 'success');
+  if(typeof gtag!=='undefined') gtag('event','download_text',{event_category:'extract_text'});
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = {
+    success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    warn:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+  };
+  t.innerHTML = (icons[type]||icons.success) + msg;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ══════════════════════════════════════════
+// RUN
+// ══════════════════════════════════════════
+boot();
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-3EGBBVX022');
+</script>
+</body>
+</html>
