@@ -327,6 +327,13 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
       </div>
     </div>
 
+    <div class="panel-section">
+      <div class="info-box" style="background:var(--success-light);border-color:var(--success);color:var(--success)">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M7 1l3.5 1.3v2.7C10.5 8 7 10.5 7 10.5S3.5 8 3.5 5V2.3L7 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span id="T_privacyInfo">All processing happens locally in your browser. No files are ever uploaded to any server.</span>
+      </div>
+    </div>
+
     <div class="panel-footer">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -377,6 +384,7 @@ const LANGS = {
     T_lvlBalName:'Balanced',T_lvlBalDesc:'Recommended for most files',T_lvlBalBadge:'~50%',
     T_lvlMaxName:'Maximum',T_lvlMaxDesc:'Smallest size, lower quality',T_lvlMaxBadge:'~70%',
     T_infoBox:'Uses dual-strategy compression: structure optimisation + image resampling. Always picks the smallest result.',
+    T_privacyInfo:'All processing happens locally in your browser. No files are ever uploaded to any server.',
     T_compressBtn:'Compress PDF',
     T_downloadBtn:'Download Compressed PDF',
     T_resetBtn:'Compress another file',
@@ -403,6 +411,7 @@ const LANGS = {
     T_lvlBalName:'متوازن',T_lvlBalDesc:'موصى به لمعظم الملفات',T_lvlBalBadge:'~٥٠٪',
     T_lvlMaxName:'أقصى ضغط',T_lvlMaxDesc:'أصغر حجم، جودة أقل',T_lvlMaxBadge:'~٧٠٪',
     T_infoBox:'يستخدم استراتيجيتين للضغط: تحسين البنية + إعادة أخذ عينات الصور. دائماً يختار الأصغر.',
+    T_privacyInfo:'كل المعالجة تتم محلياً في متصفحك. لا تُرفع أي ملفات إلى أي خادم.',
     T_compressBtn:'ضغط الملف',
     T_downloadBtn:'تحميل الملف المضغوط',
     T_resetBtn:'ضغط ملف آخر',
