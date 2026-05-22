@@ -6,7 +6,6 @@
 <title>Split PDF Online Free – Split PDF Pages | Doctor PDF</title>
 <meta name="description" content="Split PDF files online for free. Extract pages, split by range, or click between pages to split. 100% browser-based, no upload to server.">
 <link rel="canonical" href="https://doctor-pdf.com/split-pdf.html">
-<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/split-pdf.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
@@ -79,27 +78,57 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 
 /* PAGES AREA */
 .pages-area{flex:1;display:none;flex-direction:column;overflow:hidden}
-.pages-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.pages-title{font-size:14px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px}
+
+/* ZOOM TOOLBAR */
+.zoom-bar{display:none;align-items:center;gap:6px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.zoom-bar.show{display:flex}
+.zt-btn{width:30px;height:30px;border:1px solid var(--border);background:var(--bg2);color:var(--text);border-radius:var(--radius-sm);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;font-weight:700;flex-shrink:0}
+.zt-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.zt-pct{font-size:12px;font-weight:600;color:var(--text);min-width:48px;text-align:center;cursor:pointer;padding:4px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);transition:all .15s}
+.zt-pct:hover{border-color:var(--primary);color:var(--primary)}
+.zt-sep{width:1px;height:20px;background:var(--border);margin:0 2px;flex-shrink:0}
+.zt-label{font-size:12px;font-weight:500;color:var(--text3);white-space:nowrap}
+.sel-bar{margin-inline-start:auto;display:flex;align-items:center;gap:6px}
+.sel-count-badge{font-size:11px;font-weight:600;padding:3px 8px;background:var(--primary);color:#fff;border-radius:20px;display:none}
+.sel-count-badge.show{display:inline-flex}
+.sel-action-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.sel-action-btn:hover{background:var(--bg3);color:var(--text)}
+.sel-action-btn.danger:hover{border-color:var(--danger);color:var(--danger);background:var(--danger-light)}
+
+/* PAGES HEADER */
+.pages-header{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px;flex-wrap:wrap}
+.pages-title{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px}
 .pages-badge{background:var(--primary);color:#fff;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
-.pages-hdr-actions{display:flex;gap:8px}
-.hdr-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.hdr-actions{display:flex;gap:6px}
+.hdr-btn{height:26px;padding:0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
 .hdr-btn:hover{background:var(--bg3);color:var(--text)}
 
-/* PAGES ROW — horizontal scroll */
-.pages-scroll{flex:1;overflow:auto;padding:20px;display:flex;flex-wrap:wrap;gap:0;align-content:flex-start}
+/* PAGES SCROLL — rubber band container */
+.pages-scroll{flex:1;overflow:auto;padding:20px;position:relative;user-select:none}
+.pages-inner{display:flex;flex-wrap:wrap;gap:0;align-content:flex-start;position:relative}
+
+/* RUBBER BAND SELECTION */
+.rubber-band{position:absolute;border:2px solid var(--primary);background:rgba(99,102,241,.1);border-radius:3px;pointer-events:none;display:none;z-index:50}
 
 /* PAGE CARD */
 .pg-item{display:flex;align-items:stretch;flex-shrink:0}
-.pg-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border-radius:var(--radius-sm);transition:background .15s}
-.pg-wrap canvas{display:block;border-radius:var(--radius-sm);border:2px solid var(--border);transition:border-color .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pg-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border-radius:var(--radius-sm);transition:background .15s;cursor:pointer}
+.pg-wrap canvas{display:block;border-radius:var(--radius-sm);border:2px solid var(--border);transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .pg-wrap:hover canvas{border-color:var(--primary)}
-.pg-num{font-size:11px;font-weight:600;color:var(--text3);text-align:center}
+.pg-wrap.selected canvas{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.pg-wrap.selected{background:var(--primary-light)}
+.pg-num{font-size:11px;font-weight:600;color:var(--text3);text-align:center;transition:color .15s}
+.pg-wrap.selected .pg-num{color:var(--primary)}
 
-/* Overlay on hover */
-.pg-overlay{position:absolute;inset:8px 8px 28px;background:rgba(0,0,0,.6);border-radius:var(--radius-sm);display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;backdrop-filter:blur(2px)}
-.pg-wrap:hover .pg-overlay{display:flex}
-.ov-btn{padding:5px 12px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;transition:background .15s;white-space:nowrap}
+/* Selection checkbox */
+.pg-check{position:absolute;top:10px;inset-inline-start:10px;width:18px;height:18px;border-radius:50%;background:var(--primary);border:2px solid #fff;display:none;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.pg-check svg{width:10px;height:10px}
+.pg-wrap.selected .pg-check{display:flex}
+
+/* Hover overlay */
+.pg-overlay{position:absolute;inset:8px 8px 28px;background:rgba(0,0,0,.6);border-radius:var(--radius-sm);display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;backdrop-filter:blur(2px);z-index:10}
+.pg-wrap:not(.selected):hover .pg-overlay{display:flex}
+.ov-btn{padding:4px 10px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;transition:background .15s;white-space:nowrap}
 .ov-del{background:var(--danger);color:#fff}
 .ov-del:hover{background:#dc2626}
 .ov-ext{background:var(--primary);color:#fff}
@@ -108,44 +137,48 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 /* Deleted state */
 .pg-wrap.deleted canvas{opacity:.2;filter:grayscale(1)}
 .pg-wrap.deleted .pg-num{color:var(--danger);text-decoration:line-through}
+.pg-wrap.deleted .pg-overlay{display:flex}
 
 /* SPLIT SEPARATOR */
-.split-sep{display:flex;align-items:stretch;cursor:pointer;padding:0 3px;position:relative;z-index:2}
+.split-sep{display:flex;align-items:stretch;cursor:pointer;padding:0 3px;position:relative;z-index:5}
 .split-line{width:4px;background:var(--border);border-radius:2px;flex:1;min-height:120px;transition:all .15s}
 .split-sep:hover .split-line{background:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
 .split-sep.active .split-line{background:var(--primary);box-shadow:0 0 0 4px rgba(99,102,241,.25)}
 .split-ic{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--primary);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:0;transition:opacity .15s;pointer-events:none}
 .split-sep:hover .split-ic,.split-sep.active .split-ic{opacity:1}
 
+/* SELECTION ACTIONS FLOATING BAR */
+.sel-float{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;display:none;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:200;white-space:nowrap}
+.sel-float.show{display:flex}
+.sel-float-label{font-size:13px;font-weight:500;color:var(--text2)}
+.sel-float-label strong{color:var(--primary)}
+.sel-float-btn{height:32px;padding:0 14px;border-radius:var(--radius-sm);border:none;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.sf-del{background:var(--danger-light);color:var(--danger)}
+.sf-del:hover{background:var(--danger);color:#fff}
+.sf-ext{background:var(--primary-light);color:var(--primary)}
+.sf-ext:hover{background:var(--primary);color:#fff}
+.sf-clear{background:var(--bg2);color:var(--text2);border:1px solid var(--border)!important}
+.sf-clear:hover{background:var(--bg3)}
+
 /* PANEL */
 .panel-section{padding:16px;border-bottom:1px solid var(--border)}
 .panel-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
-
-/* Mode tabs */
 .mode-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-sm);padding:3px}
 .mode-tab{flex:1;padding:7px 4px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
 .mode-tab.active{background:var(--bg);color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.08);font-weight:600}
-
-/* Range inputs */
 .range-row{display:flex;align-items:center;gap:8px;margin-top:10px}
 .range-inp{width:64px;padding:7px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:var(--bg2);color:var(--text);text-align:center;outline:none;transition:border .15s}
 .range-inp:focus{border-color:var(--primary)}
 .range-sep{color:var(--text2);font-size:13px;font-weight:500}
-
-/* Stats */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 8px;text-align:center}
 .stat-num{font-size:20px;font-weight:600;color:var(--primary)}
 .stat-lbl{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500}
-
 .info-box{border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;line-height:1.6;display:flex;gap:8px}
 .info-box.blue{background:var(--primary-light);border:1px solid var(--primary);color:var(--primary)}
 .info-box.green{background:var(--success-light);border:1px solid var(--success);color:var(--success)}
 .info-box svg{width:14px;height:14px;flex-shrink:0;margin-top:1px}
-
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ghost-btn{height:32px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
-.ghost-btn:hover{border-color:var(--primary);color:var(--primary)}
+.field-gap{margin-top:10px}
 
 /* PANEL FOOTER */
 .panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
@@ -156,7 +189,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .progress-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:6px}
 .progress-fill{height:100%;background:var(--primary);border-radius:2px;width:0;transition:width .25s}
 .progress-label{font-size:11px;color:var(--text3);text-align:center}
-.result-box{display:none;background:var(--success-light);border:1px solid var(--success);border-radius:var(--radius);padding:12px;text-align:center;flex-direction:column;gap:8px}
+.result-box{display:none;background:var(--success-light);border:1px solid var(--success);border-radius:var(--radius);padding:12px;flex-direction:column;gap:8px;text-align:center}
 .result-title{font-size:13px;font-weight:600;color:var(--success)}
 .dl-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--success);color:#fff;border:none;border-radius:var(--radius-sm);height:36px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;width:100%;transition:background .15s}
 .dl-btn:hover{background:#16a34a}
@@ -169,7 +202,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
 
 /* TOAST */
-.toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast-wrap{position:fixed;bottom:80px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 [dir="rtl"] .toast-wrap{transform:translateX(50%)}
 .toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;animation:slideUp .2s ease}
 .toast.success{border-color:var(--success);color:var(--success);background:var(--success-light)}
@@ -235,38 +268,56 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     <!-- Drop zone -->
     <div class="dropzone" id="dropzone">
       <div class="drop-icon">
-        <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 18v10M8 24l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/><path d="M24 18v10M20 24l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".3"/></svg>
+        <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 18l4-4 4 4M14 14v10M22 18l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg>
       </div>
       <div>
         <div class="drop-title" id="T_dropTitle">Split PDF File</div>
-        <div class="drop-sub" id="T_dropSub">Drop a PDF to split pages visually. Hover pages to delete or extract. Click between pages to set split points.</div>
+        <div class="drop-sub" id="T_dropSub">Drop a PDF to split, extract, or delete pages. Click to select pages or drag to select multiple pages at once.</div>
       </div>
       <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
     </div>
 
     <!-- Pages area -->
     <div class="pages-area" id="pagesArea">
+
+      <!-- Zoom toolbar -->
+      <div class="zoom-bar" id="zoomBar">
+        <span class="zt-label" id="T_zoomLabel">Zoom:</span>
+        <button class="zt-btn" onclick="zoomOut()">−</button>
+        <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="Click to reset">100%</span>
+        <button class="zt-btn" onclick="zoomIn()">+</button>
+        <div class="zt-sep"></div>
+        <button class="zt-btn" onclick="zoomFit()" title="Fit">↔</button>
+        <button class="zt-btn" onclick="zoomTo(1)" title="100%">1:1</button>
+        <button class="zt-btn" onclick="zoomTo(1.5)">1.5×</button>
+        <button class="zt-btn" onclick="zoomTo(2)">2×</button>
+        <div class="zt-sep"></div>
+        <!-- Selection count + actions in toolbar -->
+        <span class="sel-count-badge" id="selCountBadge">0 selected</span>
+        <button class="sel-action-btn" id="selAllBtn" onclick="selectAll()"><span id="T_selAll">Select all</span></button>
+        <button class="sel-action-btn" id="selNoneBtn" onclick="clearSelection()" style="display:none"><span id="T_selNone">Deselect</span></button>
+        <button class="sel-action-btn danger" id="delSelBtn" onclick="deleteSelected()" style="display:none"><span id="T_delSel">Delete selected</span></button>
+        <button class="sel-action-btn" id="extSelBtn" onclick="extractSelected()" style="display:none"><span id="T_extSel">Extract selected</span></button>
+        <button class="sel-action-btn" id="changeFileBtn2" style="margin-inline-start:auto"><span id="T_changeFile">Change file</span></button>
+      </div>
+
+      <!-- Pages header -->
       <div class="pages-header">
         <div class="pages-title">
           <span id="T_pagesLabel">Pages</span>
           <span class="pages-badge" id="pagesBadge">0</span>
         </div>
-        <div class="pages-hdr-actions">
-          <button class="hdr-btn" id="restoreBtn">
-            <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6a4 4 0 104 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 3v3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <span id="T_restoreAll">Restore all</span>
-          </button>
-          <button class="hdr-btn" id="clearSplitsBtn">
-            <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <span id="T_clearSplits">Clear splits</span>
-          </button>
-          <button class="hdr-btn" id="changeFileBtn">
-            <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_changeFile">Change file</span>
-          </button>
+        <div class="hdr-actions">
+          <button class="hdr-btn" onclick="restoreAll()"><span id="T_restoreAll">↩ Restore all</span></button>
+          <button class="hdr-btn" onclick="clearSplits()"><span id="T_clearSplits">✕ Clear splits</span></button>
         </div>
       </div>
-      <div class="pages-scroll" id="pagesRow"></div>
+
+      <!-- Pages scroll (rubber band container) -->
+      <div class="pages-scroll" id="pagesScroll">
+        <div class="pages-inner" id="pagesRow"></div>
+        <div class="rubber-band" id="rubberBand"></div>
+      </div>
     </div>
   </div>
 
@@ -279,9 +330,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <button class="mode-tab" data-mode="range" id="T_modeRange">Range</button>
         <button class="mode-tab" data-mode="each" id="T_modeEach">Each Page</button>
       </div>
-
-      <!-- Range inputs -->
-      <div id="rangeSection" style="display:none">
+      <div id="rangeSection" style="display:none" class="field-gap">
         <div class="range-row">
           <span class="range-sep" id="T_from">From</span>
           <input type="number" class="range-inp" id="rangeFrom" min="1" value="1">
@@ -294,25 +343,16 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     <div class="panel-section">
       <div class="panel-section-title" id="T_statsTitle">Statistics</div>
       <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-num" id="statTotal">—</div>
-          <div class="stat-lbl" id="T_statTotal">Total</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num" id="statDeleted" style="color:var(--danger)">0</div>
-          <div class="stat-lbl" id="T_statDeleted">Deleted</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num" id="statSplits">0</div>
-          <div class="stat-lbl" id="T_statSplits">Splits</div>
-        </div>
+        <div class="stat-box"><div class="stat-num" id="statTotal">—</div><div class="stat-lbl" id="T_statTotal">Total</div></div>
+        <div class="stat-box"><div class="stat-num" id="statDeleted" style="color:var(--danger)">0</div><div class="stat-lbl" id="T_statDeleted">Deleted</div></div>
+        <div class="stat-box"><div class="stat-num" id="statSplits">0</div><div class="stat-lbl" id="T_statSplits">Splits</div></div>
       </div>
     </div>
 
     <div class="panel-section">
       <div class="info-box blue" style="margin-bottom:10px">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_hintBox">Hover any page to delete or extract it. Click the line between pages to add a split point.</span>
+        <span id="T_hintBox">Click a page to select it. Drag on empty space to select multiple pages. Then use the toolbar buttons to delete or extract.</span>
       </div>
       <div class="info-box green">
         <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
@@ -343,7 +383,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
-  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M24 28v-12M20 22l4-4 4 4" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/></svg>
   <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
 </div>
 
@@ -354,9 +394,6 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <script>
-// ══════════════════════════════════════════
-// TRANSLATIONS
-// ══════════════════════════════════════════
 const LANGS = {
   en:{
     T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
@@ -365,19 +402,21 @@ const LANGS = {
     T_extract:'Extract Text',T_convert:'Convert Image',T_removebg:'Remove BG',
     T_privacyBadge:'100% Private',
     T_dropTitle:'Split PDF File',
-    T_dropSub:'Drop a PDF to split pages visually. Hover pages to delete or extract. Click between pages to set split points.',
+    T_dropSub:'Drop a PDF to split, extract, or delete pages. Click to select pages or drag to select multiple pages at once.',
     T_browse:'Choose PDF File',
-    T_pagesLabel:'Pages',T_restoreAll:'Restore all',T_clearSplits:'Clear splits',T_changeFile:'Change file',
+    T_zoomLabel:'Zoom:',
+    T_selAll:'Select all',T_selNone:'Deselect all',T_delSel:'Delete selected',T_extSel:'Extract selected',
+    T_changeFile:'Change file',
+    T_pagesLabel:'Pages',T_restoreAll:'↩ Restore all',T_clearSplits:'✕ Clear splits',
     T_modeTitle:'Split Mode',T_modeVisual:'✂ Visual',T_modeRange:'Range',T_modeEach:'Each Page',
     T_from:'From',T_to:'to',
     T_statsTitle:'Statistics',T_statTotal:'Total',T_statDeleted:'Deleted',T_statSplits:'Splits',
-    T_hintBox:'Hover any page to delete or extract it. Click the line between pages to add a split point.',
+    T_hintBox:'Click a page to select it. Drag on empty space to select multiple pages. Then use the toolbar buttons to delete or extract.',
     T_privacyInfo:'All processing happens locally in your browser. No files are ever uploaded to any server.',
     T_actionBtn:'Split & Download',T_downloadBtn:'Download',T_again:'Split another file',
     T_dropHere:'Drop PDF here',
-    T_done:'Done!',T_errInvalid:'Please select a valid PDF file.',
-    T_delete:'Delete',T_extract:'Extract',T_restore:'Restore',
-    T_page:'p.',
+    T_errInvalid:'Please select a valid PDF file.',
+    T_delete:'Delete',T_extract:'Extract',T_restore:'Restore',T_page:'p.',
     langLabel:'AR'
   },
   ar:{
@@ -387,36 +426,39 @@ const LANGS = {
     T_extract:'استخراج النص',T_convert:'تحويل الصور',T_removebg:'إزالة الخلفية',
     T_privacyBadge:'خصوصية 100%',
     T_dropTitle:'تقسيم ملف PDF',
-    T_dropSub:'اسحب PDF لتقسيم الصفحات بصرياً. مرر الماوس للحذف أو الاستخراج. اضغط بين الصفحات لتحديد نقاط التقسيم.',
+    T_dropSub:'اسحب PDF لتقسيم الصفحات. اضغط لتحديد صفحة أو اسحب لتحديد صفحات متعددة دفعة واحدة.',
     T_browse:'اختر ملف PDF',
-    T_pagesLabel:'الصفحات',T_restoreAll:'استعادة الكل',T_clearSplits:'مسح التقسيمات',T_changeFile:'تغيير الملف',
+    T_zoomLabel:'تكبير:',
+    T_selAll:'تحديد الكل',T_selNone:'إلغاء التحديد',T_delSel:'حذف المحدد',T_extSel:'استخراج المحدد',
+    T_changeFile:'تغيير الملف',
+    T_pagesLabel:'الصفحات',T_restoreAll:'↩ استعادة الكل',T_clearSplits:'✕ مسح التقسيمات',
     T_modeTitle:'نمط التقسيم',T_modeVisual:'✂ بصري',T_modeRange:'نطاق',T_modeEach:'كل صفحة',
     T_from:'من',T_to:'إلى',
     T_statsTitle:'الإحصائيات',T_statTotal:'الإجمالي',T_statDeleted:'المحذوفة',T_statSplits:'نقاط التقسيم',
-    T_hintBox:'مرر الماوس فوق أي صفحة لحذفها أو استخراجها. اضغط على الخط بين الصفحات لإضافة نقطة تقسيم.',
+    T_hintBox:'اضغط على صفحة لتحديدها. اسحب على المساحة الفارغة لتحديد صفحات متعددة. ثم استخدم أزرار شريط الأدوات للحذف أو الاستخراج.',
     T_privacyInfo:'كل المعالجة تتم محلياً في متصفحك. لا تُرفع أي ملفات إلى أي خادم.',
     T_actionBtn:'تقسيم وتحميل',T_downloadBtn:'تحميل',T_again:'تقسيم ملف آخر',
     T_dropHere:'أفلت PDF هنا',
-    T_done:'!تم',T_errInvalid:'.يرجى اختيار ملف PDF صحيح',
-    T_delete:'حذف',T_extract:'استخراج',T_restore:'استعادة',
-    T_page:'ص.',
+    T_errInvalid:'.يرجى اختيار ملف PDF صحيح',
+    T_delete:'حذف',T_extract:'استخراج',T_restore:'استعادة',T_page:'ص.',
     langLabel:'EN'
   }
 };
 
-// ══════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════
+// ── STATE ──
 let currentLang = localStorage.getItem('dpdf_lang') || 'en';
 const S = {
   file:null, pdfJsDoc:null, pdfBytes:null,
-  pageCount:0, deleted:new Set(), splits:new Set(), mode:'visual'
+  pageCount:0,
+  deleted:new Set(),
+  splits:new Set(),
+  selected:new Set(),
+  mode:'visual',
+  zoom:1.0
 };
-const THUMB_W = 130;
+const THUMB_BASE = 130;
+const ZOOM_STEPS = [0.5,0.67,0.75,0.9,1.0,1.25,1.5,1.75,2.0,2.5,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0];
 
-// ══════════════════════════════════════════
-// BOOT
-// ══════════════════════════════════════════
 function boot() {
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   applyLang(currentLang);
@@ -434,21 +476,18 @@ function applyLang(lang) {
 function tr(k){ return (LANGS[currentLang]||LANGS.en)[k]||k; }
 
 function applyTheme(dark) {
-  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
-  document.getElementById('iconSun').style.display = dark ? 'none' : '';
-  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
-  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
+  document.documentElement.setAttribute('data-theme', dark?'dark':'');
+  document.getElementById('iconSun').style.display = dark?'none':'';
+  document.getElementById('iconMoon').style.display = dark?'':'none';
+  localStorage.setItem('dpdf_dark', dark?'1':'0');
 }
 
-// ══════════════════════════════════════════
-// EVENTS
-// ══════════════════════════════════════════
 function bindEvents() {
   document.getElementById('themeBtn').onclick = () =>
-    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+    applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');
   document.getElementById('langBtn').onclick = () => {
-    const next = currentLang === 'en' ? 'ar' : 'en';
-    localStorage.setItem('dpdf_lang', next);
+    const next = currentLang==='en'?'ar':'en';
+    localStorage.setItem('dpdf_lang',next);
     applyLang(next);
     if(S.pdfJsDoc) renderPages();
   };
@@ -459,26 +498,27 @@ function bindEvents() {
   document.addEventListener('click', () => document.getElementById('toolsMenu').classList.remove('open'));
 
   const fi = document.getElementById('fileInput');
-  document.getElementById('browseBtn').onclick = () => fi.click();
+  ['browseBtn'].forEach(id => document.getElementById(id).onclick = ()=>fi.click());
   document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
-  document.getElementById('changeFileBtn').onclick = () => fi.click();
+  document.getElementById('changeFileBtn2').onclick = ()=>fi.click();
   fi.onchange = (e) => { if(e.target.files[0]) loadPDF(e.target.files[0]); fi.value=''; };
 
-  document.getElementById('restoreBtn').onclick = () => { S.deleted.clear(); renderPages(); updateStats(); };
-  document.getElementById('clearSplitsBtn').onclick = () => {
-    S.splits.clear();
-    document.querySelectorAll('.split-sep.active').forEach(s=>s.classList.remove('active'));
-    updateStats();
-  };
   document.getElementById('actionBtn').onclick = doSplit;
   document.getElementById('resetBtn').onclick = resetTool;
 
-  // Mode tabs
   document.querySelectorAll('.mode-tab').forEach(tab => {
     tab.onclick = () => setMode(tab.dataset.mode);
   });
 
-  // Drag & drop
+  // Ctrl+scroll zoom
+  document.getElementById('pagesScroll').addEventListener('wheel', (e) => {
+    if(e.ctrlKey||e.metaKey) { e.preventDefault(); e.deltaY<0?zoomIn():zoomOut(); }
+  }, {passive:false});
+
+  // Rubber band selection
+  initRubberBand();
+
+  // Global drag & drop
   document.addEventListener('dragenter', (e) => {
     if(e.dataTransfer.types.includes('Files')) document.getElementById('dragOverlay').classList.add('show');
   });
@@ -495,14 +535,176 @@ function bindEvents() {
   });
 }
 
-// ══════════════════════════════════════════
-// LOAD PDF
-// ══════════════════════════════════════════
+// ── ZOOM ──
+function zoomTo(val) {
+  S.zoom = Math.max(0.5, Math.min(10.0, val));
+  document.getElementById('zoomPct').textContent = Math.round(S.zoom*100)+'%';
+  // Re-render at new zoom
+  if(S.pdfJsDoc) renderPages();
+}
+function zoomIn() {
+  const next = ZOOM_STEPS.find(z=>z>S.zoom+0.01);
+  zoomTo(next||10.0);
+}
+function zoomOut() {
+  let prev=0.5;
+  ZOOM_STEPS.forEach(z=>{ if(z<S.zoom-0.01) prev=z; });
+  zoomTo(prev);
+}
+function zoomFit() { zoomTo(1.0); }
+
+// ── RUBBER BAND SELECTION ──
+function initRubberBand() {
+  const scroll = document.getElementById('pagesScroll');
+  const band = document.getElementById('rubberBand');
+  let dragging = false, startX=0, startY=0;
+
+  scroll.addEventListener('mousedown', (e) => {
+    // Only start rubber band if clicking on empty space (not a page card)
+    if(e.target.closest('.pg-wrap')||e.target.closest('.split-sep')) return;
+    if(e.button!==0) return;
+    dragging = true;
+    const rect = scroll.getBoundingClientRect();
+    startX = e.clientX - rect.left + scroll.scrollLeft;
+    startY = e.clientY - rect.top + scroll.scrollTop;
+    band.style.left = startX+'px';
+    band.style.top = startY+'px';
+    band.style.width = '0';
+    band.style.height = '0';
+    band.style.display = 'block';
+    // Clear selection unless Shift held
+    if(!e.shiftKey) clearSelection();
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if(!dragging) return;
+    const rect = scroll.getBoundingClientRect();
+    const curX = e.clientX - rect.left + scroll.scrollLeft;
+    const curY = e.clientY - rect.top + scroll.scrollTop;
+    const x = Math.min(startX,curX), y = Math.min(startY,curY);
+    const w = Math.abs(curX-startX), h = Math.abs(curY-startY);
+    band.style.left = x+'px';
+    band.style.top = y+'px';
+    band.style.width = w+'px';
+    band.style.height = h+'px';
+    // Hit-test pages
+    const bandRect = {left:x, top:y, right:x+w, bottom:y+h};
+    document.querySelectorAll('.pg-wrap').forEach(wrap => {
+      const wRect = getWrapRect(wrap, scroll);
+      if(rectsOverlap(bandRect, wRect)) {
+        const i = parseInt(wrap.dataset.i);
+        if(!S.deleted.has(i)) {
+          S.selected.add(i);
+          wrap.classList.add('selected');
+        }
+      }
+    });
+    updateSelectionUI();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if(!dragging) return;
+    dragging = false;
+    band.style.display = 'none';
+  });
+}
+
+function getWrapRect(wrap, scroll) {
+  const wRect = wrap.getBoundingClientRect();
+  const sRect = scroll.getBoundingClientRect();
+  return {
+    left: wRect.left - sRect.left + scroll.scrollLeft,
+    top: wRect.top - sRect.top + scroll.scrollTop,
+    right: wRect.right - sRect.left + scroll.scrollLeft,
+    bottom: wRect.bottom - sRect.top + scroll.scrollTop
+  };
+}
+
+function rectsOverlap(a, b) {
+  return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+}
+
+// ── SELECTION ──
+function toggleSelect(i, e) {
+  if(S.deleted.has(i)) return;
+  if(e && e.shiftKey && S.selected.size>0) {
+    // Range select: select from last selected to i
+    const last = Math.max(...S.selected);
+    const from = Math.min(last,i), to = Math.max(last,i);
+    for(let j=from;j<=to;j++) { if(!S.deleted.has(j)) S.selected.add(j); }
+  } else {
+    if(S.selected.has(i)) S.selected.delete(i);
+    else S.selected.add(i);
+  }
+  renderSelectionState();
+  updateSelectionUI();
+}
+
+function selectAll() {
+  for(let i=0;i<S.pageCount;i++) { if(!S.deleted.has(i)) S.selected.add(i); }
+  renderSelectionState();
+  updateSelectionUI();
+}
+
+function clearSelection() {
+  S.selected.clear();
+  renderSelectionState();
+  updateSelectionUI();
+}
+
+function renderSelectionState() {
+  document.querySelectorAll('.pg-wrap').forEach(wrap => {
+    const i = parseInt(wrap.dataset.i);
+    wrap.classList.toggle('selected', S.selected.has(i));
+  });
+}
+
+function updateSelectionUI() {
+  const n = S.selected.size;
+  const badge = document.getElementById('selCountBadge');
+  const noneBtn = document.getElementById('selNoneBtn');
+  const delBtn = document.getElementById('delSelBtn');
+  const extBtn = document.getElementById('extSelBtn');
+  badge.textContent = n + (currentLang==='ar'?' محدد':' selected');
+  badge.classList.toggle('show', n>0);
+  noneBtn.style.display = n>0?'':'none';
+  delBtn.style.display = n>0?'':'none';
+  extBtn.style.display = n>0?'':'none';
+}
+
+function deleteSelected() {
+  S.selected.forEach(i => S.deleted.add(i));
+  S.selected.clear();
+  renderPages();
+  updateStats();
+  updateSelectionUI();
+}
+
+async function extractSelected() {
+  if(!S.pdfBytes||!S.selected.size) return;
+  const pages = Array.from(S.selected).sort((a,b)=>a-b);
+  const src = await PDFLib.PDFDocument.load(S.pdfBytes);
+  const doc = await PDFLib.PDFDocument.create();
+  for(const pi of pages) {
+    const [pg] = await doc.copyPages(src,[pi]);
+    doc.addPage(pg);
+  }
+  const out = await doc.save();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+  a.download = S.file.name.replace(/\.pdf$/i,'')+'_extracted.pdf';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast(pages.length+(currentLang==='ar'?' صفحات مستخرجة':' pages extracted'),'success');
+  clearSelection();
+}
+
+// ── LOAD PDF ──
 async function loadPDF(f) {
   if(!f||(f.type!=='application/pdf'&&!f.name.endsWith('.pdf'))) {
     showToast(tr('T_errInvalid'),'error'); return;
   }
-  S.file=f; S.deleted=new Set(); S.splits=new Set();
+  S.file=f; S.deleted=new Set(); S.splits=new Set(); S.selected=new Set();
   if(S.pdfJsDoc){ try{S.pdfJsDoc.destroy();}catch(e){} }
   S.pdfBytes = await f.arrayBuffer();
   S.pdfJsDoc = await pdfjsLib.getDocument({data:S.pdfBytes.slice(0)}).promise;
@@ -510,6 +712,7 @@ async function loadPDF(f) {
 
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('pagesArea').style.display = 'flex';
+  document.getElementById('zoomBar').classList.add('show');
   document.getElementById('pagesBadge').textContent = S.pageCount;
   document.getElementById('rangeTo').max = S.pageCount;
   document.getElementById('rangeTo').value = S.pageCount;
@@ -521,22 +724,22 @@ async function loadPDF(f) {
   await renderPages();
 }
 
-// ══════════════════════════════════════════
-// RENDER PAGES
-// ══════════════════════════════════════════
+// ── RENDER PAGES ──
 async function renderPages() {
   const row = document.getElementById('pagesRow');
   row.innerHTML = '';
+  const thumbW = Math.round(THUMB_BASE * S.zoom);
+
   for(let i=0; i<S.pageCount; i++) {
     if(i>0) row.appendChild(makeSep(i-1));
-    row.appendChild(await makePageEl(i));
+    row.appendChild(await makePageEl(i, thumbW));
   }
 }
 
-async function makePageEl(i) {
+async function makePageEl(i, thumbW) {
   const page = await S.pdfJsDoc.getPage(i+1);
   const vp0 = page.getViewport({scale:1});
-  const scale = THUMB_W / vp0.width;
+  const scale = thumbW / vp0.width;
   const vp = page.getViewport({scale});
   const cv = document.createElement('canvas');
   cv.width = Math.round(vp.width);
@@ -544,62 +747,65 @@ async function makePageEl(i) {
   await page.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise;
 
   const wrap = document.createElement('div');
-  wrap.className = 'pg-wrap' + (S.deleted.has(i) ? ' deleted' : '');
+  wrap.className = 'pg-wrap' +
+    (S.deleted.has(i)?' deleted':'') +
+    (S.selected.has(i)?' selected':'');
   wrap.dataset.i = i;
+
+  // Selection checkbox
+  const chk = document.createElement('div');
+  chk.className = 'pg-check';
+  chk.innerHTML = '<svg viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  wrap.appendChild(chk);
+
   wrap.appendChild(cv);
 
   const num = document.createElement('div');
   num.className = 'pg-num';
-  num.textContent = tr('T_page') + (i+1);
+  num.textContent = tr('T_page')+(i+1);
   wrap.appendChild(num);
 
-  // Overlay
+  // Click to select (not on deleted pages)
+  wrap.addEventListener('click', (e) => {
+    if(S.deleted.has(i)) return;
+    toggleSelect(i, e);
+    e.stopPropagation();
+  });
+
+  // Hover overlay (delete/extract/restore) — only shows when NOT selected
   const ov = document.createElement('div');
   ov.className = 'pg-overlay';
-
   if(!S.deleted.has(i)) {
     const delBtn = document.createElement('button');
-    delBtn.className = 'ov-btn ov-del';
-    delBtn.textContent = '🗑 ' + tr('T_delete');
-    delBtn.onclick = (e) => { e.stopPropagation(); toggleDelete(i); };
-
+    delBtn.className='ov-btn ov-del'; delBtn.textContent='🗑 '+tr('T_delete');
+    delBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
     const extBtn = document.createElement('button');
-    extBtn.className = 'ov-btn ov-ext';
-    extBtn.textContent = '⬇ ' + tr('T_extract');
-    extBtn.onclick = (e) => { e.stopPropagation(); extractPage(i); };
-
-    ov.appendChild(delBtn);
-    ov.appendChild(extBtn);
+    extBtn.className='ov-btn ov-ext'; extBtn.textContent='⬇ '+tr('T_extract');
+    extBtn.onclick=(e)=>{ e.stopPropagation(); extractSinglePage(i); };
+    ov.appendChild(delBtn); ov.appendChild(extBtn);
   } else {
     const restBtn = document.createElement('button');
-    restBtn.className = 'ov-btn ov-ext';
-    restBtn.textContent = '↩ ' + tr('T_restore');
-    restBtn.onclick = (e) => { e.stopPropagation(); toggleDelete(i); };
+    restBtn.className='ov-btn ov-ext'; restBtn.textContent='↩ '+tr('T_restore');
+    restBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
     ov.appendChild(restBtn);
   }
-
   wrap.appendChild(ov);
 
   const item = document.createElement('div');
-  item.className = 'pg-item';
-  item.appendChild(wrap);
+  item.className='pg-item'; item.appendChild(wrap);
   return item;
 }
 
 function makeSep(afterIdx) {
   const sep = document.createElement('div');
-  sep.className = 'split-sep' + (S.splits.has(afterIdx) ? ' active' : '');
-  sep.dataset.after = afterIdx;
-  const line = document.createElement('div');
-  line.className = 'split-line';
-  const ic = document.createElement('div');
-  ic.className = 'split-ic';
-  ic.textContent = '✂';
-  sep.appendChild(line);
-  sep.appendChild(ic);
-  sep.addEventListener('click', () => {
-    if(S.splits.has(afterIdx)) S.splits.delete(afterIdx);
-    else S.splits.add(afterIdx);
+  sep.className='split-sep'+(S.splits.has(afterIdx)?' active':'');
+  sep.dataset.after=afterIdx;
+  const line=document.createElement('div'); line.className='split-line';
+  const ic=document.createElement('div'); ic.className='split-ic'; ic.textContent='✂';
+  sep.appendChild(line); sep.appendChild(ic);
+  sep.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(S.splits.has(afterIdx)) S.splits.delete(afterIdx); else S.splits.add(afterIdx);
     sep.classList.toggle('active', S.splits.has(afterIdx));
     updateStats();
   });
@@ -607,199 +813,200 @@ function makeSep(afterIdx) {
 }
 
 function toggleDelete(i) {
-  if(S.deleted.has(i)) S.deleted.delete(i);
-  else S.deleted.add(i);
-  renderPages();
+  if(S.deleted.has(i)) S.deleted.delete(i); else S.deleted.add(i);
+  S.selected.delete(i);
+  renderPages(); updateStats(); updateSelectionUI();
+}
+
+async function extractSinglePage(i) {
+  if(!S.pdfBytes) return;
+  const src=await PDFLib.PDFDocument.load(S.pdfBytes);
+  const doc=await PDFLib.PDFDocument.create();
+  const [pg]=await doc.copyPages(src,[i]); doc.addPage(pg);
+  const out=await doc.save();
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+  a.download=S.file.name.replace(/\.pdf$/i,'')+'_page'+(i+1)+'.pdf';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  showToast((currentLang==='ar'?'صفحة مستخرجة ':'Page '+(i+1)+' extracted'),'success');
+}
+
+function restoreAll() { S.deleted.clear(); S.selected.clear(); renderPages(); updateStats(); updateSelectionUI(); }
+function clearSplits() {
+  S.splits.clear();
+  document.querySelectorAll('.split-sep.active').forEach(s=>s.classList.remove('active'));
   updateStats();
 }
 
-async function extractPage(i) {
-  if(!S.pdfBytes) return;
-  const src = await PDFLib.PDFDocument.load(S.pdfBytes);
-  const doc = await PDFLib.PDFDocument.create();
-  const [pg] = await doc.copyPages(src,[i]);
-  doc.addPage(pg);
-  const out = await doc.save();
-  const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
-  const a = document.createElement('a');
-  a.href=url; a.download=S.file.name.replace(/\.pdf$/i,'')+'_page'+(i+1)+'.pdf';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  showToast('Page '+(i+1)+' extracted!','success');
-}
-
 function updateStats() {
-  document.getElementById('statTotal').textContent = S.pageCount || '—';
+  document.getElementById('statTotal').textContent = S.pageCount||'—';
   document.getElementById('statDeleted').textContent = S.deleted.size;
   document.getElementById('statSplits').textContent = S.splits.size;
 }
 
 function setMode(m) {
-  S.mode = m;
-  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode===m));
-  document.getElementById('rangeSection').style.display = m==='range' ? 'flex' : 'none';
+  S.mode=m;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===m));
+  document.getElementById('rangeSection').style.display = m==='range'?'flex':'none';
 }
 
-// ══════════════════════════════════════════
-// DO SPLIT
-// ══════════════════════════════════════════
+// ── DO SPLIT ──
 async function doSplit() {
   if(!S.pdfBytes) return;
-  const btn = document.getElementById('actionBtn');
-  const progressWrap = document.getElementById('progressWrap');
-  const progressFill = document.getElementById('progressFill');
-  const progressLabel = document.getElementById('progressLabel');
-
-  btn.disabled = true;
-  progressWrap.style.display = 'block';
-  document.getElementById('resultBox').style.display = 'none';
+  const btn=document.getElementById('actionBtn');
+  const pw=document.getElementById('progressWrap');
+  const pf=document.getElementById('progressFill');
+  const pl=document.getElementById('progressLabel');
+  btn.disabled=true; pw.style.display='block';
+  document.getElementById('resultBox').style.display='none';
 
   try {
-    const baseName = S.file.name.replace(/\.pdf$/i,'');
-    const srcDoc = await PDFLib.PDFDocument.load(S.pdfBytes);
-    const activePages = [];
-    for(let i=0; i<S.pageCount; i++) if(!S.deleted.has(i)) activePages.push(i);
+    const baseName=S.file.name.replace(/\.pdf$/i,'');
+    const srcDoc=await PDFLib.PDFDocument.load(S.pdfBytes);
 
+    // ── FIX: إذا في صفحات محددة → استخرجها فقط ──
+    if(S.selected.size > 0) {
+      const pages = Array.from(S.selected).sort((a,b)=>a-b);
+      setProgress(30,'Extracting selected pages…');
+      const doc = await PDFLib.PDFDocument.create();
+      for(const pi of pages){
+        const [pg]=await doc.copyPages(srcDoc,[pi]); doc.addPage(pg);
+      }
+      const out = await doc.save();
+      const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+      const fname = baseName+'_selected.pdf';
+      setProgress(100,'Done!');
+      const a=document.createElement('a'); a.href=url; a.download=fname;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      showResult(
+        currentLang==='ar'?'✅ تم استخراج '+pages.length+' صفحة':'✅ '+pages.length+' pages extracted!',
+        url, fname
+      );
+      showToast(currentLang==='ar'?'تم!':'Done!','success');
+      if(typeof gtag!=='undefined') gtag('event','pdf_split',{event_category:'PDF Tools',event_label:'selected'});
+      return;
+    }
+
+    const activePages=[]; for(let i=0;i<S.pageCount;i++) if(!S.deleted.has(i)) activePages.push(i);
     setProgress(10,'Loading…');
 
-    if(S.mode === 'each') {
-      for(let j=0; j<activePages.length; j++) {
-        setProgress(10+Math.round(j/activePages.length*85), 'Page '+(j+1)+'…');
-        const doc = await PDFLib.PDFDocument.create();
-        const [pg] = await doc.copyPages(srcDoc,[activePages[j]]);
-        doc.addPage(pg);
-        const out = await doc.save();
-        const a = document.createElement('a');
+    if(S.mode==='each') {
+      for(let j=0;j<activePages.length;j++) {
+        setProgress(10+Math.round(j/activePages.length*85),'Page '+(j+1)+'…');
+        const doc=await PDFLib.PDFDocument.create();
+        const [pg]=await doc.copyPages(srcDoc,[activePages[j]]); doc.addPage(pg);
+        const out=await doc.save();
+        const a=document.createElement('a');
         a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
         a.download=baseName+'_page'+(activePages[j]+1)+'.pdf';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         await new Promise(r=>setTimeout(r,150));
       }
       setProgress(100,'Done!');
-      showResult(currentLang==='ar'?'✅ تم تحميل '+activePages.length+' ملف':'✅ '+activePages.length+' files downloaded', null, null);
+      showResult(currentLang==='ar'?'✅ تم! '+activePages.length+' ملفات':'✅ '+activePages.length+' files downloaded',null,null);
 
-    } else if(S.mode === 'range') {
-      const from = Math.max(1,parseInt(document.getElementById('rangeFrom').value)||1)-1;
-      const to   = Math.min(S.pageCount,parseInt(document.getElementById('rangeTo').value)||S.pageCount)-1;
-      setProgress(50,'Extracting range…');
-      const doc = await PDFLib.PDFDocument.create();
-      for(let k=from; k<=to; k++) {
-        const [pg] = await doc.copyPages(srcDoc,[k]);
-        doc.addPage(pg);
-      }
-      const out = await doc.save();
-      const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+    } else if(S.mode==='range') {
+      const from=Math.max(1,parseInt(document.getElementById('rangeFrom').value)||1)-1;
+      const to=Math.min(S.pageCount,parseInt(document.getElementById('rangeTo').value)||S.pageCount)-1;
+      setProgress(50,'Extracting…');
+      const doc=await PDFLib.PDFDocument.create();
+      for(let k=from;k<=to;k++){ const [pg]=await doc.copyPages(srcDoc,[k]); doc.addPage(pg); }
+      const out=await doc.save();
+      const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+      const fname=baseName+'_pages'+(from+1)+'to'+(to+1)+'.pdf';
       setProgress(100,'Done!');
-      showResult(currentLang==='ar'?'✅ تم الاستخراج!':'✅ Pages extracted!', url, baseName+'_pages'+(from+1)+'to'+(to+1)+'.pdf');
+      const _ar=document.createElement('a'); _ar.href=url; _ar.download=fname;
+      document.body.appendChild(_ar); _ar.click(); document.body.removeChild(_ar);
+      showResult(currentLang==='ar'?'✅ تم!':'✅ Pages extracted!',url,fname);
 
     } else {
-      // Visual mode
-      const groups = buildGroups(activePages);
-      if(groups.length === 1 && S.deleted.size === 0) {
-        const doc = await PDFLib.PDFDocument.create();
-        for(let n=0; n<activePages.length; n++) {
+      const groups=buildGroups(activePages);
+      if(groups.length===1&&S.deleted.size===0) {
+        const doc=await PDFLib.PDFDocument.create();
+        for(let n=0;n<activePages.length;n++){
           setProgress(10+Math.round(n/activePages.length*85),'Page '+(n+1)+'…');
-          const [pg] = await doc.copyPages(srcDoc,[activePages[n]]);
-          doc.addPage(pg);
+          const [pg]=await doc.copyPages(srcDoc,[activePages[n]]); doc.addPage(pg);
         }
-        const out = await doc.save();
-        const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+        const out=await doc.save();
+        const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+        const fname=baseName+'_split.pdf';
         setProgress(100,'Done!');
-        showResult(currentLang==='ar'?'✅ تم!':'✅ Done!', url, baseName+'_split.pdf');
+        const _a=document.createElement('a'); _a.href=url; _a.download=fname;
+        document.body.appendChild(_a); _a.click(); document.body.removeChild(_a);
+        showResult(currentLang==='ar'?'✅ تم!':'✅ Done!',url,fname);
       } else {
-        for(let g=0; g<groups.length; g++) {
+        for(let g=0;g<groups.length;g++){
           setProgress(10+Math.round(g/groups.length*85),'Group '+(g+1)+'…');
-          const doc = await PDFLib.PDFDocument.create();
-          for(let m=0; m<groups[g].length; m++) {
-            const [pg] = await doc.copyPages(srcDoc,[groups[g][m]]);
-            doc.addPage(pg);
-          }
-          const out = await doc.save();
-          const a = document.createElement('a');
+          const doc=await PDFLib.PDFDocument.create();
+          for(let m=0;m<groups[g].length;m++){ const [pg]=await doc.copyPages(srcDoc,[groups[g][m]]); doc.addPage(pg); }
+          const out=await doc.save();
+          const a=document.createElement('a');
           a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
           a.download=baseName+'_part'+(g+1)+'.pdf';
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
           await new Promise(r=>setTimeout(r,150));
         }
         setProgress(100,'Done!');
-        const msg = groups.length>1
-          ? (currentLang==='ar'?'✅ تم! '+groups.length+' ملفات':'✅ Done! '+groups.length+' files')
-          : (currentLang==='ar'?'✅ تم!':'✅ Done!');
-        showResult(msg, null, null);
+        const msg=groups.length>1?(currentLang==='ar'?'✅ '+groups.length+' ملفات':'✅ '+groups.length+' files'):(currentLang==='ar'?'✅ تم!':'✅ Done!');
+        showResult(msg,null,null);
       }
     }
 
-    showToast(tr('T_done'),'success');
+    showToast(currentLang==='ar'?'تم!':'Done!','success');
     if(typeof gtag!=='undefined') gtag('event','pdf_split',{event_category:'PDF Tools',event_label:S.mode});
 
   } catch(err) {
-    console.error(err);
-    showToast('Error: '+err.message,'error');
+    console.error(err); showToast('Error: '+err.message,'error');
   } finally {
-    btn.disabled = false;
-    setTimeout(()=>{ progressWrap.style.display='none'; progressFill.style.width='0'; },900);
+    btn.disabled=false;
+    setTimeout(()=>{ pw.style.display='none'; pf.style.width='0'; },900);
   }
 }
 
 function buildGroups(pages) {
   if(!S.splits.size) return [pages];
-  const groups=[], cur=[];
-  pages.forEach(pi => {
-    cur.push(pi);
-    if(S.splits.has(pi)){ groups.push([...cur]); cur.length=0; }
-  });
+  const groups=[]; let cur=[];
+  pages.forEach(pi=>{ cur.push(pi); if(S.splits.has(pi)){groups.push([...cur]);cur=[];} });
   if(cur.length) groups.push(cur);
   return groups.filter(g=>g.length>0);
 }
 
 function setProgress(pct,msg) {
-  document.getElementById('progressFill').style.width = pct+'%';
-  document.getElementById('progressLabel').textContent = msg;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=msg;
 }
 
-function showResult(title, url, filename) {
-  const box = document.getElementById('resultBox');
-  box.style.display = 'flex';
-  document.getElementById('resultTitle').textContent = title;
-  const dlBtn = document.getElementById('downloadLink');
-  if(url) {
-    dlBtn.href=url; dlBtn.download=filename; dlBtn.style.display='flex';
-  } else {
-    dlBtn.style.display='none';
-  }
+function showResult(title,url,filename) {
+  const box=document.getElementById('resultBox');
+  box.style.display='flex';
+  document.getElementById('resultTitle').textContent=title;
+  const dl=document.getElementById('downloadLink');
+  if(url){ dl.href=url; dl.download=filename; dl.style.display='flex'; } else { dl.style.display='none'; }
 }
 
-// ══════════════════════════════════════════
-// RESET
-// ══════════════════════════════════════════
 function resetTool() {
-  if(S.pdfJsDoc){ try{S.pdfJsDoc.destroy();}catch(e){} }
-  S.file=null; S.pdfJsDoc=null; S.pdfBytes=null;
-  S.pageCount=0; S.deleted=new Set(); S.splits=new Set();
+  if(S.pdfJsDoc){try{S.pdfJsDoc.destroy();}catch(e){}}
+  S.file=null;S.pdfJsDoc=null;S.pdfBytes=null;
+  S.pageCount=0;S.deleted=new Set();S.splits=new Set();S.selected=new Set();
   document.getElementById('fileInput').value='';
   document.getElementById('dropzone').classList.remove('hidden');
   document.getElementById('pagesArea').style.display='none';
+  document.getElementById('zoomBar').classList.remove('show');
   document.getElementById('pagesRow').innerHTML='';
   document.getElementById('resultBox').style.display='none';
   document.getElementById('progressWrap').style.display='none';
   document.getElementById('actionBtn').disabled=true;
+  updateSelectionUI();
 }
 
-// ══════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════
 function showToast(msg,type='success') {
   const wrap=document.getElementById('toastWrap');
-  const t=document.createElement('div');
-  t.className='toast '+type;
+  const t=document.createElement('div'); t.className='toast '+type;
   const icons={success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',warn:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'};
   t.innerHTML=(icons[type]||icons.success)+msg;
-  wrap.appendChild(t);
-  setTimeout(()=>t.remove(),4000);
+  wrap.appendChild(t); setTimeout(()=>t.remove(),4000);
 }
 
-// ══════════════════════════════════════════
-// RUN
-// ══════════════════════════════════════════
 boot();
 </script>
 
