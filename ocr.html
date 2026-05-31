@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>استخراج النص من PDF أونلاين مجاناً – نسخ نص PDF | Doctor PDF</title>
-<meta name="description" content="استخرج وانسخ النص من أي ملف PDF أونلاين مجاناً. يعمل 100% داخل المتصفح بدون رفع للخادم.">
-<meta name="keywords" content="استخراج النص من pdf, نسخ نص pdf, extract text pdf">
-<link rel="canonical" href="https://doctor-pdf.com/ar/extract-text.html">
-<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/extract-text.html">
-<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/extract-text.html">
-<link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/extract-text.html">
-<meta property="og:locale" content="ar_AR">
-<meta property="og:locale:alternate" content="en_US">
+<title>OCR Online Free – Extract Text from Images & Scanned PDF | Doctor PDF</title>
+<link rel="canonical" href="https://doctor-pdf.com/ocr.html">
+<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/ocr.html">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/ocr.html">
+<link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/ocr.html">
+<meta name="description" content="Free online OCR: extract text from images and scanned PDF files. Supports Arabic and English. 100% private — all recognition runs in your browser, no upload.">
+<meta name="keywords" content="ocr online free, extract text from image, scanned pdf to text, arabic ocr, تحويل صورة الى نص, ocr عربي">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l=localStorage.getItem('dpdf_lang')||'en';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -56,7 +54,6 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .nav-sep{flex:1}
 .nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
 .nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
-/* Privacy badge */
 .nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap;cursor:default}
 .nav-privacy svg{width:12px;height:12px;flex-shrink:0}
 @media(max-width:700px){.nav-privacy span{display:none}}
@@ -108,12 +105,11 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 /* Text output */
 .text-output{flex:1;overflow-y:auto;padding:24px;background:var(--bg2)}
 .text-block{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;min-height:200px;font-family:var(--font-en)}
-html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:right}
+html[lang="ar"] .text-block{font-family:var(--font-ar)}
+.text-block[dir="rtl"]{direction:rtl;text-align:right}
 .text-block.empty{color:var(--text3);font-style:italic;display:flex;align-items:center;justify-content:center;font-size:13px}
-.text-page-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin:16px 0 8px;padding:0 4px}
-.text-page-label:first-child{margin-top:0}
 
-/* Extracting overlay */
+/* OCR progress bar */
 .extracting-bar{display:none;padding:12px 20px;background:var(--primary-light);border-bottom:1px solid var(--border);align-items:center;gap:12px}
 .extracting-bar.show{display:flex}
 .ext-bar-fill-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
@@ -131,7 +127,6 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 .select-wrap select:focus{border-color:var(--primary)}
 .select-wrap::after{content:'';position:absolute;top:50%;inset-inline-end:10px;transform:translateY(-50%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--text3);pointer-events:none}
 
-/* Toggle switch */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
 .toggle-label{font-size:13px;color:var(--text)}
 .toggle{position:relative;width:36px;height:20px;flex-shrink:0}
@@ -143,7 +138,6 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 
 .info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
 
-/* PANEL FOOTER */
 .panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
 .stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stat-item{text-align:center}
@@ -153,12 +147,10 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 .download-btn:hover:not(:disabled){background:var(--primary-h)}
 .download-btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* DRAG OVERLAY */
 .drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);border-radius:var(--radius-lg);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
 .drag-overlay.show{display:flex}
 .drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
 
-/* TOAST */
 .toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 [dir="rtl"] .toast-wrap{transform:translateX(50%)}
 .toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;pointer-events:all;animation:slideUp .2s ease}
@@ -196,13 +188,12 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
       <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
       <a href="watermark-pdf.html"><span id="T_watermark">Watermark PDF</span></a>
       <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="extract-text.html" style="color:var(--primary)"><span id="T_extract">Extract Text</span></a>
-      <a href="ocr.html"><span id="T_ocr">OCR</span></a>
+      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="ocr.html" style="color:var(--primary)"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
 
-  <!-- Privacy badge -->
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">100% Private</span>
@@ -224,26 +215,26 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
     <!-- Drop zone -->
     <div class="dropzone" id="dropzone">
       <div class="drop-icon">
-        <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 16h16M10 21h10M10 26h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg>
+        <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="22" rx="3" stroke="currentColor" stroke-width="2"/><path d="M4 22l7-6 5 4 6-7 8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="13" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Extract Text from PDF</div>
-        <div class="drop-sub" id="T_dropSub">Drag & drop your PDF file here, or click to browse. All text extraction runs locally in your browser — no upload, 100% private.</div>
+        <div class="drop-title" id="T_dropTitle">Extract Text with OCR</div>
+        <div class="drop-sub" id="T_dropSub">Drag &amp; drop an image or scanned PDF here, or click to browse. OCR runs entirely in your browser — no upload, 100% private.</div>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose Image or PDF</span></button>
     </div>
 
-    <!-- Extracting progress bar -->
+    <!-- OCR progress bar -->
     <div class="extracting-bar" id="extractingBar">
       <div class="ext-bar-fill-wrap"><div class="ext-bar-fill" id="extBarFill"></div></div>
-      <span class="ext-bar-txt" id="extBarTxt">Extracting...</span>
+      <span class="ext-bar-txt" id="extBarTxt">Recognizing...</span>
     </div>
 
     <!-- Text area -->
     <div class="text-area" id="textArea">
       <div class="text-header">
         <div class="text-header-left">
-          <span class="text-title" id="fileName">document.pdf</span>
+          <span class="text-title" id="fileName">document</span>
           <span class="text-stats" id="textStats"></span>
         </div>
         <div class="text-actions">
@@ -262,12 +253,10 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
         </div>
       </div>
 
-      <!-- Page tabs -->
       <div class="page-tabs-wrap">
         <div class="page-tabs" id="pageTabs"></div>
       </div>
 
-      <!-- Text output -->
       <div class="text-output">
         <div class="text-block" id="textBlock"></div>
       </div>
@@ -277,12 +266,23 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_optionsTitle">Extraction Options</div>
-      <div class="toggle-row">
-        <span class="toggle-label" id="T_preserveLayout">Preserve layout spacing</span>
-        <label class="toggle"><input type="checkbox" id="toggleLayout" checked><span class="toggle-slider"></span></label>
+      <div class="panel-section-title" id="T_langTitle">Recognition Language</div>
+      <div class="field">
+        <label class="field-label" id="T_langLabel">Document language</label>
+        <div class="select-wrap">
+          <select id="ocrLangSelect">
+            <option value="ara+eng" id="T_langBoth">Arabic + English</option>
+            <option value="ara" id="T_langAr">Arabic only</option>
+            <option value="eng" id="T_langEn">English only</option>
+          </select>
+        </div>
       </div>
-      <div class="toggle-row" style="margin-top:6px">
+      <p style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px" id="T_langHint">Pick the language that matches your document for the best accuracy. Changing it re-runs recognition.</p>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_optionsTitle">Options</div>
+      <div class="toggle-row">
         <span class="toggle-label" id="T_pageNumbers">Add page numbers</span>
         <label class="toggle"><input type="checkbox" id="togglePageNums" checked><span class="toggle-slider"></span></label>
       </div>
@@ -298,8 +298,8 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
         <label class="field-label" id="T_separatorLabel">Page separator</label>
         <div class="select-wrap">
           <select id="separatorSelect">
-            <option value="line" id="T_sepLine">Line separator</option>
             <option value="label" id="T_sepLabel">Page label (— Page N —)</option>
+            <option value="line" id="T_sepLine">Line separator</option>
             <option value="none" id="T_sepNone">No separator</option>
           </select>
         </div>
@@ -318,13 +318,13 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
     <div class="panel-section">
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_privacyNote">Text is extracted directly in your browser using pdf.js. Your document never leaves your device.</span>
+        <span id="T_privacyNote">OCR runs locally in your browser with Tesseract.js. Your files never leave your device.</span>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_aboutTitle">About Text Extraction</div>
-      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">This tool extracts selectable text embedded in the PDF. Scanned documents without text layers will show no text — use OCR for those files.</p>
+      <div class="panel-section-title" id="T_aboutTitle">About OCR</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">OCR reads text from images and scanned PDFs that have no selectable text layer. The first run downloads the language data once, then it is cached for later use.</p>
     </div>
 
     <div class="panel-footer">
@@ -356,12 +356,12 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
-  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M28 4v10h10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M10 30l9-8 6 5 7-8 10 11" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="16" r="3" stroke="#6366f1" stroke-width="2"/></svg>
+  <div class="drag-overlay-text" id="T_dropHere">Drop image or PDF here</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
-<input type="file" id="fileInput" accept="application/pdf,.pdf" style="display:none">
+<input type="file" id="fileInput" accept="image/*,application/pdf,.pdf" multiple style="display:none">
 
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
@@ -376,72 +376,99 @@ const LANGS = {
   en:{
     T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
     T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_rotate:'Rotate PDF',
-    T_watermark:'Watermark PDF',T_protect:'Protect PDF',T_extract:'Extract Text',
-    T_dropTitle:'Extract Text from PDF',
-    T_dropSub:'Drag & drop your PDF file here, or click to browse. All text extraction runs locally in your browser — no upload, 100% private.',
-    T_browse:'Choose PDF File',
+    T_watermark:'Watermark PDF',T_protect:'Protect PDF',T_extract:'Extract Text',T_ocr:'OCR',
+    T_privacyBadge:'100% Private',
+    T_dropTitle:'Extract Text with OCR',
+    T_dropSub:'Drag & drop an image or scanned PDF here, or click to browse. OCR runs entirely in your browser — no upload, 100% private.',
+    T_browse:'Choose Image or PDF',
     T_changeFile:'Change file',
     T_copyBtn:'Copy All',T_downloadTxt:'Download .txt',
-    T_optionsTitle:'Extraction Options',
-    T_preserveLayout:'Preserve layout spacing',
+    T_langTitle:'Recognition Language',
+    T_langLabel:'Document language',
+    T_langBoth:'Arabic + English',T_langAr:'Arabic only',T_langEn:'English only',
+    T_langHint:'Pick the language that matches your document for the best accuracy. Changing it re-runs recognition.',
+    T_optionsTitle:'Options',
     T_pageNumbers:'Add page numbers',T_trimEmpty:'Remove empty lines',
     T_outputTitle:'Output Format',
     T_separatorLabel:'Page separator',
     T_sepLine:'Line separator',T_sepLabel:'Page label (— Page N —)',T_sepNone:'No separator',
     T_encodingLabel:'Download encoding',
-    T_privacyNote:'Text is extracted directly in your browser using pdf.js. Your document never leaves your device.',
-    T_aboutTitle:'About Text Extraction',
-    T_aboutText:'This tool extracts selectable text embedded in the PDF. Scanned documents without text layers will show no text — use OCR for those files.',
+    T_privacyNote:'OCR runs locally in your browser with Tesseract.js. Your files never leave your device.',
+    T_aboutTitle:'About OCR',
+    T_aboutText:'OCR reads text from images and scanned PDFs that have no selectable text layer. The first run downloads the language data once, then it is cached for later use.',
     T_statCharsLabel:'Characters',T_statWordsLabel:'Words',T_statPagesLabel:'Pages',T_statLinesLabel:'Lines',
     T_downloadDoc:'Download Text File',
-    T_dropHere:'Drop PDF here',
-    T_extracting:'Extracting page',
+    T_dropHere:'Drop image or PDF here',
+    T_loading:'Loading OCR engine…',
+    T_rendering:'Preparing page',
+    T_recognizing:'Recognizing',
     T_copied:'Text copied to clipboard!',
     T_downloaded:'Text file downloaded!',
-    T_errLoad:'Failed to load PDF. The file may be corrupted or password-protected.',
-    T_noText:'No selectable text found on this page. The PDF may be scanned.',
-    T_page:'Page',T_tabAll:'All Pages',
+    T_errLoad:'Failed to load the file. It may be corrupted or password-protected.',
+    T_errEngine:'Could not load the OCR engine. Check your connection.',
+    T_errType:'Unsupported file. Please choose an image or a PDF.',
+    T_noText:'No text could be recognized. Try a clearer scan or a different language.',
+    T_page:'Page',T_image:'Image',T_tabAll:'All Pages',
     langLabel:'AR'
   },
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
-    T_watermark:'علامة مائية',T_protect:'حماية PDF',T_extract:'استخراج النص',
-    T_dropTitle:'استخرج النص من PDF',
-    T_dropSub:'اسحب وأفلت ملف PDF هنا، أو اضغط للاختيار. كل الاستخراج يتم محلياً في متصفحك — بدون رفع، خصوصية كاملة.',
-    T_browse:'اختر ملف PDF',
+    T_watermark:'علامة مائية',T_protect:'حماية PDF',T_extract:'استخراج النص',T_ocr:'OCR',
+    T_privacyBadge:'خصوصية 100%',
+    T_dropTitle:'استخراج النص بتقنية OCR',
+    T_dropSub:'اسحب وأفلت صورة أو ملف PDF ممسوح هنا، أو اضغط للاختيار. كل التعرّف يتم داخل متصفحك — بدون رفع، خصوصية كاملة.',
+    T_browse:'اختر صورة أو PDF',
     T_changeFile:'تغيير الملف',
     T_copyBtn:'نسخ الكل',T_downloadTxt:'تحميل .txt',
-    T_optionsTitle:'خيارات الاستخراج',
-    T_preserveLayout:'الحفاظ على تباعد التخطيط',
+    T_langTitle:'لغة التعرّف',
+    T_langLabel:'لغة المستند',
+    T_langBoth:'عربي + إنجليزي',T_langAr:'عربي فقط',T_langEn:'إنجليزي فقط',
+    T_langHint:'اختر اللغة المطابقة لمستندك للحصول على أفضل دقة. تغييرها يعيد التعرّف.',
+    T_optionsTitle:'خيارات',
     T_pageNumbers:'إضافة أرقام الصفحات',T_trimEmpty:'حذف الأسطر الفارغة',
     T_outputTitle:'تنسيق الإخراج',
     T_separatorLabel:'فاصل الصفحات',
     T_sepLine:'فاصل سطر',T_sepLabel:'تسمية الصفحة (— صفحة N —)',T_sepNone:'بدون فاصل',
     T_encodingLabel:'ترميز التحميل',
-    T_privacyNote:'يتم استخراج النص مباشرة في متصفحك باستخدام pdf.js. مستندك لا يغادر جهازك أبداً.',
-    T_aboutTitle:'عن استخراج النص',
-    T_aboutText:'تستخرج هذه الأداة النص المضمّن القابل للتحديد في PDF. المستندات الممسوحة ضوئياً بدون طبقة نصية لن تُظهر نصاً — استخدم OCR لتلك الملفات.',
+    T_privacyNote:'يتم التعرّف محلياً في متصفحك باستخدام Tesseract.js. ملفاتك لا تغادر جهازك أبداً.',
+    T_aboutTitle:'عن OCR',
+    T_aboutText:'تقنية OCR تقرأ النص من الصور وملفات PDF الممسوحة التي لا تحتوي على طبقة نص قابلة للتحديد. أول تشغيل يحمّل بيانات اللغة مرة واحدة ثم تُحفظ للاستخدام لاحقاً.',
     T_statCharsLabel:'حرف',T_statWordsLabel:'كلمة',T_statPagesLabel:'صفحة',T_statLinesLabel:'سطر',
     T_downloadDoc:'تحميل ملف النص',
-    T_dropHere:'أفلت PDF هنا',
-    T_extracting:'جاري استخراج الصفحة',
+    T_dropHere:'أفلت الصورة أو PDF هنا',
+    T_loading:'…جاري تحميل محرك OCR',
+    T_rendering:'جاري تجهيز الصفحة',
+    T_recognizing:'جاري التعرّف',
     T_copied:'!تم نسخ النص إلى الحافظة',
     T_downloaded:'!تم تحميل ملف النص',
-    T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو محمياً بكلمة مرور',
-    T_noText:'لا يوجد نص قابل للتحديد في هذه الصفحة. قد يكون PDF ممسوحاً ضوئياً.',
-    T_page:'صفحة',T_tabAll:'كل الصفحات',
+    T_errLoad:'فشل تحميل الملف. قد يكون تالفاً أو محمياً بكلمة مرور.',
+    T_errEngine:'تعذّر تحميل محرك OCR. تحقق من اتصالك.',
+    T_errType:'ملف غير مدعوم. من فضلك اختر صورة أو ملف PDF.',
+    T_noText:'لم يتم التعرّف على أي نص. جرّب مسحاً أوضح أو لغة مختلفة.',
+    T_page:'صفحة',T_image:'صورة',T_tabAll:'كل الصفحات',
     langLabel:'EN'
   }
 };
 
 // ══════════════════════════════════════════
+// CDN (all on cdn.jsdelivr.net — allowed by CSP)
+// ══════════════════════════════════════════
+const TESS_MAIN   = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+const TESS_WORKER = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js';
+const TESS_CORE   = 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5/';
+const TESS_LANG   = 'https://cdn.jsdelivr.net/gh/naptha/tessdata@gh-pages/4.0.0';
+
+// ══════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════
-let currentLang = localStorage.getItem('dpdf_lang')||'ar';
-let pdfDoc = null;
-let pageTexts = []; // ['text of page 1', 'text of page 2', ...]
-let currentTab = 'all'; // 'all' | pageNum
+let currentLang = localStorage.getItem('dpdf_lang') || 'en';
+let pageSources = [];   // [{src: canvas|File, kind:'page'|'image'}]
+let pageTexts = [];     // recognized text per source
+let currentTab = 'all';
+let baseName = 'document';
+let busy = false;
+let _tessScript = null;
 
 // ══════════════════════════════════════════
 // BOOT
@@ -501,18 +528,21 @@ function bindEvents() {
   const fi = document.getElementById('fileInput');
   document.getElementById('browseBtn').onclick = () => fi.click();
   document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
-  fi.onchange = (e) => { if(e.target.files[0]) loadPDF(e.target.files[0]); fi.value=''; };
+  fi.onchange = (e) => { if(e.target.files.length) handleFiles(Array.from(e.target.files)); fi.value=''; };
   document.getElementById('changeFileBtn').onclick = () => fi.click();
 
   document.getElementById('copyBtn').onclick = copyText;
   document.getElementById('downloadTxtBtn').onclick = downloadText;
   document.getElementById('downloadDocBtn').onclick = downloadText;
 
-  // Option toggles → re-render
-  ['toggleLayout','togglePageNums','toggleTrimEmpty'].forEach(id => {
-    document.getElementById(id).onchange = () => { if(pageTexts.length) renderText(); };
-  });
+  document.getElementById('togglePageNums').onchange = () => { if(pageTexts.length) renderText(); };
+  document.getElementById('toggleTrimEmpty').onchange = () => { if(pageTexts.length) renderText(); };
   document.getElementById('separatorSelect').onchange = () => { if(pageTexts.length) renderText(); };
+
+  // Re-run OCR when document language changes
+  document.getElementById('ocrLangSelect').onchange = () => {
+    if (pageSources.length && !busy) runOCR();
+  };
 
   // Drag & drop
   document.addEventListener('dragenter', (e) => {
@@ -526,87 +556,171 @@ function bindEvents() {
   document.addEventListener('drop', (e) => {
     e.preventDefault();
     document.getElementById('dragOverlay').classList.remove('show');
-    const file = Array.from(e.dataTransfer.files).find(f=>f.type==='application/pdf'||f.name.endsWith('.pdf'));
-    if(file) loadPDF(file);
+    const files = Array.from(e.dataTransfer.files).filter(f =>
+      f.type.startsWith('image/') || f.type==='application/pdf' || /\.(pdf|png|jpe?g|webp|bmp|gif)$/i.test(f.name));
+    if(files.length) handleFiles(files);
   });
 }
 
 // ══════════════════════════════════════════
-// LOAD & EXTRACT
+// LOAD TESSERACT (lazy)
 // ══════════════════════════════════════════
-async function loadPDF(file) {
-  if(!file) return;
-  if(typeof pdfjsLib === 'undefined') { showToast('pdf.js not loaded','error'); return; }
+function loadTesseract() {
+  if (_tessScript) return _tessScript;
+  _tessScript = new Promise((resolve, reject) => {
+    if (typeof Tesseract !== 'undefined') { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = TESS_MAIN;
+    s.onload = () => typeof Tesseract !== 'undefined' ? resolve() : reject(new Error('engine'));
+    s.onerror = () => { _tessScript = null; reject(new Error('engine')); };
+    document.head.appendChild(s);
+  });
+  return _tessScript;
+}
 
-  pdfDoc = null;
+// ══════════════════════════════════════════
+// HANDLE FILES → build page sources → OCR
+// ══════════════════════════════════════════
+async function handleFiles(files) {
+  if (busy) return;
+  const pdf = files.find(f => f.type==='application/pdf' || /\.pdf$/i.test(f.name));
+  const images = files.filter(f => f.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif)$/i.test(f.name));
+
+  if (!pdf && images.length === 0) { showToast(tr('T_errType'), 'error'); return; }
+
+  pageSources = [];
   pageTexts = [];
   currentTab = 'all';
 
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('textArea').style.display = 'none';
-  document.getElementById('extractingBar').classList.add('show');
-  document.getElementById('extBarFill').style.width = '0';
+  showBar(0, tr('T_loading'));
 
   try {
-    const buf = await file.arrayBuffer();
-    pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
-    const numPages = pdfDoc.numPages;
-
-    document.getElementById('fileName').textContent = file.name;
-
-    for (let i = 1; i <= numPages; i++) {
-      const pct = Math.round((i / numPages) * 100);
-      document.getElementById('extBarFill').style.width = pct + '%';
-      document.getElementById('extBarTxt').textContent = `${tr('T_extracting')} ${i} / ${numPages}`;
-
-      const page = await pdfDoc.getPage(i);
-      const content = await page.getTextContent();
-      const text = extractTextFromContent(content);
-      pageTexts.push(text);
-      await new Promise(r => setTimeout(r, 0));
+    if (pdf) {
+      baseName = pdf.name.replace(/\.pdf$/i, '');
+      document.getElementById('fileName').textContent = pdf.name;
+      await renderPdfToSources(pdf);
+    } else {
+      baseName = images.length === 1 ? images[0].name.replace(/\.[^.]+$/, '') : 'images';
+      document.getElementById('fileName').textContent = images.length === 1 ? images[0].name : (images.length + ' images');
+      images.forEach(f => pageSources.push({ src: f, kind: 'image' }));
     }
-
-    document.getElementById('extractingBar').classList.remove('show');
-    document.getElementById('textArea').style.display = 'flex';
-
-    buildTabs(numPages);
-    renderText();
-    updateStats();
-    document.getElementById('downloadDocBtn').disabled = false;
-
-    if(typeof gtag!=='undefined') {
-      gtag('event','extract_text',{event_category:'extract_text',event_label:'success',value:numPages});
-    }
-
-  } catch(err) {
+    await runOCR();
+  } catch (err) {
     console.error(err);
-    document.getElementById('extractingBar').classList.remove('show');
-    document.getElementById('dropzone').classList.remove('hidden');
+    hideBar();
+    resetToDrop();
     showToast(tr('T_errLoad'), 'error');
   }
 }
 
-function extractTextFromContent(content) {
-  let text = '';
-  let lastY = null;
-  const preserveLayout = document.getElementById('toggleLayout').checked;
-
-  content.items.forEach(item => {
-    if (!item.str) return;
-    if (preserveLayout && lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
-      text += '\n';
-    }
-    text += item.str;
-    if (item.hasEOL) text += '\n';
-    lastY = item.transform[5];
-  });
-  return text;
+async function renderPdfToSources(file) {
+  const buf = await file.arrayBuffer();
+  const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+  const n = doc.numPages;
+  for (let i = 1; i <= n; i++) {
+    showBar(Math.round((i-1)/n*15), `${tr('T_rendering')} ${i} / ${n}`);
+    const page = await doc.getPage(i);
+    const viewport = page.getViewport({ scale: 2.0 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    pageSources.push({ src: canvas, kind: 'page' });
+    await new Promise(r => setTimeout(r, 0));
+  }
+  try { doc.destroy(); } catch(e) {}
 }
+
+// ══════════════════════════════════════════
+// RUN OCR over all page sources
+// ══════════════════════════════════════════
+async function runOCR() {
+  if (!pageSources.length) return;
+  busy = true;
+  document.getElementById('downloadDocBtn').disabled = true;
+  document.getElementById('textArea').style.display = 'none';
+  showBar(0, tr('T_loading'));
+
+  const langs = document.getElementById('ocrLangSelect').value; // 'ara+eng' | 'ara' | 'eng'
+  const total = pageSources.length;
+  let done = 0;
+
+  let worker;
+  try {
+    await loadTesseract();
+  } catch (e) {
+    busy = false; hideBar(); resetToDrop();
+    showToast(tr('T_errEngine'), 'error');
+    return;
+  }
+
+  try {
+    worker = await Tesseract.createWorker(langs.split('+'), 1, {
+      workerPath: TESS_WORKER,
+      corePath: TESS_CORE,
+      langPath: TESS_LANG,
+      logger: (m) => {
+        if (m.status === 'recognizing text') {
+          const overall = ((done + (m.progress || 0)) / total) * 100;
+          showBar(15 + overall * 0.85, `${tr('T_recognizing')} ${done + 1} / ${total} · ${Math.round((m.progress||0)*100)}%`);
+        }
+      }
+    });
+
+    const results = [];
+    for (let i = 0; i < total; i++) {
+      const { data } = await worker.recognize(pageSources[i].src);
+      results.push((data && data.text) ? data.text : '');
+      done++;
+      showBar(15 + (done/total)*85, `${tr('T_recognizing')} ${done} / ${total}`);
+      await new Promise(r => setTimeout(r, 0));
+    }
+    pageTexts = results;
+
+    await worker.terminate();
+    worker = null;
+
+    hideBar();
+    document.getElementById('textArea').style.display = 'flex';
+    buildTabs(total);
+    renderText();
+    document.getElementById('downloadDocBtn').disabled = false;
+
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'ocr', { event_category: 'ocr', event_label: langs, value: total });
+    }
+  } catch (err) {
+    console.error(err);
+    if (worker) { try { await worker.terminate(); } catch(e){} }
+    hideBar();
+    resetToDrop();
+    showToast(tr('T_errEngine'), 'error');
+  } finally {
+    busy = false;
+  }
+}
+
+// ══════════════════════════════════════════
+// PROGRESS BAR HELPERS
+// ══════════════════════════════════════════
+function showBar(pct, txt) {
+  const bar = document.getElementById('extractingBar');
+  bar.classList.add('show');
+  document.getElementById('extBarFill').style.width = Math.max(0, Math.min(100, pct)) + '%';
+  if (txt) document.getElementById('extBarTxt').textContent = txt;
+}
+function hideBar() { document.getElementById('extractingBar').classList.remove('show'); }
+function resetToDrop() { document.getElementById('dropzone').classList.remove('hidden'); }
 
 // ══════════════════════════════════════════
 // TABS
 // ══════════════════════════════════════════
-function buildTabs(numPages) {
+function buildTabs(n) {
   const tabs = document.getElementById('pageTabs');
   tabs.innerHTML = '';
 
@@ -617,11 +731,12 @@ function buildTabs(numPages) {
   allTab.onclick = () => switchTab('all');
   tabs.appendChild(allTab);
 
-  for (let i = 1; i <= numPages; i++) {
+  for (let i = 1; i <= n; i++) {
     const tab = document.createElement('button');
     tab.className = 'page-tab';
     tab.dataset.tab = i;
-    tab.textContent = `${tr('T_page')} ${i}`;
+    const label = pageSources[i-1] && pageSources[i-1].kind === 'image' ? tr('T_image') : tr('T_page');
+    tab.textContent = `${label} ${i}`;
     tab.onclick = () => switchTab(i);
     tabs.appendChild(tab);
   }
@@ -638,6 +753,12 @@ function switchTab(tab) {
 // ══════════════════════════════════════════
 // RENDER TEXT
 // ══════════════════════════════════════════
+function isRTLText(s) {
+  const ar = (s.match(/[؀-ۿ]/g) || []).length;
+  const la = (s.match(/[A-Za-z]/g) || []).length;
+  return ar > la;
+}
+
 function renderText() {
   const block = document.getElementById('textBlock');
   const separator = document.getElementById('separatorSelect').value;
@@ -651,8 +772,8 @@ function renderText() {
     : [{text: pageTexts[currentTab-1] || '', num: currentTab}];
 
   pages.forEach(({text, num}, idx) => {
-    let t = text;
-    if (trimEmpty) t = t.replace(/\n{3,}/g, '\n\n').trim();
+    let t = text || '';
+    if (trimEmpty) t = t.replace(/\n{3,}/g, '\n\n').replace(/[ \t]+\n/g, '\n').trim();
 
     if (pages.length > 1 || addPageNums) {
       if (separator === 'line') {
@@ -664,16 +785,18 @@ function renderText() {
       }
     }
 
-    output += t || '';
+    output += t;
     if (idx < pages.length - 1) output += '\n\n';
   });
 
   if (output.trim()) {
     block.textContent = output;
     block.classList.remove('empty');
+    block.setAttribute('dir', isRTLText(output) ? 'rtl' : 'ltr');
   } else {
     block.textContent = tr('T_noText');
     block.classList.add('empty');
+    block.removeAttribute('dir');
   }
 
   updateStats();
@@ -683,20 +806,25 @@ function renderText() {
 // STATS
 // ══════════════════════════════════════════
 function updateStats() {
-  const text = document.getElementById('textBlock').textContent;
-  const isEmptyMsg = document.getElementById('textBlock').classList.contains('empty');
-  if (isEmptyMsg) return;
-
+  const block = document.getElementById('textBlock');
+  if (block.classList.contains('empty')) {
+    document.getElementById('statChars').textContent = '0';
+    document.getElementById('statWords').textContent = '0';
+    document.getElementById('statPages').textContent = pageTexts.length;
+    document.getElementById('statLines').textContent = '0';
+    document.getElementById('textStats').textContent = '';
+    return;
+  }
+  const text = block.textContent;
   const chars = text.length;
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
   const lines = text.split('\n').length;
-  const pages = pageTexts.length;
 
   document.getElementById('statChars').textContent = chars.toLocaleString();
   document.getElementById('statWords').textContent = words.toLocaleString();
-  document.getElementById('statPages').textContent = pages;
+  document.getElementById('statPages').textContent = pageTexts.length;
   document.getElementById('statLines').textContent = lines.toLocaleString();
-  document.getElementById('textStats').textContent = `${chars.toLocaleString()} chars · ${words.toLocaleString()} words`;
+  document.getElementById('textStats').textContent = `${chars.toLocaleString()} · ${words.toLocaleString()}`;
 }
 
 // ══════════════════════════════════════════
@@ -714,7 +842,6 @@ async function copyText() {
     await navigator.clipboard.writeText(text);
     showToast(tr('T_copied'), 'success');
   } catch {
-    // Fallback
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.position = 'fixed';
@@ -731,22 +858,18 @@ function downloadText() {
   const text = getFullText();
   if (!text) return;
   const encoding = document.getElementById('encodingSelect').value;
-  let bytes;
-  if (encoding === 'utf8bom') {
-    bytes = '\uFEFF' + text;
-  } else {
-    bytes = text;
-  }
-  const blob = new Blob([bytes], { type: 'text/plain;charset=utf-8' });
+  const data = encoding === 'utf8bom' ? '﻿' + text : text;
+  const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  const fname = (document.getElementById('fileName').textContent.replace('.pdf','') || 'extracted') + '.txt';
   a.href = url;
-  a.download = fname;
+  a.download = (baseName || 'ocr') + '.txt';
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast(tr('T_downloaded'), 'success');
-  if(typeof gtag!=='undefined') gtag('event','download_text',{event_category:'extract_text'});
+  if (typeof gtag !== 'undefined') gtag('event', 'download_ocr_text', { event_category: 'ocr' });
 }
 
 // ══════════════════════════════════════════
