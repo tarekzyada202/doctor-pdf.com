@@ -20,11 +20,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install anthropic requests
+        run: pip install anthropic requests google-api-python-client google-auth
 
       - name: Generate Weekly Report
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
+          GSC_CREDENTIALS: ${{ secrets.GSC_CREDENTIALS }}
           GITHUB_STEP_SUMMARY: ${{ runner.temp }}/summary.md
         run: python generate_report.py
 
@@ -35,27 +38,3 @@ jobs:
           git add reports/ || true
           git diff --staged --quiet || git commit -m "Weekly report $(date +%Y-%m-%d)"
           git push || true
-
-      - name: Send email via Resend
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          REPORT_EMAIL: ${{ secrets.REPORT_EMAIL }}
-        run: |
-          python3 -c "
-          import os, requests
-          from datetime import datetime
-          today = datetime.now().strftime('%Y-%m-%d')
-          api_key = os.environ['RESEND_API_KEY']
-          to_email = os.environ['REPORT_EMAIL']
-          path = f'reports/weekly-report-{today}.md'
-          report = open(path, encoding='utf-8').read() if os.path.exists(path) else 'التقرير غير متاح'
-          html = f'''<div dir=\"rtl\" style=\"font-family:Arial;max-width:700px;margin:auto;padding:20px\">
-          <h2 style=\"color:#6366f1\">Doctor PDF — تقرير اسبوعي {today}</h2>
-          <hr><pre style=\"white-space:pre-wrap;font-size:14px;line-height:1.7\">{report}</pre>
-          <hr><p style=\"color:#888;font-size:12px\">تم الانشاء تلقائيا بواسطة Claude AI</p></div>'''
-          r = requests.post('https://api.resend.com/emails',
-              headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
-              json={'from': 'Doctor PDF Bot <onboarding@resend.dev>', 'to': [to_email],
-                    'subject': f'Doctor PDF Weekly Report {today}', 'html': html})
-          print('Email sent!' if r.status_code == 200 else f'Failed: {r.status_code} {r.text}')
-          "
