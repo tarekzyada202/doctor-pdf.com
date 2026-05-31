@@ -16,6 +16,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script>/* dpdf_lang_redirect */
+(function(){try{
+  if(localStorage.getItem('dpdf_lang'))return;            /* respect prior user choice */
+  if(/^\/ar(\/|$)/.test(location.pathname))return;        /* already Arabic */
+  var ls=navigator.languages||[navigator.language||''];
+  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  var p=location.pathname;
+  var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
+  location.replace(target+location.search+location.hash);
+}catch(e){}})();
+</script>
 <script>
 (function(){
   var d=localStorage.getItem('dpdf_dark');
@@ -68,7 +79,24 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 @media(max-width:700px){.nav-privacy span{display:none}}
 
 /* WORKSPACE */
-.workspace{flex:1;display:flex;overflow:hidden}
+.workspace{height:calc(100vh - 56px);display:flex;overflow:hidden}
+.seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
+.seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
+.seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
+.seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
+.faq-item{border-top:1px solid var(--border);padding:18px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-item h3{font-size:1.05em;font-weight:700;margin:0 0 8px;color:var(--text)}
+.faq-item p{margin:0;color:var(--text2);line-height:1.75}
+.why{background:var(--primary-light);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:46px}
+.why h2{margin-top:0;margin-bottom:10px}
+.why-lead{color:var(--text2);margin:0 0 20px;line-height:1.7}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.why-item{display:flex;align-items:flex-start;gap:10px;color:var(--text);line-height:1.5;font-weight:600;font-size:.95em}
+.why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
+
 .content{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 
@@ -425,7 +453,7 @@ const LANGS = {
     T_errInvalid:'Please select a valid PDF file.',
     T_delete:'Delete',T_extract:'Extract',T_restore:'Restore',T_page:'p.',
     langLabel:'AR'
-  },
+  ,W_h2:"Why choose Doctor PDF?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No limits on file size or number of tasks",W3:"100% private — files never leave your device",W4:"Completely free — no sign-up required",W5:"Instant — runs right in your browser",F_h2:"How to split a PDF file online",F_s1:"Open the Split PDF tool and drop your PDF file into the page.",F_s2:"Choose where to split: click between pages to add split points, or pick a mode like every N pages or a page range.",F_s3:"Click Split to create your separate PDF files.",F_s4:"Download your split files instantly — all processing stays in your browser.",F_faqH:"Frequently asked questions",F_q1:"Is splitting PDF free?",F_a1:"Yes. Doctor PDF is 100% free with no limits, no watermarks, and no sign-up.",F_q2:"Can I extract specific pages?",F_a2:"Yes. Select the exact pages or range you want and save them as a new PDF.",F_q3:"Is there a limit on file size?",F_a3:"No. Split PDFs of any size, as many times as you need.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_rotate:'تدوير PDF',T_sign:'توقيع PDF',T_protect:'حماية PDF',T_watermark:'علامة مائية',
@@ -449,7 +477,7 @@ const LANGS = {
     T_errInvalid:'.يرجى اختيار ملف PDF صحيح',
     T_delete:'حذف',T_extract:'استخراج',T_restore:'استعادة',T_page:'ص.',
     langLabel:'EN'
-  }
+  ,W_h2:"ليه تختار Doctor PDF؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود على حجم الملف أو عدد العمليات",W3:"خصوصية 100% — ملفاتك لا تغادر جهازك",W4:"مجاني تماماً — بدون أي تسجيل",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تقسيم ملف PDF أونلاين",F_s1:"افتح أداة تقسيم PDF وأسقط ملفك في الصفحة.",F_s2:"اختر مكان التقسيم: اضغط بين الصفحات لإضافة نقاط تقسيم، أو اختر وضعاً مثل كل عدد صفحات أو نطاق صفحات.",F_s3:"اضغط تقسيم لإنشاء ملفات PDF المنفصلة.",F_s4:"حمّل ملفاتك فوراً — كل المعالجة تتم داخل متصفحك.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تقسيم PDF مجاني؟",F_a1:"نعم. Doctor PDF مجاني 100% بدون حدود، بدون علامة مائية، وبدون تسجيل.",F_q2:"هل يمكنني استخراج صفحات محددة؟",F_a2:"نعم. اختر الصفحات أو النطاق الذي تريده واحفظها كملف PDF جديد.",F_q3:"هل يوجد حد لحجم الملف؟",F_a3:"لا. قسّم ملفات بأي حجم، بأي عدد من المرات.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
 };
 
 // ── STATE ──
@@ -1018,5 +1046,32 @@ boot();
 </script>
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
+
+<section class="seo-content">
+  <div class="why">
+    <h2 id="W_h2">ليه تختار Doctor PDF؟</h2>
+    <p class="why-lead" id="W_lead">زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:</p>
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W1">بدون إعلانات مزعجة — نهائياً</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W2">بدون حدود على حجم الملف أو عدد العمليات</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W3">خصوصية 100% — ملفاتك لا تغادر جهازك</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W4">مجاني تماماً — بدون أي تسجيل</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W5">فوري — يعمل مباشرة في متصفحك</span></div>
+    </div>
+  </div>
+  <h2 id="F_h2">كيفية تقسيم ملف PDF أونلاين</h2>
+  <ol class="seo-steps">
+    <li id="F_s1">افتح أداة تقسيم PDF وأسقط ملفك في الصفحة.</li>
+    <li id="F_s2">اختر مكان التقسيم: اضغط بين الصفحات لإضافة نقاط تقسيم، أو اختر وضعاً مثل كل عدد صفحات أو نطاق صفحات.</li>
+    <li id="F_s3">اضغط تقسيم لإنشاء ملفات PDF المنفصلة.</li>
+    <li id="F_s4">حمّل ملفاتك فوراً — كل المعالجة تتم داخل متصفحك.</li>
+  </ol>
+  <h2 id="F_faqH">الأسئلة الشائعة</h2>
+  <div class="faq-item"><h3 id="F_q1">هل تقسيم PDF مجاني؟</h3><p id="F_a1">نعم. Doctor PDF مجاني 100% بدون حدود، بدون علامة مائية، وبدون تسجيل.</p></div>
+  <div class="faq-item"><h3 id="F_q2">هل يمكنني استخراج صفحات محددة؟</h3><p id="F_a2">نعم. اختر الصفحات أو النطاق الذي تريده واحفظها كملف PDF جديد.</p></div>
+  <div class="faq-item"><h3 id="F_q3">هل يوجد حد لحجم الملف؟</h3><p id="F_a3">لا. قسّم ملفات بأي حجم، بأي عدد من المرات.</p></div>
+  <div class="faq-item"><h3 id="F_q4">هل ملفاتي خاصة؟</h3><p id="F_a4">نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.</p></div>
+  <div class="faq-item"><h3 id="F_q5">هل تعمل على الهاتف؟</h3><p id="F_a5">نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر.</p></div>
+</section>
 </body>
 </html>
