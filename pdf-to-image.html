@@ -11,6 +11,17 @@
 <meta name="description" content="Convert PDF pages to JPG, PNG, or WebP images online for free. Choose quality, DPI, and pages. 100% private — all processing in your browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
+<script>/* dpdf_lang_redirect */
+(function(){try{
+  if(localStorage.getItem('dpdf_lang'))return;            /* respect prior user choice */
+  if(/^\/ar(\/|$)/.test(location.pathname))return;        /* already Arabic */
+  var ls=navigator.languages||[navigator.language||''];
+  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  var p=location.pathname;
+  var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
+  location.replace(target+location.search+location.hash);
+}catch(e){}})();
+</script>
 <script>
 (function(){
   var d=localStorage.getItem('dpdf_dark');
