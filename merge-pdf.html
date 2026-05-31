@@ -88,6 +88,13 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .faq-item:last-child{border-bottom:1px solid var(--border)}
 .faq-item h3{font-size:1.05em;font-weight:700;margin:0 0 8px;color:var(--text)}
 .faq-item p{margin:0;color:var(--text2);line-height:1.75}
+.why{background:var(--primary-light);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:46px}
+.why h2{margin-top:0;margin-bottom:10px}
+.why-lead{color:var(--text2);margin:0 0 20px;line-height:1.7}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.why-item{display:flex;align-items:flex-start;gap:10px;color:var(--text);line-height:1.5;font-weight:600;font-size:.95em}
+.why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
 .content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;position:relative}
 
 /* EMPTY */
@@ -269,6 +276,17 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 </div>
 
 <section class="seo-content">
+  <div class="why">
+    <h2 id="W_h2">Why choose Doctor PDF?</h2>
+    <p class="why-lead" id="W_lead">Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:</p>
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W1">No annoying ads — ever</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W2">No limits on file size or number of tasks</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W3">100% private — files never leave your device</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W4">Completely free — no sign-up required</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W5">Instant — runs right in your browser</span></div>
+    </div>
+  </div>
   <h2 id="F_h2">How to merge PDF files online</h2>
   <ol class="seo-steps">
     <li id="F_s1">Open the Merge PDF tool and click or drag your PDF files into the page.</li>
@@ -558,6 +576,13 @@ var LANGS={
     T_privacy:'All processing happens locally in your browser. No files are ever uploaded.',
     T_actionBtn:'Merge PDFs',T_resultTitle:'✅ PDFs merged!',T_again:'Merge other files',
     T_pCreate:'Creating PDF…',T_pLoad:'Loading',T_pAdd:'Adding page',T_pSave:'Saving…',T_pDone:'Done!',
+    W_h2:'Why choose Doctor PDF?',
+    W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",
+    W1:'No annoying ads — ever',
+    W2:'No limits on file size or number of tasks',
+    W3:'100% private — files never leave your device',
+    W4:'Completely free — no sign-up required',
+    W5:'Instant — runs right in your browser',
     F_h2:'How to merge PDF files online',
     F_s1:'Open the Merge PDF tool and click or drag your PDF files into the page.',
     F_s2:'Add as many PDFs as you need, then drag the pages to arrange them in any order.',
@@ -579,6 +604,13 @@ var LANGS={
     T_privacy:'كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.',
     T_actionBtn:'دمج الملفات',T_resultTitle:'✅ تم الدمج!',T_again:'دمج ملفات أخرى',
     T_pCreate:'جاري إنشاء PDF…',T_pLoad:'تحميل',T_pAdd:'إضافة صفحة',T_pSave:'جاري الحفظ…',T_pDone:'تم!',
+    W_h2:'ليه تختار Doctor PDF؟',
+    W_lead:'زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:',
+    W1:'بدون إعلانات مزعجة — نهائياً',
+    W2:'بدون حدود على حجم الملف أو عدد العمليات',
+    W3:'خصوصية 100% — ملفاتك لا تغادر جهازك',
+    W4:'مجاني تماماً — بدون أي تسجيل',
+    W5:'فوري — يعمل مباشرة في متصفحك',
     F_h2:'كيفية دمج ملفات PDF أونلاين',
     F_s1:'افتح أداة دمج PDF واضغط أو اسحب ملفات PDF إلى الصفحة.',
     F_s2:'أضف أي عدد من الملفات، ثم اسحب الصفحات لترتيبها بالشكل الذي تريده.',
