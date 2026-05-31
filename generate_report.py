@@ -2,9 +2,11 @@ import anthropic
 import requests
 import os
 import json
+import time
 from datetime import datetime, timedelta
 
-client = anthropic.Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'])
+# max_retries lets the SDK auto-retry 429s (respecting Retry-After)
+client = anthropic.Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'], max_retries=6)
 
 SITE_URL = 'https://doctor-pdf.com/'
 
@@ -193,8 +195,8 @@ def analyze_competitors():
 
     message = client.messages.create(
         model="claude-sonnet-4-5",
-        max_tokens=4000,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
+        max_tokens=3500,
+        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
         messages=[{"role": "user", "content": search_prompt}]
     )
     result_text = ""
@@ -263,6 +265,11 @@ gsc_text = fetch_gsc_data()
 print("\n🌐 Analyzing competitors with web search...")
 competitor_analysis = analyze_competitors()
 print("✅ Competitor analysis complete")
+
+# The org rate limit is 30k input tokens/min; the web-search call above is
+# token-heavy. Wait so the per-minute window resets before the next call.
+print("\n⏳ Waiting 60s to respect the per-minute token rate limit...")
+time.sleep(60)
 
 print("\n📝 Generating strategic report...")
 report = generate_strategic_report(site_data, competitor_analysis, gsc_text)
