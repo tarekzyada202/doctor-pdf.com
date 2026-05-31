@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit PDF Online Free — Add Text, Draw, Highlight | Doctor PDF</title>
+<link rel="canonical" href="https://doctor-pdf.com/edit-pdf.html">
+<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/edit-pdf.html">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/edit-pdf.html">
+<link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/edit-pdf.html">
+<meta name="description" content="Edit PDF files online for free. Add text, draw, highlight, shapes, images, whiteout and redact — 100% private, nothing is uploaded.">
+<meta name="keywords" content="edit pdf, pdf editor, add text to pdf, annotate pdf, highlight pdf, draw on pdf, whiteout pdf, redact pdf, free pdf editor">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script>/* dpdf_lang_redirect */
+(function(){try{
+  if(localStorage.getItem('dpdf_lang'))return;
+  if(/^\/ar(\/|$)/.test(location.pathname))return;
+  var ls=navigator.languages||[navigator.language||''];
+  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  var p=location.pathname;
+  var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
+  location.replace(target+location.search+location.hash);
+}catch(e){}})();
+</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
+<style>
+:root{
+  --bg:#fff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--panel:320px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;--danger-light:#2d1010;--success-light:#052e16;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html[lang="ar"] body{font-family:var(--font-ar)}
+body{font-family:var(--font-en);background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;color:var(--text);text-decoration:none}
+.nav-logo svg{width:26px;height:26px}
+.nav-sep{flex:1}
+.nav-privacy{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--success);background:var(--success-light);padding:6px 10px;border-radius:100px}
+.nav-privacy svg{width:13px;height:13px}
+.nav-btn{height:34px;min-width:34px;padding:0 10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;font-family:inherit}
+.nav-btn:hover{background:var(--bg3)}
+.nav-btn svg{width:16px;height:16px}
+.tools-dd{position:relative}
+.tools-menu{position:absolute;top:42px;inset-inline-end:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,.12);padding:6px;min-width:190px;display:none;z-index:200}
+.tools-menu.open{display:block}
+.tools-menu a{display:block;padding:8px 12px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;font-weight:500}
+.tools-menu a:hover{background:var(--bg3)}
+.workspace{display:flex;height:calc(100vh - 56px);overflow:hidden}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+/* dropzone */
+.dropzone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;padding:40px;text-align:center}
+.dropzone.hidden{display:none}
+.dz-ic{width:72px;height:72px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:32px}
+.dz-main{font-size:18px;font-weight:700}
+.dz-sub{font-size:13px;color:var(--text2)}
+/* viewer */
+.viewer{flex:1;display:none;flex-direction:column;overflow:hidden}
+.vtop{height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;overflow-x:auto}
+.vtop .z-btn{width:30px;height:30px;border:1px solid var(--border);background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;font-size:15px;color:var(--text);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vtop .z-btn:hover{background:var(--bg3)}
+.zpct{font-size:12px;font-weight:600;min-width:42px;text-align:center}
+.vsep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.pages-area{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;align-items:center;gap:20px;background:var(--bg3)}
+.page-wrap{position:relative;box-shadow:0 4px 18px rgba(0,0,0,.14);background:#fff;flex-shrink:0}
+.page-wrap canvas.base{display:block}
+.page-wrap canvas.anno{position:absolute;inset:0;touch-action:none}
+.page-num{position:absolute;top:-20px;inset-inline-start:0;font-size:11px;color:var(--text3);font-weight:600}
+/* panel */
+.panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.psec{padding:16px;border-bottom:1px solid var(--border)}
+.plabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:10px}
+.back-btn{color:var(--text2);text-decoration:none;font-size:13px;font-weight:600;display:inline-block;margin-bottom:12px}
+.tool-head{display:flex;align-items:center;gap:10px}
+.tool-emoji{font-size:24px}
+.tool-name{font-weight:800;font-size:16px}
+.tool-desc{font-size:12px;color:var(--text2)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border:1px solid var(--border);background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;font-size:10.5px;font-weight:600;color:var(--text2);font-family:inherit}
+.tbtn svg{width:20px;height:20px}
+.tbtn:hover{background:var(--bg3)}
+.tbtn.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.row label{font-size:12px;color:var(--text2);flex:1}
+.swatches{display:flex;flex-wrap:wrap;gap:6px}
+.sw{width:24px;height:24px;border-radius:6px;cursor:pointer;border:2px solid transparent}
+.sw.active{border-color:var(--text)}
+input[type=range]{flex:1}
+select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:inherit;font-size:13px}
+.btn-primary{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.btn-primary:hover{background:var(--primary-h)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{width:100%;padding:10px;background:var(--bg);color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;margin-top:8px}
+.btn-ok{display:block;text-align:center;padding:12px;background:var(--success);color:#fff;border-radius:var(--radius-sm);font-weight:700;text-decoration:none;font-size:14px}
+.privacy-note{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:var(--text2);background:var(--success-light);padding:10px;border-radius:var(--radius-sm);line-height:1.5}
+.privacy-note svg{width:14px;height:14px;color:var(--success);flex-shrink:0;margin-top:1px}
+.progress-wrap{display:none;margin-bottom:10px}
+.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--primary);transition:width .2s}
+.progress-lbl{font-size:11px;color:var(--text2);margin-top:5px;text-align:center}
+.result-wrap{display:none}
+.result-title{font-weight:700;color:var(--success);margin-bottom:10px;font-size:14px}
+/* text edit input */
+.text-input{position:absolute;z-index:50;border:1px dashed var(--primary);background:rgba(255,255,255,.85);color:#000;font-family:var(--font-ar),var(--font-en);padding:2px 4px;outline:none;min-width:40px;resize:none;overflow:hidden}
+[data-theme="dark"] .text-input{background:rgba(0,0,0,.6);color:#fff}
+.toast-wrap{position:fixed;bottom:20px;inset-inline-end:20px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+.toast{display:flex;align-items:center;gap:8px;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.error{background:var(--danger);color:#fff}
+.drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.08);border:3px dashed var(--primary);display:none;align-items:center;justify-content:center;z-index:9000;pointer-events:none}
+.drag-overlay.show{display:flex}
+.drag-overlay-text{font-size:22px;font-weight:800;color:var(--primary)}
+.hint{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5}
+/* SEO content */
+.seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
+.seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
+.seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
+.seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
+.faq-item{border-top:1px solid var(--border);padding:18px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-item h3{font-size:1.05em;font-weight:700;margin:0 0 8px;color:var(--text)}
+.faq-item p{margin:0;color:var(--text2);line-height:1.75}
+.why{background:var(--primary-light);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:46px}
+.why h2{margin-top:0;margin-bottom:10px}
+.why-lead{color:var(--text2);margin:0 0 20px;line-height:1.7}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.why-item{display:flex;align-items:flex-start;gap:10px;color:var(--text);line-height:1.5;font-weight:600;font-size:.95em}
+.why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
+@media(max-width:780px){.workspace{flex-direction:column}.panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);max-height:50vh}.content{min-height:50vh}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2" fill="#6366f1"/><path d="M8 7h8M8 11h8M8 15h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>Doctor PDF</a>
+  <div class="nav-sep"></div>
+  <div class="nav-privacy"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="T_privacyBadge">100% Private</span></div>
+  <button class="nav-btn" id="themeBtn" title="Theme"><svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg><svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+  <button class="nav-btn" id="langBtn"><span id="langLabel">AR</span></button>
+  <div class="tools-dd">
+    <button class="nav-btn" id="toolsBtn"><span id="T_allTools">Tools</span> ▾</button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html">Merge PDF</a><a href="split-pdf.html">Split PDF</a><a href="compress-pdf.html">Compress PDF</a>
+      <a href="rotate-pdf.html">Rotate PDF</a><a href="sign-pdf.html">Sign PDF</a><a href="protect-pdf.html">Protect PDF</a>
+      <a href="watermark-pdf.html">Watermark</a><a href="stamp-pdf.html">Stamp PDF</a><a href="image-to-pdf.html">Image to PDF</a>
+      <a href="pdf-to-image.html">PDF to Image</a><a href="extract-text.html">Extract Text</a><a href="convert-image.html">Convert Image</a>
+      <a href="remove-background.html">Remove BG</a><a href="ocr.html">OCR</a>
+    </div>
+  </div>
+</nav>
+
+<div class="workspace">
+  <div class="content">
+    <div class="dropzone" id="dropzone">
+      <div class="dz-ic">📝</div>
+      <div class="dz-main" id="T_dzMain">Click or drop a PDF to edit</div>
+      <div class="dz-sub" id="T_dzSub">Add text, draw, highlight, shapes, images — 100% in your browser</div>
+    </div>
+    <div class="viewer" id="viewer">
+      <div class="vtop">
+        <button class="z-btn" id="zoomOut">−</button>
+        <span class="zpct" id="zoomPct">100%</span>
+        <button class="z-btn" id="zoomIn">+</button>
+        <div class="vsep"></div>
+        <button class="z-btn" id="undoBtn" title="Undo">↶</button>
+        <button class="z-btn" id="redoBtn" title="Redo">↷</button>
+        <div class="vsep"></div>
+        <button class="z-btn" id="delBtn" title="Delete selected" style="color:var(--danger)">🗑</button>
+      </div>
+      <div class="pages-area" id="pagesArea"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="psec">
+      <a href="index.html" class="back-btn" id="T_back">← All tools</a>
+      <div class="tool-head">
+        <div class="tool-emoji">📝</div>
+        <div><div class="tool-name" id="T_toolName">Edit PDF</div><div class="tool-desc" id="T_toolDesc">Add text, draw, highlight & more</div></div>
+      </div>
+    </div>
+    <div class="psec">
+      <div class="plabel" id="T_toolsLabel">Tools</div>
+      <div class="tgrid" id="toolGrid"></div>
+      <div class="hint" id="T_hint">Pick a tool, then click or drag on the page. Use Select to move or resize items.</div>
+    </div>
+    <div class="psec" id="propSec" style="display:none">
+      <div class="plabel" id="T_propsLabel">Properties</div>
+      <div class="row" id="rowColor">
+        <label id="T_color">Color</label>
+        <div class="swatches" id="swatches"></div>
+      </div>
+      <div class="row" id="rowSize">
+        <label id="T_size">Size</label>
+        <input type="range" id="sizeRange" min="1" max="40" value="3">
+        <span id="sizeVal" style="font-size:12px;width:26px;text-align:end">3</span>
+      </div>
+      <div class="row" id="rowFont" style="display:none">
+        <label id="T_font">Font size</label>
+        <input type="range" id="fontRange" min="8" max="72" value="18">
+        <span id="fontVal" style="font-size:12px;width:26px;text-align:end">18</span>
+      </div>
+    </div>
+    <div class="psec">
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-lbl" id="progressLbl">Saving…</div>
+      </div>
+      <button class="btn-primary" id="saveBtn" disabled><span id="T_save">Download edited PDF</span></button>
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-title" id="T_resultTitle">✅ Done!</div>
+        <a class="btn-ok" id="downloadLink" href="#" download>📥 <span id="T_download">Download</span></a>
+      </div>
+      <button class="btn-ghost" id="resetBtn" style="display:none"><span id="T_reset">Edit another file</span></button>
+    </div>
+    <div class="psec">
+      <div class="privacy-note">
+        <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span id="T_privacy">All editing happens locally in your browser. Your file is never uploaded.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="seo-content">
+  <div class="why">
+    <h2 id="W_h2">Why choose Doctor PDF?</h2>
+    <p class="why-lead" id="W_lead">Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:</p>
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W1">No annoying ads — ever</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W2">No limits on file size or number of tasks</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W3">100% private — files never leave your device</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W4">Completely free — no sign-up required</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W5">Instant — runs right in your browser</span></div>
+    </div>
+  </div>
+  <h2 id="F_h2">How to edit a PDF online</h2>
+  <ol class="seo-steps">
+    <li id="F_s1">Open the Edit PDF tool and drop your PDF into the page.</li>
+    <li id="F_s2">Pick a tool — add text, draw, highlight, shapes, an image, whiteout or redact.</li>
+    <li id="F_s3">Click or drag on the page to apply it, then use Select to move or resize.</li>
+    <li id="F_s4">Download your edited PDF instantly — your file never leaves your device.</li>
+  </ol>
+  <h2 id="F_faqH">Frequently asked questions</h2>
+  <div class="faq-item"><h3 id="F_q1">Is editing a PDF free?</h3><p id="F_a1">Yes. Doctor PDF lets you edit PDFs 100% free with no limits, watermarks, or sign-up.</p></div>
+  <div class="faq-item"><h3 id="F_q2">Can I add text and draw on the PDF?</h3><p id="F_a2">Yes. Add text anywhere, draw freehand, highlight, add shapes and images, whiteout or redact areas.</p></div>
+  <div class="faq-item"><h3 id="F_q3">Are my files private?</h3><p id="F_a3">Completely. All editing happens locally in your browser — your file is never uploaded to any server.</p></div>
+  <div class="faq-item"><h3 id="F_q4">Can I edit the existing text in the PDF?</h3><p id="F_a4">You can cover existing content with whiteout and type new text on top. Editing the original text directly is not supported in the browser.</p></div>
+  <div class="faq-item"><h3 id="F_q5">Does it work on mobile?</h3><p id="F_a5">Yes, on any modern browser — phone, tablet, or computer.</p></div>
+</section>
+
+<input type="file" id="fileInput" accept=".pdf,application/pdf" style="display:none">
+<input type="file" id="imgInput" accept="image/*" style="display:none">
+<div class="toast-wrap" id="toastWrap"></div>
+<div class="drag-overlay" id="dragOverlay"><div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script>
+const LANGS={
+  en:{T_privacyBadge:'100% Private',T_allTools:'Tools',T_back:'← All tools',T_toolName:'Edit PDF',T_toolDesc:'Add text, draw, highlight & more',
+    T_dzMain:'Click or drop a PDF to edit',T_dzSub:'Add text, draw, highlight, shapes, images — 100% in your browser',
+    T_toolsLabel:'Tools',T_hint:'Pick a tool, then click or drag on the page. Use Select to move or resize items.',
+    T_propsLabel:'Properties',T_color:'Color',T_size:'Size',T_font:'Font size',
+    T_save:'Download edited PDF',T_resultTitle:'✅ Done!',T_download:'Download',T_reset:'Edit another file',
+    T_privacy:'All editing happens locally in your browser. Your file is never uploaded.',T_dropHere:'Drop PDF here',
+    tSelect:'Select',tText:'Text',tDraw:'Draw',tHighlight:'Highlight',tRect:'Rectangle',tLine:'Line',tImage:'Image',tWhite:'Whiteout',tRedact:'Redact',
+    W_h2:'Why choose Doctor PDF?',W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",
+    W1:'No annoying ads — ever',W2:'No limits on file size or number of tasks',W3:'100% private — files never leave your device',W4:'Completely free — no sign-up required',W5:'Instant — runs right in your browser',
+    F_h2:'How to edit a PDF online',F_s1:'Open the Edit PDF tool and drop your PDF into the page.',F_s2:'Pick a tool — add text, draw, highlight, shapes, an image, whiteout or redact.',F_s3:'Click or drag on the page to apply it, then use Select to move or resize.',F_s4:'Download your edited PDF instantly — your file never leaves your device.',
+    F_faqH:'Frequently asked questions',F_q1:'Is editing a PDF free?',F_a1:'Yes. Doctor PDF lets you edit PDFs 100% free with no limits, watermarks, or sign-up.',F_q2:'Can I add text and draw on the PDF?',F_a2:'Yes. Add text anywhere, draw freehand, highlight, add shapes and images, whiteout or redact areas.',F_q3:'Are my files private?',F_a3:'Completely. All editing happens locally in your browser — your file is never uploaded to any server.',F_q4:'Can I edit the existing text in the PDF?',F_a4:'You can cover existing content with whiteout and type new text on top. Editing the original text directly is not supported in the browser.',F_q5:'Does it work on mobile?',F_a5:'Yes, on any modern browser — phone, tablet, or computer.'},
+  ar:{T_privacyBadge:'خصوصية 100%',T_allTools:'الأدوات',T_back:'كل الأدوات ←',T_toolName:'تعديل PDF',T_toolDesc:'أضف نص، ارسم، ظلّل والمزيد',
+    T_dzMain:'اضغط أو أسقط ملف PDF للتعديل',T_dzSub:'أضف نص، ارسم، ظلّل، أشكال، صور — 100% في متصفحك',
+    T_toolsLabel:'الأدوات',T_hint:'اختر أداة، ثم اضغط أو اسحب على الصفحة. استخدم "تحديد" لتحريك أو تكبير العناصر.',
+    T_propsLabel:'الخصائص',T_color:'اللون',T_size:'الحجم',T_font:'حجم الخط',
+    T_save:'تحميل الملف المعدّل',T_resultTitle:'✅ تم!',T_download:'تحميل',T_reset:'تعديل ملف آخر',
+    T_privacy:'كل التعديل يتم داخل متصفحك. ملفك لا يُرفع أبداً.',T_dropHere:'أسقط ملف PDF هنا',
+    tSelect:'تحديد',tText:'نص',tDraw:'رسم',tHighlight:'تظليل',tRect:'مستطيل',tLine:'خط',tImage:'صورة',tWhite:'تغطية',tRedact:'إخفاء',
+    W_h2:'ليه تختار Doctor PDF؟',W_lead:'زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:',
+    W1:'بدون إعلانات مزعجة — نهائياً',W2:'بدون حدود على حجم الملف أو عدد العمليات',W3:'خصوصية 100% — ملفاتك لا تغادر جهازك',W4:'مجاني تماماً — بدون أي تسجيل',W5:'فوري — يعمل مباشرة في متصفحك',
+    F_h2:'كيفية تعديل ملف PDF أونلاين',F_s1:'افتح أداة تعديل PDF وأسقط ملفك في الصفحة.',F_s2:'اختر أداة — أضف نص، ارسم، ظلّل، أشكال، صورة، تغطية أو إخفاء.',F_s3:'اضغط أو اسحب على الصفحة لتطبيقها، ثم استخدم "تحديد" للتحريك أو التكبير.',F_s4:'حمّل ملفك المعدّل فوراً — ملفك لا يغادر جهازك أبداً.',
+    F_faqH:'الأسئلة الشائعة',F_q1:'هل تعديل PDF مجاني؟',F_a1:'نعم. يتيح لك Doctor PDF تعديل ملفات PDF مجاناً 100% بدون حدود أو علامة مائية أو تسجيل.',F_q2:'هل يمكنني إضافة نص والرسم على الملف؟',F_a2:'نعم. أضف نصاً في أي مكان، ارسم بحرية، ظلّل، أضف أشكالاً وصوراً، وغطِّ أو أخفِ أجزاء.',F_q3:'هل ملفاتي خاصة؟',F_a3:'تماماً. كل التعديل يتم داخل متصفحك — ملفك لا يُرفع أبداً إلى أي خادم.',F_q4:'هل يمكنني تعديل النص الموجود في الملف؟',F_a4:'يمكنك تغطية المحتوى الموجود بأداة Whiteout والكتابة فوقه. تعديل النص الأصلي مباشرةً غير مدعوم في المتصفح.',F_q5:'هل تعمل على الهاتف؟',F_a5:'نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر.'}
+};
+let lang=localStorage.getItem('dpdf_lang')||'en';
+function tr(k){return (LANGS[lang]||LANGS.en)[k]||k;}
+function applyLang(l){lang=l;const t=LANGS[l]||LANGS.en;document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';Object.keys(t).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t[id];});document.getElementById('langLabel').textContent=l==='ar'?'EN':'AR';buildToolGrid();}
+function applyTheme(dark){document.documentElement.setAttribute('data-theme',dark?'dark':'');document.getElementById('iconSun').style.display=dark?'none':'';document.getElementById('iconMoon').style.display=dark?'':'none';localStorage.setItem('dpdf_dark',dark?'1':'0');}
+
+/* ── editor state ── */
+const SVG={select:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 8-6 1.5L11 19 5 3z" stroke-linejoin="round"/></svg>',
+ text:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 6h14M9 6v13M15 6v13" stroke-linecap="round"/></svg>',
+ draw:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l4-1L19 8l-3-3L4 17l-1 4z" stroke-linejoin="round"/></svg>',
+ highlight:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16M6 16l8-8 4 4-8 8H6v-4z" stroke-linejoin="round"/></svg>',
+ rect:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>',
+ line:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20L20 4" stroke-linecap="round"/></svg>',
+ image:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 16l-5-5L5 20"/></svg>',
+ white:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="1" fill="#fff"/></svg>',
+ redact:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="1" fill="currentColor"/></svg>'};
+const TOOLS=[['select','tSelect','select'],['text','tText','text'],['draw','tDraw','draw'],['highlight','tHighlight','highlight'],['rect','tRect','rect'],['line','tLine','line'],['image','tImage','image'],['white','tWhite','white'],['redact','tRedact','redact']];
+const COLORS=['#ef4444','#f59e0b','#22c55e','#3b82f6','#6366f1','#000000','#ffffff','#a855f7'];
+let tool='select', curColor='#ef4444', curSize=3, curFont=18;
+let pdfBytes=null, pdfFile=null, pdfJsDoc=null, pages=[], zoom=1, dpr=Math.min(window.devicePixelRatio||1,2.5);
+let selected=null; /* {pi, idx} */
+let undoStack=[], redoStack=[];
+const ZOOM_STEPS=[0.5,0.67,0.75,1,1.25,1.5,2,2.5,3];
+
+function buildToolGrid(){
+  const g=document.getElementById('toolGrid'); g.innerHTML='';
+  TOOLS.forEach(([key,lbl,t])=>{
+    const b=document.createElement('button'); b.className='tbtn'+(tool===t?' active':''); b.dataset.tool=t;
+    b.innerHTML=SVG[key]+'<span>'+tr(lbl)+'</span>';
+    b.onclick=()=>setTool(t);
+    g.appendChild(b);
+  });
+}
+function setTool(t){
+  if(t==='image'){document.getElementById('imgInput').click();return;}
+  tool=t; deselect();
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('active',b.dataset.tool===t));
+  const showProps=t!=='select';
+  document.getElementById('propSec').style.display=showProps?'':'none';
+  document.getElementById('rowColor').style.display=(t==='white')?'none':'';
+  document.getElementById('rowSize').style.display=(t==='text'||t==='white'||t==='redact')?'none':'';
+  document.getElementById('rowFont').style.display=(t==='text')?'':'none';
+  pages.forEach(p=>{if(p.anno)p.anno.style.cursor=(t==='select')?'default':'crosshair';});
+}
+function buildSwatches(){
+  const w=document.getElementById('swatches'); w.innerHTML='';
+  COLORS.forEach(c=>{const d=document.createElement('div');d.className='sw'+(c===curColor?' active':'');d.style.background=c;if(c==='#ffffff')d.style.border='2px solid var(--border)';d.onclick=()=>{curColor=c;document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));d.classList.add('active');applyPropToSelected();};w.appendChild(d);});
+}
+
+/* ── load PDF ── */
+async function loadPDF(file){
+  if(!file||file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){showToast(tr('T_dzMain'),'error');return;}
+  pdfFile=file;
+  pdfBytes=new Uint8Array(await file.arrayBuffer());
+  try{pdfJsDoc=await pdfjsLib.getDocument({data:pdfBytes.slice(0)}).promise;}catch(e){showToast('Invalid PDF','error');return;}
+  pages=[];
+  for(let i=0;i<pdfJsDoc.numPages;i++){
+    const pg=await pdfJsDoc.getPage(i+1);
+    const vp=pg.getViewport({scale:1});
+    pages.push({pdfPage:pg,nativeW:vp.width,nativeH:vp.height,objects:[],base:null,anno:null,actx:null,wrap:null});
+  }
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('viewer').style.display='flex';
+  document.getElementById('saveBtn').disabled=false;
+  document.getElementById('resetBtn').style.display='';
+  setTool('select'); buildSwatches();
+  undoStack=[]; redoStack=[];
+  await renderPages();
+}
+function dispScale(p){return zoom*Math.min(900/p.nativeW,1.6);}
+async function renderPages(){
+  const area=document.getElementById('pagesArea'); area.innerHTML='';
+  for(let i=0;i<pages.length;i++){
+    const p=pages[i]; const ds=dispScale(p);
+    const wrap=document.createElement('div'); wrap.className='page-wrap';
+    const cssW=p.nativeW*ds, cssH=p.nativeH*ds;
+    wrap.style.width=cssW+'px'; wrap.style.height=cssH+'px';
+    const num=document.createElement('div'); num.className='page-num'; num.textContent=(i+1)+' / '+pages.length; wrap.appendChild(num);
+    const base=document.createElement('canvas'); base.className='base';
+    base.width=Math.round(cssW*dpr); base.height=Math.round(cssH*dpr); base.style.width=cssW+'px'; base.style.height=cssH+'px';
+    const vp=p.pdfPage.getViewport({scale:ds*dpr});
+    await p.pdfPage.render({canvasContext:base.getContext('2d'),viewport:vp}).promise;
+    wrap.appendChild(base);
+    const anno=document.createElement('canvas'); anno.className='anno';
+    anno.width=base.width; anno.height=base.height; anno.style.width=cssW+'px'; anno.style.height=cssH+'px';
+    wrap.appendChild(anno);
+    p.base=base; p.anno=anno; p.actx=anno.getContext('2d'); p.wrap=wrap; p.ds=ds;
+    attachPageEvents(p,i);
+    area.appendChild(wrap);
+    drawAnno(p);
+  }
+  setTool(tool);
+}
+
+/* ── coordinate helpers (native pdf coords, origin top-left) ── */
+function evtPos(p,e){const r=p.anno.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)/p.ds,y:(s.clientY-r.top)/p.ds};}
+
+/* ── drawing objects onto the annotation canvas ── */
+function drawAnno(p){
+  const ctx=p.actx, s=p.ds*dpr;
+  ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,p.anno.width,p.anno.height); ctx.scale(s,s);
+  p.objects.forEach(o=>drawObj(ctx,o));
+  if(selected&&pages[selected.pi]===p){drawHandles(ctx,p.objects[selected.idx]);}
+}
+function drawObj(ctx,o){
+  ctx.save();
+  if(o.type==='pen'){ctx.strokeStyle=o.color;ctx.lineWidth=o.size;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();o.pts.forEach((pt,i)=>{i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y);});ctx.stroke();}
+  else if(o.type==='line'){ctx.strokeStyle=o.color;ctx.lineWidth=o.size;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke();}
+  else if(o.type==='rect'){ctx.strokeStyle=o.color;ctx.lineWidth=o.size;ctx.strokeRect(o.x,o.y,o.w,o.h);}
+  else if(o.type==='highlight'){ctx.fillStyle=o.color;ctx.globalAlpha=.35;ctx.fillRect(o.x,o.y,o.w,o.h);}
+  else if(o.type==='white'){ctx.fillStyle='#ffffff';ctx.fillRect(o.x,o.y,o.w,o.h);}
+  else if(o.type==='redact'){ctx.fillStyle='#000000';ctx.fillRect(o.x,o.y,o.w,o.h);}
+  else if(o.type==='text'){ctx.fillStyle=o.color;ctx.font=o.size+'px '+(lang==='ar'?'Cairo':'Inter')+', sans-serif';ctx.textBaseline='top';ctx.direction=/[؀-ۿ]/.test(o.text)?'rtl':'ltr';o.text.split('\n').forEach((ln,i)=>ctx.fillText(ln,o.x,o.y+i*o.size*1.25));}
+  else if(o.type==='image'&&o.img){ctx.drawImage(o.img,o.x,o.y,o.w,o.h);}
+  ctx.restore();
+}
+function objBBox(o){
+  if(o.type==='pen'){let x1=1e9,y1=1e9,x2=-1e9,y2=-1e9;o.pts.forEach(p=>{x1=Math.min(x1,p.x);y1=Math.min(y1,p.y);x2=Math.max(x2,p.x);y2=Math.max(y2,p.y);});return{x:x1,y:y1,w:x2-x1,h:y2-y1};}
+  if(o.type==='line'){return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.abs(o.x2-o.x1),h:Math.abs(o.y2-o.y1)};}
+  if(o.type==='text'){const m=measureText(o);return{x:o.x,y:o.y,w:m.w,h:m.h};}
+  return{x:o.x,y:o.y,w:o.w,h:o.h};
+}
+function measureText(o){const c=document.createElement('canvas').getContext('2d');c.font=o.size+'px '+(lang==='ar'?'Cairo':'Inter')+', sans-serif';let w=0;const lines=o.text.split('\n');lines.forEach(ln=>{w=Math.max(w,c.measureText(ln).width);});return{w:Math.max(w,10),h:lines.length*o.size*1.25};}
+function drawHandles(ctx,o){
+  const b=objBBox(o);ctx.save();ctx.strokeStyle='#6366f1';ctx.lineWidth=1.2;ctx.setLineDash([4,3]);ctx.strokeRect(b.x-2,b.y-2,b.w+4,b.h+4);ctx.setLineDash([]);ctx.fillStyle='#6366f1';
+  const hs=getHandles(o);hs.forEach(h=>{ctx.fillRect(h.x-4,h.y-4,8,8);});ctx.restore();
+}
+function getHandles(o){
+  if(o.type==='line')return[{x:o.x1,y:o.y1,k:'p1'},{x:o.x2,y:o.y2,k:'p2'}];
+  if(o.type==='pen')return[];
+  const b=objBBox(o);return[{x:b.x+b.w,y:b.y+b.h,k:'se'}];
+}
+
+/* ── pointer interaction ── */
+let action=null; /* {mode:'draw'|'move'|'resize', ...} */
+function attachPageEvents(p,pi){
+  const dn=e=>{e.preventDefault();const pos=evtPos(p,e);
+    if(tool==='select'){
+      /* resize handle? */
+      if(selected&&selected.pi===pi){const o=p.objects[selected.idx];const h=getHandles(o).find(h=>Math.abs(h.x-pos.x)<8/p.ds&&Math.abs(h.y-pos.y)<8/p.ds);if(h){action={mode:'resize',pi,k:h.k,o};pushUndo();return;}}
+      /* hit object (topmost) */
+      let hit=-1;for(let i=p.objects.length-1;i>=0;i--){const b=objBBox(p.objects[i]);if(pos.x>=b.x-3&&pos.x<=b.x+b.w+3&&pos.y>=b.y-3&&pos.y<=b.y+b.h+3){hit=i;break;}}
+      if(hit>=0){selectObj(pi,hit);const o=p.objects[hit];action={mode:'move',pi,o,sx:pos.x,sy:pos.y,o0:JSON.parse(JSON.stringify(snap(o)))};pushUndo();}
+      else{deselect();}
+      drawAnno(p);return;
+    }
+    if(tool==='text'){addText(p,pi,pos);return;}
+    pushUndo();
+    if(tool==='draw'){const o={type:'pen',color:curColor,size:curSize,pts:[pos]};p.objects.push(o);action={mode:'draw',pi,o};}
+    else if(tool==='line'){const o={type:'line',color:curColor,size:curSize,x1:pos.x,y1:pos.y,x2:pos.x,y2:pos.y};p.objects.push(o);action={mode:'resize',pi,k:'p2',o};}
+    else{const type=tool;const o={type,color:curColor,size:curSize,x:pos.x,y:pos.y,w:1,h:1};p.objects.push(o);action={mode:'resize',pi,k:'se',o,anchorX:pos.x,anchorY:pos.y};}
+    drawAnno(p);
+  };
+  const mv=e=>{if(!action||action.pi!==pi)return;e.preventDefault();const pos=evtPos(p,e);const o=action.o;
+    if(action.mode==='draw'){o.pts.push(pos);}
+    else if(action.mode==='move'){const dx=pos.x-action.sx,dy=pos.y-action.sy;moveObj(o,action.o0,dx,dy);}
+    else if(action.mode==='resize'){
+      if(o.type==='line'){if(action.k==='p1'){o.x1=pos.x;o.y1=pos.y;}else{o.x2=pos.x;o.y2=pos.y;}}
+      else if(o.type==='text'){o.size=Math.max(8,o.size+(pos.y-(o.y+measureText(o).h))*0.4);}
+      else{o.w=Math.max(4,pos.x-o.x);o.h=Math.max(4,pos.y-o.y);}
+    }
+    drawAnno(p);
+  };
+  const up=()=>{if(action&&action.mode==='draw'&&action.o.pts.length<2){/* keep dot */}action=null;};
+  p.anno.addEventListener('pointerdown',dn);
+  p.anno.addEventListener('pointermove',mv);
+  window.addEventListener('pointerup',up);
+}
+function snap(o){const c={...o};delete c.img;return c;}
+function moveObj(o,o0,dx,dy){
+  if(o.type==='pen'){o.pts=o0.pts.map(pt=>({x:pt.x+dx,y:pt.y+dy}));}
+  else if(o.type==='line'){o.x1=o0.x1+dx;o.y1=o0.y1+dy;o.x2=o0.x2+dx;o.y2=o0.y2+dy;}
+  else{o.x=o0.x+dx;o.y=o0.y+dy;}
+}
+function selectObj(pi,idx){selected={pi,idx};
+  const o=pages[pi].objects[idx];
+  document.getElementById('propSec').style.display='';
+  document.getElementById('rowFont').style.display=o.type==='text'?'':'none';
+  document.getElementById('rowSize').style.display=(o.type==='rect'||o.type==='line'||o.type==='pen')?'':'none';
+  document.getElementById('rowColor').style.display=(o.type==='white'||o.type==='redact')?'none':'';
+}
+function deselect(){if(selected){const p=pages[selected.pi];selected=null;if(p)drawAnno(p);}}
+function applyPropToSelected(){if(!selected)return;const o=pages[selected.pi].objects[selected.idx];if('color'in o&&o.type!=='white'&&o.type!=='redact')o.color=curColor;drawAnno(pages[selected.pi]);}
+function delSelected(){if(!selected)return;pushUndo();pages[selected.pi].objects.splice(selected.idx,1);const p=pages[selected.pi];selected=null;drawAnno(p);}
+
+/* ── add text via input overlay ── */
+function addText(p,pi,pos){
+  const inp=document.createElement('textarea');inp.className='text-input';inp.rows=1;
+  inp.style.insetInlineStart=(pos.x*p.ds)+'px';inp.style.top=(pos.y*p.ds)+'px';inp.style.fontSize=(curFont*p.ds)+'px';inp.style.color=curColor;
+  p.wrap.appendChild(inp);inp.focus();
+  const commit=()=>{const v=inp.value.trim();inp.remove();if(v){pushUndo();p.objects.push({type:'text',text:v,x:pos.x,y:pos.y,size:curFont,color:curColor});drawAnno(p);}};
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();inp.blur();}if(ev.key==='Escape'){inp.value='';inp.blur();}});
+  inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=inp.scrollHeight+'px';});
+}
+
+/* ── image ── */
+document.getElementById('imgInput')?.addEventListener('change',function(){
+  const f=this.files[0];this.value='';if(!f||!pages.length)return;
+  const rd=new FileReader();rd.onload=()=>{const img=new Image();img.onload=()=>{const p=pages[0];const maxW=p.nativeW*0.4;let w=img.width,h=img.height;if(w>maxW){h=h*maxW/w;w=maxW;}pushUndo();p.objects.push({type:'image',img,dataUrl:rd.result,x:p.nativeW*0.1,y:p.nativeH*0.1,w,h});setTool('select');selectObj(0,p.objects.length-1);drawAnno(p);showToast(tr('tImage')+' ✓');};img.src=rd.result;};rd.readAsDataURL(f);
+});
+
+/* ── undo / redo ── */
+function serialize(){return pages.map(p=>p.objects.map(o=>{const c={...o};if(o.img)c.dataUrl=o.dataUrl;delete c.img;return c;}));}
+function pushUndo(){undoStack.push(serialize());if(undoStack.length>40)undoStack.shift();redoStack=[];}
+function restore(state){
+  pages.forEach((p,i)=>{p.objects=(state[i]||[]).map(o=>{const c={...o};if(c.type==='image'&&c.dataUrl){const img=new Image();img.src=c.dataUrl;c.img=img;img.onload=()=>drawAnno(p);}return c;});});
+  selected=null;pages.forEach(drawAnno);
+}
+function undo(){if(!undoStack.length)return;redoStack.push(serialize());restore(undoStack.pop());}
+function redo(){if(!redoStack.length)return;undoStack.push(serialize());restore(redoStack.pop());}
+
+/* ── zoom ── */
+async function setZoom(v){zoom=Math.max(0.5,Math.min(3,v));document.getElementById('zoomPct').textContent=Math.round(zoom*100)+'%';if(pages.length)await renderPages();}
+function zoomStep(d){if(d>0){const n=ZOOM_STEPS.find(z=>z>zoom+.01);setZoom(n||3);}else{let pr=.5;ZOOM_STEPS.forEach(z=>{if(z<zoom-.01)pr=z;});setZoom(pr);}}
+
+/* ── export (rasterize each page + annotations into a new PDF) ── */
+async function doSave(){
+  if(!pages.length)return;
+  deselect();
+  const pw=document.getElementById('progressWrap');pw.style.display='block';
+  document.getElementById('saveBtn').disabled=true;
+  try{
+    const out=await PDFLib.PDFDocument.create();
+    const ES=2; /* export resolution multiplier */
+    for(let i=0;i<pages.length;i++){
+      const p=pages[i];setProgress(Math.round(i/pages.length*90),tr('T_save')+' '+(i+1)+'/'+pages.length);
+      const cw=Math.round(p.nativeW*ES), ch=Math.round(p.nativeH*ES);
+      const cv=document.createElement('canvas');cv.width=cw;cv.height=ch;const cx=cv.getContext('2d');
+      const vp=p.pdfPage.getViewport({scale:ES});
+      await p.pdfPage.render({canvasContext:cx,viewport:vp}).promise;
+      cx.save();cx.scale(ES,ES);p.objects.forEach(o=>drawObj(cx,o));cx.restore();
+      const png=await new Promise(res=>cv.toBlob(b=>res(b),'image/png'));
+      const bytes=new Uint8Array(await png.arrayBuffer());
+      const emb=await out.embedPng(bytes);
+      const page=out.addPage([p.nativeW,p.nativeH]);
+      page.drawImage(emb,{x:0,y:0,width:p.nativeW,height:p.nativeH});
+    }
+    setProgress(96,tr('T_save'));
+    const bytes=await out.save();
+    const blob=new Blob([bytes],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.getElementById('downloadLink');a.href=url;a.download=(pdfFile.name.replace(/\.pdf$/i,'')||'document')+'-edited.pdf';
+    document.getElementById('resultWrap').style.display='block';
+    a.style.display='block';
+    setProgress(100,tr('T_resultTitle'));
+    gtag('event','edit_pdf');
+    setTimeout(()=>{pw.style.display='none';},600);
+    document.body.appendChild(a);a.click();
+    document.getElementById('saveBtn').disabled=false;
+  }catch(e){showToast('Error: '+(e.message||e),'error');document.getElementById('saveBtn').disabled=false;pw.style.display='none';}
+}
+function setProgress(pct,msg){document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressLbl').textContent=msg;}
+
+function resetTool(){
+  if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
+  pdfJsDoc=null;pdfFile=null;pdfBytes=null;pages=[];zoom=1;selected=null;undoStack=[];redoStack=[];
+  document.getElementById('fileInput').value='';
+  document.getElementById('dropzone').classList.remove('hidden');
+  document.getElementById('viewer').style.display='none';
+  document.getElementById('pagesArea').innerHTML='';
+  document.getElementById('saveBtn').disabled=true;
+  document.getElementById('resetBtn').style.display='none';
+  document.getElementById('resultWrap').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('zoomPct').textContent='100%';
+}
+function showToast(msg,type){const w=document.getElementById('toastWrap');const t=document.createElement('div');t.className='toast'+(type==='error'?' error':'');t.textContent=msg;w.appendChild(t);setTimeout(()=>t.remove(),3500);}
+
+/* ── boot ── */
+function boot(){
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  applyTheme(localStorage.getItem('dpdf_dark')==='1');
+  applyLang(lang);
+  buildSwatches();
+  const fi=document.getElementById('fileInput');
+  fi.onchange=function(){if(this.files&&this.files[0])loadPDF(this.files[0]);};
+  document.getElementById('dropzone').onclick=()=>fi.click();
+  document.getElementById('saveBtn').onclick=doSave;
+  document.getElementById('resetBtn').onclick=resetTool;
+  document.getElementById('zoomIn').onclick=()=>zoomStep(1);
+  document.getElementById('zoomOut').onclick=()=>zoomStep(-1);
+  document.getElementById('undoBtn').onclick=undo;
+  document.getElementById('redoBtn').onclick=redo;
+  document.getElementById('delBtn').onclick=delSelected;
+  document.getElementById('sizeRange').oninput=function(){curSize=+this.value;document.getElementById('sizeVal').textContent=this.value;if(selected){const o=pages[selected.pi].objects[selected.idx];if('size'in o&&o.type!=='text'){o.size=curSize;drawAnno(pages[selected.pi]);}}};
+  document.getElementById('fontRange').oninput=function(){curFont=+this.value;document.getElementById('fontVal').textContent=this.value;if(selected){const o=pages[selected.pi].objects[selected.idx];if(o.type==='text'){o.size=curFont;drawAnno(pages[selected.pi]);}}};
+  /* nav */
+  document.getElementById('themeBtn').onclick=()=>applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');
+  document.getElementById('langBtn').onclick=()=>{const nl=lang==='en'?'ar':'en';localStorage.setItem('dpdf_lang',nl);applyLang(nl);buildSwatches();if(pages.length)pages.forEach(drawAnno);};
+  document.getElementById('toolsBtn').onclick=e=>{e.stopPropagation();document.getElementById('toolsMenu').classList.toggle('open');};
+  document.addEventListener('click',()=>document.getElementById('toolsMenu').classList.remove('open'));
+  document.addEventListener('keydown',e=>{if((e.key==='Delete'||e.key==='Backspace')&&selected&&document.activeElement.tagName!=='TEXTAREA'){delSelected();}if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo();}if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))){e.preventDefault();redo();}});
+  /* drag & drop */
+  const ov=document.getElementById('dragOverlay');
+  document.body.addEventListener('dragover',e=>{e.preventDefault();ov.classList.add('show');});
+  document.body.addEventListener('dragleave',e=>{if(!e.relatedTarget||e.relatedTarget===document.documentElement)ov.classList.remove('show');});
+  document.body.addEventListener('drop',e=>{e.preventDefault();ov.classList.remove('show');const f=Array.from(e.dataTransfer.files||[]).find(f=>f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'));if(f)loadPDF(f);});
+}
+boot();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
+</body>
+</html>
