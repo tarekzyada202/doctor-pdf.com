@@ -255,30 +255,30 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_allTools">All Tools</span>
+      <span id="T_allTools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="sign-pdf.html"><span id="T_sign">Sign PDF</span></a>
-      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="watermark-pdf.html"><span id="T_watermark">Watermark</span></a>
-      <a href="stamp-pdf.html" style="color:var(--p)"><span id="T_stamp">Stamp PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
-      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
-      <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="sign-pdf.html"><span id="T_sign">توقيع PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="stamp-pdf.html" style="color:var(--p)"><span id="T_stamp">ختم PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
+      <a href="convert-image.html"><span id="T_convert">تحويل صورة</span></a>
+      <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
   <div class="nav-privacy">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -286,7 +286,7 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">عربي</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -296,7 +296,7 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
   <!-- THUMBNAIL SIDEBAR (Adobe-style) -->
   <div class="thumb-sidebar open" id="thumbSidebar">
     <div class="thumb-sidebar-header">
-      <span class="thumb-sidebar-title" id="T_thumbTitle">Pages</span>
+      <span class="thumb-sidebar-title" id="T_thumbTitle">الصفحات</span>
       <span class="thumb-sidebar-count" id="thumbCount">0</span>
     </div>
     <div class="thumb-list" id="thumbList"></div>
@@ -310,7 +310,7 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
       <!-- Toggle thumbnail sidebar -->
       <button class="zt-btn" onclick="toggleThumbSidebar()" title="Toggle pages panel" id="thumbToggleBtn">☰</button>
       <div class="zt-sep"></div>
-      <span class="zt-label" id="T_zoom">Zoom:</span>
+      <span class="zt-label" id="T_zoom">تكبير:</span>
       <button class="zt-btn" onclick="zoomOut()">−</button>
       <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="Click to fit width">100%</span>
       <button class="zt-btn" onclick="zoomIn()">+</button>
@@ -323,8 +323,8 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
 
     <div class="empty-state" id="emptyState">
       <span class="empty-ic">📋</span>
-      <span class="empty-main" id="T_dropMain">Click or drop a PDF file here</span>
-      <span class="empty-sub" id="T_dropSub">Your file never leaves your browser</span>
+      <span class="empty-main" id="T_dropMain">اضغط هنا أو اسحب ملف PDF</span>
+      <span class="empty-sub" id="T_dropSub">ملفك يبقى في متصفحك دائماً</span>
     </div>
     <div class="pages-area" id="pagesArea" style="display:none"></div>
   </div>
@@ -334,47 +334,47 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
 
     <!-- SECTION: Header -->
     <div class="panel-section">
-      <a href="index.html" class="back-btn" id="T_back">← All tools</a>
+      <a href="index.html" class="back-btn" id="T_back">كل الأدوات ←</a>
       <div class="tool-header">
         <div class="tool-emoji">📋</div>
         <div class="tool-info">
-          <div class="tool-name" id="T_toolName">Stamp PDF</div>
-          <div class="tool-desc" id="T_toolDesc">Choose a stamp then click any page to place it</div>
+          <div class="tool-name" id="T_toolName">ختم PDF</div>
+          <div class="tool-desc" id="T_toolDesc">اختر ختماً ثم اضغط على أي صفحة لوضعه</div>
         </div>
       </div>
     </div>
 
     <!-- SECTION: PDF Upload -->
     <div class="panel-section">
-      <div class="label" id="T_pdfLabel">PDF File</div>
+      <div class="label" id="T_pdfLabel">ملف PDF</div>
       <div class="upload-zone" id="pdfZone">
         <span class="uz-icon">📄</span>
-        <div class="uz-main" id="T_pdfBtn">Click or drop PDF here</div>
-        <div class="uz-sub" id="T_pdfSub">Any PDF — processed locally</div>
+        <div class="uz-main" id="T_pdfBtn">اضغط أو اسحب PDF هنا</div>
+        <div class="uz-sub" id="T_pdfSub">أي PDF — معالجة محلية</div>
       </div>
     </div>
 
     <!-- SECTION: Stamp Type -->
     <div class="panel-section">
       <div class="sec-header">
-        <span class="sec-title" id="T_stampType">Stamp Type</span>
+        <span class="sec-title" id="T_stampType">نوع الختم</span>
       </div>
       <div class="tab-row">
-        <button class="tab-btn active" id="tabPreset" onclick="switchTab('preset')"><span id="T_tabPreset">Preset</span></button>
-        <button class="tab-btn" id="tabImage"  onclick="switchTab('image')"><span id="T_tabImage">Image</span></button>
-        <button class="tab-btn" id="tabText"   onclick="switchTab('text')"><span id="T_tabText">Text</span></button>
+        <button class="tab-btn active" id="tabPreset" onclick="switchTab('preset')"><span id="T_tabPreset">جاهز</span></button>
+        <button class="tab-btn" id="tabImage"  onclick="switchTab('image')"><span id="T_tabImage">صورة</span></button>
+        <button class="tab-btn" id="tabText"   onclick="switchTab('text')"><span id="T_tabText">نص</span></button>
       </div>
 
       <!-- SEC: PRESET -->
       <div id="secPreset">
-        <div class="label" id="T_colorLabel">Color</div>
+        <div class="label" id="T_colorLabel">اللون</div>
         <div class="color-row" id="colorRowPreset"></div>
-        <div class="label" id="T_opLabel">Opacity</div>
+        <div class="label" id="T_opLabel">الشفافية</div>
         <div class="slider-row">
           <input type="range" id="slOpPreset" min="20" max="100" value="70">
           <span class="slider-val" id="valOpPreset">70%</span>
         </div>
-        <div class="hint-box">👆 <span id="T_hint">Click a stamp below, then click on a page</span></div>
+        <div class="hint-box">👆 <span id="T_hint">اضغط على ختم أدناه ثم اضغط على الصفحة</span></div>
         <div class="presets-grid" id="presetsGrid"></div>
       </div>
 
@@ -382,44 +382,44 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
       <div id="secImage" style="display:none">
         <div class="upload-zone" id="imgZone" style="margin-bottom:7px">
           <span class="uz-icon">🖼️</span>
-          <div class="uz-main" id="T_imgBtn">Click or drop image</div>
-          <div class="uz-sub" id="T_imgSub">PNG with transparent BG works best</div>
+          <div class="uz-main" id="T_imgBtn">اضغط أو اسحب صورة</div>
+          <div class="uz-sub" id="T_imgSub">PNG بخلفية شفافة يعطي أفضل نتيجة</div>
         </div>
         <div class="img-prev-wrap" id="imgPrev"><img id="imgPrevEl" src="" alt="stamp"></div>
         <div id="bgSection" style="display:none">
-          <div class="label" id="T_bgLabel">BG removal threshold</div>
+          <div class="label" id="T_bgLabel">حساسية إزالة الخلفية</div>
           <div class="slider-row">
             <input type="range" id="slBG" min="5" max="100" value="25">
             <span class="slider-val" id="valBG">25</span>
           </div>
-          <button class="btn-outline" onclick="doRemoveBG()"><span id="T_applyBG">Remove Background</span></button>
+          <button class="btn-outline" onclick="doRemoveBG()"><span id="T_applyBG">إزالة الخلفية</span></button>
         </div>
-        <div class="label" id="T_imgOpLabel">Opacity</div>
+        <div class="label" id="T_imgOpLabel">الشفافية</div>
         <div class="slider-row">
           <input type="range" id="slOpImage" min="20" max="100" value="90">
           <span class="slider-val" id="valOpImage">90%</span>
         </div>
-        <button class="btn-outline" id="placeImgBtn" style="display:none" onclick="beginPlacing()"><span id="T_placeImg">📍 Click a page to place stamp</span></button>
+        <button class="btn-outline" id="placeImgBtn" style="display:none" onclick="beginPlacing()"><span id="T_placeImg">📍 اضغط على صفحة لوضع الختم</span></button>
       </div>
 
       <!-- SEC: TEXT -->
       <div id="secText" style="display:none">
-        <div class="label" id="T_textLabel">Stamp Text</div>
+        <div class="label" id="T_textLabel">نص الختم</div>
         <input type="text" class="text-field" id="textInput" placeholder="e.g. APPROVED" maxlength="16" spellcheck="false">
-        <div class="label" id="T_textColorLabel">Color</div>
+        <div class="label" id="T_textColorLabel">اللون</div>
         <div class="color-row" id="colorRowText"></div>
-        <div class="label" id="T_textOpLabel">Opacity</div>
+        <div class="label" id="T_textOpLabel">الشفافية</div>
         <div class="slider-row">
           <input type="range" id="slOpText" min="20" max="100" value="70">
           <span class="slider-val" id="valOpText">70%</span>
         </div>
-        <button class="btn-outline" id="placeTextBtn" disabled onclick="beginPlacing()"><span id="T_placeText">📍 Click page to place</span></button>
+        <button class="btn-outline" id="placeTextBtn" disabled onclick="beginPlacing()"><span id="T_placeText">📍 اضغط على صفحة</span></button>
       </div>
     </div>
 
     <!-- SECTION: Size & Clone -->
     <div class="panel-section">
-      <div class="label" id="T_sizeLabel">Stamp Size</div>
+      <div class="label" id="T_sizeLabel">حجم الختم</div>
       <div class="slider-row">
         <input type="range" id="slSize" min="5" max="65" value="22">
         <span class="slider-val" id="valSize">22%</span>
@@ -427,29 +427,29 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
 
       <!-- CLONE BOX -->
       <div class="clone-box" id="cloneBox" style="display:none">
-        <div class="clone-title" id="T_cloneTitle">📋 Apply this stamp to all pages?</div>
-        <div class="clone-sub" id="T_cloneSub">Same position &amp; size will be copied to every page</div>
+        <div class="clone-title" id="T_cloneTitle">📋 تطبيق هذا الختم على كل الصفحات؟</div>
+        <div class="clone-sub" id="T_cloneSub">سيتم نسخ نفس الموضع والحجم على كل صفحة</div>
         <div class="clone-preview" id="clonePreview"></div>
         <button class="clone-btn" id="cloneBtn" onclick="cloneStampToAll()">
-          <span id="T_cloneBtn">✅ Yes — apply to all pages</span>
+          <span id="T_cloneBtn">✅ نعم — تطبيق على كل الصفحات</span>
         </button>
         <button class="clone-skip" onclick="hideCloneBox()">
-          <span id="T_cloneSkip">No thanks, keep as is</span>
+          <span id="T_cloneSkip">لا شكراً، إبقَ كما هو</span>
         </button>
       </div>
 
       <button class="btn-outline" id="allPagesBtn" disabled onclick="applyToAll()">
-        <span id="T_allPages">⬛ Place stamp on all pages</span>
+        <span id="T_allPages">⬛ وضع ختم على كل الصفحات</span>
       </button>
     </div>
 
     <!-- SECTION: Actions -->
     <div class="panel-section">
-      <div class="kb-hint" id="T_kbHint">Ctrl+Z undo · Del remove stamp · Esc cancel</div>
+      <div class="kb-hint" id="T_kbHint">Ctrl+C/X/V نسخ·قص·لصق · Ctrl+Z تراجع · Del حذف · Esc إلغاء</div>
       <div class="btn-sm-row">
-        <button class="btn-sm" id="undoBtn" disabled onclick="doUndo()"><span id="T_undo">↩ Undo</span></button>
-        <button class="btn-sm" id="clearBtn" onclick="clearAll()"><span id="T_clear">🗑 Clear</span></button>
-        <button class="btn-sm" id="delBtn" style="border-color:var(--err);color:var(--err)" onclick="deleteSelected()"><span id="T_del">✕ Del</span></button>
+        <button class="btn-sm" id="undoBtn" disabled onclick="doUndo()"><span id="T_undo">↩ تراجع</span></button>
+        <button class="btn-sm" id="clearBtn" onclick="clearAll()"><span id="T_clear">🗑 مسح</span></button>
+        <button class="btn-sm" id="delBtn" style="border-color:var(--err);color:var(--err)" onclick="deleteSelected()"><span id="T_del">✕ حذف</span></button>
       </div>
     </div>
 
@@ -460,12 +460,12 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
         <div class="progress-txt" id="progressTxt">Processing…</div>
       </div>
       <button class="btn-primary" id="applyBtn" disabled onclick="doApply()">
-        <span id="T_applyBtn">Apply Stamps &amp; Download</span>
+        <span id="T_applyBtn">تطبيق الأختام وتحميل</span>
       </button>
       <div class="result-wrap" id="resultWrap">
-        <div class="result-title" id="T_resultTitle">✅ Stamps applied!</div>
+        <div class="result-title" id="T_resultTitle">✅ تم تطبيق الأختام!</div>
         <a class="download-link" id="downloadLink" href="#" download>📥 Download</a>
-        <button class="again-btn" onclick="resetAll()"><span id="T_again">Stamp another file</span></button>
+        <button class="again-btn" onclick="resetAll()"><span id="T_again">ختم ملف آخر</span></button>
       </div>
     </div>
 

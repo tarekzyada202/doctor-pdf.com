@@ -190,30 +190,30 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn" aria-expanded="false">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html" style="color:var(--primary)"><span id="T_compress">Compress PDF</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="sign-pdf.html"><span id="T_sign">Sign PDF</span></a>
-      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="watermark-pdf.html"><span id="T_watermark">Watermark</span></a>
-      <a href="stamp-pdf.html"><span id="T_stamp">Stamp PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
-      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
-      <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html" style="color:var(--primary)"><span id="T_compress">ضغط PDF</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="sign-pdf.html"><span id="T_sign">توقيع PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="stamp-pdf.html"><span id="T_stamp">ختم PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
+      <a href="convert-image.html"><span id="T_convert">تحويل الصور</span></a>
+      <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
   <div class="nav-privacy" title="All processing in your browser — files never leave your device">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -221,7 +221,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -235,10 +235,10 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 20l4-4 4 4M15 16v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Compress PDF File</div>
-        <div class="drop-sub" id="T_dropSub">Drop a PDF file here, or click to browse. Your file never leaves your browser — 100% private.</div>
+        <div class="drop-title" id="T_dropTitle">ضغط ملف PDF</div>
+        <div class="drop-sub" id="T_dropSub">اسحب ملف PDF هنا، أو اضغط للاختيار. ملفك لا يغادر متصفحك — خصوصية كاملة.</div>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر ملف PDF</span></button>
     </div>
 
     <!-- Result area (shown after file loaded) -->
@@ -251,35 +251,35 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         </div>
         <span class="file-bar-name" id="fileName">document.pdf</span>
         <span class="file-bar-size" id="fileSize">—</span>
-        <button class="file-bar-change" id="changeFileBtn"><span id="T_changeFile">Change</span></button>
+        <button class="file-bar-change" id="changeFileBtn"><span id="T_changeFile">تغيير</span></button>
       </div>
 
       <!-- Stats -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-label" id="T_origLabel">Original</div>
+          <div class="stat-label" id="T_origLabel">الأصل</div>
           <div class="stat-value" id="statOrig">—</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label" id="T_compLabel">Compressed</div>
+          <div class="stat-label" id="T_compLabel">بعد الضغط</div>
           <div class="stat-value" id="statComp">—</div>
         </div>
         <div class="stat-card highlight">
-          <div class="stat-label" id="T_savedLabel">Saved</div>
+          <div class="stat-label" id="T_savedLabel">الوفر</div>
           <div class="stat-value" id="statSaved">—</div>
         </div>
       </div>
 
       <!-- Visual comparison bar -->
       <div class="visual-bar-wrap" id="visualBar" style="display:none">
-        <div class="visual-bar-title" id="T_visualTitle">Size Comparison</div>
+        <div class="visual-bar-title" id="T_visualTitle">مقارنة الحجم</div>
         <div class="bar-row">
-          <span class="bar-lbl" id="T_barOrig">Original</span>
+          <span class="bar-lbl" id="T_barOrig">الأصل</span>
           <div class="bar-outer"><div class="bar-inner-orig" id="barOrig"></div></div>
           <span class="bar-val orig" id="barOrigVal">—</span>
         </div>
         <div class="bar-row">
-          <span class="bar-lbl" id="T_barComp">Compressed</span>
+          <span class="bar-lbl" id="T_barComp">بعد الضغط</span>
           <div class="bar-outer"><div class="bar-inner-comp" id="barComp"></div></div>
           <span class="bar-val comp" id="barCompVal">—</span>
         </div>
@@ -288,7 +288,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
       <!-- Already optimal warning -->
       <div class="already-optimal" id="alreadyOptimal">
         <svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 4.5H14l-3.5 2.5L12 14 8 11l-4 3 1.5-5L2 6.5h4.5L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-        <span id="T_alreadyOptimal">This file is already optimised — no further compression possible.</span>
+        <span id="T_alreadyOptimal">هذا الملف محسّن بالفعل — لا يمكن ضغطه أكثر.</span>
       </div>
     </div>
   </div>
@@ -296,31 +296,31 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_levelTitle">Compression Level</div>
+      <div class="panel-section-title" id="T_levelTitle">مستوى الضغط</div>
       <div class="level-list">
         <div class="level-opt" id="lvl-light" data-level="light">
           <div class="level-radio"></div>
           <div class="level-info">
-            <div class="level-name" id="T_lvlLightName">High Quality</div>
-            <div class="level-desc" id="T_lvlLightDesc">Gentle compression, best visuals</div>
+            <div class="level-name" id="T_lvlLightName">جودة عالية</div>
+            <div class="level-desc" id="T_lvlLightDesc">ضغط خفيف، أفضل جودة بصرية</div>
           </div>
-          <span class="level-badge badge-light" id="T_lvlLightBadge">~30%</span>
+          <span class="level-badge badge-light" id="T_lvlLightBadge">~٣٠٪</span>
         </div>
         <div class="level-opt active" id="lvl-balanced" data-level="balanced">
           <div class="level-radio"></div>
           <div class="level-info">
-            <div class="level-name" id="T_lvlBalName">Balanced</div>
-            <div class="level-desc" id="T_lvlBalDesc">Recommended for most files</div>
+            <div class="level-name" id="T_lvlBalName">متوازن</div>
+            <div class="level-desc" id="T_lvlBalDesc">موصى به لمعظم الملفات</div>
           </div>
-          <span class="level-badge badge-mid" id="T_lvlBalBadge">~50%</span>
+          <span class="level-badge badge-mid" id="T_lvlBalBadge">~٥٠٪</span>
         </div>
         <div class="level-opt" id="lvl-max" data-level="max">
           <div class="level-radio"></div>
           <div class="level-info">
-            <div class="level-name" id="T_lvlMaxName">Maximum</div>
-            <div class="level-desc" id="T_lvlMaxDesc">Smallest size, lower quality</div>
+            <div class="level-name" id="T_lvlMaxName">أقصى ضغط</div>
+            <div class="level-desc" id="T_lvlMaxDesc">أصغر حجم، جودة أقل</div>
           </div>
-          <span class="level-badge badge-max" id="T_lvlMaxBadge">~70%</span>
+          <span class="level-badge badge-max" id="T_lvlMaxBadge">~٧٠٪</span>
         </div>
       </div>
     </div>
@@ -328,14 +328,14 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     <div class="panel-section">
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_infoBox">Uses dual-strategy compression: structure optimisation + image resampling. Always picks the smallest result.</span>
+        <span id="T_infoBox">يستخدم استراتيجيتين للضغط: تحسين البنية + إعادة أخذ عينات الصور. دائماً يختار الأصغر.</span>
       </div>
     </div>
 
     <div class="panel-section">
       <div class="info-box" style="background:var(--success-light);border-color:var(--success);color:var(--success)">
         <svg viewBox="0 0 14 14" fill="none"><path d="M7 1l3.5 1.3v2.7C10.5 8 7 10.5 7 10.5S3.5 8 3.5 5V2.3L7 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-        <span id="T_privacyInfo">All processing happens locally in your browser. No files are ever uploaded to any server.</span>
+        <span id="T_privacyInfo">كل المعالجة تتم محلياً في متصفحك. لا تُرفع أي ملفات إلى أي خادم.</span>
       </div>
     </div>
 
@@ -346,13 +346,13 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
       </div>
       <button class="compress-btn" id="compressBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 3v9M6 9l3 3 3-3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M3 14h12" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_compressBtn">Compress PDF</span>
+        <span id="T_compressBtn">ضغط الملف</span>
       </button>
       <a class="download-btn" id="downloadBtn" href="#" download>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_downloadBtn">Download Compressed PDF</span>
+        <span id="T_downloadBtn">تحميل الملف المضغوط</span>
       </a>
-      <button class="reset-btn" id="resetBtn"><span id="T_resetBtn">Compress another file</span></button>
+      <button class="reset-btn" id="resetBtn"><span id="T_resetBtn">ضغط ملف آخر</span></button>
     </div>
   </aside>
 </div>
@@ -360,7 +360,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M24 18v12M20 26l4 4 4-4" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت PDF هنا</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>

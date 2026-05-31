@@ -178,19 +178,19 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn" aria-expanded="false">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="watermark-pdf.html"><span id="T_watermark">Watermark PDF</span></a>
-      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
       <a href="ocr.html" style="color:var(--primary)"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
@@ -198,7 +198,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -206,7 +206,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -220,10 +220,10 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
         <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="22" rx="3" stroke="currentColor" stroke-width="2"/><path d="M4 22l7-6 5 4 6-7 8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13" cy="13" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Extract Text with OCR</div>
-        <div class="drop-sub" id="T_dropSub">Drag &amp; drop an image or scanned PDF here, or click to browse. OCR runs entirely in your browser — no upload, 100% private.</div>
+        <div class="drop-title" id="T_dropTitle">استخراج النص بتقنية OCR</div>
+        <div class="drop-sub" id="T_dropSub">اسحب وأفلت صورة أو ملف PDF ممسوح هنا، أو اضغط للاختيار. كل التعرّف يتم داخل متصفحك — بدون رفع، خصوصية كاملة.</div>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose Image or PDF</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر صورة أو PDF</span></button>
     </div>
 
     <!-- OCR progress bar -->
@@ -242,15 +242,15 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
         <div class="text-actions">
           <button class="change-btn" id="changeFileBtn">
             <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_changeFile">Change file</span>
+            <span id="T_changeFile">تغيير الملف</span>
           </button>
           <button class="action-btn" id="copyBtn">
             <svg viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 9V2a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_copyBtn">Copy All</span>
+            <span id="T_copyBtn">نسخ الكل</span>
           </button>
           <button class="action-btn primary" id="downloadTxtBtn">
             <svg viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M1 11h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <span id="T_downloadTxt">Download .txt</span>
+            <span id="T_downloadTxt">تحميل .txt</span>
           </button>
         </div>
       </div>
@@ -268,46 +268,46 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_langTitle">Recognition Language</div>
+      <div class="panel-section-title" id="T_langTitle">لغة التعرّف</div>
       <div class="field">
-        <label class="field-label" id="T_langLabel">Document language</label>
+        <label class="field-label" id="T_langLabel">لغة المستند</label>
         <div class="select-wrap">
           <select id="ocrLangSelect">
-            <option value="ara+eng" id="T_langBoth">Arabic + English</option>
-            <option value="ara" id="T_langAr">Arabic only</option>
-            <option value="eng" id="T_langEn">English only</option>
+            <option value="ara+eng" id="T_langBoth">عربي + إنجليزي</option>
+            <option value="ara" id="T_langAr">عربي فقط</option>
+            <option value="eng" id="T_langEn">إنجليزي فقط</option>
           </select>
         </div>
       </div>
-      <p style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px" id="T_langHint">Pick the language that matches your document for the best accuracy. Changing it re-runs recognition.</p>
+      <p style="font-size:11px;color:var(--text3);line-height:1.6;margin-top:8px" id="T_langHint">اختر اللغة المطابقة لمستندك للحصول على أفضل دقة. تغييرها يعيد التعرّف.</p>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_optionsTitle">Options</div>
+      <div class="panel-section-title" id="T_optionsTitle">خيارات</div>
       <div class="toggle-row">
-        <span class="toggle-label" id="T_pageNumbers">Add page numbers</span>
+        <span class="toggle-label" id="T_pageNumbers">إضافة أرقام الصفحات</span>
         <label class="toggle"><input type="checkbox" id="togglePageNums" checked><span class="toggle-slider"></span></label>
       </div>
       <div class="toggle-row" style="margin-top:6px">
-        <span class="toggle-label" id="T_trimEmpty">Remove empty lines</span>
+        <span class="toggle-label" id="T_trimEmpty">حذف الأسطر الفارغة</span>
         <label class="toggle"><input type="checkbox" id="toggleTrimEmpty"><span class="toggle-slider"></span></label>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_outputTitle">Output Format</div>
+      <div class="panel-section-title" id="T_outputTitle">تنسيق الإخراج</div>
       <div class="field">
-        <label class="field-label" id="T_separatorLabel">Page separator</label>
+        <label class="field-label" id="T_separatorLabel">فاصل الصفحات</label>
         <div class="select-wrap">
           <select id="separatorSelect">
-            <option value="label" id="T_sepLabel">Page label (— Page N —)</option>
-            <option value="line" id="T_sepLine">Line separator</option>
-            <option value="none" id="T_sepNone">No separator</option>
+            <option value="label" id="T_sepLabel">تسمية الصفحة (— صفحة N —)</option>
+            <option value="line" id="T_sepLine">فاصل سطر</option>
+            <option value="none" id="T_sepNone">بدون فاصل</option>
           </select>
         </div>
       </div>
       <div class="field">
-        <label class="field-label" id="T_encodingLabel">Download encoding</label>
+        <label class="field-label" id="T_encodingLabel">ترميز التحميل</label>
         <div class="select-wrap">
           <select id="encodingSelect">
             <option value="utf8">UTF-8 (recommended)</option>
@@ -320,37 +320,37 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
     <div class="panel-section">
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_privacyNote">OCR runs locally in your browser with Tesseract.js. Your files never leave your device.</span>
+        <span id="T_privacyNote">يتم التعرّف محلياً في متصفحك باستخدام Tesseract.js. ملفاتك لا تغادر جهازك أبداً.</span>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_aboutTitle">About OCR</div>
-      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">OCR reads text from images and scanned PDFs that have no selectable text layer. The first run downloads the language data once, then it is cached for later use.</p>
+      <div class="panel-section-title" id="T_aboutTitle">عن OCR</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">تقنية OCR تقرأ النص من الصور وملفات PDF الممسوحة التي لا تحتوي على طبقة نص قابلة للتحديد. أول تشغيل يحمّل بيانات اللغة مرة واحدة ثم تُحفظ للاستخدام لاحقاً.</p>
     </div>
 
     <div class="panel-footer">
       <div class="stats-box" id="statsBox">
         <div class="stat-item">
           <div class="stat-val" id="statChars">—</div>
-          <div class="stat-label" id="T_statCharsLabel">Characters</div>
+          <div class="stat-label" id="T_statCharsLabel">حرف</div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="statWords">—</div>
-          <div class="stat-label" id="T_statWordsLabel">Words</div>
+          <div class="stat-label" id="T_statWordsLabel">كلمة</div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="statPages">—</div>
-          <div class="stat-label" id="T_statPagesLabel">Pages</div>
+          <div class="stat-label" id="T_statPagesLabel">صفحة</div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="statLines">—</div>
-          <div class="stat-label" id="T_statLinesLabel">Lines</div>
+          <div class="stat-label" id="T_statLinesLabel">سطر</div>
         </div>
       </div>
       <button class="download-btn" id="downloadDocBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_downloadDoc">Download Text File</span>
+        <span id="T_downloadDoc">تحميل ملف النص</span>
       </button>
     </div>
   </aside>
@@ -359,7 +359,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M10 30l9-8 6 5 7-8 10 11" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="16" r="3" stroke="#6366f1" stroke-width="2"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop image or PDF here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت الصورة أو PDF هنا</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>

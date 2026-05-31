@@ -201,18 +201,18 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn" aria-expanded="false">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
-      <a href="remove-background.html" style="color:var(--primary)"><span id="T_removebg">Remove Background</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="convert-image.html"><span id="T_convert">تحويل الصور</span></a>
+      <a href="remove-background.html" style="color:var(--primary)"><span id="T_removebg">إزالة الخلفية</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
@@ -221,7 +221,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- Privacy badge -->
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -229,7 +229,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -243,15 +243,15 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <svg viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="32" height="32" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M2 26l8-8 6 6 5-5 13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M25 4l7 7M32 4l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Remove Image Background</div>
-        <div class="drop-sub" id="T_dropSub">Drop an image to automatically remove its background. Uses edge detection in your browser — no upload needed.</div>
+        <div class="drop-title" id="T_dropTitle">إزالة خلفية الصورة</div>
+        <div class="drop-sub" id="T_dropSub">اسحب صورة لإزالة خلفيتها تلقائياً. يستخدم كشف الحواف في متصفحك — لا رفع مطلوب.</div>
       </div>
       <div class="drop-formats">
         <span class="fmt-badge">JPG</span>
         <span class="fmt-badge">PNG</span>
         <span class="fmt-badge">WebP</span>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose Image</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر صورة</span></button>
     </div>
 
     <!-- Editor -->
@@ -261,11 +261,11 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <div class="editor-actions">
           <button class="action-btn" id="changeImgBtn">
             <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_changeImg">Change image</span>
+            <span id="T_changeImg">تغيير الصورة</span>
           </button>
           <button class="action-btn" id="compareBtn">
             <svg viewBox="0 0 13 13" fill="none" width="12"><path d="M6.5 1v11M4 3H2M4 6.5H1M4 10H2M9 3h2M9 6.5h3M9 10h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_compareBtn">Compare</span>
+            <span id="T_compareBtn">مقارنة</span>
           </button>
         </div>
       </div>
@@ -275,7 +275,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
           <canvas id="resultCanvas" class="preview-canvas checker"></canvas>
           <div class="processing-overlay hidden" id="processingOverlay">
             <div class="spinner"></div>
-            <div class="processing-txt" id="T_processing">Removing background...</div>
+            <div class="processing-txt" id="T_processing">جاري إزالة الخلفية...</div>
           </div>
         </div>
       </div>
@@ -285,33 +285,33 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_methodTitle">Detection Method</div>
+      <div class="panel-section-title" id="T_methodTitle">طريقة الكشف</div>
       <div class="method-grid">
-        <button class="method-btn active" data-method="flood"><span id="T_methodFlood">Smart Fill</span><small id="T_methodFloodHint">Solid backgrounds</small></button>
-        <button class="method-btn" data-method="edge"><span id="T_methodEdge">Edge Detect</span><small id="T_methodEdgeHint">Complex edges</small></button>
-        <button class="method-btn" data-method="bright"><span id="T_methodBright">Bright BG</span><small id="T_methodBrightHint">White/light BG</small></button>
-        <button class="method-btn" data-method="dark"><span id="T_methodDark">Dark BG</span><small id="T_methodDarkHint">Black/dark BG</small></button>
+        <button class="method-btn active" data-method="flood"><span id="T_methodFlood">تعبئة ذكية</span><small id="T_methodFloodHint">خلفيات صلبة</small></button>
+        <button class="method-btn" data-method="edge"><span id="T_methodEdge">كشف الحواف</span><small id="T_methodEdgeHint">حواف معقدة</small></button>
+        <button class="method-btn" data-method="bright"><span id="T_methodBright">خلفية فاتحة</span><small id="T_methodBrightHint">خلفية بيضاء/فاتحة</small></button>
+        <button class="method-btn" data-method="dark"><span id="T_methodDark">خلفية داكنة</span><small id="T_methodDarkHint">خلفية سوداء/داكنة</small></button>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_sensitivityTitle">Sensitivity</div>
+      <div class="panel-section-title" id="T_sensitivityTitle">الحساسية</div>
       <div class="slider-row">
         <input type="range" class="thresh-slider" id="threshSlider" min="5" max="120" value="35">
         <span class="slider-val" id="threshVal">35</span>
       </div>
       <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
-        <span id="T_precise">Precise</span><span id="T_aggressive">Aggressive</span>
+        <span id="T_precise">دقيق</span><span id="T_aggressive">قوي</span>
       </div>
       <div class="toggle-row" style="margin-top:10px">
-        <span class="toggle-label" id="T_featherEdge">Feather edges</span>
+        <span class="toggle-label" id="T_featherEdge">نعم الحواف</span>
         <label class="toggle"><input type="checkbox" id="featherToggle" checked><span class="toggle-slider"></span></label>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_bgReplaceTitle">Background Replace</div>
-      <div class="field-label" id="T_bgColorLabel">Replacement color</div>
+      <div class="panel-section-title" id="T_bgReplaceTitle">استبدال الخلفية</div>
+      <div class="field-label" id="T_bgColorLabel">لون الاستبدال</div>
       <div class="bg-colors">
         <button class="bg-color-btn active" data-color="transparent" style="background:transparent;background-image:var(--checker);background-size:8px 8px" title="Transparent"></button>
         <button class="bg-color-btn" data-color="#ffffff" style="background:#ffffff" title="White"></button>
@@ -327,9 +327,9 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_outputTitle">Output</div>
+      <div class="panel-section-title" id="T_outputTitle">الإخراج</div>
       <div class="field">
-        <label class="field-label" id="T_fmtLabel">Format</label>
+        <label class="field-label" id="T_fmtLabel">التنسيق</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           <button class="method-btn active" data-outfmt="png" style="height:34px"><span>PNG</span></button>
           <button class="method-btn" data-outfmt="webp" style="height:34px"><span>WebP</span></button>
@@ -337,17 +337,17 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
       </div>
       <div class="info-box" style="margin-top:8px">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_privacyNote">Background removal runs entirely in your browser using canvas pixel processing. No AI server, no upload.</span>
+        <span id="T_privacyNote">إزالة الخلفية تتم كلياً في متصفحك باستخدام معالجة البكسل. لا خادم AI، لا رفع ملفات.</span>
       </div>
     </div>
 
     <div class="panel-footer">
       <button class="reprocess-btn" id="reprocessBtn" disabled>
-        <span id="T_reprocessBtn">↺ Re-process with new settings</span>
+        <span id="T_reprocessBtn">↺ إعادة المعالجة بالإعدادات الجديدة</span>
       </button>
       <button class="download-btn" id="downloadBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_downloadBtn">Download PNG</span>
+        <span id="T_downloadBtn">تحميل PNG</span>
       </button>
     </div>
   </aside>
@@ -356,7 +356,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><circle cx="19" cy="19" r="7" stroke="#6366f1" stroke-width="2"/><path d="M24 24l10 10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop image here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت الصورة هنا</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>

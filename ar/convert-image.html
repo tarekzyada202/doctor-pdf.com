@@ -195,19 +195,19 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn" aria-expanded="false">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="convert-image.html" style="color:var(--primary)"><span id="T_convert">Convert Image</span></a>
-      <a href="remove-background.html"><span id="T_removebg">Remove Background</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="convert-image.html" style="color:var(--primary)"><span id="T_convert">تحويل الصور</span></a>
+      <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
@@ -216,7 +216,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- Privacy badge -->
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -224,7 +224,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -238,8 +238,8 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <svg viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="32" height="32" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="3" fill="currentColor" opacity=".5"/><path d="M2 26l8-8 6 6 5-5 13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M26 6l4 4-4 4M30 10H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Convert Image Format</div>
-        <div class="drop-sub" id="T_dropSub">Drop images to convert between formats. Batch convert multiple files at once. All processing is 100% local.</div>
+        <div class="drop-title" id="T_dropTitle">تحويل تنسيق الصورة</div>
+        <div class="drop-sub" id="T_dropSub">اسحب الصور لتحويلها بين التنسيقات. تحويل دفعي لملفات متعددة. كل المعالجة محلية 100%.</div>
       </div>
       <div class="drop-formats">
         <span class="fmt-badge">JPG</span>
@@ -249,24 +249,24 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <span class="fmt-badge">GIF</span>
         <span class="fmt-badge">TIFF</span>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose Images</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر الصور</span></button>
     </div>
 
     <!-- Image grid -->
     <div class="grid-area" id="gridArea">
       <div class="grid-header">
         <div class="grid-title">
-          <span id="T_imagesLabel">Images</span>
+          <span id="T_imagesLabel">الصور</span>
           <span class="count-badge" id="countBadge">0</span>
         </div>
         <div class="hdr-actions">
           <button class="hdr-btn" id="addMoreBtn">
             <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            <span id="T_addMore">Add more</span>
+            <span id="T_addMore">إضافة المزيد</span>
           </button>
           <button class="hdr-btn" id="clearBtn" style="color:var(--danger)">
             <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            <span id="T_clearAll">Clear all</span>
+            <span id="T_clearAll">مسح الكل</span>
           </button>
         </div>
       </div>
@@ -277,67 +277,67 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_targetFormat">Target Format</div>
+      <div class="panel-section-title" id="T_targetFormat">التنسيق المستهدف</div>
       <div class="fmt-grid-big">
-        <button class="fmt-big-btn active" data-fmt="jpg"><span>JPG</span><small id="T_fmtJpgHint">Smallest</small></button>
-        <button class="fmt-big-btn" data-fmt="png"><span>PNG</span><small id="T_fmtPngHint">Lossless</small></button>
-        <button class="fmt-big-btn" data-fmt="webp"><span>WebP</span><small id="T_fmtWebpHint">Modern</small></button>
-        <button class="fmt-big-btn" data-fmt="bmp"><span>BMP</span><small id="T_fmtBmpHint">Uncompressed</small></button>
-        <button class="fmt-big-btn" data-fmt="gif"><span>GIF</span><small id="T_fmtGifHint">Animated</small></button>
-        <button class="fmt-big-btn" data-fmt="ico"><span>ICO</span><small id="T_fmtIcoHint">Favicon</small></button>
+        <button class="fmt-big-btn active" data-fmt="jpg"><span>JPG</span><small id="T_fmtJpgHint">الأصغر</small></button>
+        <button class="fmt-big-btn" data-fmt="png"><span>PNG</span><small id="T_fmtPngHint">بدون فقدان</small></button>
+        <button class="fmt-big-btn" data-fmt="webp"><span>WebP</span><small id="T_fmtWebpHint">حديث</small></button>
+        <button class="fmt-big-btn" data-fmt="bmp"><span>BMP</span><small id="T_fmtBmpHint">غير مضغوط</small></button>
+        <button class="fmt-big-btn" data-fmt="gif"><span>GIF</span><small id="T_fmtGifHint">متحرك</small></button>
+        <button class="fmt-big-btn" data-fmt="ico"><span>ICO</span><small id="T_fmtIcoHint">أيقونة</small></button>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_qualityTitle">Quality</div>
+      <div class="panel-section-title" id="T_qualityTitle">الجودة</div>
       <div class="slider-row">
         <input type="range" class="quality-slider" id="qualitySlider" min="10" max="100" value="90">
         <span class="slider-val" id="qualityVal">90%</span>
       </div>
       <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
-        <span id="T_small">Smaller file</span><span id="T_hq">Better quality</span>
+        <span id="T_small">حجم أصغر</span><span id="T_hq">جودة أفضل</span>
       </div>
       <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="qualityNote">Applies to JPG and WebP output</div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_resizeTitle">Resize (optional)</div>
+      <div class="panel-section-title" id="T_resizeTitle">تغيير الحجم (اختياري)</div>
       <div class="resize-grid">
         <div class="resize-field">
-          <label id="T_widthLabel">Width (px)</label>
+          <label id="T_widthLabel">العرض (px)</label>
           <input type="number" id="resizeW" placeholder="Auto" min="1" max="8000">
         </div>
         <div class="resize-field">
-          <label id="T_heightLabel">Height (px)</label>
+          <label id="T_heightLabel">الارتفاع (px)</label>
           <input type="number" id="resizeH" placeholder="Auto" min="1" max="8000">
         </div>
       </div>
       <div class="toggle-row" style="margin-top:10px">
-        <span class="toggle-label" id="T_keepRatio">Keep aspect ratio</span>
+        <span class="toggle-label" id="T_keepRatio">الحفاظ على النسبة</span>
         <label class="toggle"><input type="checkbox" id="keepRatio" checked><span class="toggle-slider"></span></label>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_bgTitle">Background</div>
+      <div class="panel-section-title" id="T_bgTitle">الخلفية</div>
       <div class="toggle-row">
-        <span class="toggle-label" id="T_whiteBg">White background (for JPG)</span>
+        <span class="toggle-label" id="T_whiteBg">خلفية بيضاء (للـ JPG)</span>
         <label class="toggle"><input type="checkbox" id="whiteBg" checked><span class="toggle-slider"></span></label>
       </div>
       <div class="info-box" style="margin-top:12px">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_privacyNote">All conversions happen locally in your browser. No files are ever uploaded.</span>
+        <span id="T_privacyNote">كل التحويلات تتم محلياً في متصفحك. لا تُرفع أي ملفات أبداً.</span>
       </div>
     </div>
 
     <div class="panel-footer">
       <div class="convert-summary">
-        <span id="T_readyLabel">Ready to convert</span>
-        <span><span id="imgCount" style="font-weight:600;color:var(--text)">0</span> <span id="T_imagesWord">images</span></span>
+        <span id="T_readyLabel">جاهز للتحويل</span>
+        <span><span id="imgCount" style="font-weight:600;color:var(--text)">0</span> <span id="T_imagesWord">صور</span></span>
       </div>
       <button class="convert-btn" id="convertBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M4 9h10M10 5l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_convertBtn">Convert All</span>
+        <span id="T_convertBtn">تحويل الكل</span>
       </button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressFill"></div></div>
@@ -350,7 +350,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 <!-- Drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><circle cx="18" cy="18" r="5" stroke="#6366f1" stroke-width="2"/><path d="M4 36l10-10 8 8 6-6 16 16" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop images here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت الصور هنا</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>

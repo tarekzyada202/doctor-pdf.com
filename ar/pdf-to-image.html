@@ -191,19 +191,19 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn" aria-expanded="false">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html" style="color:var(--primary)"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="watermark-pdf.html"><span id="T_watermark">Watermark PDF</span></a>
-      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html" style="color:var(--primary)"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
@@ -212,7 +212,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- Privacy badge -->
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn" title="Toggle theme">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -220,7 +220,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -235,10 +235,10 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
         <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 16h16M10 21h10M10 26h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg>
       </div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Drop your PDF here</div>
-        <div class="drop-sub" id="T_dropSub">Drag & drop a PDF file, or click to browse. Pages are rendered locally — no file is ever uploaded.</div>
+        <div class="drop-title" id="T_dropTitle">اسحب ملف PDF هنا</div>
+        <div class="drop-sub" id="T_dropSub">اسحب وأفلت ملف PDF، أو اضغط للاختيار. الصفحات تُعرض محلياً — لا يُرفع أي ملف أبداً.</div>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر ملف PDF</span></button>
     </div>
 
     <!-- Render progress -->
@@ -251,15 +251,15 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     <div id="pagesArea" style="display:none;flex:1;flex-direction:column;overflow:hidden">
       <div class="pages-header">
         <div class="pages-title">
-          <span id="T_pagesLabel">Pages</span>
+          <span id="T_pagesLabel">الصفحات</span>
           <span class="pages-badge" id="pagesTotalBadge">0</span>
         </div>
         <div class="pages-actions">
-          <button class="sel-btn active" id="selAllBtn"><span id="T_selAll">All</span></button>
-          <button class="sel-btn" id="selNoneBtn"><span id="T_selNone">None</span></button>
+          <button class="sel-btn active" id="selAllBtn"><span id="T_selAll">الكل</span></button>
+          <button class="sel-btn" id="selNoneBtn"><span id="T_selNone">لا شيء</span></button>
           <button class="change-file-btn" id="changeFileBtn">
             <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span id="T_changeFile">Change file</span>
+            <span id="T_changeFile">تغيير الملف</span>
           </button>
         </div>
       </div>
@@ -270,7 +270,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   <!-- PANEL -->
   <aside class="panel">
     <div class="panel-section">
-      <div class="panel-section-title" id="T_formatLabel">Output Format</div>
+      <div class="panel-section-title" id="T_formatLabel">تنسيق الإخراج</div>
       <div class="fmt-grid">
         <button class="fmt-btn active" data-fmt="jpg">JPG</button>
         <button class="fmt-btn" data-fmt="png">PNG</button>
@@ -280,21 +280,21 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_qualityLabel">Quality</div>
+      <div class="panel-section-title" id="T_qualityLabel">الجودة</div>
       <div class="field">
         <div class="slider-row">
           <input type="range" class="quality-slider" id="qualitySlider" min="10" max="100" value="92" step="1">
           <span class="slider-val" id="qualityVal">92%</span>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
-          <span id="T_small">Small</span>
-          <span id="T_hq">High quality</span>
+          <span id="T_small">حجم صغير</span>
+          <span id="T_hq">جودة عالية</span>
         </div>
       </div>
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_dpiLabel">Resolution (DPI)</div>
+      <div class="panel-section-title" id="T_dpiLabel">الدقة (DPI)</div>
       <div class="dpi-grid">
         <button class="dpi-btn" data-dpi="72">72</button>
         <button class="dpi-btn" data-dpi="96">96</button>
@@ -305,34 +305,34 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
     </div>
 
     <div class="panel-section">
-      <div class="panel-section-title" id="T_downloadLabel">Download Options</div>
+      <div class="panel-section-title" id="T_downloadLabel">خيارات التحميل</div>
       <div class="field">
-        <label class="field-label" id="T_downloadModeLabel">Mode</label>
+        <label class="field-label" id="T_downloadModeLabel">الطريقة</label>
         <div class="select-wrap">
           <select id="downloadMode">
-            <option value="zip" id="T_dlZip">ZIP archive (all pages)</option>
-            <option value="single" id="T_dlSingle">Individual files</option>
+            <option value="zip" id="T_dlZip">ملف ZIP (كل الصفحات)</option>
+            <option value="single" id="T_dlSingle">ملفات منفصلة</option>
           </select>
         </div>
       </div>
       <div class="field">
-        <label class="field-label" id="T_prefixLabel">Filename prefix</label>
+        <label class="field-label" id="T_prefixLabel">بادئة اسم الملف</label>
         <input type="text" id="prefixInput" value="page" style="width:100%;height:36px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:13px;outline:none;transition:border .15s" placeholder="page">
       </div>
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_privacyNote">PDF pages render in your browser. No file upload. 100% private.</span>
+        <span id="T_privacyNote">صفحات PDF تُعرض في متصفحك. لا رفع ملفات. خصوصية كاملة.</span>
       </div>
     </div>
 
     <div class="panel-footer">
       <div class="sel-count-bar">
-        <span id="T_selectedLabel">Pages selected</span>
+        <span id="T_selectedLabel">صفحات محددة</span>
         <span><span class="sel-count-num" id="selCount">0</span> / <span id="totalPagesCount">0</span></span>
       </div>
       <button class="convert-btn" id="convertBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_convertBtn">Convert to Images</span>
+        <span id="T_convertBtn">تحويل إلى صور</span>
       </button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -345,7 +345,7 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 <!-- Global drag overlay -->
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M28 4v10h10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت ملف PDF هنا</div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>

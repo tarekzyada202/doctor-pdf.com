@@ -254,30 +254,30 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
   <div class="tools-dropdown">
     <button class="nav-btn" id="toolsBtn">
       <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span id="T_tools">All Tools</span>
+      <span id="T_tools">كل الأدوات</span>
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
-      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
-      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
-      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
-      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
-      <a href="sign-pdf.html" style="color:var(--primary)"><span id="T_sign">Sign PDF</span></a>
-      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
-      <a href="watermark-pdf.html"><span id="T_watermark">Watermark</span></a>
-      <a href="stamp-pdf.html"><span id="T_stamp">Stamp PDF</span></a>
-      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
-      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
-      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
-      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
-      <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="sign-pdf.html" style="color:var(--primary)"><span id="T_sign">توقيع PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="stamp-pdf.html"><span id="T_stamp">ختم PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
+      <a href="convert-image.html"><span id="T_convert">تحويل الصور</span></a>
+      <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
   <div class="nav-privacy">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-    <span id="T_privacyBadge">100% Private</span>
+    <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
   <button class="nav-btn" id="themeBtn">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -285,7 +285,7 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
   </button>
   <button class="nav-btn" id="langBtn">
     <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
-    <span id="langLabel">AR</span>
+    <span id="langLabel">EN</span>
   </button>
 </nav>
 
@@ -295,10 +295,10 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
     <div class="dropzone" id="dropzone">
       <div class="drop-icon"><svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 22h16M10 27h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg></div>
       <div>
-        <div class="drop-title" id="T_dropTitle">Sign PDF File</div>
-        <div class="drop-sub" id="T_dropSub">Drop a PDF here, then draw your signature in the popup and place it on any page.</div>
+        <div class="drop-title" id="T_dropTitle">توقيع ملف PDF</div>
+        <div class="drop-sub" id="T_dropSub">اسحب PDF هنا، ثم ارسم توقيعك في النافذة المنبثقة وضعه في أي صفحة.</div>
       </div>
-      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر ملف PDF</span></button>
     </div>
 
     <!-- VIEWER -->
@@ -307,7 +307,7 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
         <!-- LEFT SIDEBAR -->
         <div class="thumb-sidebar open" id="thumbSidebar">
           <div class="thumb-sidebar-hdr">
-            <span class="thumb-sidebar-title" id="T_pages">Pages</span>
+            <span class="thumb-sidebar-title" id="T_pages">الصفحات</span>
             <span class="thumb-sidebar-count" id="thumbCount">0</span>
           </div>
           <div class="thumb-list" id="thumbList"></div>
@@ -322,7 +322,7 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
       <div class="zoom-bar">
         <button class="zt-btn" id="thumbToggleBtn" onclick="toggleSidebar()" title="Pages panel">☰</button>
         <div class="zt-sep"></div>
-        <span class="zt-lbl" id="T_zoomLbl">Zoom:</span>
+        <span class="zt-lbl" id="T_zoomLbl">تكبير:</span>
         <button class="zt-btn" onclick="zoomStep(-1)">−</button>
         <span class="zt-pct" id="zoomPct" onclick="zoomReset()">100%</span>
         <button class="zt-btn" onclick="zoomStep(1)">+</button>
@@ -335,8 +335,8 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
       </div>
       <div class="placing-banner" id="placingBanner">
         <svg viewBox="0 0 14 14" fill="none" width="14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3l2 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_clickToPlace">Click anywhere on a page to place your signature</span>
-        <button class="placing-cancel" onclick="cancelPlacing()" id="T_cancelPlace">Cancel</button>
+        <span id="T_clickToPlace">اضغط في أي مكان على الصفحة لوضع توقيعك</span>
+        <button class="placing-cancel" onclick="cancelPlacing()" id="T_cancelPlace">إلغاء</button>
       </div>
       <div class="pages-area" id="pagesArea"></div>
         </div><!-- end pages wrapper -->
@@ -349,28 +349,28 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
     <div class="panel-body">
       <!-- Signature preview -->
       <div class="panel-section">
-        <div class="ps-title" id="T_yourSig">Your Signature</div>
+        <div class="ps-title" id="T_yourSig">توقيعك</div>
         <div class="sig-preview-box" id="sigPreviewBox" onclick="openModal()">
           <img id="sigPreviewImg" src="" alt="">
           <span class="sig-preview-empty" id="sigPreviewEmpty">Click to draw…</span>
-          <span class="sig-preview-edit" id="T_clickEdit">✎ Edit</span>
+          <span class="sig-preview-edit" id="T_clickEdit">✎ تعديل</span>
         </div>
       </div>
 
       <!-- Sig settings (visible after placing) -->
       <div class="panel-section sig-settings" id="sigSettings">
-        <div class="ps-title" id="T_settingsTitle">Signature Settings</div>
+        <div class="ps-title" id="T_settingsTitle">إعدادات التوقيع</div>
         <div class="slider-row">
-          <span class="slider-lbl" id="T_szLbl">Size</span>
+          <span class="slider-lbl" id="T_szLbl">الحجم</span>
           <input type="range" class="sl" id="szSlider" min="5" max="60" value="25">
           <span class="sl-val" id="szVal">25%</span>
         </div>
         <div class="slider-row">
-          <span class="slider-lbl" id="T_opLbl">Opacity</span>
+          <span class="slider-lbl" id="T_opLbl">الشفافية</span>
           <input type="range" class="sl" id="opSlider" min="20" max="100" value="90">
           <span class="sl-val" id="opVal">90%</span>
         </div>
-        <button class="apply-all-btn" onclick="applyToAll()" id="T_applyAll">↻ Apply to all pages</button>
+        <button class="apply-all-btn" onclick="applyToAll()" id="T_applyAll">↻ تطبيق على كل الصفحات</button>
         <button style="width:100%;height:32px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--danger);font-size:12px;font-weight:500;cursor:pointer;margin-top:6px;font-family:inherit;transition:all .15s" id="resetSigsBtn" onclick="resetSigs()" id="T_resetSigs">🗑 Remove all signatures</button>
       </div>
 
@@ -378,11 +378,11 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
       <div class="panel-section">
         <div class="info-box blue" style="margin-bottom:8px">
           <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <span id="T_hint">Draw your signature, then place it on any page. Drag to reposition, drag corner to resize.</span>
+          <span id="T_hint">ارسم توقيعك ثم ضعه في أي صفحة. اسحب لتغيير الموضع، اسحب الزاوية لتغيير الحجم.</span>
         </div>
         <div class="info-box green">
           <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
-          <span id="T_privacy">All processing in your browser. No files are ever uploaded.</span>
+          <span id="T_privacy">كل المعالجة في متصفحك. لا تُرفع أي ملفات.</span>
         </div>
       </div>
     </div>
@@ -391,7 +391,7 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
     <div class="panel-footer">
       <button class="draw-btn" id="drawBtn" onclick="openModal()">
         <svg viewBox="0 0 18 18" fill="none" width="16"><path d="M3 14l2-2 8-8 2 2-8 8-2 2-2-2z" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M11 4l3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <span id="T_drawBtn">Draw Signature</span>
+        <span id="T_drawBtn">رسم التوقيع</span>
       </button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -399,9 +399,9 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
       </div>
       <button class="save-btn" id="saveBtn" onclick="doSave()">
         <svg viewBox="0 0 18 18" fill="none" width="16"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span id="T_saveBtn">Download Signed PDF</span>
+        <span id="T_saveBtn">تحميل PDF الموقّع</span>
       </button>
-      <button class="reset-btn" id="resetBtn" onclick="resetTool()" id="T_again">Sign another file</button>
+      <button class="reset-btn" id="resetBtn" onclick="resetTool()" id="T_again">توقيع ملف آخر</button>
     </div>
   </aside>
 </div>
@@ -410,32 +410,32 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title" id="T_modalTitle">Draw Your Signature</span>
+      <span class="modal-title" id="T_modalTitle">ارسم توقيعك</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
       <div class="modal-canvas-wrap" id="modalCanvasWrap">
         <canvas id="sigCanvas"></canvas>
-        <div class="modal-hint" id="T_modalHint">Sign here…</div>
+        <div class="modal-hint" id="T_modalHint">وقّع هنا…</div>
       </div>
       <div class="modal-tools">
         <div class="pen-colors" id="penColors"></div>
         <div class="pen-sizes">
-          <button class="pen-sz" data-sz="1.5"><span class="pen-dot" style="width:3px;height:3px"></span><span id="T_szThin">Thin</span></button>
-          <button class="pen-sz active" data-sz="3"><span class="pen-dot" style="width:6px;height:6px"></span><span id="T_szNorm">Normal</span></button>
-          <button class="pen-sz" data-sz="6"><span class="pen-dot" style="width:10px;height:10px"></span><span id="T_szThick">Thick</span></button>
+          <button class="pen-sz" data-sz="1.5"><span class="pen-dot" style="width:3px;height:3px"></span><span id="T_szThin">رفيع</span></button>
+          <button class="pen-sz active" data-sz="3"><span class="pen-dot" style="width:6px;height:6px"></span><span id="T_szNorm">عادي</span></button>
+          <button class="pen-sz" data-sz="6"><span class="pen-dot" style="width:10px;height:10px"></span><span id="T_szThick">سميك</span></button>
         </div>
         <button class="modal-clear" onclick="clearSig()">
           <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-          <span id="T_clearSig">Clear</span>
+          <span id="T_clearSig">مسح</span>
         </button>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="modal-cancel-btn" onclick="closeModal()" id="T_modalCancel">Cancel</button>
+      <button class="modal-cancel-btn" onclick="closeModal()" id="T_modalCancel">إلغاء</button>
       <button class="modal-place-btn" id="modalPlaceBtn" onclick="confirmSig()" disabled>
         <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M8 2l1.5 4H14l-3.5 2.5L12 14 8 11l-4 3 1.5-5.5L2 6.5h4.5L8 2z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>
-        <span id="T_placeBtn">Place Signature →</span>
+        <span id="T_placeBtn">وضع التوقيع ←</span>
       </button>
     </div>
   </div>
@@ -443,7 +443,7 @@ body{background:var(--bg2);color:var(--text);display:flex;flex-direction:column;
 
 <div class="drag-overlay" id="dragOverlay">
   <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/></svg>
-  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت PDF هنا</div>
 </div>
 <div class="toast-wrap" id="toastWrap"></div>
 <input type="file" id="fileInput" accept=".pdf,application/pdf" style="display:none">
