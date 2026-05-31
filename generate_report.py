@@ -319,6 +319,11 @@ report_email = os.environ.get('REPORT_EMAIL','')
 
 if resend_key and report_email:
     import html as html_lib
+    _details_raw = ((gsc_text or '') + "\n\n" + competitor_analysis)[:4000]
+    _details_esc = html_lib.escape(_details_raw)
+    _report_esc = html_lib.escape(report)
+    _broken_html = (f'<br><strong style="color:#ef4444">⚠️ مشاكل: {", ".join(site_data["broken"])}</strong>'
+                    if site_data['broken'] else '')
     email_html = f"""
 <div dir="rtl" style="font-family:Arial,sans-serif;max-width:700px;margin:auto;padding:20px;background:#fff">
   <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:20px;border-radius:12px;margin-bottom:20px">
@@ -328,15 +333,15 @@ if resend_key and report_email:
   <div style="background:#f0fdf4;border:1px solid #22c55e;border-radius:8px;padding:12px;margin-bottom:16px">
     <strong style="color:#22c55e">✅ Uptime: {site_data['uptime_pct']}%</strong> |
     الأدوات: {len(site_data['working'])}/{site_data['total']}
-    {f'<br><strong style="color:#ef4444">⚠️ مشاكل: {", ".join(site_data["broken"])}</strong>' if site_data['broken'] else ''}
+    {_broken_html}
   </div>
   <div style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:20px;line-height:1.8;font-size:14px;white-space:pre-wrap">
-{html_lib.escape(report)}
+{_report_esc}
   </div>
   <details style="margin-top:16px">
     <summary style="cursor:pointer;font-weight:600;color:#6366f1">📋 تحليل المنافسين الكامل + بيانات الزوار</summary>
     <div style="background:#f8f8f8;border-radius:8px;padding:16px;margin-top:8px;font-size:13px;line-height:1.7;white-space:pre-wrap">
-{html_lib.escape(((gsc_text or '') + '\n\n' + competitor_analysis)[:4000])}
+{_details_esc}
     </div>
   </details>
   <p style="color:#888;font-size:12px;margin-top:20px;text-align:center">
