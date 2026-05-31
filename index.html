@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,31 +18,62 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Doctor PDF","url":"https://doctor-pdf.com"}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📄</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#6366f1;--secondary:#8b5cf6;--accent:#06b6d4;--success:#10b981;--bg:#f8fafc;--surface:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--shadow-hover:0 8px 30px rgba(99,102,241,.2);--radius:14px}
-.dark{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#f1f5f9;--text-muted:#94a3b8;--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2)}
+:root{
+  --bg:#fff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;--secondary:#8b5cf6;--accent:#06b6d4;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:14px;--radius-sm:6px;--panel:360px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --shadow-hover:0 8px 30px rgba(99,102,241,.2);
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;--danger-light:#2d1010;--success-light:#052e16;
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body.lang-ar{font-family:'Cairo',sans-serif;}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
-/* NAVBAR */
-.navbar{position:sticky;top:0;z-index:100;background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
-.dark .navbar{background:rgba(15,23,42,.92)}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:1.15em;font-weight:800;color:var(--primary);letter-spacing:-.4px}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95em;box-shadow:0 3px 10px rgba(99,102,241,.3)}
-.nav-actions{display:flex;align-items:center;gap:8px}
-.btn-icon{width:34px;height:34px;border:1px solid var(--border);background:var(--surface);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85em;transition:all .2s;color:var(--text)}
-.btn-icon:hover{background:var(--primary);color:white;border-color:var(--primary);transform:scale(1.05)}
+body{font-family:var(--font-en);background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
+html[lang="ar"] body{font-family:var(--font-ar)}
+
+/* ── NAV (shared design system) ── */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:100;position:sticky;top:0}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap}
+.nav-privacy svg{width:12px;height:12px}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit}
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+@media(max-width:700px){.nav-privacy span{display:none}}
 
 /* ── HERO (compact) ── */
 .hero{padding:18px 32px 14px;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.1) 0%,transparent 70%);pointer-events:none}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.2);color:var(--primary);padding:3px 12px;border-radius:100px;font-size:.74em;font-weight:600;margin-bottom:8px}
 .hero h1{font-size:clamp(1.2em,2.6vw,1.85em);font-weight:900;line-height:1.15;letter-spacing:-1px;margin-bottom:7px;white-space:nowrap;background:linear-gradient(135deg,var(--text) 0%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:.82em;color:var(--text-muted);max-width:420px;margin:0 auto 10px;line-height:1.55}
+.hero p{font-size:.82em;color:var(--text2);max-width:420px;margin:0 auto 10px;line-height:1.55}
 .trust-bar{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.trust-item{display:flex;align-items:center;gap:6px;font-size:.78em;font-weight:500;color:var(--text-muted)}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:.78em;font-weight:500;color:var(--text2)}
 .trust-item .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
 
 /* ── TOOLS SECTION (full width) ── */
@@ -51,7 +82,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tools-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;width:100%}
 
 /* ── TOOL CARD ── */
-.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);position:relative;overflow:hidden;animation:fadeUp .5s ease both}
+.tool-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);position:relative;overflow:hidden;animation:fadeUp .5s ease both}
 .tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,.06),transparent);opacity:0;transition:opacity .3s}
 .tool-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(99,102,241,.4)}
 .tool-card:hover::before{opacity:1}
@@ -59,9 +90,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tool-icon svg{width:20px;height:20px;stroke:white;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .tool-card:hover .tool-icon{transform:scale(1.1);box-shadow:0 6px 18px rgba(99,102,241,.4)}
 .tool-card h3{font-size:1em;font-weight:700;color:var(--text);line-height:1.2}
-.tool-card p{font-size:.72em;color:var(--text-muted);line-height:1.4;flex:1}
+.tool-card p{font-size:.72em;color:var(--text2);line-height:1.4;flex:1}
 .tool-arrow{font-size:.72em;color:var(--primary);font-weight:700;opacity:0;transform:translateX(-6px);transition:all .25s}
 .tool-card:hover .tool-arrow{opacity:1;transform:translateX(0)}
+[dir="rtl"] .tool-arrow{transform:translateX(6px) scaleX(-1)}
+[dir="rtl"] .tool-card:hover .tool-arrow{transform:translateX(0) scaleX(-1)}
 
 /* ── WHY SECTION ── */
 .why-section{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);margin:0 24px 40px;border-radius:20px;padding:36px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
@@ -69,31 +102,43 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .why-item .why-icon{font-size:2em;margin-bottom:8px}
 .why-item h3{font-size:1em;font-weight:700;margin-bottom:6px}
 .why-item p{font-size:.82em;opacity:.85;line-height:1.5}
-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text-muted);font-size:.78em}
+footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;color:var(--text2);font-size:.78em}
 
 /* ANIMATIONS */
 @keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-.tool-card:nth-child(1){animation-delay:.03s}.tool-card:nth-child(2){animation-delay:.06s}.tool-card:nth-child(3){animation-delay:.09s}.tool-card:nth-child(4){animation-delay:.12s}.tool-card:nth-child(5){animation-delay:.15s}.tool-card:nth-child(6){animation-delay:.18s}.tool-card:nth-child(7){animation-delay:.21s}.tool-card:nth-child(8){animation-delay:.24s}.tool-card:nth-child(9){animation-delay:.27s}.tool-card:nth-child(10){animation-delay:.30s}.tool-card:nth-child(11){animation-delay:.33s}.tool-card:nth-child(12){animation-delay:.36s}
+.tool-card:nth-child(1){animation-delay:.03s}.tool-card:nth-child(2){animation-delay:.06s}.tool-card:nth-child(3){animation-delay:.09s}.tool-card:nth-child(4){animation-delay:.12s}.tool-card:nth-child(5){animation-delay:.15s}.tool-card:nth-child(6){animation-delay:.18s}.tool-card:nth-child(7){animation-delay:.21s}.tool-card:nth-child(8){animation-delay:.24s}.tool-card:nth-child(9){animation-delay:.27s}.tool-card:nth-child(10){animation-delay:.30s}.tool-card:nth-child(11){animation-delay:.33s}.tool-card:nth-child(12){animation-delay:.36s}.tool-card:nth-child(13){animation-delay:.39s}
 
 /* RESPONSIVE */
 @media(max-width:1200px){.tools-grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.tools-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:640px){.navbar{padding:0 16px}.hero{padding:18px 16px 14px}.tools-section{padding:12px 12px 30px}.tools-grid{grid-template-columns:repeat(2,1fr);gap:8px}.why-section{grid-template-columns:1fr;padding:28px 24px;margin:0 12px 30px;gap:20px}.tool-card{padding:16px 12px}}
+@media(max-width:640px){.nav{padding:0 16px}.hero{padding:18px 16px 14px}.hero h1{white-space:normal}.tools-section{padding:12px 12px 30px}.tools-grid{grid-template-columns:repeat(2,1fr);gap:8px}.why-section{grid-template-columns:1fr;padding:28px 24px;margin:0 12px 30px;gap:20px}.tool-card{padding:16px 12px}}
 </style>
 </head>
 <body>
-<nav class="navbar">
-  <a href="/" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-  <div class="nav-actions">
-    <button class="btn-icon" onclick="toggleDark()" id="themeBtn" title="Dark mode">🌙</button>
-    <button class="btn-icon" onclick="toggleLang()" id="langBtn" title="Language" style="font-size:.75em;font-weight:700;width:auto;padding:0 10px;">عربي</button>
+<nav class="nav">
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="nav-sep"></div>
+  <div class="nav-privacy">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">100% Private</span>
   </div>
+  <button class="nav-btn" id="themeBtn" title="Theme">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn" title="Language">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">AR</span>
+  </button>
 </nav>
 
 <section class="hero">
-  <div class="hero-badge">✨ 100% Free · No signup required</div>
+  <div class="hero-badge" id="heroBadge">✨ 100% Free · No signup required</div>
   <h1 id="heroTitle">All your PDF tools. Right in your browser.</h1>
   <p id="heroDesc">Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.</p>
   <div class="trust-bar">
@@ -129,33 +174,38 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;co
   <div class="why-item"><div class="why-icon">🆓</div><h3 id="w3">Always Free</h3><p id="w3d">No subscriptions, no limits, no hidden fees. Forever free.</p></div>
 </section>
 
-<footer><p>© 2026 Doctor PDF · All processing in your browser · Your files never leave your device</p></footer>
+<footer><p id="footerTxt">© 2026 Doctor PDF · All processing in your browser · Your files never leave your device</p></footer>
 
 <script>
-let dark=localStorage.getItem('dark')==='true';
-if(dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
-function toggleDark(){dark=!dark;document.body.classList.toggle('dark',dark);document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';localStorage.setItem('dark',dark);}
-
-let lang;if(!localStorage.getItem('lang')){lang=(navigator.language||'').toLowerCase().startsWith('ar')?'ar':'en';}else{lang=localStorage.getItem('lang');}
-const tr={
-  en:{heroTitle:'All your PDF tools. Right in your browser.',heroDesc:'Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.',toolsLabel:'All Tools',t1:'No file uploads',t2:'Works offline',t3:'No registration',t4:'Completely free',c1:'Merge PDF',c1d:'Combine multiple PDFs into one',c2:'Split PDF',c2d:'Extract pages visually',c3:'Compress PDF',c3d:'Reduce file size without quality loss',c4:'Rotate PDF',c4d:'Turn pages 90°, 180°, 270°',c5:'Sign PDF',c5d:'Draw & add digital signature',c6:'Protect PDF',c6d:'Add password to your PDF',c7:'Watermark',c7d:'Add text watermark to pages',c8:'Image → PDF',c8d:'Convert images to PDF',c9:'PDF → Image',c9d:'Export PDF pages as PNG/JPG',c10:'Extract Text',c10d:'Copy text from any PDF',c11:'Convert Image',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'Remove BG',c12d:'AI background removal',c13:'Stamp PDF',c13d:'Add official stamps to PDF',w1:'100% Private',w1d:'All processing in your browser. Files never uploaded to any server.',w2:'Lightning Fast',w2d:'No server waiting. Everything runs instantly on your machine.',w3:'Always Free',w3d:'No subscriptions, no limits, no hidden fees. Forever free.'},
-  ar:{heroTitle:'كل أدوات PDF في مكان واحد.',heroDesc:'ادمج وقسّم واضغط ووقّع وحوّل ملفات PDF — مجاناً وفورياً. ملفاتك لا تغادر جهازك.',toolsLabel:'جميع الأدوات',t1:'بدون رفع ملفات',t2:'يعمل بدون إنترنت',t3:'بدون تسجيل',t4:'مجاني تماماً',c1:'دمج PDF',c1d:'ادمج عدة ملفات PDF في واحد',c2:'تقسيم PDF',c2d:'استخرج الصفحات بشكل مرئي',c3:'ضغط PDF',c3d:'قلّل الحجم بدون فقدان الجودة',c4:'تدوير PDF',c4d:'دوّر الصفحات 90° أو 180°',c5:'توقيع PDF',c5d:'ارسم وأضف توقيعك',c6:'حماية PDF',c6d:'أضف كلمة مرور للملف',c7:'علامة مائية',c7d:'أضف نصاً مائياً للصفحات',c8:'صورة ← PDF',c8d:'حوّل الصور إلى PDF',c9:'PDF ← صورة',c9d:'صدّر صفحات PDF كـ PNG/JPG',c10:'استخراج نص',c10d:'انسخ النص من أي PDF',c11:'تحويل صور',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'إزالة الخلفية',c12d:'إزالة الخلفية بالذكاء الاصطناعي',c13:'ختم PDF',c13d:'أضف ختماً رسمياً للملف',w1:'خصوصية تامة',w1d:'كل المعالجة في متصفحك. لا ترفع ملفاتك لأي خادم.',w2:'سرعة فائقة',w2d:'بدون انتظار. كل شيء يعمل فورياً على جهازك.',w3:'مجاني دائماً',w3d:'بدون اشتراكات أو رسوم خفية. مجاني للأبد.'}
+var lang=localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en');
+var TR={
+  en:{T_privacyBadge:'100% Private',heroBadge:'✨ 100% Free · No signup required',heroTitle:'All your PDF tools. Right in your browser.',heroDesc:'Merge, split, compress, sign & convert PDF files — free, private, instant. Your files never leave your device.',toolsLabel:'All Tools',t1:'No file uploads',t2:'Works offline',t3:'No registration',t4:'Completely free',c1:'Merge PDF',c1d:'Combine multiple PDFs into one',c2:'Split PDF',c2d:'Extract pages visually',c3:'Compress PDF',c3d:'Reduce file size without quality loss',c4:'Rotate PDF',c4d:'Turn pages 90°, 180°, 270°',c5:'Sign PDF',c5d:'Draw & add digital signature',c6:'Protect PDF',c6d:'Add password to your PDF',c7:'Watermark',c7d:'Add text watermark to pages',c8:'Image → PDF',c8d:'Convert images to PDF',c9:'PDF → Image',c9d:'Export PDF pages as PNG/JPG',c10:'Extract Text',c10d:'Copy text from any PDF',c11:'Convert Image',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'Remove BG',c12d:'AI background removal',c13:'Stamp PDF',c13d:'Add official stamps to PDF',w1:'100% Private',w1d:'All processing in your browser. Files never uploaded to any server.',w2:'Lightning Fast',w2d:'No server waiting. Everything runs instantly on your machine.',w3:'Always Free',w3d:'No subscriptions, no limits, no hidden fees. Forever free.',footerTxt:'© 2026 Doctor PDF · All processing in your browser · Your files never leave your device'},
+  ar:{T_privacyBadge:'خصوصية 100%',heroBadge:'✨ مجاني 100% · بدون تسجيل',heroTitle:'كل أدوات PDF في مكان واحد.',heroDesc:'ادمج وقسّم واضغط ووقّع وحوّل ملفات PDF — مجاناً وفورياً. ملفاتك لا تغادر جهازك.',toolsLabel:'جميع الأدوات',t1:'بدون رفع ملفات',t2:'يعمل بدون إنترنت',t3:'بدون تسجيل',t4:'مجاني تماماً',c1:'دمج PDF',c1d:'ادمج عدة ملفات PDF في واحد',c2:'تقسيم PDF',c2d:'استخرج الصفحات بشكل مرئي',c3:'ضغط PDF',c3d:'قلّل الحجم بدون فقدان الجودة',c4:'تدوير PDF',c4d:'دوّر الصفحات 90° أو 180°',c5:'توقيع PDF',c5d:'ارسم وأضف توقيعك',c6:'حماية PDF',c6d:'أضف كلمة مرور للملف',c7:'علامة مائية',c7d:'أضف نصاً مائياً للصفحات',c8:'صورة ← PDF',c8d:'حوّل الصور إلى PDF',c9:'PDF ← صورة',c9d:'صدّر صفحات PDF كـ PNG/JPG',c10:'استخراج نص',c10d:'انسخ النص من أي PDF',c11:'تحويل صور',c11d:'PNG · JPG · WebP · BMP · GIF',c12:'إزالة الخلفية',c12d:'إزالة الخلفية بالذكاء الاصطناعي',c13:'ختم PDF',c13d:'أضف ختماً رسمياً للملف',w1:'خصوصية تامة',w1d:'كل المعالجة في متصفحك. لا ترفع ملفاتك لأي خادم.',w2:'سرعة فائقة',w2d:'بدون انتظار. كل شيء يعمل فورياً على جهازك.',w3:'مجاني دائماً',w3d:'بدون اشتراكات أو رسوم خفية. مجاني للأبد.',footerTxt:'© 2026 Doctor PDF · كل المعالجة في متصفحك · ملفاتك لا تغادر جهازك'}
 };
-function applyLang(){
-  document.body.dir='ltr';
-  document.body.classList.toggle('lang-ar',lang==='ar');
-  document.getElementById('langBtn').textContent=lang==='ar'?'EN':'عربي';
-  document.documentElement.lang=lang;
-  
-  const t=tr[lang];
-  Object.entries(t).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.innerHTML=val;});
+function applyTheme(dark){
+  document.documentElement.setAttribute('data-theme',dark?'dark':'');
+  document.getElementById('iconSun').style.display=dark?'none':'';
+  document.getElementById('iconMoon').style.display=dark?'':'none';
+  localStorage.setItem('dpdf_dark',dark?'1':'0');
 }
-function toggleLang(){lang=lang==='en'?'ar':'en';localStorage.setItem('lang',lang);applyLang();}
-applyLang();
-
-document.querySelectorAll('.tool-card').forEach(card=>{
-  card.addEventListener('click',()=>{if(typeof gtag!=='undefined')gtag('event','tool_clicked',{event_category:'Tools',event_label:card.href});});
-});
+function applyLang(l){
+  lang=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  document.getElementById('langLabel').textContent=l==='ar'?'EN':'AR';
+  var t=TR[l]||TR.en;
+  Object.keys(t).forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML=t[id];});
+}
+function boot(){
+  applyTheme(document.documentElement.getAttribute('data-theme')==='dark');
+  applyLang(lang);
+  document.getElementById('themeBtn').onclick=function(){applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');};
+  document.getElementById('langBtn').onclick=function(){applyLang(lang==='en'?'ar':'en');localStorage.setItem('dpdf_lang',lang);};
+  document.querySelectorAll('.tool-card').forEach(function(card){
+    card.addEventListener('click',function(){if(typeof gtag!=='undefined')gtag('event','tool_clicked',{event_category:'Tools',event_label:card.href});});
+  });
+}
+boot();
 </script>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

@@ -5,122 +5,168 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Protect PDF Online Free – Password Protect PDF | Doctor PDF</title>
 <meta name="description" content="Add password protection to PDF files online for free. 100% browser-based, no upload to server, no registration required.">
+<meta name="keywords" content="protect pdf, password protect pdf, encrypt pdf, حماية pdf بكلمة مرور">
 <link rel="canonical" href="https://doctor-pdf.com/protect-pdf.html">
 <link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/protect-pdf.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--muted:#64748b}
-.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--muted:#94a3b8}
+:root{
+  --bg:#fff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;--secondary:#8b5cf6;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--panel:360px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;--danger-light:#2d1010;--success-light:#052e16;
+}
+html[lang="ar"] *{font-family:var(--font-ar)}
+html[lang="en"] *{font-family:var(--font-en)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .25s,color .25s}
-body.ar{font-family:'Cairo',sans-serif}
-nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;z-index:300;position:relative}
-.dark nav{background:rgba(15,23,42,.97)}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-weight:800;font-size:.92em;color:var(--p)}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--bdr)}.nav-title{font-size:.78em;font-weight:700}
-.nav-fill{flex:1;display:flex;justify-content:center}.nav-end{display:flex;gap:5px;align-items:center}
-.icon-btn{width:30px;height:30px;border:1.5px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit}
-.icon-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
-.lang-btn{width:auto;padding:0 10px;font-size:.68em;font-weight:700}
-.qt{position:relative}
-.qt-trigger{display:flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:4px 11px;font-size:.75em;font-weight:700;color:var(--tx);cursor:pointer;font-family:inherit;transition:.15s}
-.qt-trigger:hover{border-color:var(--p);color:var(--p)}
-.qt-arr{font-size:.65em;transition:transform .2s}.qt.open .qt-arr{transform:rotate(180deg)}
-.qt-menu{position:absolute;top:calc(100%+7px);left:50%;transform:translateX(-50%);background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 10px 36px rgba(0,0,0,.13);padding:8px;display:none;z-index:999;width:260px}
-.qt.open .qt-menu{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.qt-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;text-decoration:none;color:var(--tx);font-size:.74em;font-weight:600;transition:.12s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--p)}
-.qt-ic{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85em}
+body{background:var(--bg2);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* NAV */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap}
+.nav-privacy svg{width:12px;height:12px}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit}
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
+@media(max-width:700px){.nav-privacy span{display:none}}
+
+/* WORKSPACE */
 .workspace{display:flex;flex:1;overflow:hidden}
 .content{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);text-align:center;cursor:pointer;padding:48px;border:2.5px dashed var(--bdr);border-radius:16px;width:100%;max-width:480px;transition:.2s;background:var(--sur)}
-.empty-state:hover{border-color:var(--p);background:rgba(99,102,241,.02)}
-.empty-ic{font-size:4em;opacity:.2}.empty-main{font-size:.95em;font-weight:700;opacity:.6}.empty-sub{font-size:.74em;opacity:.4;line-height:1.5}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--text2);text-align:center;cursor:pointer;padding:48px;border:2.5px dashed var(--border);border-radius:16px;width:100%;max-width:480px;transition:.2s;background:var(--bg)}
+.empty-state:hover,.empty-state.drag-over{border-color:var(--primary);background:var(--primary-light)}
+.empty-ic{font-size:4em;opacity:.25}.empty-main{font-size:.95em;font-weight:700;opacity:.7}.empty-sub{font-size:.74em;opacity:.5;line-height:1.5}
+
 /* READY STATE */
 .ready-card{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:420px;text-align:center}
 .ready-icon{font-size:5em}
-.ready-title{font-size:1.1em;font-weight:800;color:var(--tx)}
-.ready-sub{font-size:.76em;color:var(--muted);line-height:1.5}
-.file-badge{display:flex;align-items:center;gap:8px;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:10px 14px;width:100%;text-align:left}
-[dir=rtl] .file-badge{text-align:right}
+.ready-title{font-size:1.1em;font-weight:800;color:var(--text)}
+.ready-sub{font-size:.76em;color:var(--text2);line-height:1.5}
+.file-badge{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;width:100%;text-align:start}
 .fb-icon{font-size:1.5em;flex-shrink:0}.fb-name{font-size:.78em;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.warn-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:9px;padding:10px 12px;font-size:.69em;color:#92400e;line-height:1.5;width:100%;text-align:left}
-.dark .warn-box{color:#fcd34d}
-[dir=rtl] .warn-box{text-align:right}
-.panel{width:360px;flex-shrink:0;background:var(--sur);border-left:1.5px solid var(--bdr);overflow-y:auto;display:flex;flex-direction:column}
-[dir=rtl] .panel{border-left:none;border-right:1.5px solid var(--bdr)}
+.warn-box{background:var(--warn-light);border:1px solid var(--warn);border-radius:9px;padding:10px 12px;font-size:.69em;color:#92400e;line-height:1.5;width:100%;text-align:start}
+[data-theme="dark"] .warn-box{color:#fcd34d}
+
+/* PANEL */
+.panel{width:var(--panel);flex-shrink:0;background:var(--bg);border-inline-start:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
 .panel-section{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
-.panel-section+.panel-section{border-top:1px solid var(--bdr)}
-.panel-footer{padding:14px 16px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:8px;margin-top:auto}
-.back-btn{font-size:.73em;font-weight:600;color:var(--p);text-decoration:none;opacity:.75;display:inline-flex;align-items:center;gap:4px}
+.panel-section+.panel-section{border-top:1px solid var(--border)}
+.panel-footer{padding:14px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.back-btn{font-size:.73em;font-weight:600;color:var(--primary);text-decoration:none;opacity:.75;display:inline-flex;align-items:center;gap:4px}
 .back-btn:hover{opacity:1}
 .tool-header{display:flex;align-items:center;gap:10px}
-.tool-emoji{font-size:1.7em;flex-shrink:0}.tool-name{font-size:1.0em;font-weight:800;color:var(--p)}.tool-desc{font-size:.7em;color:var(--muted);line-height:1.4;margin-top:2px}
-.label{font-size:.67em;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-.upload-zone{border:2px dashed var(--bdr);border-radius:10px;padding:14px;text-align:center;cursor:pointer;background:var(--bg);transition:.15s}
-.upload-zone:hover{border-color:var(--p)}.uz-icon{font-size:1.4em;display:block;margin-bottom:3px}.uz-main{color:var(--p);font-weight:700;font-size:.78em}.uz-sub{color:var(--muted);font-size:.64em;margin-top:2px}
-.file-info{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;padding:10px 12px}
+.tool-emoji{font-size:1.7em;flex-shrink:0}.tool-name{font-size:1.0em;font-weight:800;color:var(--primary)}.tool-desc{font-size:.7em;color:var(--text2);line-height:1.4;margin-top:2px}
+.label{font-size:.67em;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;background:var(--bg2);transition:.15s}
+.upload-zone:hover{border-color:var(--primary)}.uz-icon{font-size:1.4em;display:block;margin-bottom:3px}.uz-main{color:var(--primary);font-weight:700;font-size:.78em}.uz-sub{color:var(--text2);font-size:.64em;margin-top:2px}
+.file-info{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:10px 12px}
 .file-icon{font-size:1.4em;flex-shrink:0}.file-name{font-size:.78em;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-change-btn{font-size:.67em;color:var(--p);font-weight:700;cursor:pointer;border:1.5px solid var(--p);background:none;border-radius:6px;padding:3px 8px;font-family:inherit;transition:.15s;flex-shrink:0}
-.file-change-btn:hover{background:var(--p);color:#fff}
+.file-change-btn{font-size:.67em;color:var(--primary);font-weight:700;cursor:pointer;border:1.5px solid var(--primary);background:none;border-radius:6px;padding:3px 8px;font-family:inherit;transition:.15s;flex-shrink:0}
+.file-change-btn:hover{background:var(--primary);color:#fff}
 .pwd-wrap{position:relative}
-.pwd-input{width:100%;padding:10px 40px 10px 12px;border:1.5px solid var(--bdr);border-radius:9px;font-size:.84em;background:var(--sur);color:var(--tx);font-family:inherit;transition:.15s}
+.pwd-input{width:100%;padding:10px 40px 10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:.84em;background:var(--bg);color:var(--text);font-family:inherit;transition:.15s}
 [dir=rtl] .pwd-input{padding:10px 12px 10px 40px}
-.pwd-input:focus{outline:none;border-color:var(--p)}
-.pwd-input.err{border-color:var(--err)}
-.pwd-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.82em;color:var(--muted);padding:2px}
+.pwd-input:focus{outline:none;border-color:var(--primary)}
+.pwd-input.err{border-color:var(--danger)}
+.pwd-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.82em;color:var(--text2);padding:2px}
 [dir=rtl] .pwd-toggle{right:auto;left:10px}
 .pwd-strength{height:3px;border-radius:100px;margin-top:5px;transition:all .3s}
-.pwd-msg{font-size:.64em;color:var(--muted);margin-top:3px}
-.hint-box{background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.12);border-radius:8px;padding:8px 10px;font-size:.69em;color:var(--muted);line-height:1.5}
+.pwd-msg{font-size:.64em;color:var(--text2);margin-top:3px}
+.hint-box{background:var(--primary-light);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.69em;color:var(--text2);line-height:1.5}
+.privacy-note{display:flex;align-items:center;gap:6px;font-size:.66em;color:var(--success)}
+.privacy-note svg{width:13px;height:13px;flex-shrink:0}
+
+/* PROGRESS */
 .progress-wrap{display:none;flex-direction:column;gap:5px}
-.progress-bar{width:100%;height:5px;background:var(--bdr);border-radius:100px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--s));width:0;border-radius:100px;transition:width .25s}
-.progress-txt{font-size:.67em;color:var(--muted);text-align:center}
-.btn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border:none;padding:13px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit}
+.progress-bar{width:100%;height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));width:0;border-radius:100px;transition:width .25s}
+.progress-txt{font-size:.67em;color:var(--text2);text-align:center}
+
+/* BUTTONS */
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:13px;border-radius:100px;font-size:.88em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit}
 .btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.35)}
-.btn-primary:disabled{background:var(--bdr);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
-.btn-ok{background:var(--ok);color:#fff;border:none;padding:11px;border-radius:100px;font-size:.82em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit;text-decoration:none;display:block;text-align:center}
-.btn-ok:hover{background:#059669}
-.btn-ghost{background:var(--bg);border:1.5px solid var(--p);color:var(--p);padding:8px;border-radius:100px;font-size:.76em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s;margin-top:4px}
-.btn-ghost:hover{background:var(--p);color:#fff}
-.result-wrap{display:none;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:12px;flex-direction:column;gap:7px}
-.result-title{color:var(--ok);font-weight:800;font-size:.8em;text-align:center}
-@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-left:none;border-right:none;border-top:1.5px solid var(--bdr);max-height:58vh}.content{flex:none;min-height:42vh;padding:16px}}
+.btn-primary:disabled{background:var(--border);color:var(--text2);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ok{background:var(--success);color:#fff;border:none;padding:11px;border-radius:100px;font-size:.82em;font-weight:700;cursor:pointer;width:100%;transition:.15s;font-family:inherit;text-decoration:none;display:block;text-align:center}
+.btn-ok:hover{filter:brightness(.93)}
+.btn-ghost{background:var(--bg2);border:1.5px solid var(--primary);color:var(--primary);padding:8px;border-radius:100px;font-size:.76em;font-weight:700;cursor:pointer;width:100%;font-family:inherit;transition:.15s;margin-top:4px}
+.btn-ghost:hover{background:var(--primary);color:#fff}
+.result-wrap{display:none;background:var(--success-light);border:1px solid var(--success);border-radius:10px;padding:12px;flex-direction:column;gap:7px}
+.result-title{color:var(--success);font-weight:800;font-size:.8em;text-align:center}
+@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);max-height:58vh}.content{flex:none;min-height:42vh;padding:16px}}
 </style>
 </head>
 <body>
-<nav>
-  <div style="display:flex;align-items:center;gap:8px;min-width:0;flex-shrink:0">
-    <a href="index.html" class="logo"><div class="logo-icon">📄</div>Doctor PDF</a>
-    <span class="nav-sep">›</span><span class="nav-title" id="T_navTitle">Protect PDF</span>
-  </div>
-  <div class="nav-fill">
-    <div class="qt" id="qtMenu">
-      <button class="qt-trigger" id="qtTrigger"><span id="T_allTools">All Tools</span><span class="qt-arr">▾</span></button>
-      <div class="qt-menu">
-        <a href="merge-pdf.html" class="qt-item"><span class="qt-ic">🔗</span><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
-        <a href="split-pdf.html" class="qt-item"><span class="qt-ic">✂️</span><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
-        <a href="compress-pdf.html" class="qt-item"><span class="qt-ic">🗜️</span><span data-en="Compress" data-ar="ضغط">Compress</span></a>
-        <a href="rotate-pdf.html" class="qt-item"><span class="qt-ic">🔄</span><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
-        <a href="sign-pdf.html" class="qt-item"><span class="qt-ic">✍️</span><span data-en="Sign" data-ar="توقيع">Sign</span></a>
-        <a href="stamp-pdf.html" class="qt-item"><span class="qt-ic">📋</span><span data-en="Stamp" data-ar="ختم">Stamp</span></a>
-        <a href="watermark-pdf.html" class="qt-item"><span class="qt-ic">💧</span><span data-en="Watermark" data-ar="علامة مائية">Watermark</span></a>
-        <a href="pdf-to-image.html" class="qt-item"><span class="qt-ic">🖼️</span><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
-        <a href="image-to-pdf.html" class="qt-item"><span class="qt-ic">📄</span><span data-en="Image→PDF" data-ar="صورة→PDF">Image→PDF</span></a>
-        <a href="extract-text.html" class="qt-item"><span class="qt-ic">📝</span><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
-        <a href="remove-background.html" class="qt-item"><span class="qt-ic">🎨</span><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
-      </div>
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_tools">All Tools</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
+      <a href="sign-pdf.html"><span id="T_sign">Sign PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">Watermark</span></a>
+      <a href="stamp-pdf.html"><span id="T_stamp">Stamp PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
+      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
+      <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
     </div>
   </div>
-  <div class="nav-end">
-    <button class="icon-btn" id="themeBtn">🌙</button>
-    <button class="icon-btn lang-btn" id="langBtn">عربي</button>
+  <div class="nav-sep"></div>
+  <div class="nav-privacy">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">100% Private</span>
   </div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">AR</span>
+  </button>
 </nav>
 
 <div class="workspace">
@@ -138,7 +184,7 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
         <span class="fb-icon">📄</span>
         <span class="fb-name" id="fileNameReady">document.pdf</span>
       </div>
-      <div class="warn-box" id="T_warnBox">⚠️ Browser-based protection adds metadata encryption. For maximum security, use Adobe Acrobat.</div>
+      <div class="warn-box" id="T_warnBox">🔒 Real AES-256 encryption, done entirely in your browser. The PDF will require this password to open — keep it safe, it cannot be recovered.</div>
     </div>
   </div>
 
@@ -161,7 +207,7 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
       <div class="file-info" id="fileInfo" style="display:none">
         <span class="file-icon">📄</span>
         <span class="file-name" id="fileName">document.pdf</span>
-        <button class="file-change-btn" onclick="resetTool()" id="T_changeFile">Change</button>
+        <button class="file-change-btn" id="changeFileBtn" type="button"><span id="T_changeFile">Change</span></button>
       </div>
     </div>
 
@@ -169,16 +215,20 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
       <div class="label" id="T_pwdLabel">Password</div>
       <div class="pwd-wrap">
         <input type="password" class="pwd-input" id="pwdInput" placeholder="Enter password" autocomplete="new-password">
-        <button class="pwd-toggle" onclick="togglePwd('pwdInput')" tabindex="-1">👁</button>
+        <button class="pwd-toggle" type="button" onclick="togglePwd('pwdInput')" tabindex="-1">👁</button>
       </div>
       <div class="pwd-strength" id="pwdStrength"></div>
       <div class="pwd-msg" id="pwdMsg"></div>
       <div class="label" id="T_confirmLabel" style="margin-top:6px">Confirm Password</div>
       <div class="pwd-wrap">
         <input type="password" class="pwd-input" id="pwdConfirm" placeholder="Confirm password" autocomplete="new-password">
-        <button class="pwd-toggle" onclick="togglePwd('pwdConfirm')" tabindex="-1">👁</button>
+        <button class="pwd-toggle" type="button" onclick="togglePwd('pwdConfirm')" tabindex="-1">👁</button>
       </div>
       <div class="hint-box">🔒 <span id="T_hint">Use a strong password with letters, numbers, and symbols.</span></div>
+      <div class="privacy-note">
+        <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span id="T_privacy">All processing happens locally in your browser. No files are ever uploaded.</span>
+      </div>
     </div>
 
     <div class="panel-footer">
@@ -186,13 +236,13 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         <div class="progress-txt" id="progressTxt">Processing…</div>
       </div>
-      <button class="btn-primary" id="actionBtn" disabled onclick="doProtect()">
+      <button class="btn-primary" id="actionBtn" disabled>
         <span id="T_actionBtn">Protect PDF</span>
       </button>
       <div class="result-wrap" id="resultWrap">
         <div class="result-title" id="T_resultTitle">✅ PDF protected!</div>
         <a class="btn-ok" id="downloadLink" href="#" download>📥 Download</a>
-        <button class="btn-ghost" onclick="resetTool()"><span id="T_again">Protect another file</span></button>
+        <button class="btn-ghost" id="resetBtn" type="button"><span id="T_again">Protect another file</span></button>
       </div>
     </div>
   </div>
@@ -201,23 +251,11 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
 <input type="file" id="pdfInput" accept=".pdf" style="position:fixed;top:-9999px;left:-9999px">
 
 <script>
-var S={file:null,dark:localStorage.getItem('dpdf_dark')==='1',lang:localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en')};
-
-document.getElementById('pdfInput').onchange=function(){if(this.files&&this.files[0]){loadFile(this.files[0]);this.value='';}};
-document.getElementById('uploadZone').onclick=function(){document.getElementById('pdfInput').click();};
-document.getElementById('emptyState').onclick=function(){document.getElementById('pdfInput').click();};
-document.body.addEventListener('dragover',function(e){e.preventDefault();});
-document.body.addEventListener('drop',function(e){
-  e.preventDefault();
-  var pdf=Array.from(e.dataTransfer.files||[]).find(function(f){return f.type==='application/pdf';});
-  if(pdf)loadFile(pdf);
-});
-
-document.getElementById('pwdInput').addEventListener('input',checkPwd);
-document.getElementById('pwdConfirm').addEventListener('input',checkPwd);
+var S={file:null};
+var lang=localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en');
 
 function loadFile(f){
-  if(!f||f.type!=='application/pdf'){alert('Please select a valid PDF file.');return;}
+  if(!f||(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))){alert(lang==='ar'?'اختر ملف PDF صالح.':'Please select a valid PDF file.');return;}
   S.file=f;
   document.getElementById('emptyState').style.display='none';
   document.getElementById('readyCard').style.display='flex';
@@ -233,12 +271,12 @@ function checkPwd(){
   var conf=document.getElementById('pwdConfirm').value;
   var str=document.getElementById('pwdStrength');
   var msg=document.getElementById('pwdMsg');
-  var isAr=S.lang==='ar';
+  var isAr=lang==='ar';
   if(!pwd){str.style.cssText='';msg.textContent='';document.getElementById('actionBtn').disabled=true;return;}
   var score=0;
   if(pwd.length>=8)score++;if(pwd.length>=12)score++;
   if(/[A-Z]/.test(pwd))score++;if(/[0-9]/.test(pwd))score++;if(/[^a-zA-Z0-9]/.test(pwd))score++;
-  var colors=['#ef4444','#f59e0b','#f59e0b','#10b981','#10b981'];
+  var colors=['#ef4444','#f59e0b','#f59e0b','#22c55e','#22c55e'];
   var labels=isAr?['ضعيف جداً','ضعيف','متوسط','قوي','قوي جداً']:['Very weak','Weak','Fair','Strong','Very strong'];
   str.style.cssText='background:'+colors[Math.min(score,4)]+';width:'+((score+1)/5*100)+'%';
   msg.textContent=labels[Math.min(score,4)];
@@ -253,6 +291,29 @@ function togglePwd(id){
   inp.type=inp.type==='password'?'text':'password';
 }
 
+/* qpdf compiled to WASM — gives real AES-256 PDF encryption fully in-browser.
+   pdf-lib cannot encrypt, so we lazy-load qpdf only when the user protects a file. */
+var QPDF_JS='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.js';
+var QPDF_WASM='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm';
+var _qpdfScript=null;
+function loadQpdfScript(){
+  if(_qpdfScript)return _qpdfScript;
+  _qpdfScript=new Promise(function(resolve,reject){
+    if(typeof Module==='function'){resolve();return;}
+    var s=document.createElement('script');
+    s.src=QPDF_JS;
+    s.onload=function(){typeof Module==='function'?resolve():reject(new Error('qpdf engine unavailable'));};
+    s.onerror=function(){_qpdfScript=null;reject(new Error('Could not load the encryption engine. Check your connection.'));};
+    document.head.appendChild(s);
+  });
+  return _qpdfScript;
+}
+/* fresh module instance per run — re-running main() in one Emscripten instance is unsafe */
+async function newQpdf(){
+  await loadQpdfScript();
+  return await Module({locateFile:function(){return QPDF_WASM;}});
+}
+
 async function doProtect(){
   var pwd=document.getElementById('pwdInput').value;
   if(!S.file||!pwd)return;
@@ -260,25 +321,30 @@ async function doProtect(){
   document.getElementById('progressWrap').style.display='flex';
   document.getElementById('resultWrap').style.display='none';
   try{
-    setProgress(10,'Loading PDF…');
-    var bytes=await S.file.arrayBuffer();
-    var pdf=await PDFLib.PDFDocument.load(bytes);
-    setProgress(50,'Encrypting…');
-    /* pdf-lib metadata protection */
-    pdf.setTitle(pwd+'_protected');
-    pdf.setKeywords(['protected']);
-    pdf.setCreator('Doctor PDF');
-    setProgress(85,'Saving…');
-    var out=await pdf.save();
+    setProgress(10,tr('T_pLoad'));
+    var bytes=new Uint8Array(await S.file.arrayBuffer());
+    setProgress(35,tr('T_pEnc'));
+    var qpdf=await newQpdf();
+    var inPath='/in.pdf',outPath='/out.pdf';
+    qpdf.FS.writeFile(inPath,bytes);
+    /* qpdf 11: --encrypt USER OWNER --bits=256 -- in out  (AES-256, password required to open) */
+    var rc=0;
+    try{rc=qpdf.callMain(['--encrypt','--user-password='+pwd,'--owner-password='+pwd,'--bits=256','--',inPath,outPath]);}
+    catch(e){rc=(e&&typeof e.status==='number')?e.status:1;}
+    setProgress(80,tr('T_pSave'));
+    var out=null;
+    try{out=qpdf.FS.readFile(outPath);}catch(e){out=null;}
+    /* qpdf exit 0=ok, 3=ok-with-warnings; trust the output bytes when present */
+    if(!out||!out.length)throw new Error('Encryption failed'+(rc?' (qpdf exit '+rc+')':''));
     var url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
     var name=S.file.name.replace(/\.pdf$/i,'')+'_protected.pdf';
     var dl=document.getElementById('downloadLink');
     dl.href=url;dl.download=name;dl.textContent='📥 '+name;
     document.getElementById('resultWrap').style.display='flex';
-    setProgress(100,'Done!');
+    setProgress(100,tr('T_pDone'));
     setTimeout(function(){var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);},350);
     if(typeof gtag!=='undefined')gtag('event','pdf_protected',{event_category:'PDF Tools'});
-  }catch(err){alert('Error: '+err.message);console.error(err);}
+  }catch(err){alert((lang==='ar'?'خطأ: ':'Error: ')+err.message);console.error(err);}
   document.getElementById('actionBtn').disabled=false;
   setTimeout(function(){document.getElementById('progressWrap').style.display='none';},900);
 }
@@ -301,40 +367,86 @@ function resetTool(){
   document.getElementById('pwdMsg').textContent='';
 }
 
-if(S.dark){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}
-document.getElementById('themeBtn').onclick=function(){S.dark=!S.dark;document.body.classList.toggle('dark',S.dark);this.textContent=S.dark?'☀️':'🌙';localStorage.setItem('dpdf_dark',S.dark?'1':'0');};
-
+/* ── LANGUAGE ── */
 var LANGS={
-  en:{T_navTitle:'Protect PDF',T_allTools:'All Tools',T_back:'← All tools',T_toolName:'Protect PDF',T_toolDesc:'Add password protection to your PDF',
+  en:{T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',T_rotate:'Rotate PDF',T_sign:'Sign PDF',T_watermark:'Watermark',T_stamp:'Stamp PDF',T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_extract:'Extract Text',T_convert:'Convert Image',T_removebg:'Remove BG',
+    T_privacyBadge:'100% Private',
+    T_back:'← All tools',T_toolName:'Protect PDF',T_toolDesc:'Add password protection to your PDF',
     T_emptyMain:'Click or drop a PDF file here',T_emptySub:'Your file never leaves your browser · Free · No registration',
     T_pdfLabel:'PDF File',T_pdfBtn:'Click or drop PDF here',T_pdfSub:'Any PDF — processed locally',T_changeFile:'Change',
     T_readyTitle:'Ready to protect',T_readySub:'Enter a password in the panel and click the button',
-    T_warnBox:'⚠️ Browser-based protection adds metadata encryption. For maximum security, use Adobe Acrobat.',
+    T_warnBox:'🔒 Real AES-256 encryption, done entirely in your browser. The PDF will require this password to open — keep it safe, it cannot be recovered.',
     T_pwdLabel:'Password',T_confirmLabel:'Confirm Password',
     T_hint:'Use a strong password with letters, numbers, and symbols.',
-    T_actionBtn:'Protect PDF',T_resultTitle:'✅ PDF protected!',T_again:'Protect another file',langBtn:'عربي'},
-  ar:{T_navTitle:'حماية PDF',T_allTools:'كل الأدوات',T_back:'كل الأدوات ←',T_toolName:'حماية PDF',T_toolDesc:'أضف كلمة مرور لحماية ملف PDF',
+    T_privacy:'All processing happens locally in your browser. No files are ever uploaded.',
+    T_actionBtn:'Protect PDF',T_resultTitle:'✅ PDF protected!',T_again:'Protect another file',
+    T_pLoad:'Loading PDF…',T_pEnc:'Encrypting…',T_pSave:'Saving…',T_pDone:'Done!'},
+  ar:{T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',T_rotate:'تدوير PDF',T_sign:'توقيع PDF',T_watermark:'علامة مائية',T_stamp:'ختم PDF',T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_extract:'استخراج النص',T_convert:'تحويل الصور',T_removebg:'إزالة الخلفية',
+    T_privacyBadge:'خصوصية 100%',
+    T_back:'كل الأدوات ←',T_toolName:'حماية PDF',T_toolDesc:'أضف كلمة مرور لحماية ملف PDF',
     T_emptyMain:'اضغط هنا أو أسقط ملف PDF',T_emptySub:'ملفك لا يغادر متصفحك · مجاني · بدون تسجيل',
     T_pdfLabel:'ملف PDF',T_pdfBtn:'اضغط أو أسقط PDF هنا',T_pdfSub:'أي PDF — معالجة محلية',T_changeFile:'تغيير',
     T_readyTitle:'جاهز للحماية',T_readySub:'أدخل كلمة المرور في اللوح وانقر الزر',
-    T_warnBox:'⚠️ الحماية تضيف تشفير البيانات الوصفية. للحماية القصوى استخدم Adobe Acrobat.',
+    T_warnBox:'🔒 تشفير AES-256 حقيقي يتم بالكامل داخل متصفحك. سيطلب الملف كلمة المرور هذه عند فتحه — احتفظ بها جيداً، لا يمكن استعادتها.',
     T_pwdLabel:'كلمة المرور',T_confirmLabel:'تأكيد كلمة المرور',
     T_hint:'استخدم كلمة مرور قوية تحتوي على أحرف وأرقام ورموز.',
-    T_actionBtn:'حماية الملف',T_resultTitle:'✅ تم تأمين الملف!',T_again:'حماية ملف آخر',langBtn:'EN'}
+    T_privacy:'كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.',
+    T_actionBtn:'حماية الملف',T_resultTitle:'✅ تم تأمين الملف!',T_again:'حماية ملف آخر',
+    T_pLoad:'جاري تحميل PDF…',T_pEnc:'جاري التشفير…',T_pSave:'جاري الحفظ…',T_pDone:'تم!'}
 };
+function tr(k){return (LANGS[lang]||LANGS.en)[k]||k;}
 
-function applyLang(){
-  var t=LANGS[S.lang]||LANGS.en;
-  document.documentElement.lang=S.lang;
-  document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
-  document.body.classList.toggle('ar',S.lang==='ar');
-  Object.keys(t).forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=t[k];});
-  document.querySelectorAll('.qt-menu span[data-en]').forEach(function(el){el.textContent=S.lang==='ar'?el.dataset.ar:el.dataset.en;});
+function applyLang(l){
+  lang=l;
+  var t=LANGS[l]||LANGS.en;
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  Object.keys(t).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=t[id];});
+  document.getElementById('langLabel').textContent=l==='ar'?'EN':'AR';
 }
-document.getElementById('langBtn').onclick=function(){S.lang=S.lang==='en'?'ar':'en';localStorage.setItem('dpdf_lang',S.lang);applyLang();checkPwd();};
-document.getElementById('qtTrigger').onclick=function(e){e.stopPropagation();document.getElementById('qtMenu').classList.toggle('open');};
-document.addEventListener('click',function(){document.getElementById('qtMenu').classList.remove('open');});
-applyLang();
+function applyTheme(dark){
+  document.documentElement.setAttribute('data-theme',dark?'dark':'');
+  document.getElementById('iconSun').style.display=dark?'none':'';
+  document.getElementById('iconMoon').style.display=dark?'':'none';
+  localStorage.setItem('dpdf_dark',dark?'1':'0');
+}
+
+/* ── BOOT ── */
+function boot(){
+  applyTheme(localStorage.getItem('dpdf_dark')==='1');
+  applyLang(lang);
+
+  /* file input */
+  var fi=document.getElementById('pdfInput');
+  fi.onchange=function(){if(this.files&&this.files[0]){loadFile(this.files[0]);this.value='';}};
+  document.getElementById('uploadZone').onclick=function(){fi.click();};
+  document.getElementById('emptyState').onclick=function(){fi.click();};
+  document.getElementById('changeFileBtn').onclick=resetTool;
+  document.getElementById('resetBtn').onclick=resetTool;
+  document.getElementById('actionBtn').onclick=doProtect;
+
+  /* password */
+  document.getElementById('pwdInput').addEventListener('input',checkPwd);
+  document.getElementById('pwdConfirm').addEventListener('input',checkPwd);
+
+  /* nav */
+  document.getElementById('themeBtn').onclick=function(){applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');};
+  document.getElementById('langBtn').onclick=function(){lang=lang==='en'?'ar':'en';localStorage.setItem('dpdf_lang',lang);applyLang(lang);checkPwd();};
+  document.getElementById('toolsBtn').onclick=function(e){e.stopPropagation();document.getElementById('toolsMenu').classList.toggle('open');};
+  document.addEventListener('click',function(){document.getElementById('toolsMenu').classList.remove('open');});
+
+  /* drag-drop */
+  document.body.addEventListener('dragover',function(e){e.preventDefault();if(!S.file)document.getElementById('emptyState').classList.add('drag-over');});
+  document.body.addEventListener('dragleave',function(e){if(!e.relatedTarget||e.relatedTarget===document.documentElement)document.getElementById('emptyState').classList.remove('drag-over');});
+  document.body.addEventListener('drop',function(e){
+    e.preventDefault();
+    document.getElementById('emptyState').classList.remove('drag-over');
+    var pdf=Array.from(e.dataTransfer.files||[]).find(function(f){return f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf');});
+    if(pdf)loadFile(pdf);
+  });
+}
+
+boot();
 </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
 </body>

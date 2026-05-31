@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,40 +9,54 @@
 <link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/stamp-pdf.html">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--p:#6366f1;--s:#8b5cf6;--ok:#10b981;--err:#ef4444;--bg:#f8fafc;--sur:#fff;--bdr:#e2e8f0;--tx:#0f172a;--muted:#64748b}
-.dark{--bg:#0f172a;--sur:#1e293b;--bdr:#334155;--tx:#f1f5f9;--muted:#94a3b8}
+:root{
+  --p:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;--s:#8b5cf6;
+  --ok:#22c55e;--success:#22c55e;--success-light:#f0fdf4;
+  --err:#ef4444;--danger:#ef4444;--danger-light:#fef2f2;
+  --bg:#f8f8f8;--sur:#fff;--bg3:#f1f1f1;
+  --bdr:#e0e0e0;--border2:#d0d0d0;
+  --tx:#1a1a1a;--muted:#555;--text3:#888;
+  --radius:10px;--radius-sm:6px;--panel:360px;
+}
+[data-theme="dark"]{
+  --bg:#1f1f23;--sur:#18181b;--bg3:#27272a;
+  --bdr:#3f3f46;--border2:#52525b;
+  --tx:#fafafa;--muted:#a1a1aa;--text3:#71717a;
+  --primary-light:#312e81;--danger-light:#2d1010;--success-light:#052e16;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);height:100vh;display:flex;flex-direction:column;overflow:hidden;transition:background .25s,color .25s}
 body.ar{font-family:'Cairo',sans-serif}
 
 /* ── NAV ── */
-nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 18px;gap:10px;flex-shrink:0;z-index:300;position:relative}
-.dark nav{background:rgba(15,23,42,.97)}
-.logo{display:flex;align-items:center;gap:7px;text-decoration:none;font-weight:800;font-size:.92em;color:var(--p)}
-.logo-icon{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75em}
-.nav-sep{color:var(--bdr)}
-.nav-title{font-size:.78em;font-weight:700}
-.nav-fill{flex:1;display:flex;justify-content:center}
-.nav-end{display:flex;gap:5px;align-items:center}
-.icon-btn{width:30px;height:30px;border:1.5px solid var(--bdr);background:var(--sur);border-radius:7px;cursor:pointer;font-size:.78em;color:var(--tx);display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit}
-.icon-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
-.lang-btn{width:auto;padding:0 10px;font-size:.68em;font-weight:700}
-
-/* TOOLS DROPDOWN */
-.qt{position:relative}
-.qt-trigger{display:flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:4px 11px;font-size:.75em;font-weight:700;color:var(--tx);cursor:pointer;font-family:inherit;transition:.15s}
-.qt-trigger:hover{border-color:var(--p);color:var(--p)}
-.qt-arr{font-size:.65em;transition:transform .2s}
-.qt.open .qt-arr{transform:rotate(180deg)}
-.qt-menu{position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%);background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;box-shadow:0 10px 36px rgba(0,0,0,.13);padding:8px;display:none;z-index:999;width:260px}
-.qt.open .qt-menu{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.qt-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;text-decoration:none;color:var(--tx);font-size:.74em;font-weight:600;transition:.12s}
-.qt-item:hover{background:rgba(99,102,241,.08);color:var(--p)}
-.qt-item-ic{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85em}
+nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:300;position:relative}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:17px;color:var(--p)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap}
+.nav-privacy svg{width:12px;height:12px}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--bdr);border-radius:var(--radius-sm);background:var(--sur);color:var(--muted);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit}
+.nav-btn:hover{background:var(--bg3);color:var(--tx)}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--tx);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
+@media(max-width:700px){.nav-privacy span{display:none}}
 
 /* ── WORKSPACE ── */
 .workspace{display:flex;flex:1;overflow:hidden}
@@ -229,38 +243,45 @@ nav{height:52px;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);bord
 
 <!-- NAV -->
 <nav>
-  <div style="display:flex;align-items:center;gap:8px;min-width:0;flex-shrink:0">
-    <a href="index.html" class="logo">
-      <div class="logo-icon">📄</div>
-      Doctor PDF
-    </a>
-    <span class="nav-sep">›</span>
-    <span class="nav-title" id="T_pageTitle">Stamp PDF</span>
-  </div>
-  <div class="nav-fill">
-    <div class="qt" id="qtMenu">
-      <button class="qt-trigger" id="qtTrigger">
-        <span id="T_allTools">All Tools</span>
-        <span class="qt-arr">▾</span>
-      </button>
-      <div class="qt-menu">
-        <a href="merge-pdf.html" class="qt-item"><span class="qt-item-ic">🔗</span><span data-en="Merge PDF" data-ar="دمج PDF">Merge PDF</span></a>
-        <a href="split-pdf.html" class="qt-item"><span class="qt-item-ic">✂️</span><span data-en="Split PDF" data-ar="تقسيم">Split PDF</span></a>
-        <a href="compress-pdf.html" class="qt-item"><span class="qt-item-ic">🗜️</span><span data-en="Compress" data-ar="ضغط">Compress</span></a>
-        <a href="rotate-pdf.html" class="qt-item"><span class="qt-item-ic">🔄</span><span data-en="Rotate" data-ar="تدوير">Rotate</span></a>
-        <a href="sign-pdf.html" class="qt-item"><span class="qt-item-ic">✍️</span><span data-en="Sign" data-ar="توقيع">Sign</span></a>
-        <a href="watermark-pdf.html" class="qt-item"><span class="qt-item-ic">💧</span><span data-en="Watermark" data-ar="علامة مائية">Watermark</span></a>
-        <a href="protect-pdf.html" class="qt-item"><span class="qt-item-ic">🔐</span><span data-en="Protect" data-ar="حماية">Protect</span></a>
-        <a href="pdf-to-image.html" class="qt-item"><span class="qt-item-ic">🖼️</span><span data-en="PDF→Image" data-ar="صورة">PDF→Image</span></a>
-        <a href="extract-text.html" class="qt-item"><span class="qt-item-ic">📝</span><span data-en="Extract Text" data-ar="استخراج نص">Extract Text</span></a>
-        <a href="remove-background.html" class="qt-item"><span class="qt-item-ic">🎨</span><span data-en="Remove BG" data-ar="إزالة خلفية">Remove BG</span></a>
-      </div>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_allTools">All Tools</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
+      <a href="sign-pdf.html"><span id="T_sign">Sign PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">Watermark</span></a>
+      <a href="stamp-pdf.html" style="color:var(--p)"><span id="T_stamp">Stamp PDF</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
+      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="convert-image.html"><span id="T_convert">Convert Image</span></a>
+      <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
     </div>
   </div>
-  <div class="nav-end">
-    <button class="icon-btn" id="themeBtn">🌙</button>
-    <button class="icon-btn lang-btn" id="langBtn">عربي</button>
+  <div class="nav-sep"></div>
+  <div class="nav-privacy">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">100% Private</span>
   </div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">عربي</span>
+  </button>
 </nav>
 
 <!-- WORKSPACE -->
@@ -510,7 +531,7 @@ function boot(){
   wireKeyboard();
   wireMouseTouch();
   wireNav();
-  if (S.dark) applyDark();
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
   applyLang();
 }
 
@@ -1017,11 +1038,14 @@ function wireKeyboard() {
   document.addEventListener('keydown', function(e) {
     var tag = (e.target || {}).tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    /* use e.code (physical key) so shortcuts work under non-Latin (e.g. Arabic) keyboard layouts */
+    var mod = e.ctrlKey || e.metaKey;
     if (e.key === 'Escape')  { S.placing = false; refreshPlacingUI(); hideGhost(); }
     if ((e.key === 'Delete' || e.key === 'Backspace') && S.selected) { e.preventDefault(); deleteSelected(); }
-    if (e.ctrlKey && e.key.toLowerCase() === 'z') { e.preventDefault(); doUndo(); }
-    if (e.ctrlKey && e.key.toLowerCase() === 'c' && S.selected) copyStamp();
-    if (e.ctrlKey && e.key.toLowerCase() === 'v' && S.copied)   pasteStamp();
+    if (mod && e.code === 'KeyZ') { e.preventDefault(); doUndo(); }
+    if (mod && e.code === 'KeyC' && S.selected) { e.preventDefault(); copyStamp(); }
+    if (mod && e.code === 'KeyX' && S.selected) { e.preventDefault(); cutStamp(); }
+    if (mod && e.code === 'KeyV' && S.copied)   { e.preventDefault(); pasteStamp(); }
   });
 }
 
@@ -1194,10 +1218,40 @@ function copyStamp() {
   setTimeout(function(){ if(el) el.style.outline = ''; }, 500);
 }
 
+function cutStamp() {
+  if (!S.selected) return;
+  var pi = +S.selected.dataset.pi, si = +S.selected.dataset.si;
+  var st = S.pages[pi] && S.pages[pi].stamps[si];
+  if (!st) return;
+  /* sync live position, copy to clipboard, then remove */
+  savePos(S.selected);
+  S.copied = Object.assign({}, S.pages[pi].stamps[si]);
+  pushUndo();
+  S.pages[pi].stamps.splice(si, 1);
+  S.selected = null;
+  renderPages();
+}
+
+/* index of the page currently most visible in the viewport */
+function getVisiblePage() {
+  var area  = document.getElementById('pagesArea');
+  var cards = document.querySelectorAll('.page-card');
+  if (!area || !cards.length) return 0;
+  var areaRect = area.getBoundingClientRect();
+  var best = 0, bestVis = -1;
+  cards.forEach(function(card, i) {
+    var r   = card.getBoundingClientRect();
+    var vis = Math.min(r.bottom, areaRect.bottom) - Math.max(r.top, areaRect.top);
+    if (vis > bestVis) { bestVis = vis; best = i; }
+  });
+  return best;
+}
+
 function pasteStamp() {
-  if (!S.copied) return;
-  var pi = S.selected ? +S.selected.dataset.pi : 0;
-  if (pi >= S.pages.length) pi = 0;
+  if (!S.copied || !S.pages.length) return;
+  /* paste onto the page the user is currently looking at */
+  var pi = getVisiblePage();
+  if (pi < 0 || pi >= S.pages.length) pi = 0;
   pushUndo();
   var cp = Object.assign({}, S.copied);
   cp.xPct = Math.min(cp.xPct + 0.04, 0.86);
@@ -1437,15 +1491,15 @@ function resetAll() {
 /* ───────────────────────────────────────────────── */
 /* DARK MODE                                          */
 /* ───────────────────────────────────────────────── */
-function applyDark() {
-  document.body.classList.add('dark');
-  document.getElementById('themeBtn').textContent = '☀️';
+function applyTheme(dark) {
+  S.dark = dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('iconSun').style.display  = dark ? 'none' : '';
+  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
+  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
 }
 document.getElementById('themeBtn').addEventListener('click', function(){
-  S.dark = !S.dark;
-  document.body.classList.toggle('dark', S.dark);
-  this.textContent = S.dark ? '☀️' : '🌙';
-  localStorage.setItem('dpdf_dark', S.dark ? '1' : '0');
+  applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
 });
 
 /* ───────────────────────────────────────────────── */
@@ -1563,12 +1617,17 @@ var LANGS = {
     T_cloneSub:'Same position & size will be copied to every page',
     T_cloneBtn:'✅ Yes — apply to all pages',
     T_cloneSkip:'No thanks, keep as is',
-    T_kbHint:'Ctrl+Z undo · Del remove stamp · Esc cancel',
+    T_kbHint:'Ctrl+C/X/V copy·cut·paste · Ctrl+Z undo · Del remove · Esc cancel',
     T_undo:'↩ Undo', T_clear:'🗑 Clear', T_del:'✕ Del',
     T_applyBtn:'Apply Stamps & Download',
     T_resultTitle:'✅ Stamps applied!', T_again:'Stamp another file',
     T_zoom:'Zoom:', T_thumbTitle:'Pages',
-    langBtn: 'عربي'
+    T_privacyBadge:'100% Private',
+    T_merge:'Merge PDF', T_split:'Split PDF', T_compress:'Compress PDF', T_rotate:'Rotate PDF',
+    T_sign:'Sign PDF', T_protect:'Protect PDF', T_watermark:'Watermark', T_stamp:'Stamp PDF',
+    T_img2pdf:'Image to PDF', T_pdf2img:'PDF to Image', T_extract:'Extract Text',
+    T_convert:'Convert Image', T_removebg:'Remove BG',
+    langLabel: 'عربي'
   },
   ar: {
     T_pageTitle:'ختم PDF', T_allTools:'كل الأدوات', T_back:'كل الأدوات ←',
@@ -1586,12 +1645,17 @@ var LANGS = {
     T_cloneSub:'سيتم نسخ نفس الموضع والحجم على كل صفحة',
     T_cloneBtn:'✅ نعم — تطبيق على كل الصفحات',
     T_cloneSkip:'لا شكراً، إبقَ كما هو',
-    T_kbHint:'Ctrl+Z تراجع · Del حذف · Esc إلغاء',
+    T_kbHint:'Ctrl+C/X/V نسخ·قص·لصق · Ctrl+Z تراجع · Del حذف · Esc إلغاء',
     T_undo:'↩ تراجع', T_clear:'🗑 مسح', T_del:'✕ حذف',
     T_applyBtn:'تطبيق الأختام وتحميل',
     T_resultTitle:'✅ تم تطبيق الأختام!', T_again:'ختم ملف آخر',
     T_zoom:'تكبير:', T_thumbTitle:'الصفحات',
-    langBtn: 'EN'
+    T_privacyBadge:'خصوصية 100%',
+    T_merge:'دمج PDF', T_split:'تقسيم PDF', T_compress:'ضغط PDF', T_rotate:'تدوير PDF',
+    T_sign:'توقيع PDF', T_protect:'حماية PDF', T_watermark:'علامة مائية', T_stamp:'ختم PDF',
+    T_img2pdf:'صورة إلى PDF', T_pdf2img:'PDF إلى صورة', T_extract:'استخراج النص',
+    T_convert:'تحويل صورة', T_removebg:'إزالة الخلفية',
+    langLabel: 'EN'
   }
 };
 
@@ -1603,9 +1667,6 @@ function applyLang() {
   Object.keys(t).forEach(function(k) {
     var el = document.getElementById(k);
     if (el) el.textContent = t[k];
-  });
-  document.querySelectorAll('.qt-item span[data-en]').forEach(function(el) {
-    el.textContent = S.lang === 'ar' ? el.dataset.ar : el.dataset.en;
   });
 }
 
@@ -1619,12 +1680,12 @@ document.getElementById('langBtn').addEventListener('click', function() {
 /* NAV DROPDOWN                                       */
 /* ───────────────────────────────────────────────── */
 function wireNav() {
-  document.getElementById('qtTrigger').addEventListener('click', function(e) {
+  document.getElementById('toolsBtn').addEventListener('click', function(e) {
     e.stopPropagation();
-    document.getElementById('qtMenu').classList.toggle('open');
+    document.getElementById('toolsMenu').classList.toggle('open');
   });
   document.addEventListener('click', function() {
-    document.getElementById('qtMenu').classList.remove('open');
+    document.getElementById('toolsMenu').classList.remove('open');
   });
 }
 
@@ -1643,5 +1704,6 @@ function setTxt(id, val) {
 /* ── START — all variables and functions defined above ── */
 boot();
 </script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
 </body>
 </html>
