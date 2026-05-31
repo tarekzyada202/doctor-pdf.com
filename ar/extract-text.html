@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extract Text from PDF — Doctor PDF</title>
-<link rel="canonical" href="https://doctor-pdf.com/extract-text.html">
+<title>استخراج النص من PDF أونلاين مجاناً – نسخ نص PDF | Doctor PDF</title>
+<meta name="description" content="استخرج وانسخ النص من أي ملف PDF أونلاين مجاناً. يعمل 100% داخل المتصفح بدون رفع للخادم.">
+<meta name="keywords" content="استخراج النص من pdf, نسخ نص pdf, extract text pdf">
+<link rel="canonical" href="https://doctor-pdf.com/ar/extract-text.html">
 <link rel="alternate" hreflang="en" href="https://doctor-pdf.com/extract-text.html">
 <link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/extract-text.html">
 <link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/extract-text.html">
-<meta name="description" content="Extract text from PDF files online for free. Copy or download text from any PDF page. 100% private — runs entirely in your browser.">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:locale:alternate" content="en_US">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'en';
+  var l=localStorage.getItem('dpdf_lang')||'ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -434,7 +437,7 @@ const LANGS = {
 // ══════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════
-let currentLang = localStorage.getItem('dpdf_lang') || 'en';
+let currentLang = localStorage.getItem('dpdf_lang')||'ar';
 let pdfDoc = null;
 let pageTexts = []; // ['text of page 1', 'text of page 2', ...]
 let currentTab = 'all'; // 'all' | pageNum

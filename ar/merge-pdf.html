@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merge PDF Online Free – Combine PDF Files | Doctor PDF</title>
-<link rel="canonical" href="https://doctor-pdf.com/merge-pdf.html">
+<title>دمج PDF أونلاين مجاناً – دمج ملفات PDF في ملف واحد | Doctor PDF</title>
+<meta name="description" content="ادمج عدة ملفات PDF في ملف واحد أونلاين مجاناً. أعد ترتيب الصفحات بالسحب. يعمل 100% داخل المتصفح بدون رفع للخادم وبدون تسجيل.">
+<meta name="keywords" content="دمج pdf, دمج ملفات pdf, ضم pdf, دمج pdf اونلاين, merge pdf">
+<link rel="canonical" href="https://doctor-pdf.com/ar/merge-pdf.html">
 <link rel="alternate" hreflang="en" href="https://doctor-pdf.com/merge-pdf.html">
 <link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/merge-pdf.html">
 <link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/merge-pdf.html">
-<meta name="description" content="Merge multiple PDF files into one online for free. Drag to reorder pages. 100% browser-based, no upload to server, no registration required.">
-<meta name="keywords" content="merge pdf online free, combine pdf, join pdf files, دمج ملفات pdf">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:locale:alternate" content="en_US">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
@@ -18,7 +20,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'en';
+  var l=localStorage.getItem('dpdf_lang')||'ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -255,7 +257,7 @@ var S={
   files:[],  /* original File objects */
   pages:[]   /* [{cv, fi, pi, name, rot}] */
 };
-var lang=localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en');
+var lang=localStorage.getItem('dpdf_lang')||'ar';
 
 /* drag state */
 var DR={on:false,el:null,ghost:null,idx:-1,ox:0,oy:0};

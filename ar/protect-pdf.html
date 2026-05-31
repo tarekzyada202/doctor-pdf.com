@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protect PDF Online Free – Password Protect PDF | Doctor PDF</title>
-<link rel="canonical" href="https://doctor-pdf.com/protect-pdf.html">
+<title>حماية PDF بكلمة مرور أونلاين مجاناً – تشفير PDF | Doctor PDF</title>
+<meta name="description" content="احمِ ملفات PDF بكلمة مرور وتشفير AES-256 حقيقي أونلاين مجاناً. يتم التشفير بالكامل داخل متصفحك بدون رفع للخادم.">
+<meta name="keywords" content="حماية pdf بكلمة مرور, تشفير pdf, قفل pdf, protect pdf">
+<link rel="canonical" href="https://doctor-pdf.com/ar/protect-pdf.html">
 <link rel="alternate" hreflang="en" href="https://doctor-pdf.com/protect-pdf.html">
 <link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/protect-pdf.html">
 <link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/protect-pdf.html">
-<meta name="description" content="Add password protection to PDF files online for free. 100% browser-based, no upload to server, no registration required.">
-<meta name="keywords" content="protect pdf, password protect pdf, encrypt pdf, حماية pdf بكلمة مرور">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:locale:alternate" content="en_US">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
@@ -18,7 +20,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'en';
+  var l=localStorage.getItem('dpdf_lang')||'ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -254,7 +256,7 @@ body{background:var(--bg2);color:var(--text);height:100vh;display:flex;flex-dire
 
 <script>
 var S={file:null};
-var lang=localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en');
+var lang=localStorage.getItem('dpdf_lang')||'ar';
 
 function loadFile(f){
   if(!f||(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))){alert(lang==='ar'?'اختر ملف PDF صالح.':'Please select a valid PDF file.');return;}
