@@ -55,18 +55,22 @@ def _gsc_query(service, start, end, dimensions, row_limit=25, filters=None):
     return service.searchanalytics().query(siteUrl=SITE_URL, body=body).execute().get('rows', [])
 
 def fetch_gsc_data():
-    """Read real Search Console data via a service-account key (env GSC_CREDENTIALS).
+    """Read real Search Console data via OAuth (refresh token).
+    Env: GSC_CLIENT_ID, GSC_CLIENT_SECRET, GSC_REFRESH_TOKEN.
     Returns a markdown text block, or None if not configured / on error."""
-    creds_json = os.environ.get('GSC_CREDENTIALS', '').strip()
-    if not creds_json:
-        print("ℹ️ GSC_CREDENTIALS not set — skipping Search Console section")
+    cid = os.environ.get('GSC_CLIENT_ID', '').strip()
+    csec = os.environ.get('GSC_CLIENT_SECRET', '').strip()
+    rtok = os.environ.get('GSC_REFRESH_TOKEN', '').strip()
+    if not (cid and csec and rtok):
+        print("ℹ️ GSC OAuth credentials not set — skipping Search Console section")
         return None
     try:
-        from google.oauth2 import service_account
+        from google.oauth2.credentials import Credentials
         from googleapiclient.discovery import build
-        info = json.loads(creds_json)
-        creds = service_account.Credentials.from_service_account_info(
-            info, scopes=['https://www.googleapis.com/auth/webmasters.readonly'])
+        creds = Credentials(None, refresh_token=rtok,
+            token_uri='https://oauth2.googleapis.com/token',
+            client_id=cid, client_secret=csec,
+            scopes=['https://www.googleapis.com/auth/webmasters.readonly'])
         service = build('searchconsole', 'v1', credentials=creds, cache_discovery=False)
 
         end28, start28 = _d(2), _d(30)
