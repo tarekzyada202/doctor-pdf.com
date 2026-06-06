@@ -82,6 +82,11 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .workspace{height:calc(100vh - 56px);display:flex;overflow:hidden}
 .seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
 .seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-content .seo-about h2{margin-top:8px}
+.seo-content .seo-about h2:not(:first-child){margin-top:40px}
+.seo-about p{line-height:1.85;color:var(--text2);margin:0 0 16px;font-size:1.02em}
+.seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--text2);line-height:1.9}
+.seo-list li{margin-bottom:9px}
 .seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
 .seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
 .seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
@@ -417,7 +422,7 @@ const LANGS = {
     T_errLoad:'Failed to load PDF. The file may be corrupted or encrypted.',
     T_page:'Page',
     langLabel:'AR'
-  ,W_h2:"Why choose Doctor PDF?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No limits on file size or number of tasks",W3:"100% private — files never leave your device",W4:"Completely free — no sign-up required",W5:"Instant — runs right in your browser",F_h2:"How to convert PDF to images online",F_s1:"Open the PDF to Image tool and drop your PDF into the page.",F_s2:"Choose the image quality and format you want for each page.",F_s3:"Click Convert to turn every page into a high-quality image.",F_s4:"Download the images individually or as a ZIP — all in your browser.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to images free?",F_a1:"Yes. Doctor PDF converts PDF pages to images 100% free with no limits.",F_q2:"Can I download all pages at once?",F_a2:"Yes. Download every page as a single ZIP file, or save them one by one.",F_q3:"What image quality will I get?",F_a3:"You can pick high resolution for crisp, print-ready images.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
+  ,A_h2:"What does converting a PDF to images mean?",A_p1:"Converting a PDF to images means turning each page of a PDF into a separate picture file (PNG or JPG). This is useful when you need to post a page as an image, insert it into a slide or chat, or use a page where PDFs are not accepted. Each page becomes a high-quality image you can use anywhere an image works.",A_p2:"With Doctor PDF you open your PDF, choose the format, and download all the page images — packaged in a ZIP when there are many — in one step.",A_useH:"When do you need to convert a PDF to images?",A_u1:"Posting a PDF page as an image on social media or in a chat.",A_u2:"Inserting a PDF page into a presentation or document as a picture.",A_u3:"Uploading to a site that accepts images but not PDFs.",A_u4:"Creating thumbnails or previews of document pages.",A_u5:"Extracting a page as an image to edit it in an image editor.",A_howH:"How Doctor PDF converts your PDF privately",A_hp1:"Each page is rendered to an image inside your browser. Your PDF is never uploaded, so confidential documents stay entirely on your device.",A_hp2:"Because there is no server, conversion is instant, works on any number of pages, and has no daily limits.",W_h2:"Why choose Doctor PDF?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No limits on file size or number of tasks",W3:"100% private — files never leave your device",W4:"Completely free — no sign-up required",W5:"Instant — runs right in your browser",F_h2:"How to convert PDF to images online",F_s1:"Open the PDF to Image tool and drop your PDF into the page.",F_s2:"Choose the image quality and format you want for each page.",F_s3:"Click Convert to turn every page into a high-quality image.",F_s4:"Download the images individually or as a ZIP — all in your browser.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to images free?",F_a1:"Yes. Doctor PDF converts PDF pages to images 100% free with no limits.",F_q2:"Can I download all pages at once?",F_a2:"Yes. Download every page as a single ZIP file, or save them one by one.",F_q3:"What image quality will I get?",F_a3:"You can pick high resolution for crisp, print-ready images.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
@@ -441,7 +446,7 @@ const LANGS = {
     T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو مشفراً',
     T_page:'صفحة',
     langLabel:'EN'
-  ,W_h2:"ليه تختار Doctor PDF؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود على حجم الملف أو عدد العمليات",W3:"خصوصية 100% — ملفاتك لا تغادر جهازك",W4:"مجاني تماماً — بدون أي تسجيل",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل PDF إلى صور أونلاين",F_s1:"افتح أداة PDF إلى صورة وأسقط ملفك في الصفحة.",F_s2:"اختر جودة وصيغة الصورة التي تريدها لكل صفحة.",F_s3:"اضغط تحويل لتحويل كل صفحة إلى صورة عالية الجودة.",F_s4:"حمّل الصور منفردة أو كملف ZIP — كل ذلك في متصفحك.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى صور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF صفحات PDF إلى صور مجاناً 100% بدون حدود.",F_q2:"هل يمكنني تحميل كل الصفحات دفعة واحدة؟",F_a2:"نعم. حمّل كل الصفحات كملف ZIP واحد، أو احفظها واحدة واحدة.",F_q3:"ما جودة الصور التي سأحصل عليها؟",F_a3:"يمكنك اختيار دقة عالية للحصول على صور واضحة جاهزة للطباعة.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
+  ,A_h2:"ماذا يعني تحويل PDF إلى صور؟",A_p1:"تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل (PNG أو JPG). هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.",A_p2:"مع Doctor PDF تفتح ملفك، تختار الصيغة، وتحمّل صور كل الصفحات — مجمّعة في ملف ZIP عند تعددها — في خطوة واحدة.",A_useH:"متى تحتاج إلى تحويل PDF إلى صور؟",A_u1:"نشر صفحة PDF كصورة على وسائل التواصل أو في محادثة.",A_u2:"إدراج صفحة PDF في عرض تقديمي أو مستند كصورة.",A_u3:"الرفع إلى موقع يقبل الصور ولا يقبل PDF.",A_u4:"إنشاء صور مصغّرة أو معاينات لصفحات المستند.",A_u5:"استخراج صفحة كصورة لتعديلها في محرر صور.",A_howH:"كيف يحوّل Doctor PDF ملفك بخصوصية تامة",A_hp1:"تُحوّل كل صفحة إلى صورة داخل متصفحك. ملف PDF الخاص بك لا يُرفع أبداً، فتبقى المستندات السرية على جهازك بالكامل.",A_hp2:"ولأنه لا يوجد خادم، يكون التحويل فورياً، ويعمل على أي عدد من الصفحات، وبدون قيود يومية.",W_h2:"ليه تختار Doctor PDF؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود على حجم الملف أو عدد العمليات",W3:"خصوصية 100% — ملفاتك لا تغادر جهازك",W4:"مجاني تماماً — بدون أي تسجيل",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل PDF إلى صور أونلاين",F_s1:"افتح أداة PDF إلى صورة وأسقط ملفك في الصفحة.",F_s2:"اختر جودة وصيغة الصورة التي تريدها لكل صفحة.",F_s3:"اضغط تحويل لتحويل كل صفحة إلى صورة عالية الجودة.",F_s4:"حمّل الصور منفردة أو كملف ZIP — كل ذلك في متصفحك.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى صور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF صفحات PDF إلى صور مجاناً 100% بدون حدود.",F_q2:"هل يمكنني تحميل كل الصفحات دفعة واحدة؟",F_a2:"نعم. حمّل كل الصفحات كملف ZIP واحد، أو احفظها واحدة واحدة.",F_q3:"ما جودة الصور التي سأحصل عليها؟",F_a3:"يمكنك اختيار دقة عالية للحصول على صور واضحة جاهزة للطباعة.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
 };
 
 // ══════════════════════════════════════════
@@ -874,6 +879,22 @@ gtag('config','G-3EGBBVX022');
 </script>
 
 <section class="seo-content">
+  <div class="seo-about">
+    <h2 id="A_h2">ماذا يعني تحويل PDF إلى صور؟</h2>
+    <p id="A_p1">تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل (PNG أو JPG). هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.</p>
+    <p id="A_p2">مع Doctor PDF تفتح ملفك، تختار الصيغة، وتحمّل صور كل الصفحات — مجمّعة في ملف ZIP عند تعددها — في خطوة واحدة.</p>
+    <h2 id="A_useH">متى تحتاج إلى تحويل PDF إلى صور؟</h2>
+    <ul class="seo-list">
+      <li id="A_u1">نشر صفحة PDF كصورة على وسائل التواصل أو في محادثة.</li>
+      <li id="A_u2">إدراج صفحة PDF في عرض تقديمي أو مستند كصورة.</li>
+      <li id="A_u3">الرفع إلى موقع يقبل الصور ولا يقبل PDF.</li>
+      <li id="A_u4">إنشاء صور مصغّرة أو معاينات لصفحات المستند.</li>
+      <li id="A_u5">استخراج صفحة كصورة لتعديلها في محرر صور.</li>
+    </ul>
+    <h2 id="A_howH">كيف يحوّل Doctor PDF ملفك بخصوصية تامة</h2>
+    <p id="A_hp1">تُحوّل كل صفحة إلى صورة داخل متصفحك. ملف PDF الخاص بك لا يُرفع أبداً، فتبقى المستندات السرية على جهازك بالكامل.</p>
+    <p id="A_hp2">ولأنه لا يوجد خادم، يكون التحويل فورياً، ويعمل على أي عدد من الصفحات، وبدون قيود يومية.</p>
+  </div>
   <div class="why">
     <h2 id="W_h2">ليه تختار Doctor PDF؟</h2>
     <p class="why-lead" id="W_lead">زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:</p>
