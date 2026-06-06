@@ -80,6 +80,11 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .workspace{height:calc(100vh - 56px);display:flex;overflow:hidden}
 .seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
 .seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-content .seo-about h2{margin-top:8px}
+.seo-content .seo-about h2:not(:first-child){margin-top:40px}
+.seo-about p{line-height:1.85;color:var(--text2);margin:0 0 16px;font-size:1.02em}
+.seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--text2);line-height:1.9}
+.seo-list li{margin-bottom:9px}
 .seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
 .seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
 .seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
@@ -345,7 +350,7 @@ const LANGS = {
     T_resultTitle:'✅ Watermark added!',
     T_dropHere:'Drop PDF here',
     langLabel:'AR'
-  ,W_h2:"Why choose Doctor PDF?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No limits on file size or number of tasks",W3:"100% private — files never leave your device",W4:"Completely free — no sign-up required",W5:"Instant — runs right in your browser",F_h2:"How to add a watermark to a PDF online",F_s1:"Open the Watermark tool and drop your PDF into the page.",F_s2:"Type your text watermark (or add an image) and adjust size, opacity, and position.",F_s3:"Apply the watermark to all pages at once.",F_s4:"Download your watermarked PDF instantly — nothing is uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is adding a watermark free?",F_a1:"Yes. Doctor PDF adds watermarks 100% free with no limits or sign-up.",F_q2:"Can I use my logo as a watermark?",F_a2:"Yes. You can add an image watermark such as your logo, or use custom text.",F_q3:"Can I control the transparency?",F_a3:"Yes. Adjust opacity, size, angle, and position to get exactly the look you want.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
+  ,A_h2:"What does adding a watermark to a PDF mean?",A_p1:"Adding a watermark means placing semi-transparent text — like 'Confidential', 'Draft', or your company name — across the pages of a PDF. A watermark marks the ownership, status, or sensitivity of a document, discourages unauthorized copying, and makes the purpose of a file clear at a glance without hiding its content.",A_p2:"With Doctor PDF you type your watermark text and control its transparency and angle, then download a PDF with the watermark applied to every page.",A_useH:"When do you need to watermark a PDF?",A_u1:"Marking a document as 'Confidential' or 'Internal use only'.",A_u2:"Labeling a file as 'Draft' or 'Sample' before sharing.",A_u3:"Adding your company or brand name across a document.",A_u4:"Protecting designs, proposals, or photos from reuse.",A_u5:"Marking copies as 'Paid' or 'Approved'.",A_howH:"How Doctor PDF watermarks your files privately",A_hp1:"The watermark is applied entirely inside your browser. Your PDF is never uploaded, so even confidential documents stay on your own device.",A_hp2:"Because everything runs locally, watermarking is instant, works on files of any size, and has no daily limits.",W_h2:"Why choose Doctor PDF?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No limits on file size or number of tasks",W3:"100% private — files never leave your device",W4:"Completely free — no sign-up required",W5:"Instant — runs right in your browser",F_h2:"How to add a watermark to a PDF online",F_s1:"Open the Watermark tool and drop your PDF into the page.",F_s2:"Type your text watermark (or add an image) and adjust size, opacity, and position.",F_s3:"Apply the watermark to all pages at once.",F_s4:"Download your watermarked PDF instantly — nothing is uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is adding a watermark free?",F_a1:"Yes. Doctor PDF adds watermarks 100% free with no limits or sign-up.",F_q2:"Can I use my logo as a watermark?",F_a2:"Yes. You can add an image watermark such as your logo, or use custom text.",F_q3:"Can I control the transparency?",F_a3:"Yes. Adjust opacity, size, angle, and position to get exactly the look you want.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_rotate:'تدوير PDF',T_sign:'توقيع PDF',T_protect:'حماية PDF',T_watermark:'علامة مائية',
@@ -363,7 +368,7 @@ const LANGS = {
     T_resultTitle:'✅ تمت الإضافة!',
     T_dropHere:'أفلت PDF هنا',
     langLabel:'EN'
-  ,W_h2:"ليه تختار Doctor PDF؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود على حجم الملف أو عدد العمليات",W3:"خصوصية 100% — ملفاتك لا تغادر جهازك",W4:"مجاني تماماً — بدون أي تسجيل",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية إضافة علامة مائية إلى PDF أونلاين",F_s1:"افتح أداة العلامة المائية وأسقط ملفك في الصفحة.",F_s2:"اكتب نص العلامة المائية (أو أضِف صورة) واضبط الحجم والشفافية والموضع.",F_s3:"طبّق العلامة المائية على كل الصفحات دفعة واحدة.",F_s4:"حمّل ملفك بالعلامة المائية فوراً — لا يُرفع أي شيء.",F_faqH:"الأسئلة الشائعة",F_q1:"هل إضافة علامة مائية مجانية؟",F_a1:"نعم. يضيف Doctor PDF علامات مائية مجاناً 100% بدون حدود أو تسجيل.",F_q2:"هل يمكنني استخدام شعاري كعلامة مائية؟",F_a2:"نعم. يمكنك إضافة علامة مائية صورة مثل شعارك، أو استخدام نص مخصص.",F_q3:"هل يمكنني التحكم في الشفافية؟",F_a3:"نعم. اضبط الشفافية والحجم والزاوية والموضع للحصول على الشكل الذي تريده بالضبط.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
+  ,A_h2:"ماذا تعني إضافة علامة مائية على PDF؟",A_p1:"إضافة علامة مائية تعني وضع نص شبه شفّاف — مثل «سري» أو «مسودة» أو اسم شركتك — عبر صفحات ملف PDF. العلامة المائية تحدّد ملكية المستند أو حالته أو درجة سريّته، وتمنع النسخ غير المصرّح به، وتوضّح غرض الملف من نظرة واحدة دون إخفاء محتواه.",A_p2:"مع Doctor PDF تكتب نص العلامة المائية وتتحكم في شفافيتها وزاويتها، ثم تحمّل ملف PDF مع تطبيق العلامة على كل صفحة.",A_useH:"متى تحتاج إلى علامة مائية على PDF؟",A_u1:"تمييز مستند بأنه «سري» أو «للاستخدام الداخلي فقط».",A_u2:"وسم ملف بأنه «مسودة» أو «عيّنة» قبل المشاركة.",A_u3:"إضافة اسم شركتك أو علامتك التجارية عبر المستند.",A_u4:"حماية التصاميم أو العروض أو الصور من إعادة الاستخدام.",A_u5:"وسم النسخ بأنها «مدفوعة» أو «معتمدة».",A_howH:"كيف يضيف Doctor PDF العلامة المائية بخصوصية تامة",A_hp1:"تُطبّق العلامة المائية بالكامل داخل متصفحك. ملف PDF لا يُرفع أبداً، فتبقى حتى المستندات السرية على جهازك.",A_hp2:"ولأن كل شيء يعمل محلياً، تكون الإضافة فورية، وتعمل على ملفات بأي حجم، وبدون قيود يومية.",W_h2:"ليه تختار Doctor PDF؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود على حجم الملف أو عدد العمليات",W3:"خصوصية 100% — ملفاتك لا تغادر جهازك",W4:"مجاني تماماً — بدون أي تسجيل",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية إضافة علامة مائية إلى PDF أونلاين",F_s1:"افتح أداة العلامة المائية وأسقط ملفك في الصفحة.",F_s2:"اكتب نص العلامة المائية (أو أضِف صورة) واضبط الحجم والشفافية والموضع.",F_s3:"طبّق العلامة المائية على كل الصفحات دفعة واحدة.",F_s4:"حمّل ملفك بالعلامة المائية فوراً — لا يُرفع أي شيء.",F_faqH:"الأسئلة الشائعة",F_q1:"هل إضافة علامة مائية مجانية؟",F_a1:"نعم. يضيف Doctor PDF علامات مائية مجاناً 100% بدون حدود أو تسجيل.",F_q2:"هل يمكنني استخدام شعاري كعلامة مائية؟",F_a2:"نعم. يمكنك إضافة علامة مائية صورة مثل شعارك، أو استخدام نص مخصص.",F_q3:"هل يمكنني التحكم في الشفافية؟",F_a3:"نعم. اضبط الشفافية والحجم والزاوية والموضع للحصول على الشكل الذي تريده بالضبط.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
 };
 
 /* ── STATE ── */
@@ -659,6 +664,22 @@ boot();
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
 
 <section class="seo-content">
+  <div class="seo-about">
+    <h2 id="A_h2">ماذا تعني إضافة علامة مائية على PDF؟</h2>
+    <p id="A_p1">إضافة علامة مائية تعني وضع نص شبه شفّاف — مثل «سري» أو «مسودة» أو اسم شركتك — عبر صفحات ملف PDF. العلامة المائية تحدّد ملكية المستند أو حالته أو درجة سريّته، وتمنع النسخ غير المصرّح به، وتوضّح غرض الملف من نظرة واحدة دون إخفاء محتواه.</p>
+    <p id="A_p2">مع Doctor PDF تكتب نص العلامة المائية وتتحكم في شفافيتها وزاويتها، ثم تحمّل ملف PDF مع تطبيق العلامة على كل صفحة.</p>
+    <h2 id="A_useH">متى تحتاج إلى علامة مائية على PDF؟</h2>
+    <ul class="seo-list">
+      <li id="A_u1">تمييز مستند بأنه «سري» أو «للاستخدام الداخلي فقط».</li>
+      <li id="A_u2">وسم ملف بأنه «مسودة» أو «عيّنة» قبل المشاركة.</li>
+      <li id="A_u3">إضافة اسم شركتك أو علامتك التجارية عبر المستند.</li>
+      <li id="A_u4">حماية التصاميم أو العروض أو الصور من إعادة الاستخدام.</li>
+      <li id="A_u5">وسم النسخ بأنها «مدفوعة» أو «معتمدة».</li>
+    </ul>
+    <h2 id="A_howH">كيف يضيف Doctor PDF العلامة المائية بخصوصية تامة</h2>
+    <p id="A_hp1">تُطبّق العلامة المائية بالكامل داخل متصفحك. ملف PDF لا يُرفع أبداً، فتبقى حتى المستندات السرية على جهازك.</p>
+    <p id="A_hp2">ولأن كل شيء يعمل محلياً، تكون الإضافة فورية، وتعمل على ملفات بأي حجم، وبدون قيود يومية.</p>
+  </div>
   <div class="why">
     <h2 id="W_h2">ليه تختار Doctor PDF؟</h2>
     <p class="why-lead" id="W_lead">زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:</p>
