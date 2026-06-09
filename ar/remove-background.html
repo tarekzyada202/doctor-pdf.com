@@ -89,6 +89,9 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
 .seo-about p{line-height:1.85;color:var(--text2);margin:0 0 16px;font-size:1.02em}
 .seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--text2);line-height:1.9}
 .seo-list li{margin-bottom:9px}
+.priv-cta{display:block;margin:6px 0 30px;padding:13px 18px;background:var(--success-light);border:1px solid var(--success);border-radius:10px;color:var(--success);font-weight:700;text-decoration:none;text-align:center;line-height:1.6}
+html[lang="ar"] .priv-cta .en{display:none}
+html[lang="en"] .priv-cta .ar{display:none}
 .seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
 .seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
 .seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
@@ -222,7 +225,6 @@ body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-
   .workspace{flex-direction:column}
 }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل إزالة الخلفية مجانية؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يزيل Doctor PDF خلفيات الصور مجاناً 100% بدون حدود أو تسجيل."}},{"@type":"Question","name":"هل سأحصل على خلفية شفافة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. تُحفظ النتيجة كملف PNG بخلفية شفافة تماماً."}},{"@type":"Question","name":"هل تعمل بدون رفع صورتي؟","acceptedAnswer":{"@type":"Answer","text":"نعم. تتم إزالة الخلفية داخل متصفحك — صورتك لا تُرفع أبداً."}},{"@type":"Question","name":"هل ملفاتي خاصة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم."}},{"@type":"Question","name":"هل تعمل على الهاتف؟","acceptedAnswer":{"@type":"Answer","text":"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}}]}</script>
 </head>
 <body>
 
@@ -884,6 +886,7 @@ gtag('config','G-3EGBBVX022');
 </script>
 
 <section class="seo-content">
+  <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
   <div class="seo-about">
     <h2 id="A_h2">ماذا تعني إزالة خلفية الصورة؟</h2>
     <p id="A_p1">إزالة الخلفية تعني فصل العنصر الرئيسي في الصورة — شخص أو منتج أو شعار — عن كل ما خلفه، مع ترك خلفية شفّافة نظيفة (أو بلون موحّد). هذا ضروري لصور المنتجات والصور الشخصية والشعارات وأي صورة تريد وضعها على خلفية جديدة دون إطار قبيح حولها.</p>

@@ -80,6 +80,9 @@ nav{height:56px;background:var(--sur);border-bottom:1px solid var(--bdr);display
 .seo-about p{line-height:1.85;color:var(--muted);margin:0 0 16px;font-size:1.02em}
 .seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--muted);line-height:1.9}
 .seo-list li{margin-bottom:9px}
+.priv-cta{display:block;margin:6px 0 30px;padding:13px 18px;background:var(--success-light);border:1px solid var(--success);border-radius:10px;color:var(--success);font-weight:700;text-decoration:none;text-align:center;line-height:1.6}
+html[lang="ar"] .priv-cta .en{display:none}
+html[lang="en"] .priv-cta .ar{display:none}
 .seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
 .seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--muted)}
 .seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
@@ -1744,6 +1747,7 @@ boot();
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
 
 <section class="seo-content">
+  <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
   <div class="seo-about">
     <h2 id="A_h2">What does stamping a PDF mean?</h2>
     <p id="A_p1">Stamping a PDF means placing a mark — such as 'Approved', 'Paid', 'Received', a date, or your own logo — onto a page, just like a physical rubber stamp on paper. A stamp signals an action or status on a document and gives it an official, finished look, without altering the underlying text.</p>
