@@ -16,10 +16,13 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3EGBBVX022');</script>
 <script>/* dpdf_lang_redirect */
 (function(){try{
-  if(localStorage.getItem('dpdf_lang'))return;            /* respect prior user choice */
-  if(/^\/ar(\/|$)/.test(location.pathname))return;        /* already Arabic */
-  var ls=navigator.languages||[navigator.language||''];
-  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  if(location.pathname==='/ar'||location.pathname.slice(0,4)==='/ar/')return;        /* already on an Arabic URL */
+  var pref=localStorage.getItem('dpdf_lang');
+  var goAr;
+  if(pref==='ar')goAr=true;
+  else if(pref==='en')goAr=false;
+  else{var ls=navigator.languages||[navigator.language||''];goAr=ls.some(function(l){return (l||'').slice(0,2).toLowerCase()==='ar';});}
+  if(!goAr)return;
   var p=location.pathname;
   var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
   location.replace(target+location.search+location.hash);
@@ -1795,5 +1798,19 @@ boot();
   <div class="faq-item"><h3 id="F_q4">هل ملفاتي خاصة؟</h3><p id="F_a4">نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.</p></div>
   <div class="faq-item"><h3 id="F_q5">هل تعمل على الهاتف؟</h3><p id="F_a5">نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر.</p></div>
 </section>
+<script>/* dpdf_lang_nav */
+document.addEventListener("click",function(e){
+  if(!e.target.closest)return;
+  if(!e.target.closest("#langBtn"))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  var p=location.pathname;
+  var isAr=p==="/ar"||p.slice(0,4)==="/ar/";
+  try{localStorage.setItem("dpdf_lang",isAr?"en":"ar");}catch(_){}
+  var t;
+  if(isAr){t=p==="/ar"?"/":p.slice(3);if(t==="")t="/";}
+  else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
+  location.href=t+location.search+location.hash;
+},true);
+</script>
 </body>
 </html>

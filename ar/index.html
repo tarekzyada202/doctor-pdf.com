@@ -239,5 +239,19 @@ function boot(){
 boot();
 </script>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e55edcf19fc84aa49ad61fd80da69995"}'></script><!-- End Cloudflare Web Analytics -->
+<script>/* dpdf_lang_nav */
+document.addEventListener("click",function(e){
+  if(!e.target.closest)return;
+  if(!e.target.closest("#langBtn"))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  var p=location.pathname;
+  var isAr=p==="/ar"||p.slice(0,4)==="/ar/";
+  try{localStorage.setItem("dpdf_lang",isAr?"en":"ar");}catch(_){}
+  var t;
+  if(isAr){t=p==="/ar"?"/":p.slice(3);if(t==="")t="/";}
+  else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
+  location.href=t+location.search+location.hash;
+},true);
+</script>
 </body>
 </html>
