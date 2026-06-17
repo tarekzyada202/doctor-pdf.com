@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF to Word Converter — Free, 100% in Your Browser | Doctor PDF</title>
+<link rel="canonical" href="https://doctor-pdf.com/pdf-to-word.html">
+<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/pdf-to-word.html">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/pdf-to-word.html">
+<link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/pdf-to-word.html">
+<meta name="description" content="Convert PDF to editable Word (DOCX) online for free. Headings, bold and Arabic RTL preserved. 100% private — your file never leaves your device.">
+<meta name="keywords" content="pdf to word, convert pdf to word, pdf to docx, pdf to word free, تحويل pdf الى word">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
+<script>/* dpdf_lang_redirect */
+(function(){try{
+  if(localStorage.getItem('dpdf_lang'))return;            /* respect prior user choice */
+  if(/^\/ar(\/|$)/.test(location.pathname))return;        /* already Arabic */
+  var ls=navigator.languages||[navigator.language||''];
+  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  var p=location.pathname;
+  var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
+  location.replace(target+location.search+location.hash);
+}catch(e){}})();
+</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'en';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
+<style>
+:root{
+  --bg:#ffffff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;
+  --secondary:#8b5cf6;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --panel:360px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;
+  --danger-light:#2d1010;--success-light:#052e16;--warn-light:#1c1500;
+}
+html[lang="ar"] *{font-family:var(--font-ar)}
+html[lang="en"] *{font-family:var(--font-en)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap;cursor:default}
+.nav-privacy svg{width:12px;height:12px;flex-shrink:0}
+@media(max-width:700px){.nav-privacy span{display:none}}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
+
+/* WORKSPACE */
+.workspace{height:calc(100vh - 56px);display:flex;overflow:hidden}
+.seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
+.seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-content .seo-about h2{margin-top:8px}
+.seo-content .seo-about h2:not(:first-child){margin-top:40px}
+.seo-about p{line-height:1.85;color:var(--text2);margin:0 0 16px;font-size:1.02em}
+.seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--text2);line-height:1.9}
+.seo-list li{margin-bottom:9px}
+.priv-cta{display:block;margin:6px 0 30px;padding:13px 18px;background:var(--success-light);border:1px solid var(--success);border-radius:10px;color:var(--success);font-weight:700;text-decoration:none;text-align:center;line-height:1.6}
+html[lang="ar"] .priv-cta .en{display:none}
+html[lang="en"] .priv-cta .ar{display:none}
+.seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
+.seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
+.seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
+.faq-item{border-top:1px solid var(--border);padding:18px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-item h3{font-size:1.05em;font-weight:700;margin:0 0 8px;color:var(--text)}
+.faq-item p{margin:0;color:var(--text2);line-height:1.75}
+.why{background:var(--primary-light);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:46px}
+.why h2{margin-top:0;margin-bottom:10px}
+.why-lead{color:var(--text2);margin:0 0 20px;line-height:1.7}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.why-item{display:flex;align-items:flex-start;gap:10px;color:var(--text);line-height:1.5;font-weight:600;font-size:.95em}
+.why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
+
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+
+/* DROP ZONE */
+.dropzone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;padding:40px}
+.dropzone.hidden{display:none}
+.drop-icon{width:72px;height:72px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center}
+.drop-icon svg{width:36px;height:36px;color:var(--primary)}
+.drop-title{font-size:20px;font-weight:600;color:var(--text);text-align:center}
+.drop-sub{font-size:14px;color:var(--text2);text-align:center;max-width:360px;line-height:1.6}
+.browse-btn{height:40px;padding:0 24px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.browse-btn:hover{background:var(--primary-h)}
+
+/* CONVERT PROGRESS */
+.convert-bar{display:none;padding:12px 20px;background:var(--primary-light);border-bottom:1px solid var(--border);align-items:center;gap:12px}
+.convert-bar.show{display:flex}
+.cv-bar-fill-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.cv-bar-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .2s}
+.cv-bar-txt{font-size:12px;color:var(--primary);font-weight:500;white-space:nowrap}
+
+/* PREVIEW */
+.preview-area{flex:1;display:none;flex-direction:column;overflow:hidden}
+.prev-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px;flex-wrap:wrap}
+.prev-header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.prev-title{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+.prev-stats{font-size:12px;color:var(--text3);white-space:nowrap}
+.change-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.change-btn:hover{background:var(--bg3);color:var(--text)}
+.prev-scroll{flex:1;overflow-y:auto;padding:24px;background:var(--bg2)}
+.doc-prev{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:36px 44px;max-width:760px;margin:0 auto;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.doc-prev .dp-h1{font-size:1.5em;font-weight:700;margin:18px 0 10px;color:var(--text);line-height:1.4}
+.doc-prev .dp-h2{font-size:1.2em;font-weight:700;margin:16px 0 8px;color:var(--text);line-height:1.4}
+.doc-prev .dp-p{font-size:.95em;line-height:1.85;color:var(--text);margin:0 0 12px;word-break:break-word}
+.doc-prev .dp-pgbrk{border-top:2px dashed var(--border2);margin:26px 0;position:relative}
+.doc-prev .dp-pgbrk span{position:absolute;top:-10px;inset-inline-start:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:var(--text3);letter-spacing:.05em}
+[dir="rtl"] .doc-prev .dp-pgbrk span{transform:translateX(50%)}
+.doc-prev [dir="rtl"]{text-align:right}
+.dp-table{border-collapse:collapse;width:100%;margin:6px 0 18px;font-size:.9em}
+.dp-table th,.dp-table td{border:1px solid var(--border2);padding:5px 9px;vertical-align:top;line-height:1.5;color:var(--text)}
+.dp-table th{background:var(--bg3);font-weight:700;text-align:start}
+.dp-table td{text-align:start}
+
+/* PANEL */
+.panel-section{padding:16px;border-bottom:1px solid var(--border)}
+.panel-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.toggle-label{font-size:13px;color:var(--text)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
+.info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+.warn-box{background:var(--warn-light);border:1px solid var(--warn);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--warn);line-height:1.5;display:none;gap:8px;margin-top:10px}
+.warn-box.show{display:flex}
+.warn-box a{color:var(--warn);font-weight:700}
+
+/* PANEL FOOTER */
+.panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
+.stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-item{text-align:center}
+.stat-val{font-size:18px;font-weight:600;color:var(--primary)}
+.stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.download-btn{width:100%;height:48px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.download-btn:hover:not(:disabled){background:var(--primary-h)}
+.download-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* DRAG OVERLAY */
+.drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);border-radius:var(--radius-lg);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
+.drag-overlay.show{display:flex}
+.drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+[dir="rtl"] .toast-wrap{transform:translateX(50%)}
+.toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;pointer-events:all;animation:slideUp .2s ease}
+.toast.success{border-color:var(--success);color:var(--success);background:var(--success-light)}
+.toast.error{border-color:var(--danger);color:var(--danger);background:var(--danger-light)}
+.toast.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-light)}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:700px){
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
+  .workspace{flex-direction:column}
+  .doc-prev{padding:20px 18px}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is converting PDF to Word free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Doctor PDF converts PDF to Word 100% free with no limits, watermarks, or sign-up."}},{"@type":"Question","name":"Is my file uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The whole conversion runs inside your browser — your PDF never leaves your device."}},{"@type":"Question","name":"Does it support Arabic text?","acceptedAnswer":{"@type":"Answer","text":"Yes. Arabic text is detected automatically and written right-to-left in the Word file."}},{"@type":"Question","name":"Will the layout be identical?","acceptedAnswer":{"@type":"Answer","text":"Text, headings, bold and italic are preserved. Very complex layouts, tables and multi-column designs may be simplified — that is a limitation of every PDF-to-Word converter."}},{"@type":"Question","name":"Can it convert scanned PDFs?","acceptedAnswer":{"@type":"Answer","text":"Scanned PDFs contain images, not text. Run them through our OCR tool first, then convert the result."}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#6366f1"/><path d="M7 8h14M7 14h10M7 20h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn" aria-expanded="false">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_tools">All Tools</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">Merge PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">Split PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">Compress PDF</span></a>
+      <a href="pdf-to-word.html" style="color:var(--primary)"><span id="T_pdf2word">PDF to Word</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">Image to PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF to Image</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">Rotate PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">Watermark PDF</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
+      <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
+      <a href="ocr.html"><span id="T_ocr">OCR</span></a>
+    </div>
+  </div>
+  <div class="nav-sep"></div>
+
+  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">100% Private</span>
+  </div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">AR</span>
+  </button>
+</nav>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+  <div class="content" id="contentArea">
+
+    <!-- Drop zone -->
+    <div class="dropzone" id="dropzone">
+      <div class="drop-icon">
+        <svg viewBox="0 0 36 36" fill="none"><path d="M5 3h17l9 9v21H5V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3v9h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 19l3 7M14 19l-3 7M19 19v7h4M26 19h-3v7h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".6"/></svg>
+      </div>
+      <div>
+        <div class="drop-title" id="T_dropTitle">Convert PDF to Word</div>
+        <div class="drop-sub" id="T_dropSub">Drag &amp; drop your PDF here, or click to browse. Conversion to an editable DOCX runs entirely in your browser — no upload, 100% private.</div>
+      </div>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">Choose PDF File</span></button>
+    </div>
+
+    <!-- Converting progress bar -->
+    <div class="convert-bar" id="convertBar">
+      <div class="cv-bar-fill-wrap"><div class="cv-bar-fill" id="cvBarFill"></div></div>
+      <span class="cv-bar-txt" id="cvBarTxt">Converting...</span>
+    </div>
+
+    <!-- Preview area -->
+    <div class="preview-area" id="previewArea">
+      <div class="prev-header">
+        <div class="prev-header-left">
+          <span class="prev-title" id="fileName">document.pdf</span>
+          <span class="prev-stats" id="prevStats"></span>
+        </div>
+        <button class="change-btn" id="changeFileBtn">
+          <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span id="T_changeFile">Change file</span>
+        </button>
+      </div>
+      <div class="prev-scroll">
+        <div class="doc-prev" id="docPrev"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <aside class="panel">
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_optionsTitle">Conversion Options</div>
+      <div class="toggle-row">
+        <span class="toggle-label" id="T_optHeadings">Detect headings</span>
+        <label class="toggle"><input type="checkbox" id="toggleHeadings" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" style="margin-top:6px">
+        <span class="toggle-label" id="T_optStyles">Keep bold &amp; italic</span>
+        <label class="toggle"><input type="checkbox" id="toggleStyles" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" style="margin-top:6px">
+        <span class="toggle-label" id="T_optBreaks">Page break per PDF page</span>
+        <label class="toggle"><input type="checkbox" id="toggleBreaks" checked><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="info-box">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span id="T_privacyNote">The DOCX file is built directly in your browser. Your document never leaves your device.</span>
+      </div>
+      <div class="warn-box" id="scannedWarn">
+        <svg viewBox="0 0 14 14" fill="none" width="16" style="flex-shrink:0"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span><span id="T_scannedWarn">Some pages contain no selectable text (scanned?). Use OCR for those pages:</span> <a href="ocr.html" id="T_scannedLink">OCR tool</a></span>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_aboutTitle">About PDF to Word</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">Text, headings, bold/italic and Arabic (RTL) are preserved. Complex layouts and tables are simplified into flowing text — a limitation of every PDF converter.</p>
+    </div>
+
+    <div class="panel-footer">
+      <div class="stats-box" id="statsBox">
+        <div class="stat-item">
+          <div class="stat-val" id="statPages">—</div>
+          <div class="stat-label" id="T_statPagesLabel">Pages</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statWords">—</div>
+          <div class="stat-label" id="T_statWordsLabel">Words</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statParas">—</div>
+          <div class="stat-label" id="T_statParasLabel">Paragraphs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statHeads">—</div>
+          <div class="stat-label" id="T_statHeadsLabel">Headings</div>
+        </div>
+      </div>
+      <button class="download-btn" id="downloadBtn" disabled>
+        <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="T_downloadDoc">Download Word File (.docx)</span>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<!-- Drag overlay -->
+<div class="drag-overlay" id="dragOverlay">
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M28 4v10h10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+  <div class="drag-overlay-text" id="T_dropHere">Drop PDF here</div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<input type="file" id="fileInput" accept="application/pdf,.pdf" style="display:none">
+
+<script>
+(function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+// ══════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════
+const LANGS = {
+  en:{
+    T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
+    T_pdf2word:'PDF to Word',T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_rotate:'Rotate PDF',
+    T_watermark:'Watermark PDF',T_protect:'Protect PDF',T_extract:'Extract Text',T_ocr:'OCR',
+    T_privacyBadge:'100% Private',
+    T_dropTitle:'Convert PDF to Word',
+    T_dropSub:'Drag & drop your PDF here, or click to browse. Conversion to an editable DOCX runs entirely in your browser — no upload, 100% private.',
+    T_browse:'Choose PDF File',
+    T_changeFile:'Change file',
+    T_optionsTitle:'Conversion Options',
+    T_optHeadings:'Detect headings',
+    T_optStyles:'Keep bold & italic',
+    T_optBreaks:'Page break per PDF page',
+    T_privacyNote:'The DOCX file is built directly in your browser. Your document never leaves your device.',
+    T_scannedWarn:'Some pages contain no selectable text (scanned?). Use OCR for those pages:',
+    T_qualityWarn:'This PDF stores text with a damaged character map, so some letters may appear as �. For a cleaner result try the OCR tool:',
+    T_scannedLink:'OCR tool',
+    T_aboutTitle:'About PDF to Word',
+    T_aboutText:'Text, headings, bold/italic and Arabic (RTL) are preserved. Complex layouts and tables are simplified into flowing text — a limitation of every PDF converter.',
+    T_statPagesLabel:'Pages',T_statWordsLabel:'Words',T_statParasLabel:'Paragraphs',T_statHeadsLabel:'Headings',
+    T_downloadDoc:'Download Word File (.docx)',
+    T_dropHere:'Drop PDF here',
+    T_reading:'Reading page',
+    T_building:'Building Word file…',
+    T_libLoading:'Loading converter…',
+    T_done:'Word file downloaded!',
+    T_errLoad:'Failed to load PDF. The file may be corrupted or password-protected.',
+    T_errLib:'Could not load the converter library. Check your connection and try again.',
+    T_allScanned:'This PDF has no selectable text (scanned document). Use the OCR tool first.',
+    T_emptyPage:'(empty page)',T_pageLbl:'PAGE',
+    langLabel:'AR'
+  ,A_h2:"What does converting PDF to Word mean?",A_p1:"Converting PDF to Word means turning a fixed, read-only PDF into an editable DOCX document you can open in Microsoft Word, Google Docs, or LibreOffice and change freely. Instead of retyping a contract, report, or CV from scratch, you get the text — with its headings, bold and italic styling — as a normal Word file you can edit, correct, and reuse.",A_p2:"Doctor PDF reads the text of every page, rebuilds paragraphs and headings, detects Arabic right-to-left text automatically, and packs everything into a clean DOCX — entirely inside your browser.",A_useH:"When do you need to convert PDF to Word?",A_u1:"Editing a contract or agreement that was sent to you as a PDF.",A_u2:"Updating an old CV or report when you only have the PDF version.",A_u3:"Reusing paragraphs from a study, article, or proposal in a new document.",A_u4:"Fixing a typo or changing a date in a document without the original file.",A_u5:"Translating or reformatting a document in Word after extracting it from PDF.",A_howH:"How Doctor PDF converts to Word privately",A_hp1:"Unlike other converters, Doctor PDF never uploads your file. Reading the PDF and building the Word document both happen inside your browser, so contracts, IDs, and confidential reports never reach any server.",A_hp2:"Because there is no upload, conversion is fast, free of daily limits, and even works offline once the page has loaded.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to convert PDF to Word online",F_s1:"Open the PDF to Word tool and drop your PDF into the page.",F_s2:"Doctor PDF reads the text and rebuilds paragraphs, headings and styles.",F_s3:"Review the preview and adjust the options if you like.",F_s4:"Download your editable .docx file — nothing is ever uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to Word free?",F_a1:"Yes. Doctor PDF converts PDF to Word 100% free with no limits, watermarks, or sign-up.",F_q2:"Is my file uploaded to a server?",F_a2:"No. The whole conversion runs inside your browser — your PDF never leaves your device.",F_q3:"Does it support Arabic text?",F_a3:"Yes. Arabic text is detected automatically and written right-to-left in the Word file.",F_q4:"Will the layout be identical?",F_a4:"Text, headings, bold and italic are preserved. Very complex layouts, tables and multi-column designs may be simplified — that is a limitation of every PDF-to-Word converter.",F_q5:"Can it convert scanned PDFs?",F_a5:"Scanned PDFs contain images, not text. Run them through our OCR tool first, then convert the result."},
+  ar:{
+    T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
+    T_pdf2word:'PDF إلى Word',T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
+    T_watermark:'علامة مائية',T_protect:'حماية PDF',T_extract:'استخراج النص',T_ocr:'OCR',
+    T_privacyBadge:'خصوصية 100%',
+    T_dropTitle:'حوّل PDF إلى Word',
+    T_dropSub:'اسحب وأفلت ملف PDF هنا، أو اضغط للاختيار. التحويل إلى ملف DOCX قابل للتعديل يتم بالكامل في متصفحك — بدون رفع، خصوصية كاملة.',
+    T_browse:'اختر ملف PDF',
+    T_changeFile:'تغيير الملف',
+    T_optionsTitle:'خيارات التحويل',
+    T_optHeadings:'اكتشاف العناوين',
+    T_optStyles:'الحفاظ على الغامق والمائل',
+    T_optBreaks:'فاصل صفحات لكل صفحة PDF',
+    T_privacyNote:'يُبنى ملف DOCX مباشرة في متصفحك. مستندك لا يغادر جهازك أبداً.',
+    T_scannedWarn:'بعض الصفحات لا تحتوي نصاً قابلاً للتحديد (ممسوحة ضوئياً؟). استخدم OCR لتلك الصفحات:',
+    T_qualityWarn:'هذا الملف يخزّن النص بخريطة حروف تالفة، فقد تظهر بعض الحروف كـ �. لنتيجة أنظف جرّب أداة OCR:',
+    T_scannedLink:'أداة OCR',
+    T_aboutTitle:'عن تحويل PDF إلى Word',
+    T_aboutText:'يُحافظ على النص والعناوين والغامق/المائل والعربية (RTL). التخطيطات المعقدة والجداول تُبسَّط إلى نص متدفق — وهذا قيد في كل محولات PDF.',
+    T_statPagesLabel:'صفحة',T_statWordsLabel:'كلمة',T_statParasLabel:'فقرة',T_statHeadsLabel:'عنوان',
+    T_downloadDoc:'تحميل ملف Word (.docx)',
+    T_dropHere:'أفلت PDF هنا',
+    T_reading:'قراءة الصفحة',
+    T_building:'…جاري بناء ملف Word',
+    T_libLoading:'…جاري تحميل المحوّل',
+    T_done:'!تم تحميل ملف Word',
+    T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو محمياً بكلمة مرور',
+    T_errLib:'.تعذّر تحميل مكتبة التحويل. تحقق من اتصالك وحاول مجدداً',
+    T_allScanned:'.هذا الملف لا يحتوي نصاً قابلاً للتحديد (مستند ممسوح). استخدم أداة OCR أولاً',
+    T_emptyPage:'(صفحة فارغة)',T_pageLbl:'صفحة',
+    langLabel:'EN'
+  ,A_h2:"ماذا يعني تحويل PDF إلى Word؟",A_p1:"تحويل PDF إلى Word يعني تحويل ملف PDF الثابت غير القابل للتعديل إلى مستند DOCX يمكنك فتحه في Microsoft Word أو Google Docs أو LibreOffice وتعديله بحرية. فبدلاً من إعادة كتابة عقد أو تقرير أو سيرة ذاتية من الصفر، تحصل على النص — بعناوينه وتنسيقه الغامق والمائل — كملف Word عادي يمكنك تعديله وتصحيحه وإعادة استخدامه.",A_p2:"يقرأ Doctor PDF نص كل صفحة، ويعيد بناء الفقرات والعناوين، ويكتشف النص العربي من اليمين لليسار تلقائياً، ويجمع كل شيء في ملف DOCX نظيف — بالكامل داخل متصفحك.",A_useH:"متى تحتاج إلى تحويل PDF إلى Word؟",A_u1:"تعديل عقد أو اتفاقية وصلتك بصيغة PDF.",A_u2:"تحديث سيرة ذاتية أو تقرير قديم لا تملك منه إلا نسخة PDF.",A_u3:"إعادة استخدام فقرات من دراسة أو مقال أو عرض في مستند جديد.",A_u4:"تصحيح خطأ إملائي أو تغيير تاريخ في مستند دون الملف الأصلي.",A_u5:"ترجمة مستند أو إعادة تنسيقه في Word بعد استخراجه من PDF.",A_howH:"كيف يحوّل Doctor PDF إلى Word بخصوصية تامة",A_hp1:"على عكس المحولات الأخرى، لا يرفع Doctor PDF ملفك أبداً. قراءة الـ PDF وبناء مستند Word يتمان داخل متصفحك، فلا تصل العقود والهويات والتقارير السرية إلى أي خادم.",A_hp2:"ولأنه لا يوجد رفع، يكون التحويل سريعاً وبدون حدود يومية، بل ويعمل دون اتصال بعد تحميل الصفحة.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل PDF إلى Word أونلاين",F_s1:"افتح أداة PDF إلى Word وأسقط ملفك في الصفحة.",F_s2:"يقرأ Doctor PDF النص ويعيد بناء الفقرات والعناوين والتنسيق.",F_s3:"راجع المعاينة وعدّل الخيارات إن أردت.",F_s4:"حمّل ملف ‎.docx القابل للتعديل — لا يُرفع أي شيء أبداً.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى Word مجاني؟",F_a1:"نعم. يحوّل Doctor PDF ملفات PDF إلى Word مجاناً 100% بدون حدود أو علامة مائية أو تسجيل.",F_q2:"هل يُرفع ملفي إلى خادم؟",F_a2:"لا. التحويل بأكمله يتم داخل متصفحك — ملف PDF لا يغادر جهازك أبداً.",F_q3:"هل يدعم النص العربي؟",F_a3:"نعم. يُكتشف النص العربي تلقائياً ويُكتب من اليمين لليسار في ملف Word.",F_q4:"هل سيكون التخطيط مطابقاً تماماً؟",F_a4:"يُحافظ على النص والعناوين والغامق والمائل. التخطيطات المعقدة جداً والجداول والأعمدة المتعددة قد تُبسَّط — وهذا قيد في كل محولات PDF إلى Word.",F_q5:"هل يحوّل ملفات PDF الممسوحة ضوئياً؟",F_a5:"الملفات الممسوحة تحتوي صوراً لا نصاً. مرّرها على أداة OCR أولاً ثم حوّل الناتج."}
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const DOCX_CDN = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
+let currentLang = localStorage.getItem('dpdf_lang') || 'en';
+let pagesLines = [];   // [pageIdx] -> [{runs:[{str,bold,ital,fs}], y, fs}]
+let pagesHLines = [];  // [pageIdx] -> [{y,x0,x1}] full-width separator lines
+let paras = [];        // built paragraphs (kept for stats)
+let blocks = [];       // ordered list of { type:'para'|'table', ... }
+let scannedPages = 0;
+let warnKind = null;   // 'T_scannedWarn' | 'T_qualityWarn' | null
+let baseName = 'document';
+
+function applyWarn() {
+  const box = document.getElementById('scannedWarn');
+  if (warnKind) {
+    document.getElementById('T_scannedWarn').textContent = tr(warnKind);
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════
+// LANG & THEME
+// ══════════════════════════════════════════
+function applyLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  Object.keys(t).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t[id];
+  });
+  applyWarn();
+  if (pagesLines.length) { rebuild(); }
+}
+
+function tr(k) { return (LANGS[currentLang]||LANGS.en)[k]||k; }
+
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('iconSun').style.display = dark ? 'none' : '';
+  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
+  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
+}
+
+// ══════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════
+function bindEvents() {
+  document.getElementById('themeBtn').onclick = () =>
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+
+  document.getElementById('langBtn').onclick = () => {
+    const next = currentLang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('dpdf_lang', next);
+    applyLang(next);
+  };
+
+  document.getElementById('toolsBtn').onclick = (e) => {
+    e.stopPropagation();
+    document.getElementById('toolsMenu').classList.toggle('open');
+  };
+  document.addEventListener('click', () => document.getElementById('toolsMenu').classList.remove('open'));
+
+  const fi = document.getElementById('fileInput');
+  document.getElementById('browseBtn').onclick = () => fi.click();
+  document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
+  fi.onchange = (e) => { if(e.target.files[0]) loadPDF(e.target.files[0]); fi.value=''; };
+  document.getElementById('changeFileBtn').onclick = () => fi.click();
+
+  document.getElementById('downloadBtn').onclick = downloadDocx;
+
+  ['toggleHeadings','toggleStyles','toggleBreaks'].forEach(id => {
+    document.getElementById(id).onchange = () => { if(pagesLines.length) rebuild(); };
+  });
+
+  document.addEventListener('dragenter', (e) => {
+    if(e.dataTransfer.types.includes('Files')) document.getElementById('dragOverlay').classList.add('show');
+  });
+  document.addEventListener('dragleave', (e) => {
+    if(!e.relatedTarget||e.relatedTarget===document.documentElement)
+      document.getElementById('dragOverlay').classList.remove('show');
+  });
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    document.getElementById('dragOverlay').classList.remove('show');
+    const file = Array.from(e.dataTransfer.files).find(f=>f.type==='application/pdf'||f.name.endsWith('.pdf'));
+    if(file) loadPDF(file);
+  });
+}
+
+// ══════════════════════════════════════════
+// LOAD & PARSE PDF
+// ══════════════════════════════════════════
+async function loadPDF(file) {
+  if(!file) return;
+  if(typeof pdfjsLib === 'undefined') { showToast('pdf.js not loaded','error'); return; }
+
+  pagesLines = []; pagesHLines = []; paras = []; scannedPages = 0;
+  baseName = (file.name || 'document').replace(/\.pdf$/i,'');
+
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('previewArea').style.display = 'none';
+  document.getElementById('convertBar').classList.add('show');
+  document.getElementById('cvBarFill').style.width = '0';
+  document.getElementById('scannedWarn').classList.remove('show');
+
+  let pdfJsDoc = null;
+  try {
+    const buf = await file.arrayBuffer();
+    pdfJsDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+    const numPages = pdfJsDoc.numPages;
+    document.getElementById('fileName').textContent = file.name;
+
+    for (let i = 1; i <= numPages; i++) {
+      document.getElementById('cvBarFill').style.width = Math.round((i/numPages)*100) + '%';
+      document.getElementById('cvBarTxt').textContent = `${tr('T_reading')} ${i} / ${numPages}`;
+      const page = await pdfJsDoc.getPage(i);
+      const vp = page.getViewport({ scale: 1 });
+      let colors = [], hlines = [];
+      try { const _ol = await page.getOperatorList(); colors = extractTextColors(_ol); hlines = extractHLines(_ol, vp.width); } catch(e) {}
+      const content = await page.getTextContent();
+      const lines = pageToLines(page, content, vp.width, colors);
+      if (!lines.length) scannedPages++;
+      pagesLines.push(lines);
+      pagesHLines.push(hlines);
+      await new Promise(r => setTimeout(r, 0));
+    }
+
+    document.getElementById('convertBar').classList.remove('show');
+
+    if (scannedPages === pagesLines.length) {
+      document.getElementById('dropzone').classList.remove('hidden');
+      showToast(tr('T_allScanned'), 'warn');
+      pagesLines = [];
+      return;
+    }
+    warnKind = null;
+    if (scannedPages > 0) {
+      warnKind = 'T_scannedWarn';
+    } else {
+      /* damaged ToUnicode maps leave U+FFFD replacement chars — suggest OCR */
+      const all = pagesLines.flat().flatMap(l => l.runs).map(r => r.str).join('');
+      const bad = (all.match(/�/g) || []).length;
+      if (bad > 0 && bad / Math.max(all.replace(/\s/g, '').length, 1) > 0.02) warnKind = 'T_qualityWarn';
+    }
+    applyWarn();
+
+    document.getElementById('previewArea').style.display = 'flex';
+    rebuild();
+    document.getElementById('downloadBtn').disabled = false;
+
+    if(typeof gtag!=='undefined') {
+      gtag('event','pdf_to_word',{event_category:'pdf_to_word',event_label:'parsed',value:numPages});
+    }
+
+  } catch(err) {
+    console.error(err);
+    document.getElementById('convertBar').classList.remove('show');
+    document.getElementById('dropzone').classList.remove('hidden');
+    showToast(tr('T_errLoad'), 'error');
+  } finally {
+    if (pdfJsDoc) { try { pdfJsDoc.destroy(); } catch(e){} }
+  }
+}
+
+function hx2(n){ n=Math.max(0,Math.min(255,Math.round(n))); return ('0'+n.toString(16)).slice(-2); }
+function rgbHex(r,g,b){ return hx2(r)+hx2(g)+hx2(b); }
+function nearBlack(hex){ if(!hex) return true; const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16); return r<45&&g<45&&b<45; }
+/* walk the page operator list; record the active fill colour at each text-show op */
+function extractTextColors(ol){
+  const OPS = pdfjsLib.OPS; let cur='000000'; const cols=[];
+  const nb = v => v<=1 ? v*255 : v;
+  for(let i=0;i<ol.fnArray.length;i++){
+    const fn=ol.fnArray[i], a=ol.argsArray[i];
+    if(fn===OPS.setFillRGBColor){ cur=rgbHex(nb(a[0]),nb(a[1]),nb(a[2])); }
+    else if(fn===OPS.setFillGray){ const v=nb(a[0]); cur=rgbHex(v,v,v); }
+    else if(fn===OPS.setFillCMYKColor){ const c=a[0]>1?a[0]/255:a[0],m=a[1]>1?a[1]/255:a[1],y=a[2]>1?a[2]/255:a[2],k=a[3]>1?a[3]/255:a[3]; cur=rgbHex(255*(1-c)*(1-k),255*(1-m)*(1-k),255*(1-y)*(1-k)); }
+    else if(fn===OPS.setFillColorN || fn===OPS.setFillColor){ if(a&&a.length>=3&&typeof a[0]==='number'&&typeof a[1]==='number'&&typeof a[2]==='number') cur=rgbHex(nb(a[0]),nb(a[1]),nb(a[2])); }
+    else if(fn===OPS.showText || fn===OPS.showSpacedText){ cols.push(cur); }
+  }
+  return cols;
+}
+
+function cleanFontName(raw) {
+  if (!raw) return '';
+  /* legacy symbol fonts render Unicode (e.g. U+2022 bullet) as tofu boxes in Word -> use default font */
+  if (/(symbol|wingdings|webdings|zapfdingbats|dingbats|marlett)/i.test(raw)) return '';
+  let n = raw.replace(/^[A-Z]{6}\+/, '');           /* strip subset prefix ABCDEF+ */
+  n = n.replace(/[-_,].*$/, '');                     /* drop -Bold / ,Italic etc */
+  n = n.replace(/(PSMT|PS|MT|Std|Pro)$/i, '');       /* drop foundry suffixes */
+  n = n.replace(/(Bold|Italic|Oblique|Regular|Light|Medium|SemiBold|Black|Heavy)$/i, '');
+  n = n.trim();
+  const map = {
+    arial:'Arial', helvetica:'Arial', arialnova:'Arial', liberationsans:'Arial',
+    times:'Times New Roman', timesnewroman:'Times New Roman', liberationserif:'Times New Roman',
+    calibri:'Calibri', cambria:'Cambria', verdana:'Verdana', tahoma:'Tahoma',
+    georgia:'Georgia', courier:'Courier New', couriernew:'Courier New',
+    segoeui:'Segoe UI', cairo:'Cairo', tajawal:'Tajawal', amiri:'Amiri',
+    simplifiedarabic:'Simplified Arabic', traditionalarabic:'Traditional Arabic',
+    dubai:'Dubai', notonaskharabic:'Noto Naskh Arabic'
+  };
+  const key = n.toLowerCase().replace(/\s+/g, '');
+  return map[key] || n;
+}
+
+function extractHLines(ol, pageW){
+  const OPS = pdfjsLib.OPS; const out = [];
+  for (let i = 0; i < ol.fnArray.length; i++){
+    if (ol.fnArray[i] !== OPS.constructPath) continue;
+    const ops = ol.argsArray[i][0], args = ol.argsArray[i][1];
+    let xs = [], ys = [], k = 0;
+    for (const op of ops){
+      if (op === OPS.moveTo || op === OPS.lineTo){ xs.push(args[k]); ys.push(args[k+1]); k += 2; }
+      else if (op === OPS.rectangle){ const x=args[k],y=args[k+1],w=args[k+2],h=args[k+3]; xs.push(x,x+w); ys.push(y,y+h); k += 4; }
+      else if (op === OPS.curveTo){ k += 6; }
+    }
+    if (!xs.length) continue;
+    const minX=Math.min.apply(null,xs), maxX=Math.max.apply(null,xs), minY=Math.min.apply(null,ys), maxY=Math.max.apply(null,ys);
+    if ((maxX-minX) > (pageW||595)*0.55 && (maxY-minY) < 4) out.push({ y:(minY+maxY)/2, x0:minX, x1:maxX });
+  }
+  return out;
+}
+
+function pageToLines(page, content, pageW, colors) {
+  /* 1) collect non-rotated chunks with position + width + style */
+  const raw = [];
+  const shownCount = content.items.filter(it => it.str !== undefined && it.str !== '').length;
+  const useColor = !!(colors && colors.length === shownCount);
+  let colorIdx = 0;
+  for (const it of content.items) {
+    if (it.str === undefined) continue;
+    let color = '000000';
+    if (it.str !== '') { color = useColor ? (colors[colorIdx] || '000000') : '000000'; colorIdx++; }
+    const t = it.transform;
+    /* skip rotated watermarks, but KEEP italic/sheared text (italic = c-skew without b-rotation) */
+    const sx0 = Math.hypot(t[0], t[1]) || 1;
+    const rotAmt = Math.abs(t[1]) / sx0;                        /* rotation: sin(theta), 0..1 */
+    const shearAmt = Math.abs(t[2]) / (Math.abs(t[3]) || sx0);  /* italic shear: tan(slant) */
+    if (rotAmt > 0.15 || shearAmt > 0.6) continue;
+    const skewItal = shearAmt > 0.15;                           /* faux-italic via matrix skew */
+    const str = (it.str.normalize ? it.str.normalize('NFKC') : it.str)
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+    if (str === '') continue; /* spacing is rebuilt from x-gaps below */
+    const fs = Math.abs(t[3]) || Math.abs(t[0]) || it.height || 12;
+    let fname = '';
+    try { const f = page.commonObjs.get(it.fontName); fname = (f && f.name) || ''; } catch(e) {}
+    raw.push({
+      str: str, x: t[4], y: t[5], w: it.width || 0, fs: fs,
+      fam: cleanFontName(fname), color: color,
+      bold: /bold|black|heavy|semib|demib/i.test(fname),
+      ital: /italic|oblique/i.test(fname) || skewItal
+    });
+  }
+  /* 2) group chunks into lines by y proximity */
+  raw.sort((a, b) => (b.y - a.y) || (a.x - b.x));
+  const lines = [];
+  let cur = null;
+  for (const r of raw) {
+    if (!cur || Math.abs(r.y - cur.y) > Math.max(2, r.fs * 0.5)) {
+      cur = { chunks: [], y: r.y, fs: r.fs };
+      lines.push(cur);
+    }
+    cur.chunks.push(r);
+    if (r.fs > cur.fs) cur.fs = r.fs;
+  }
+  /* 3) per line: order L->R, rebuild missing spaces from x-gaps, record extents */
+  const out = [];
+  for (const ln of lines) {
+    ln.chunks.sort((a, b) => a.x - b.x);
+    const runs = [];
+    for (let i = 0; i < ln.chunks.length; i++) {
+      const c = ln.chunks[i];
+      if (i > 0) {
+        const pc = ln.chunks[i - 1];
+        const gap = c.x - (pc.x + pc.w);
+        const last = runs[runs.length - 1];
+        if (gap > c.fs * 4 && last && !/[؀-ۿ]/.test(pc.str) && !/[؀-ۿ]/.test(c.str)) last.str = last.str.replace(/ +$/, '') + ' '.repeat(Math.max(2, Math.min(6, Math.round(gap / (c.fs * 2)))));
+        if (gap > c.fs * 0.18 && last && !/\s$/.test(last.str) && !/^\s/.test(c.str)) last.str += ' ';
+      }
+      var _str = c.str;
+      if (_str.length > 0 && _str.trim() === "" && c.w > c.fs * 1.4) {
+        var _n = Math.round(c.w / (c.fs * 0.9));
+        _str = " ".repeat(Math.max(2, Math.min(6, _n)));
+      }
+      runs.push({ str: _str, bold: c.bold, ital: c.ital, fs: c.fs, fam: c.fam, color: c.color, x: c.x });
+    }
+    ln.runs = runs;
+    ln.x0 = ln.chunks[0].x;
+    ln.x1 = Math.max.apply(null, ln.chunks.map(c => c.x + c.w));
+    ln.pageW = pageW || 0;
+    /* split the line into CELLS at large (column) gaps for table detection */
+    const cells = [];
+    let cell = null;
+    for (let k = 0; k < ln.chunks.length; k++) {
+      const c = ln.chunks[k];
+      if (cell && (c.x - cell.x1) > Math.max(c.fs * 2.0, 16)) { cells.push(cell); cell = null; }
+      if (!cell) { cell = { x0: c.x, x1: c.x + c.w, chunks: [c] }; }
+      else { cell.chunks.push(c); cell.x1 = c.x + c.w; }
+    }
+    if (cell) cells.push(cell);
+    cells.forEach(cl => {
+      let chs = cl.chunks.slice().sort((a,b)=>a.x-b.x);
+      const t = chs.map(c => c.str).join('');
+      const ar = (t.match(/[؀-ۿ]/g)||[]).length, la = (t.match(/[A-Za-z]/g)||[]).length;
+      const cvis = chs.length>1 && chs[chs.length-1].x > chs[0].x;
+      let toks = [];
+      for (let k = 0; k < chs.length; k++) {
+        if (k>0){ const g = chs[k].x - (chs[k-1].x + (chs[k-1].w||0)); if (g > (chs[k].fs||10)*0.18) toks.push(' '); }
+        toks.push(chs[k].str);
+      }
+      if (ar > 0 && cvis) {
+        toks.reverse();
+        const hA = z => /[؀-ۿ]/.test(z), hL = z => /[A-Za-z0-9]/.test(z);
+        let p = 0;
+        while (p < toks.length) {
+          if (hL(toks[p]) && !hA(toks[p])) {
+            let q = p+1; while (q < toks.length && !hA(toks[q])) q++;
+            const rev = toks.slice(p,q).reverse(); for (let z2=0; z2<rev.length; z2++) toks[p+z2]=rev[z2]; p = q;
+          } else p++;
+        }
+      }
+      let s = toks.join('');
+      cl.str = s.replace(/\s+/g, ' ').trim();
+      delete cl.chunks;
+    });
+    ln.cells = cells;
+    delete ln.chunks;
+    if (ln.runs.some(r => r.str.trim() !== '')) out.push(ln);
+  }
+  out.forEach(l => { fixVisualArabic(l); mergeRuns(l); });
+  return out;
+}
+
+/* merge adjacent same-style chunks into single runs */
+function mergeRuns(line) {
+  const merged = [];
+  line.runs.forEach(r => {
+    const prev = merged[merged.length-1];
+    if (prev && prev.bold === r.bold && prev.ital === r.ital && prev.fam === r.fam && prev.color === r.color && Math.abs(prev.fs - r.fs) < 0.6) {
+      prev.str += r.str;
+    } else {
+      merged.push(r);
+    }
+  });
+  line.runs = merged;
+}
+
+/* Legacy Arabic PDFs store glyph chunks in VISUAL (left-to-right) order.
+   For Arabic-dominant lines whose chunks advance left→right (x increasing),
+   reverse the chunk order to restore logical reading order. Modern PDFs emit
+   Arabic logically (x decreasing) and are left untouched. */
+function fixVisualArabic(line) {
+  if (line.runs.length < 2) return;
+  const text = line.runs.map(r=>r.str).join('');
+  const arab = (text.match(/[؀-ۿ]/g)||[]).length;
+  if (arab === 0) return;
+  const xs = line.runs.map(r=>r.x).filter(v=>typeof v === 'number');
+  /* only legacy VISUAL-order lines (chunks advance left->right) need reordering */
+  if (!(xs.length > 1 && xs[xs.length-1] > xs[0])) return;
+  /* reverse to logical base-RTL order (rightmost chunk reads first) */
+  const r = line.runs.slice().sort((a,b)=>(typeof b.x==='number'?b.x:-Infinity)-(typeof a.x==='number'?a.x:-Infinity));
+  /* bidi: re-flip maximal runs of Latin/number chunks so they read left->right */
+  const hasArab = z => /[؀-ۿ]/.test(z);
+  const hasLatin = z => /[A-Za-z0-9]/.test(z);
+  let i = 0;
+  while (i < r.length) {
+    if (hasLatin(r[i].str) && !hasArab(r[i].str)) {
+      let j = i + 1;
+      while (j < r.length && !hasArab(r[j].str)) j++;
+      const seg = r.slice(i, j).reverse();
+      for (let k = 0; k < seg.length; k++) r[i + k] = seg[k];
+      i = j;
+    } else i++;
+  }
+  line.runs = r;
+}
+
+// ══════════════════════════════════════════
+// PARAGRAPH BUILDING
+// ══════════════════════════════════════════
+function lineText(ln){ return ln.runs.map(r=>r.str).join(''); }
+
+function buildParas() {
+  const detectHeads = document.getElementById('toggleHeadings').checked;
+  const sizes = [];
+  pagesLines.forEach(pls => pls.forEach(l => sizes.push(l.fs)));
+  sizes.sort((a,b)=>a-b);
+  const body = sizes.length ? sizes[Math.floor(sizes.length/2)] : 12;
+
+  const out = [];
+  pagesLines.forEach((pls, pi) => {
+    const rightMax = pls.length ? Math.max.apply(null, pls.map(l=>l.x1)) : 0;
+    const leftMin  = pls.length ? Math.min.apply(null, pls.map(l=>l.x0)) : 0;
+    const span = Math.max(rightMax - leftMin, 1);
+    let cur = null, prev = null, prevEnded = false;
+    pls.forEach(ln => {
+      const txt = lineText(ln).trim();
+      if (!txt) return;
+      /* drop tiny fine-print / hidden watermark lines */
+      if (ln.fs < body*0.66 && txt.length < 60) return;
+
+      const rtl = /[؀-ۿ]/.test(txt);
+      const bigFont = ln.fs >= body*1.22;
+      const allBold = ln.runs.length > 0 && ln.runs.every(r => r.bold || r.str.trim()==='');
+      const boldHead = allBold && txt.length < 48 && !/[.:؛،]$/.test(txt);
+      const isHead = detectHeads && txt.length < 120 && (bigFont || boldHead);
+      const level = isHead ? ((ln.fs >= body*1.6) ? 1 : 2) : 0;
+
+      /* alignment from indentation symmetry within the page's own text block */
+      const indentL = ln.x0 - leftMin, indentR = rightMax - ln.x1;
+      let align = 'left';
+      if (indentL > span*0.08 && indentR > span*0.08 && Math.abs(indentL - indentR) < span*0.12) align = 'center';
+      else if (rtl) align = 'right';
+      else if (indentR < span*0.04 && indentL > span*0.15) align = 'right';
+
+      const gap = prev ? (prev.y - ln.y) : 0;
+      const lineH = Math.max(prev ? prev.fs : ln.fs, ln.fs);
+      const indent = !!(cur && !rtl && (ln.x0 - cur.x0 > lineH*1.5));
+      const split = !cur || isHead || (cur.head !== isHead) || (cur.align !== align)
+                    || gap > lineH*1.6 || gap < -2 || prevEnded || indent;
+
+      if (split) {
+        cur = { runs: [], head: isHead, level: level, align: align, x0: ln.x0,
+                page: pi, firstOfPage: !out.some(pp => pp.page === pi) };
+        out.push(cur);
+      } else {
+        const last = cur.runs[cur.runs.length-1];
+        if (last && !/\s$/.test(last.str)) last.str += ' ';
+      }
+      ln.runs.forEach(r => {
+        const last = cur.runs[cur.runs.length-1];
+        if (last && last.bold === r.bold && last.ital === r.ital && last.fam === r.fam && last.color === r.color) last.str += r.str;
+        else cur.runs.push({ str: r.str, bold: r.bold, ital: r.ital, fs: r.fs, fam: r.fam, color: r.color });
+      });
+      if (isHead && ln.fs >= body*1.6) cur.level = 1;
+
+      /* a line that stops well before the right margin ends its paragraph */
+      prevEnded = isHead || (rightMax > 0 && ln.x1 < rightMax - lineH*2.5);
+      prev = ln;
+    });
+  });
+  out.forEach(pp => {
+    pp.text = pp.runs.map(r=>r.str).join('');
+    pp.rtl = /[؀-ۿ]/.test(pp.text);
+  });
+  return out.filter(pp => pp.text.trim() !== '');
+}
+
+/* 1-D clustering of values within a tolerance -> array of cluster centers */
+function cluster1D(vals, tol) {
+  const s = vals.slice().sort((a,b)=>a-b);
+  const groups = []; let g = null;
+  for (const v of s) {
+    if (g && (v - g.last) <= tol) { g.sum += v; g.n++; g.last = v; }
+    else { g = { sum: v, n: 1, last: v }; groups.push(g); }
+  }
+  return groups.map(g => g.sum / g.n);
+}
+
+/* detect a 2-column label|value info grid (quote header: Client | شركة...) -> {startIdx,endIdx,rows} */
+function detectInfoGrid(lines){
+  const raw = [];
+  for (let i = 0; i < lines.length; i++){
+    const cs = lines[i].cells || [];
+    if (cs.length === 2 && (cs[1].x0 - cs[0].x0) > 60 && cs[0].str.trim() && cs[1].str.trim()) raw.push(i);
+  }
+  if (raw.length < 3) return null;
+  const med = arr => { const a = arr.slice().sort((x,y)=>x-y); return a[Math.floor(a.length/2)]; };
+  const labelColX = med(raw.map(i => lines[i].cells[0].x0));
+  const valColX   = med(raw.map(i => lines[i].cells[1].x0));
+  if (valColX - labelColX < 60) return null;
+  const inLabel = x => Math.abs(x - labelColX) <= 40;
+  const isVal = i => { const cs = lines[i].cells || []; return cs.length>=1 && cs.length<=2 && lineText(lines[i]).trim() && cs.every(c => c.x0 >= labelColX + 45); };
+  /* seed at the first label-column 2-cell row (excludes stray right-aligned 2-cell lines like a total) */
+  const cand = raw.filter(i => inLabel(lines[i].cells[0].x0));
+  if (cand.length < 3) return null;
+  let s = cand[0], e = cand[0];
+  /* extend forward only, contiguously; STOP at any >=3-cell line (a real material table) */
+  while (e + 1 < lines.length) {
+    const ni = e + 1, cs = lines[ni].cells || [];
+    if (cs.length > 2 || !lineText(lines[ni]).trim()) break;
+    if (cand.indexOf(ni) >= 0 || isVal(ni) || inLabel(cs[0].x0)) e = ni; else break;
+  }
+  const labels = [], vals = [];
+  for (let i = s; i <= e; i++){
+    const cs = lines[i].cells || [];
+    if (cs.length > 2) continue;
+    if (inLabel(cs[0].x0)){
+      labels.push({ y: lines[i].y, label: cs[0].str.trim(), val: [] });
+      for (let k = 1; k < cs.length; k++) if (cs[k].str.trim()) vals.push({ y: lines[i].y, str: cs[k].str.trim() });
+    } else if (cs.every(c => c.x0 >= labelColX + 45)) {
+      for (const c of cs) if (c.str.trim()) vals.push({ y: lines[i].y, str: c.str.trim() });
+    }
+  }
+  /* an info grid is SMALL with SHORT field-name labels — reject data tables / 2-col page layouts */
+  if (labels.length < 3 || labels.length > 8) return null;
+  /* a real info grid is DENSE (mostly label/value rows); reject sparse false-positives (e.g. an Arabic certificate body) */
+  if ((e - s + 1) > labels.length * 2) return null;
+  const medLabelLen = med(labels.map(L => L.label.length));
+  if (medLabelLen > 16 || labels.some(L => L.label.length > 34)) return null;
+  labels.sort((a,b) => b.y - a.y);
+  vals.forEach(v => { let best=null, bd=1e9; labels.forEach(L => { const d=Math.abs(L.y-v.y); if (d<bd){ bd=d; best=L; } }); if (best && bd <= 24) best.val.push(v); });
+  const rows = labels.map(L => { L.val.sort((a,b)=>b.y-a.y); return [L.label, L.val.map(v=>v.str).join(' ')]; });
+  return { startIdx: s, endIdx: e, rows };
+}
+
+/* build an ordered list of paragraph + table blocks for the whole document */
+function buildBlocks() {
+  const sizes = [];
+  pagesLines.forEach(pls => pls.forEach(l => sizes.push(l.fs)));
+  sizes.sort((a,b)=>a-b);
+  const body = sizes.length ? sizes[Math.floor(sizes.length/2)] : 12;
+
+  /* doc-wide bold frequency: bold only signals a heading when bold is uncommon */
+  let boldN = 0, totN = 0;
+  pagesLines.forEach(pls => pls.forEach(l => {
+    const t = lineText(l).trim(); if (!t) return; totN++;
+    if (l.runs.length && l.runs.every(r => r.bold || r.str.trim()==="")) boldN++;
+  }));
+  const boldFrac = totN ? boldN / totN : 0;
+
+  const blk = [];
+  pagesLines.forEach((pls, pi) => {
+    const rightMax = pls.length ? Math.max.apply(null, pls.map(l=>l.x1)) : 0;
+    const leftMin  = pls.length ? Math.min.apply(null, pls.map(l=>l.x0)) : 0;
+    const geo = { rightMax, leftMin, boldFrac };
+    /* drop fine-print / watermark lines up front */
+    const lines = pls.filter(ln => {
+      const t = lineText(ln).trim();
+      return t && !(ln.fs < body*0.66 && t.length < 60);
+    });
+
+    const processRange = (a, b) => {
+      let i = a;
+      while (i < b) {
+        const multi = lines[i].cells && lines[i].cells.length >= 2;
+        let j = i;
+        while (j < b && (!!(lines[j].cells && lines[j].cells.length >= 2)) === multi) j++;
+        const seg = lines.slice(i, j);
+        if (multi && !emitTable(seg, pi, blk, body, geo)) paragraphsFromLines(seg, pi, blk, body, geo);
+        else if (!multi) paragraphsFromLines(seg, pi, blk, body, geo);
+        i = j;
+      }
+    };
+    const grid = detectInfoGrid(lines);
+    if (grid) {
+      processRange(0, grid.startIdx);
+      blk.push({ type:'table', rows: grid.rows, ncols: 2, rtl: false, infoGrid: true,
+                 page: pi, firstOfPage: !blk.some(b => b.page === pi) });
+      processRange(grid.endIdx + 1, lines.length);
+    } else {
+      processRange(0, lines.length);
+    }
+  });
+  /* attach section-separator horizontal lines as a bottom border on the paragraph just above each */
+  pagesLines.forEach((pls, pi) => {
+    (pagesHLines[pi] || []).forEach(hl => {
+      let best=null, bestD=1e9;
+      blk.forEach(b => { if (b.page!==pi || b.type!=='para' || b.yBot==null) return;
+        const d = b.yBot - hl.y; if (d>=4 && d<=22 && d<bestD){ bestD=d; best=b; } });
+      if (best) best.brBottom = true;
+    });
+  });
+  return blk;
+}
+
+/* try to turn a run of multi-cell lines into a table block; returns true if it did */
+function emitTable(seg, pi, blk, body, geo) {
+  if (seg.length < 3) return false;
+  const counts = {};
+  seg.forEach(l => counts[l.cells.length] = (counts[l.cells.length]||0) + 1);
+  let modeN = 0, modeF = 0;
+  Object.keys(counts).forEach(k => { if (counts[k] > modeF) { modeF = counts[k]; modeN = +k; } });
+  if (modeN < 2 || modeF < 3) return false;
+
+  /* define columns from the dominant rows */
+  const tol = Math.max(body * 3.5, 35);
+  const xsDom = [];
+  seg.forEach(l => { if (l.cells.length === modeN) l.cells.forEach(c => xsDom.push(c.x0)); });
+  let cols = cluster1D(xsDom, tol);
+  if (cols.length < 2) return false;
+
+  /* a line belongs to the table if >=2 of its cells align to defined columns */
+  const aligns = l => l.cells.length === modeN && l.cells.filter(c => cols.some(cx => Math.abs(c.x0 - cx) <= tol*1.3)).length >= Math.min(2, modeN);
+  /* longest contiguous run of aligned lines */
+  let bestS = 0, bestL = 0, s = -1;
+  for (let k = 0; k <= seg.length; k++) {
+    if (k < seg.length && aligns(seg[k])) { if (s < 0) s = k; }
+    else { if (s >= 0 && (k - s) > bestL) { bestL = k - s; bestS = s; } s = -1; }
+  }
+  if (bestL < 3) return false;
+
+  const before = seg.slice(0, bestS);
+  const rowsLines = seg.slice(bestS, bestS + bestL);
+  const after = seg.slice(bestS + bestL);
+  if (before.length) paragraphsFromLines(before, pi, blk, body, geo);
+
+  const rtlCount = rowsLines.filter(l => /[؀-ۿ]/.test(lineText(l))).length;
+  const rtl = rtlCount > rowsLines.length / 2;
+  const rows = rowsLines.map(l => {
+    const row = new Array(cols.length).fill('');
+    l.cells.forEach(c => {
+      let bi = 0, bd = 1e9;
+      for (let k = 0; k < cols.length; k++) { const d = Math.abs(c.x0 - cols[k]); if (d < bd) { bd = d; bi = k; } }
+      row[bi] = row[bi] ? (row[bi] + ' ' + c.str) : c.str;
+    });
+    return row;
+  });
+  /* drop columns that are empty in every row (spurious split from over-clustering) */
+  {
+    const keep = [];
+    for (let c = 0; c < cols.length; c++) { if (rows.some(r => (r[c]||"").trim() !== "")) keep.push(c); }
+    if (keep.length >= 2 && keep.length < cols.length) {
+      cols = keep.map(c => cols[c]);
+      for (let r = 0; r < rows.length; r++) rows[r] = keep.map(c => rows[r][c]);
+    }
+  }
+  if (rtl) { cols.reverse(); rows.forEach(r => r.reverse()); }
+  blk.push({ type:'table', rows: rows, ncols: cols.length, rtl: rtl, page: pi,
+             firstOfPage: !blk.some(b => b.page === pi) });
+
+  if (after.length) paragraphsFromLines(after, pi, blk, body, geo);
+  return true;
+}
+
+/* paragraph builder for a set of (non-table) lines -> pushes 'para' blocks */
+function paragraphsFromLines(lines, pi, blk, body, geo) {
+  const rightMax = geo.rightMax, leftMin = geo.leftMin;
+  const span = Math.max(rightMax - leftMin, 1);
+  const detectHeads = document.getElementById('toggleHeadings').checked;
+  let cur = null, prev = null, prevEnded = false, prevHead = false;
+  lines.forEach(ln => {
+    const txt = lineText(ln).trim();
+    if (!txt) return;
+    const rtl = /[؀-ۿ]/.test(txt);
+    const bigFont = ln.fs >= body*1.22;
+    const allBold = ln.runs.length > 0 && ln.runs.every(r => r.bold || r.str.trim()==='');
+    /* "Label : value" field lines (letterheads) are never headings */
+    const looksLikeField = /^[^:：]{1,30}[:：] ./.test(txt);
+    /* bold alone signals a heading only when bold is uncommon across the doc */
+    const boldUseful = (geo.boldFrac || 0) < 0.4;
+    const boldHead = boldUseful && allBold && txt.length < 48 && !looksLikeField && ln.fs > body*1.05 && !/[.:؛،]$/.test(txt);
+    const isHead = detectHeads && txt.length < 120 && !looksLikeField && (bigFont || boldHead);
+    const level = isHead ? ((ln.fs >= body*1.6) ? 1 : 2) : 0;
+
+    const indentL = ln.x0 - leftMin, indentR = rightMax - ln.x1;
+    let align = 'left';
+    if (indentL > span*0.08 && indentR > span*0.08 && Math.abs(indentL - indentR) < span*0.12) align = 'center';
+    else if (rtl) align = 'right';
+    else if (indentR < span*0.04 && indentL > span*0.15) align = 'right';
+
+    const gap = prev ? (prev.y - ln.y) : 0;
+    const lineH = Math.max(prev ? prev.fs : ln.fs, ln.fs);
+    const indent = !!(cur && !rtl && (ln.x0 - cur.x0 > lineH*1.5));
+    /* hanging-indent wrap continuation: slightly indented, not a new bullet/field/heading */
+    const isBullet = /^[•‣⁃▪◦●○·*]/.test(txt) || /^[-–] /.test(txt);
+    const hangIndent = !!(cur && !rtl && (ln.x0 - cur.x0) > 2 && (ln.x0 - cur.x0) <= lineH*1.5);
+    const isContinuation = !isHead && !looksLikeField && !isBullet && hangIndent;
+    const split = !cur || isHead || (cur.head !== isHead) || (cur.align !== align)
+                  || gap > lineH*1.6 || gap < -2 || (prevEnded && !(isContinuation && !prevHead)) || indent;
+
+    if (split) {
+      cur = { type:'para', runs: [], head: isHead, level: level, align: align, x0: ln.x0,
+              page: pi, firstOfPage: !blk.some(b => b.page === pi), rtl: rtl, yTop: ln.y, yBot: ln.y };
+      blk.push(cur);
+    } else {
+      const last = cur.runs[cur.runs.length-1];
+      if (last && !/\s$/.test(last.str)) last.str += ' ';
+    }
+    ln.runs.forEach(r => {
+      const last = cur.runs[cur.runs.length-1];
+      if (last && last.bold === r.bold && last.ital === r.ital && last.fam === r.fam && last.color === r.color) last.str += r.str;
+      else cur.runs.push({ str: r.str, bold: r.bold, ital: r.ital, fs: r.fs, fam: r.fam, color: r.color });
+    });
+    if (isHead && ln.fs >= body*1.6) cur.level = 1;
+    if (cur) { cur.yBot = Math.min(cur.yBot, ln.y); cur.yTop = Math.max(cur.yTop, ln.y); }
+    prevHead = isHead;
+    prevEnded = isHead || (rightMax > 0 && ln.x1 < rightMax - lineH*2.5);
+    prev = ln;
+  });
+  /* finalize text + rtl on the paragraphs we just added */
+  blk.forEach(b => { if (b.type==='para' && b.page===pi && b.text===undefined) {
+    b.text = b.runs.map(r=>r.str).join('');
+    b.rtl = /[؀-ۿ]/.test(b.text);
+  }});
+}
+
+function rebuild() {
+  blocks = buildBlocks();
+  paras = blocks.filter(b => b.type === 'para');
+  renderPreview();
+  updateStats();
+}
+
+// ══════════════════════════════════════════
+// PREVIEW
+// ══════════════════════════════════════════
+function renderPreview() {
+  const wrap = document.getElementById('docPrev');
+  const breaks = document.getElementById('toggleBreaks').checked;
+  const styles = document.getElementById('toggleStyles').checked;
+  wrap.innerHTML = '';
+  let lastPage = -1;
+  blocks.forEach(b => {
+    if (breaks && b.page !== lastPage && lastPage !== -1) {
+      const brk = document.createElement('div');
+      brk.className = 'dp-pgbrk';
+      const lbl = document.createElement('span');
+      lbl.textContent = tr('T_pageLbl') + ' ' + (b.page+1);
+      brk.appendChild(lbl);
+      wrap.appendChild(brk);
+    }
+    lastPage = b.page;
+
+    if (b.type === 'table') {
+      const tbl = document.createElement('table');
+      tbl.className = 'dp-table';
+      if (b.infoGrid) tbl.style.border = 'none';
+      tbl.dir = b.rtl ? 'rtl' : 'ltr';
+      b.rows.forEach((row, ri) => {
+        const trEl = document.createElement('tr');
+        row.forEach((cellText, ci) => {
+          const cell = document.createElement((!b.infoGrid && ri === 0) ? 'th' : 'td');
+          if (b.infoGrid) { cell.style.border = 'none'; if (ci === 0) cell.style.fontWeight = '600'; }
+          cell.dir = /[؀-ۿ]/.test(cellText) ? 'rtl' : 'ltr';
+          cell.textContent = cellText;
+          trEl.appendChild(cell);
+        });
+        tbl.appendChild(trEl);
+      });
+      wrap.appendChild(tbl);
+      return;
+    }
+
+    const p = b;
+    const el = document.createElement('div');
+    el.className = p.head ? (p.level === 1 ? 'dp-h1' : 'dp-h2') : 'dp-p';
+    el.style.whiteSpace = 'pre-wrap';
+    el.dir = p.rtl ? 'rtl' : 'ltr';
+    if (p.brBottom) { el.style.borderBottom = '1.5px solid var(--text)'; el.style.paddingBottom = '4px'; }
+    if (p.align === 'center') el.style.textAlign = 'center';
+    else if (p.align === 'right') el.style.textAlign = 'right';
+    p.runs.forEach(r => {
+      const s = document.createElement('span');
+      if (styles && r.bold) s.style.fontWeight = '700';
+      if (styles && r.ital) s.style.fontStyle = 'italic';
+      if (!p.head && r.fs) s.style.fontSize = Math.max(9, Math.min(30, r.fs)) + 'px';
+      if (r.fam) s.style.fontFamily = '"' + r.fam + '"';
+      if (r.color && !nearBlack(r.color)) s.style.color = '#' + r.color;
+      s.textContent = r.str;
+      el.appendChild(s);
+    });
+    wrap.appendChild(el);
+  });
+}
+
+/* ---- stats ---- */
+function updateStats() {
+  const tableCount = blocks.filter(b => b.type === 'table').length;
+  let words = paras.reduce((n,p) => n + (p.text.trim() ? p.text.trim().split(/\s+/).length : 0), 0);
+  blocks.filter(b=>b.type==='table').forEach(t => t.rows.forEach(r => r.forEach(c => { if(c.trim()) words += c.trim().split(/\s+/).length; })));
+  const heads = paras.filter(p=>p.head).length;
+  document.getElementById('statPages').textContent = pagesLines.length;
+  document.getElementById('statWords').textContent = words.toLocaleString();
+  document.getElementById('statParas').textContent = paras.length;
+  document.getElementById('statHeads').textContent = tableCount ? (heads + ' · ' + tableCount + (currentLang==='ar'?' جداول':' tbl')) : heads;
+  document.getElementById('prevStats').textContent = `${words.toLocaleString()} words · ${paras.length} ¶${tableCount?(' · '+tableCount+'⊞'):''}`;
+}
+
+// ══════════════════════════════════════════
+// DOCX GENERATION (lazy-loads the docx library)
+// ══════════════════════════════════════════
+function loadDocxLib() {
+  return new Promise((resolve, reject) => {
+    if (window.docx) return resolve(window.docx);
+    const s = document.createElement('script');
+    s.src = DOCX_CDN;
+    s.onload = () => window.docx ? resolve(window.docx) : reject(new Error('docx global missing'));
+    s.onerror = () => reject(new Error('docx load failed'));
+    document.body.appendChild(s);
+  });
+}
+
+async function downloadDocx() {
+  if (!blocks.length) return;
+  const btn = document.getElementById('downloadBtn');
+  const lbl = document.getElementById('T_downloadDoc');
+  const orig = lbl.textContent;
+  btn.disabled = true;
+  lbl.textContent = tr('T_libLoading');
+  let lib;
+  try { lib = await loadDocxLib(); }
+  catch(e) { console.error(e); showToast(tr('T_errLib'),'error'); btn.disabled=false; lbl.textContent=orig; return; }
+
+  lbl.textContent = tr('T_building');
+  try {
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+            Table, TableRow, TableCell, WidthType, BorderStyle } = lib;
+    const styles = document.getElementById('toggleStyles').checked;
+    const breaks = document.getElementById('toggleBreaks').checked;
+    const alignMap = { center: AlignmentType.CENTER, right: AlignmentType.RIGHT, left: AlignmentType.LEFT };
+    const bd = { style: BorderStyle.SINGLE, size: 4, color: '999999' };
+    const cellBorders = { top: bd, bottom: bd, left: bd, right: bd };
+
+    function paraBlock(p) {
+      const runs = p.runs.map(r => new TextRun({
+        text: r.str,
+        bold: styles && r.bold ? true : undefined,
+        italics: styles && r.ital ? true : undefined,
+        rightToLeft: p.rtl ? true : undefined,
+        font: r.fam || undefined,
+        color: (r.color && !nearBlack(r.color)) ? r.color : (p.head ? '000000' : undefined),
+        size: Math.max(16, Math.min(72, Math.round(r.fs) * 2))
+      }));
+      return new Paragraph({
+        children: runs,
+        heading: p.head ? (p.level === 1 ? HeadingLevel.HEADING_1 : HeadingLevel.HEADING_2) : undefined,
+        bidirectional: p.rtl ? true : undefined,
+        alignment: alignMap[p.align] || undefined,
+        spacing: p.head ? { before: 80, after: 40 } : { after: 0 },
+        border: p.brBottom ? { bottom: { style: BorderStyle.SINGLE, size: 12, color: '000000', space: 6 } } : undefined,
+        pageBreakBefore: breaks && p.firstOfPage && p.page > 0 ? true : undefined
+      });
+    }
+
+    const noBd = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const noBorders = { top: noBd, bottom: noBd, left: noBd, right: noBd };
+    function tableBlock(b) {
+      const rows = b.rows.map((row, ri) => new TableRow({
+        children: row.map((cellText, ci) => {
+          const isRtl = /[؀-ۿ]/.test(cellText);
+          const boldCell = b.infoGrid ? (ci === 0) : (ri === 0);
+          return new TableCell({
+            borders: b.infoGrid ? noBorders : cellBorders,
+            children: [ new Paragraph({
+              bidirectional: isRtl ? true : undefined,
+              children: [ new TextRun({ text: cellText, bold: boldCell ? true : undefined, rightToLeft: isRtl ? true : undefined }) ]
+            }) ]
+          });
+        })
+      }));
+      return new Table({ rows: rows, width: { size: 100, type: WidthType.PERCENTAGE }, visuallyRightToLeft: b.rtl ? true : undefined,
+        borders: b.infoGrid ? { top:noBd, bottom:noBd, left:noBd, right:noBd, insideHorizontal:noBd, insideVertical:noBd } : undefined });
+    }
+
+    const children = [];
+    blocks.forEach(b => {
+      if (b.type === 'table') {
+        children.push(tableBlock(b));
+        children.push(new Paragraph({ children: [], spacing: { after: 120 } }));
+      } else {
+        children.push(paraBlock(b));
+      }
+    });
+
+        const doc = new Document({ sections: [{ properties: {}, children: children }] });
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = baseName + '.docx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    showToast(tr('T_done'), 'success');
+    if(typeof gtag!=='undefined') gtag('event','download_docx',{event_category:'pdf_to_word'});
+  } catch(e) {
+    console.error(e);
+    showToast(tr('T_errLib'), 'error');
+  }
+  btn.disabled = false;
+  lbl.textContent = tr('T_downloadDoc');
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = {
+    success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    warn:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+  };
+  t.innerHTML = (icons[type]||icons.success) + msg;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+// ══════════════════════════════════════════
+// BOOT (always last)
+// ══════════════════════════════════════════
+function boot() {
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  applyLang(currentLang);
+  applyTheme(localStorage.getItem('dpdf_dark') === '1');
+  bindEvents();
+}
+boot();
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3EGBBVX022"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-3EGBBVX022');
+</script>
+
+<section class="seo-content">
+  <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
+  <div class="seo-about">
+    <h2 id="A_h2">What does converting PDF to Word mean?</h2>
+    <p id="A_p1">Converting PDF to Word means turning a fixed, read-only PDF into an editable DOCX document you can open in Microsoft Word, Google Docs, or LibreOffice and change freely. Instead of retyping a contract, report, or CV from scratch, you get the text — with its headings, bold and italic styling — as a normal Word file you can edit, correct, and reuse.</p>
+    <p id="A_p2">Doctor PDF reads the text of every page, rebuilds paragraphs and headings, detects Arabic right-to-left text automatically, and packs everything into a clean DOCX — entirely inside your browser.</p>
+    <h2 id="A_useH">When do you need to convert PDF to Word?</h2>
+    <ul class="seo-list">
+      <li id="A_u1">Editing a contract or agreement that was sent to you as a PDF.</li>
+      <li id="A_u2">Updating an old CV or report when you only have the PDF version.</li>
+      <li id="A_u3">Reusing paragraphs from a study, article, or proposal in a new document.</li>
+      <li id="A_u4">Fixing a typo or changing a date in a document without the original file.</li>
+      <li id="A_u5">Translating or reformatting a document in Word after extracting it from PDF.</li>
+    </ul>
+    <h2 id="A_howH">How Doctor PDF converts to Word privately</h2>
+    <p id="A_hp1">Unlike other converters, Doctor PDF never uploads your file. Reading the PDF and building the Word document both happen inside your browser, so contracts, IDs, and confidential reports never reach any server.</p>
+    <p id="A_hp2">Because there is no upload, conversion is fast, free of daily limits, and even works offline once the page has loaded.</p>
+  </div>
+  <div class="why">
+    <h2 id="W_h2">Why is Doctor PDF better than iLovePDF and Smallpdf?</h2>
+    <p class="why-lead" id="W_lead">Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:</p>
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W1">No annoying ads — ever</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W2">No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W3">100% private — competitors upload your files to their servers; Doctor PDF never does</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W4">Completely free — no watermarks, no sign-up, no hidden charges</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W5">Instant — runs right in your browser</span></div>
+    </div>
+  </div>
+  <h2 id="F_h2">How to convert PDF to Word online</h2>
+  <ol class="seo-steps">
+    <li id="F_s1">Open the PDF to Word tool and drop your PDF into the page.</li>
+    <li id="F_s2">Doctor PDF reads the text and rebuilds paragraphs, headings and styles.</li>
+    <li id="F_s3">Review the preview and adjust the options if you like.</li>
+    <li id="F_s4">Download your editable .docx file — nothing is ever uploaded.</li>
+  </ol>
+  <h2 id="F_faqH">Frequently asked questions</h2>
+  <div class="faq-item"><h3 id="F_q1">Is converting PDF to Word free?</h3><p id="F_a1">Yes. Doctor PDF converts PDF to Word 100% free with no limits, watermarks, or sign-up.</p></div>
+  <div class="faq-item"><h3 id="F_q2">Is my file uploaded to a server?</h3><p id="F_a2">No. The whole conversion runs inside your browser — your PDF never leaves your device.</p></div>
+  <div class="faq-item"><h3 id="F_q3">Does it support Arabic text?</h3><p id="F_a3">Yes. Arabic text is detected automatically and written right-to-left in the Word file.</p></div>
+  <div class="faq-item"><h3 id="F_q4">Will the layout be identical?</h3><p id="F_a4">Text, headings, bold and italic are preserved. Very complex layouts, tables and multi-column designs may be simplified — that is a limitation of every PDF-to-Word converter.</p></div>
+  <div class="faq-item"><h3 id="F_q5">Can it convert scanned PDFs?</h3><p id="F_a5">Scanned PDFs contain images, not text. Run them through our OCR tool first, then convert the result.</p></div>
+</section>
+</body>
+</html>
