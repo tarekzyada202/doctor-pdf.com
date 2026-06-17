@@ -581,16 +581,38 @@ async function doWatermark() {
     const r = parseInt(hex.slice(0,2),16)/255, g = parseInt(hex.slice(2,4),16)/255, b = parseInt(hex.slice(4,6),16)/255;
     const col = PDFLib.rgb(r,g,b);
     const angleDeg = S.diagonal ? 45 : 0;
+    /* Latin StandardFonts can't encode Arabic -> render the text on a canvas (browser shapes Arabic + RTL) and embed it as a PNG image */
+    const isArabic = /[؀-ۿ]/.test(text);
+    let wmImg = null, imgW = 0, imgH = 0;
+    if (isArabic) {
+      const sc = 4, fpx = S.fontSize * sc;
+      const mc = document.createElement('canvas');
+      let cx = mc.getContext('2d');
+      cx.font = 'bold ' + fpx + 'px Cairo, Arial, sans-serif';
+      const twpx = Math.ceil(cx.measureText(text).width) + 8;
+      mc.width = twpx; mc.height = Math.ceil(fpx * 1.4);
+      cx = mc.getContext('2d');
+      cx.font = 'bold ' + fpx + 'px Cairo, Arial, sans-serif';
+      cx.fillStyle = S.color; cx.textBaseline = 'middle'; cx.textAlign = 'right'; cx.direction = 'rtl';
+      cx.fillText(text, mc.width - 4, mc.height / 2);
+      wmImg = await pdf.embedPng(mc.toDataURL('image/png'));
+      imgH = S.fontSize * 1.4; imgW = imgH * (mc.width / mc.height);
+    }
     pages.forEach((page,i) => {
       setProgress(20+Math.round(i/pages.length*65), 'Page '+(i+1)+'…');
       const W = page.getWidth(), H = page.getHeight();
       const fs = S.fontSize;
-      const tw = font.widthOfTextAtSize(text, fs);
-      const pos = getXYPdf(S.position, W, H, tw, fs, S.diagonal);
-      page.drawText(text, {
-        x: pos.x, y: pos.y, size: fs, font: font, color: col,
-        opacity: S.opacity/100, rotate: PDFLib.degrees(angleDeg)
-      });
+      if (isArabic) {
+        const pos = getXYPdf(S.position, W, H, imgW, fs, S.diagonal);
+        page.drawImage(wmImg, { x: pos.x, y: pos.y, width: imgW, height: imgH, opacity: S.opacity/100, rotate: PDFLib.degrees(angleDeg) });
+      } else {
+        const tw = font.widthOfTextAtSize(text, fs);
+        const pos = getXYPdf(S.position, W, H, tw, fs, S.diagonal);
+        page.drawText(text, {
+          x: pos.x, y: pos.y, size: fs, font: font, color: col,
+          opacity: S.opacity/100, rotate: PDFLib.degrees(angleDeg)
+        });
+      }
     });
     setProgress(92,'Saving…');
     const out = await pdf.save();

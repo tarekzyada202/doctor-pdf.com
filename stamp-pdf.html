@@ -1132,10 +1132,12 @@ function makeStampCanvas(text, color, opacity) {
   ctx.fillStyle = color;
   var len = text.length;
   var fs  = len > 12 ? 46 : len > 8 ? 58 : len > 5 ? 70 : 82;
-  ctx.font = '900 '+fs+'px "Arial Black",Impact,Arial,sans-serif';
+  var isAr = /[؀-ۿ]/.test(text);
+  ctx.font = '900 '+fs+'px '+(isAr ? '"Cairo",Arial,sans-serif' : '"Arial Black",Impact,Arial,sans-serif');
   ctx.textAlign    = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text.toUpperCase(), cv.width/2, cv.height/2);
+  if (isAr) ctx.direction = 'rtl';
+  ctx.fillText(isAr ? text : text.toUpperCase(), cv.width/2, cv.height/2);
   return cv.toDataURL('image/png');
 }
 

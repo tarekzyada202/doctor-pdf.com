@@ -208,7 +208,6 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
   .workspace{flex-direction:column}
 }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل استخراج النص مجاني؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يستخرج Doctor PDF النص مجاناً 100% بدون حدود أو تسجيل."}},{"@type":"Question","name":"هل يعمل مع النص العربي؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يُستخرج النص العربي والإنجليزي معاً، مع دعم الاتجاه من اليمين لليسار."}},{"@type":"Question","name":"هل يقرأ ملفات PDF الممسوحة ضوئياً؟","acceptedAnswer":{"@type":"Answer","text":"لملفات PDF الممسوحة (صور)، استخدم أداة OCR التي تتعرّف على النص من الصور."}},{"@type":"Question","name":"هل ملفاتي خاصة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم."}},{"@type":"Question","name":"هل تعمل على الهاتف؟","acceptedAnswer":{"@type":"Answer","text":"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}}]}</script>
 </head>
 <body>
 
@@ -624,20 +623,55 @@ async function loadPDF(file) {
 }
 
 function extractTextFromContent(content) {
-  let text = '';
-  let lastY = null;
   const preserveLayout = document.getElementById('toggleLayout').checked;
-
-  content.items.forEach(item => {
-    if (!item.str) return;
-    if (preserveLayout && lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
-      text += '\n';
+  /* 1) collect chunks: skip rotated watermarks, NFKC-normalize (folds Arabic presentation forms), strip control chars */
+  const raw = [];
+  for (const it of content.items) {
+    if (it.str === undefined || it.str === '') continue;
+    const t = it.transform;
+    const sx = Math.hypot(t[0], t[1]) || 1;
+    const rot = Math.abs(t[1]) / sx, shear = Math.abs(t[2]) / (Math.abs(t[3]) || sx);
+    if (rot > 0.15 || shear > 0.6) continue;
+    let str = it.str.normalize ? it.str.normalize('NFKC') : it.str;
+    { let _c = ''; for (const ch of str) { const cc = ch.charCodeAt(0); if (cc === 9 || cc === 10 || cc === 13 || cc >= 32) _c += ch; } str = _c; }
+    if (str === '') continue;
+    const fs = Math.abs(t[3]) || Math.abs(t[0]) || it.height || 12;
+    raw.push({ str: str, x: t[4], y: t[5], w: it.width || 0, fs: fs });
+  }
+  if (!raw.length) return '';
+  /* 2) group chunks into lines by y proximity */
+  raw.sort((a, b) => (b.y - a.y) || (a.x - b.x));
+  const lines = []; let cur = null;
+  for (const r of raw) {
+    if (!cur || Math.abs(r.y - cur.y) > Math.max(2, r.fs * 0.5)) { cur = { chunks: [], y: r.y, fs: r.fs }; lines.push(cur); }
+    cur.chunks.push(r); if (r.fs > cur.fs) cur.fs = r.fs;
+  }
+  /* 3) per line: order L->R, rebuild missing spaces from x-gaps, then bidi-reorder visual-order Arabic */
+  const hasArab = z => /[؀-ۿ]/.test(z), hasLat = z => /[A-Za-z0-9]/.test(z);
+  const outLines = lines.map(ln => {
+    ln.chunks.sort((a, b) => a.x - b.x);
+    let toks = [];
+    for (let i = 0; i < ln.chunks.length; i++) {
+      const c = ln.chunks[i];
+      if (i > 0) { const pc = ln.chunks[i - 1]; const gap = c.x - (pc.x + pc.w); if (gap > c.fs * 0.18) toks.push({ sp: true }); }
+      toks.push({ s: c.str });
     }
-    text += item.str;
-    if (item.hasEOL) text += '\n';
-    lastY = item.transform[5];
-  });
-  return text;
+    const text = ln.chunks.map(c => c.str).join('');
+    const arab = (text.match(/[؀-ۿ]/g) || []).length;
+    const visual = ln.chunks.length > 1 && ln.chunks[ln.chunks.length - 1].x > ln.chunks[0].x;
+    if (arab > 0 && visual) {            /* legacy Arabic stored left->right; restore logical order */
+      toks.reverse();
+      let i = 0;
+      while (i < toks.length) {
+        if (toks[i].s != null && hasLat(toks[i].s) && !hasArab(toks[i].s)) {
+          let j = i + 1; while (j < toks.length && (toks[j].sp || (toks[j].s != null && !hasArab(toks[j].s)))) j++;
+          const rev = toks.slice(i, j).reverse(); for (let k = 0; k < rev.length; k++) toks[i + k] = rev[k]; i = j;
+        } else i++;
+      }
+    }
+    return toks.map(x => x.sp ? ' ' : x.s).join('').replace(/ +/g, ' ').trim();
+  }).filter(s => s);
+  return outLines.join(preserveLayout ? '\n' : ' ');
 }
 
 // ══════════════════════════════════════════
