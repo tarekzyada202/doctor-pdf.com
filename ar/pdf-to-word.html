@@ -434,6 +434,7 @@ const DOCX_CDN = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
 let currentLang = localStorage.getItem('dpdf_lang')||'ar';
 let pagesLines = [];   // [pageIdx] -> [{runs:[{str,bold,ital,fs}], y, fs}]
 let pagesHLines = [];  // [pageIdx] -> [{y,x0,x1}] full-width separator lines
+let pagesImages = [];  // [pageIdx] -> [{bytes,dataUrl,top,dispW,dispH}] extracted images
 let paras = [];        // built paragraphs (kept for stats)
 let blocks = [];       // ordered list of { type:'para'|'table', ... }
 let scannedPages = 0;
@@ -529,7 +530,7 @@ async function loadPDF(file) {
   if(!file) return;
   if(typeof pdfjsLib === 'undefined') { showToast('pdf.js not loaded','error'); return; }
 
-  pagesLines = []; pagesHLines = []; paras = []; scannedPages = 0;
+  pagesLines = []; pagesHLines = []; pagesImages = []; paras = []; scannedPages = 0;
   baseName = (file.name || 'document').replace(/\.pdf$/i,'');
 
   document.getElementById('dropzone').classList.add('hidden');
@@ -550,13 +551,14 @@ async function loadPDF(file) {
       document.getElementById('cvBarTxt').textContent = `${tr('T_reading')} ${i} / ${numPages}`;
       const page = await pdfJsDoc.getPage(i);
       const vp = page.getViewport({ scale: 1 });
-      let colors = [], hlines = [];
-      try { const _ol = await page.getOperatorList(); colors = extractTextColors(_ol); hlines = extractHLines(_ol, vp.width); } catch(e) {}
+      let colors = [], hlines = [], images = [];
+      try { const _ol = await page.getOperatorList(); colors = extractTextColors(_ol); hlines = extractHLines(_ol, vp.width); images = await extractImages(_ol, page, vp); } catch(e) {}
       const content = await page.getTextContent();
       const lines = pageToLines(page, content, vp.width, colors);
       if (!lines.length) scannedPages++;
       pagesLines.push(lines);
       pagesHLines.push(hlines);
+      pagesImages.push(images);
       await new Promise(r => setTimeout(r, 0));
     }
 
@@ -758,6 +760,7 @@ function pageToLines(page, content, pageW, colors) {
       delete cl.chunks;
     });
     ln.cells = cells;
+    ln.frags = ln.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs }));
     delete ln.chunks;
     if (ln.runs.some(r => r.str.trim() !== '')) out.push(ln);
   }
@@ -939,6 +942,87 @@ function detectInfoGrid(lines){
 }
 
 /* build an ordered list of paragraph + table blocks for the whole document */
+async function extractImages(ol, page, vp){
+  const OPS = pdfjsLib.OPS;
+  const mul = (m,t)=>[m[0]*t[0]+m[2]*t[1], m[1]*t[0]+m[3]*t[1], m[0]*t[2]+m[2]*t[3], m[1]*t[2]+m[3]*t[3], m[0]*t[4]+m[2]*t[5]+m[4], m[1]*t[4]+m[3]*t[5]+m[5]];
+  const getObj = (id)=>{ try{ if(page.objs.has(id)) return page.objs.get(id); }catch(e){} return null; }; /* sync: skip images not immediately ready — never hang on a callback */
+  const contentW = 600;
+  const out = [];
+  let ctm = [1,0,0,1,0,0]; const stack = [];
+  for (let k=0;k<ol.fnArray.length;k++){
+    const fn = ol.fnArray[k], a = ol.argsArray[k];
+    if (fn===OPS.save) stack.push(ctm.slice());
+    else if (fn===OPS.restore) ctm = stack.pop() || [1,0,0,1,0,0];
+    else if (fn===OPS.transform) ctm = mul(ctm, a);
+    else if (fn===OPS.paintImageXObject || fn===OPS.paintJpegXObject){
+      try{
+        const o = await getObj(a[0]); if(!o || !o.bitmap) continue;
+        const pw = Math.hypot(ctm[0],ctm[1]), ph = Math.hypot(ctm[2],ctm[3]);
+        if (pw < 24 || ph < 24) continue;                 /* skip tiny icons/spacers/rules */
+        const top = ctm[5] + ph;                          /* pdf-space top (bottom-up) */
+        const bm = o.bitmap;
+        const scale = 2;                                   /* ~144dpi for crisp Word output */
+        const cw = Math.max(1, Math.round(pw*scale)), chh = Math.max(1, Math.round(ph*scale));
+        const cv = document.createElement('canvas'); cv.width = cw; cv.height = chh;
+        cv.getContext('2d').drawImage(bm, 0, 0, cw, chh);
+        const blob = await new Promise(r=>cv.toBlob(r,'image/png'));
+        if (!blob) continue;
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        const dataUrl = await new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result); fr.readAsDataURL(blob); });
+        let dispW = Math.round(pw*96/72); if (dispW>contentW) dispW = contentW;
+        const dispH = Math.max(1, Math.round(dispW*ph/pw));
+        out.push({ bytes, dataUrl, top, bottom: ctm[5], x: ctm[4], dispW, dispH });
+      }catch(e){}
+    }
+  }
+  return out;
+}
+
+/* ── geometric multi-column table reconstructor ──
+   groups fragments into a real grid (columns by x-cluster, rows by y-band),
+   so reflowed/wrapped multi-column tables rebuild correctly. */
+function fragGroups(l){
+  const fr=(l.frags||[]).filter(f=>f.str.trim()!=="").sort((a,b)=>a.x-b.x);
+  const g=[]; let cur=null;
+  fr.forEach(f=>{ if(cur && f.x-cur.x1 > l.fs*2){ g.push(cur); cur=null; } if(!cur) cur={x:f.x,x1:f.x1}; else cur.x1=f.x1; });
+  if(cur) g.push(cur); return g;
+}
+function findTables(lines){
+  const anchors=lines.map((l,i)=>({i,n:fragGroups(l).length})).filter(a=>a.n>=2);
+  const out=[]; let ci=0;
+  while(ci<anchors.length){
+    let s=anchors[ci].i, e=anchors[ci].i, cj=ci;
+    while(cj+1<anchors.length && anchors[cj+1].i-anchors[cj].i<=4){ cj++; e=anchors[cj].i; }
+    const reg=lines.slice(s,e+1);
+    const frags=[]; reg.forEach(l=>(l.frags||[]).forEach(f=>{ if(f.str.trim()!=="") frags.push({x:f.x,y:l.y,str:f.str}); }));
+    const fsz=reg[0].fs||11;
+    if(frags.length){
+      const ys=[...new Set(frags.map(f=>f.y))].sort((a,b)=>b-a);
+      const rows=[]; let cur=[ys[0]];
+      for(let k=1;k<ys.length;k++){ if(cur[cur.length-1]-ys[k] > fsz*1.5){ rows.push(cur); cur=[ys[k]]; } else cur.push(ys[k]); }
+      rows.push(cur);
+      const rowOf=y=>rows.findIndex(r=>r.indexOf(y)>=0);
+      const xs=frags.map(f=>f.x).sort((a,b)=>a-b);
+      let cl=[]; xs.forEach(x=>{ const c=cl.find(c=>Math.abs(c.c-x)<=25); if(c){ c.xs.push(x); c.c=c.xs.reduce((a,b)=>a+b,0)/c.xs.length; } else cl.push({c:x,xs:[x]}); });
+      let cols=cl.map(c=>c.c).filter(cx=>{ const rs=new Set(frags.filter(f=>Math.abs(f.x-cx)<=25).map(f=>rowOf(f.y))); return rs.size>=Math.max(2,Math.ceil(rows.length*0.5)); }).sort((a,b)=>a-b);
+      if(cols.length>=3 && rows.length>=3){
+        const grid=rows.map(()=>cols.map(()=>[]));
+        frags.forEach(f=>{ const ri=rowOf(f.y); let cix=0; for(let k=0;k<cols.length;k++) if(f.x>=cols[k]-15) cix=k; grid[ri][cix].push(f); });
+        const tbl=grid.map(r=>r.map(c=>c.sort((a,b)=>(b.y-a.y)||(a.x-b.x)).map(f=>f.str).join(" ").replace(/\s+/g," ").trim()));
+        const filled=tbl.reduce((n,r)=>n+r.filter(c=>c!=="").length,0);
+        const ratio=filled/(rows.length*cols.length);
+        const fullRowFrac=tbl.filter(r=>r.every(c=>c!=="")).length/rows.length;
+        if(ratio>=0.7 && fullRowFrac>=0.7 && tbl[0].every(c=>c!=="")){
+          const rtl=frags.filter(f=>/[؀-ۿ]/.test(f.str)).length > frags.length/2;
+          out.push({ start:s, end:e, rows:tbl, rtl:rtl });
+        }
+      }
+    }
+    ci=cj+1;
+  }
+  return out;
+}
+
 function buildBlocks() {
   const sizes = [];
   pagesLines.forEach(pls => pls.forEach(l => sizes.push(l.fs)));
@@ -976,15 +1060,30 @@ function buildBlocks() {
         i = j;
       }
     };
-    const grid = detectInfoGrid(lines);
-    if (grid) {
-      processRange(0, grid.startIdx);
-      blk.push({ type:'table', rows: grid.rows, ncols: 2, rtl: false, infoGrid: true,
-                 page: pi, firstOfPage: !blk.some(b => b.page === pi) });
-      processRange(grid.endIdx + 1, lines.length);
-    } else {
-      processRange(0, lines.length);
-    }
+    const handleSegment = (a, b) => {
+      if (b <= a) return;
+      const sub = lines.slice(a, b);
+      const grid = detectInfoGrid(sub);
+      if (grid) {
+        processRange(a, a + grid.startIdx);
+        blk.push({ type:'table', rows: grid.rows, ncols: 2, rtl: false, infoGrid: true,
+                   page: pi, firstOfPage: !blk.some(b2 => b2.page === pi) });
+        processRange(a + grid.endIdx + 1, b);
+      } else {
+        processRange(a, b);
+      }
+    };
+    /* first pass: geometric multi-column (LTR) tables consume their lines; existing logic handles the gaps */
+    let fTables = [];
+    try { fTables = findTables(lines).filter(t => !t.rtl).sort((a, b) => a.start - b.start); } catch (e) { fTables = []; }
+    let cursor = 0;
+    fTables.forEach(t => {
+      handleSegment(cursor, t.start);
+      blk.push({ type:'table', rows: t.rows, ncols: t.rows[0].length, rtl: false,
+                 page: pi, firstOfPage: !blk.some(b2 => b2.page === pi) });
+      cursor = t.end + 1;
+    });
+    handleSegment(cursor, lines.length);
   });
   /* attach section-separator horizontal lines as a bottom border on the paragraph just above each */
   pagesLines.forEach((pls, pi) => {
@@ -995,7 +1094,29 @@ function buildBlocks() {
       if (best) best.brBottom = true;
     });
   });
-  return blk;
+  /* interleave extracted images per page by vertical position */
+  const withImg = [];
+  for (let _pi = 0; _pi < pagesLines.length; _pi++){
+    const pageBlocks = blk.filter(b => b.page === _pi);
+    /* group images into rows of side-by-side figures (overlapping vertical extent) */
+    const rawImgs = (pagesImages[_pi] || []).slice().sort((a,b)=>b.top-a.top);
+    const rows = [];
+    rawImgs.forEach(im => {
+      const hh = im.top - im.bottom;
+      const row = rows.find(r => { const ov = Math.min(r.top, im.top) - Math.max(r.bottom, im.bottom); return ov > Math.min(hh, r.top - r.bottom) * 0.4; });
+      if (row){ row.items.push(im); row.top = Math.max(row.top, im.top); row.bottom = Math.min(row.bottom, im.bottom); }
+      else rows.push({ top: im.top, bottom: im.bottom, items: [im] });
+    });
+    const imgBlocks = rows.map(r => { r.items.sort((a,b)=>a.x-b.x); return { type:'image', page:_pi, top:r.top, items: r.items.map(im=>({ bytes:im.bytes, dataUrl:im.dataUrl, dispW:im.dispW, dispH:im.dispH })) }; });
+    const res = pageBlocks.slice();
+    imgBlocks.forEach(im => {
+      let idx = res.findIndex(b => { const by = (b.yTop!=null?b.yTop:b.yBot); return b.type==='para' && by!=null && by < im.top; });
+      if (idx < 0) idx = res.length;
+      res.splice(idx, 0, im);
+    });
+    for (const b of res) withImg.push(b);
+  }
+  return withImg;
 }
 
 /* try to turn a run of multi-cell lines into a table block; returns true if it did */
@@ -1166,6 +1287,15 @@ function renderPreview() {
       return;
     }
 
+    if (b.type === 'image') {
+      const items = b.items || [{ dataUrl:b.dataUrl, dispW:b.dispW }];
+      const rowEl = document.createElement('div');
+      rowEl.style.display = 'flex'; rowEl.style.flexWrap = 'wrap'; rowEl.style.justifyContent = 'center';
+      rowEl.style.alignItems = 'flex-start'; rowEl.style.gap = '10px'; rowEl.style.margin = '8px 0';
+      items.forEach(it => { const im = document.createElement('img'); im.src = it.dataUrl; im.style.width = it.dispW + 'px'; im.style.maxWidth = '100%'; rowEl.appendChild(im); });
+      wrap.appendChild(rowEl);
+      return;
+    }
     const p = b;
     const el = document.createElement('div');
     el.className = p.head ? (p.level === 1 ? 'dp-h1' : 'dp-h2') : 'dp-p';
@@ -1229,7 +1359,7 @@ async function downloadDocx() {
   lbl.textContent = tr('T_building');
   try {
     const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
-            Table, TableRow, TableCell, WidthType, BorderStyle } = lib;
+            Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun } = lib;
     const styles = document.getElementById('toggleStyles').checked;
     const breaks = document.getElementById('toggleBreaks').checked;
     const alignMap = { center: AlignmentType.CENTER, right: AlignmentType.RIGHT, left: AlignmentType.LEFT };
@@ -1282,6 +1412,17 @@ async function downloadDocx() {
       if (b.type === 'table') {
         children.push(tableBlock(b));
         children.push(new Paragraph({ children: [], spacing: { after: 120 } }));
+      } else if (b.type === 'image') {
+        const items = b.items || [{ bytes:b.bytes, dataUrl:b.dataUrl, dispW:b.dispW, dispH:b.dispH }];
+        const gap = 10;
+        const totalW = items.reduce((s,it)=>s+it.dispW,0) + gap*(items.length-1);
+        const sc = totalW > 600 ? 600/totalW : 1;
+        const kids = [];
+        items.forEach((it,ii) => {
+          if (ii>0) kids.push(new TextRun({ text: '   ' }));
+          kids.push(new ImageRun({ data: it.bytes, transformation: { width: Math.max(1,Math.round(it.dispW*sc)), height: Math.max(1,Math.round(it.dispH*sc)) } }));
+        });
+        children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 60, after: 60 }, children: kids }));
       } else {
         children.push(paraBlock(b));
       }
