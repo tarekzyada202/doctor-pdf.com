@@ -367,9 +367,16 @@ html[lang="en"] .priv-cta .ar{display:none}
     </div>
 
     <div class="panel-section">
+      <label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-size:14px;color:var(--text);user-select:none">
+        <input type="checkbox" id="keepText" style="width:16px;height:16px;cursor:pointer;accent-color:var(--primary);flex:none">
+        <span id="T_keepText">احتفظ بالنص القابل للتحديد (حجم أكبر قليلاً)</span>
+      </label>
+    </div>
+
+    <div class="panel-section">
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <span id="T_infoBox">يستخدم استراتيجيتين للضغط: تحسين البنية + إعادة أخذ عينات الصور. دائماً يختار الأصغر.</span>
+        <span id="T_infoBox">يعيد ضغط الصور مع الحفاظ على النص. فعّل "احتفظ بالنص" لإبقاء طبقة النص القابلة للتحديد دائماً.</span>
       </div>
     </div>
 
@@ -429,7 +436,8 @@ const LANGS = {
     T_lvlLightName:'High Quality',T_lvlLightDesc:'Gentle compression, best visuals',T_lvlLightBadge:'~30%',
     T_lvlBalName:'Balanced',T_lvlBalDesc:'Recommended for most files',T_lvlBalBadge:'~50%',
     T_lvlMaxName:'Maximum',T_lvlMaxDesc:'Smallest size, lower quality',T_lvlMaxBadge:'~70%',
-    T_infoBox:'Uses dual-strategy compression: structure optimisation + image resampling. Always picks the smallest result.',
+    T_infoBox:'Recompresses images while keeping text. Tick “keep text” to always preserve the selectable text layer.',
+    T_keepText:'Keep selectable text (a bit larger)',
     T_privacyInfo:'All processing happens locally in your browser. No files are ever uploaded to any server.',
     T_compressBtn:'Compress PDF',
     T_downloadBtn:'Download Compressed PDF',
@@ -456,7 +464,8 @@ const LANGS = {
     T_lvlLightName:'جودة عالية',T_lvlLightDesc:'ضغط خفيف، أفضل جودة بصرية',T_lvlLightBadge:'~٣٠٪',
     T_lvlBalName:'متوازن',T_lvlBalDesc:'موصى به لمعظم الملفات',T_lvlBalBadge:'~٥٠٪',
     T_lvlMaxName:'أقصى ضغط',T_lvlMaxDesc:'أصغر حجم، جودة أقل',T_lvlMaxBadge:'~٧٠٪',
-    T_infoBox:'يستخدم استراتيجيتين للضغط: تحسين البنية + إعادة أخذ عينات الصور. دائماً يختار الأصغر.',
+    T_infoBox:'يعيد ضغط الصور مع الحفاظ على النص. فعّل "احتفظ بالنص" لإبقاء طبقة النص القابلة للتحديد دائماً.',
+    T_keepText:'احتفظ بالنص القابل للتحديد (حجم أكبر قليلاً)',
     T_privacyInfo:'كل المعالجة تتم محلياً في متصفحك. لا تُرفع أي ملفات إلى أي خادم.',
     T_compressBtn:'ضغط الملف',
     T_downloadBtn:'تحميل الملف المضغوط',
@@ -479,6 +488,8 @@ let uploadedFile = null;
 let currentLevel = 'balanced';
 const levelQuality = { light:0.72, balanced:0.45, max:0.22 };
 const levelScale   = { light:1.0,  balanced:0.75, max:0.55 };
+const imgMaxDim    = { light:1600, balanced:1100, max:800 };  // image-recompression: cap longest image side (px)
+const imgQuality   = { light:0.6,  balanced:0.5,  max:0.4  };  // image-recompression: JPEG quality
 
 // ══════════════════════════════════════════
 // BOOT
@@ -624,28 +635,68 @@ async function compressPDF() {
     setProgress(30, 'Compressing structure…');
     const strategy1 = await pdfDoc.save({ useObjectStreams:true, addDefaultPage:false });
 
-    // ── STRATEGY 2: rasterize pages ──
-    setProgress(50, 'Optimising images…');
-    const pdfJs = await pdfjsLib.getDocument({ data: origBytes.slice(0) }).promise;
-    const total = pdfJs.numPages;
-    const newPdf = await PDFLib.PDFDocument.create();
-
-    for(let i=1; i<=total; i++) {
-      setProgress(50 + Math.round((i/total)*40), `Page ${i} / ${total}…`);
-      const page = await pdfJs.getPage(i);
-      const vp0 = page.getViewport({ scale:1 });
-      const vp  = page.getViewport({ scale:renderScale });
-      const cv  = document.createElement('canvas');
-      cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
-      await page.render({ canvasContext:cv.getContext('2d'), viewport:vp }).promise;
-      const jpegBlob = await new Promise(res => cv.toBlob(res, 'image/jpeg', quality));
-      const jpegBuf  = await jpegBlob.arrayBuffer();
-      const img = await newPdf.embedJpg(jpegBuf);
-      const p   = newPdf.addPage([vp0.width, vp0.height]);
-      p.drawImage(img, { x:0, y:0, width:vp0.width, height:vp0.height });
+    // ── STRATEGY 2: image recompression — re-encode oversized JPEG images smaller, KEEP text/vectors ──
+    setProgress(45, 'Recompressing images…');
+    const N = s => PDFLib.PDFName.of(s);
+    const imgDoc = await PDFLib.PDFDocument.load(origBytes, { ignoreEncryption:true });
+    imgDoc.setTitle('');imgDoc.setAuthor('');imgDoc.setSubject('');imgDoc.setKeywords([]);imgDoc.setProducer('Doctor PDF');imgDoc.setCreator('Doctor PDF');
+    const maxDim = imgMaxDim[currentLevel], iq = imgQuality[currentLevel];
+    const objs = imgDoc.context.enumerateIndirectObjects();
+    for (let oi=0; oi<objs.length; oi++) {
+      if (oi % 3 === 0) setProgress(45 + Math.round((oi/objs.length)*20), 'Recompressing images…');
+      const ref = objs[oi][0], obj = objs[oi][1];
+      if (!(obj instanceof PDFLib.PDFRawStream)) continue;
+      const d = obj.dict; const st = d.get(N('Subtype')); if (!st || st.toString() !== '/Image') continue;
+      const F = d.get(N('Filter')); const fstr = F ? F.toString() : '';
+      if (!/DCTDecode/.test(fstr) || /Flate/.test(fstr)) continue;   /* phase 1: plain JPEG XObjects (FlateDecode/Indexed handled later) */
+      const raw = obj.contents;
+      let bm; try { bm = await createImageBitmap(new Blob([raw], { type:'image/jpeg' })); } catch(e){ continue; }
+      const longest = Math.max(bm.width, bm.height);
+      const sc = longest > maxDim ? maxDim/longest : 1;
+      const tW = Math.max(1, Math.round(bm.width*sc)), tH = Math.max(1, Math.round(bm.height*sc));
+      const cv = document.createElement('canvas'); cv.width=tW; cv.height=tH;
+      cv.getContext('2d').drawImage(bm, 0, 0, tW, tH);
+      if (bm.close) bm.close();
+      const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', iq));
+      const jpg = new Uint8Array(await blob.arrayBuffer());
+      if (jpg.length >= raw.length) continue;   /* never make an image bigger */
+      const nd = imgDoc.context.obj({ Type:'XObject', Subtype:'Image', Width:tW, Height:tH, ColorSpace:'DeviceRGB', BitsPerComponent:8, Filter:'DCTDecode', Length:jpg.length });
+      imgDoc.context.assign(ref, PDFLib.PDFRawStream.of(nd, jpg));
       await new Promise(r=>setTimeout(r,0));
     }
-    const strategy2 = await newPdf.save({ useObjectStreams:true });
+    const strategy2 = await imgDoc.save({ useObjectStreams:true });
+
+    // ── STRATEGY 3: full rasterise (maximum size; drops the selectable text) — skipped when "keep text" is on ──
+    let strategy3 = null;
+    const keepTextEl = document.getElementById('keepText');
+    const keepText = keepTextEl ? keepTextEl.checked : false;
+    if (!keepText) {
+      setProgress(66, 'Optimising pages…');
+      const pdfJs = await pdfjsLib.getDocument({ data: origBytes.slice(0) }).promise;
+      const total = pdfJs.numPages;
+      const rPdf = await PDFLib.PDFDocument.create();
+      for(let i=1; i<=total; i++) {
+        setProgress(66 + Math.round((i/total)*28), `Page ${i} / ${total}…`);
+        const page = await pdfJs.getPage(i);
+        const vp0 = page.getViewport({ scale:1 });
+        const vp  = page.getViewport({ scale:renderScale });
+        const cv  = document.createElement('canvas');
+        cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+        const cx = cv.getContext('2d');
+        await page.render({ canvasContext:cx, viewport:vp }).promise;
+        // grayscale optimisation for (near-)monochrome scans
+        try {
+          const id = cx.getImageData(0,0,cv.width,cv.height); const dd=id.data; let colorful=0;
+          for(let q=0;q<dd.length;q+=4000){ if(Math.abs(dd[q]-dd[q+1])>18 || Math.abs(dd[q+1]-dd[q+2])>18) colorful++; }
+          if(colorful < 8){ for(let q=0;q<dd.length;q+=4){ const g=(dd[q]*0.299+dd[q+1]*0.587+dd[q+2]*0.114)|0; dd[q]=dd[q+1]=dd[q+2]=g; } cx.putImageData(id,0,0); }
+        } catch(e){}
+        const jpegBlob = await new Promise(res => cv.toBlob(res, 'image/jpeg', quality));
+        const img = await rPdf.embedJpg(await jpegBlob.arrayBuffer());
+        rPdf.addPage([vp0.width, vp0.height]).drawImage(img, { x:0, y:0, width:vp0.width, height:vp0.height });
+        await new Promise(r=>setTimeout(r,0));
+      }
+      strategy3 = await rPdf.save({ useObjectStreams:true });
+    }
 
     setProgress(95, 'Choosing best result…');
 
@@ -654,7 +705,9 @@ async function compressPDF() {
       { data:strategy1, size:strategy1.length },
       { data:strategy2, size:strategy2.length },
       { data:new Uint8Array(origBytes), size:origSize }
-    ].sort((a,b)=>a.size-b.size);
+    ];
+    if (strategy3) candidates.push({ data:strategy3, size:strategy3.length });
+    candidates.sort((a,b)=>a.size-b.size);
 
     const winner = candidates[0];
     const saved  = Math.max(0, Math.round((1 - winner.size/origSize)*100));
