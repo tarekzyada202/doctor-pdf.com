@@ -243,6 +243,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
       <a href="pdf-to-word.html"><span id="T_pdf2word">PDF to Word</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">Edit PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -787,7 +788,7 @@ async function doRotate() {
 
   try {
     setProgress(15,'Loading…');
-    const srcDoc=await PDFLib.PDFDocument.load(pdfBytes);
+    const srcDoc=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
     const pdfPages=srcDoc.getPages();
     setProgress(50,'Applying rotations…');
 

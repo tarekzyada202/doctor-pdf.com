@@ -314,6 +314,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
       <a href="pdf-to-word.html"><span id="T_pdf2word">PDF إلى Word</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">تعديل PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -1425,7 +1426,7 @@ async function doApply() {
 
   try {
     var pdfBytes = await S.pdfFile.arrayBuffer();
-    var doc      = await PDFLib.PDFDocument.load(pdfBytes);
+    var doc      = await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
     var pages    = doc.getPages();
 
     for (var pi = 0; pi < S.pages.length; pi++) {

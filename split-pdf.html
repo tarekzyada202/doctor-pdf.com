@@ -289,6 +289,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
       <a href="pdf-to-word.html"><span id="T_pdf2word">PDF to Word</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">Edit PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -729,7 +730,7 @@ function deleteSelected() {
 async function extractSelected() {
   if(!S.pdfBytes||!S.selected.size) return;
   const pages = Array.from(S.selected).sort((a,b)=>a-b);
-  const src = await PDFLib.PDFDocument.load(S.pdfBytes);
+  const src = await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
   const doc = await PDFLib.PDFDocument.create();
   for(const pi of pages) {
     const [pg] = await doc.copyPages(src,[pi]);
@@ -865,7 +866,7 @@ function toggleDelete(i) {
 
 async function extractSinglePage(i) {
   if(!S.pdfBytes) return;
-  const src=await PDFLib.PDFDocument.load(S.pdfBytes);
+  const src=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
   const doc=await PDFLib.PDFDocument.create();
   const [pg]=await doc.copyPages(src,[i]); doc.addPage(pg);
   const out=await doc.save();
@@ -907,7 +908,7 @@ async function doSplit() {
 
   try {
     const baseName=S.file.name.replace(/\.pdf$/i,'');
-    const srcDoc=await PDFLib.PDFDocument.load(S.pdfBytes);
+    const srcDoc=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
 
     // ── FIX: إذا في صفحات محددة → استخرجها فقط ──
     if(S.selected.size > 0) {

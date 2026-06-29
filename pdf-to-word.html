@@ -221,6 +221,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="protect-pdf.html"><span id="T_protect">Protect PDF</span></a>
       <a href="extract-text.html"><span id="T_extract">Extract Text</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">Edit PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -954,7 +955,7 @@ async function extractImages(ol, page, vp){
     else if (fn===OPS.transform) ctm = mul(ctm, a);
     else if (fn===OPS.paintImageXObject || fn===OPS.paintJpegXObject){
       try{
-        const o = await getObj(a[0]); if(!o || !o.bitmap) continue;
+        const o = getObj(a[0]); if(!o || !o.bitmap) continue;
         const pw = Math.hypot(ctm[0],ctm[1]), ph = Math.hypot(ctm[2],ctm[3]);
         if (pw < 24 || ph < 24) continue;                 /* skip tiny icons/spacers/rules */
         const top = ctm[5] + ph;                          /* pdf-space top (bottom-up) */

@@ -211,6 +211,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="remove-background.html"><span id="T_removebg">إزالة الخلفية</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
       <a href="pdf-to-word.html"><span id="T_pdf2word">PDF إلى Word</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">تعديل PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -558,7 +559,7 @@ async function doMerge(){
     for(var j=0;j<S.pages.length;j++){
       setProgress(45+Math.round(j/S.pages.length*48),tr('T_pAdd')+' '+(j+1));
       var pg=S.pages[j];
-      var srcDoc=await PDFLib.PDFDocument.load(fileBytes[pg.fi]);
+      var srcDoc=await PDFLib.PDFDocument.load(fileBytes[pg.fi],{ignoreEncryption:true});
       var copied=await merged.copyPages(srcDoc,[pg.pi]);
       var copiedPage=copied[0];
       if(pg.rot){

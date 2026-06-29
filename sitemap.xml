@@ -181,6 +181,16 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://doctor-pdf.com/edit-pdf.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/edit-pdf.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/edit-pdf.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/edit-pdf.html"/>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- ═══════════════════════════════════════════ -->
   <!-- ARABIC LANDING PAGES — HIGH VOLUME KEYWORDS  -->
   <!-- ═══════════════════════════════════════════ -->
@@ -346,6 +356,17 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/pdf-to-word.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/pdf-to-word.html"/>
     <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Edit PDF — تعديل PDF -->
+  <url>
+    <loc>https://doctor-pdf.com/ar/edit-pdf.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/edit-pdf.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/edit-pdf.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/edit-pdf.html"/>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

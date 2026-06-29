@@ -309,6 +309,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <a href="remove-background.html"><span id="T_removebg">Remove BG</span></a>
       <a href="ocr.html"><span id="T_ocr">OCR</span></a>
       <a href="pdf-to-word.html"><span id="T_pdf2word">PDF to Word</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">Edit PDF</span></a>
     </div>
   </div>
   <div class="nav-sep"></div>
@@ -728,7 +729,7 @@ async function doSave(){
   document.getElementById('progressWrap').style.display='block';
   try{
     setProgress(10,'Loading…');
-    const pdf=await PDFLib.PDFDocument.load(pdfBytes);const pages=pdf.getPages();
+    const pdf=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});const pages=pdf.getPages();
     for(let pi=0;pi<pdfPages.length;pi++){
       for(const sig of pdfPages[pi].sigs){
         const b64=sig.dataUrl.split(',')[1];const bin=atob(b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
