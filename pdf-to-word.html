@@ -354,7 +354,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 
 <script>
 // ══════════════════════════════════════════
@@ -431,6 +431,7 @@ const LANGS = {
 // STATE
 // ══════════════════════════════════════════
 const DOCX_CDN = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
+const DOCX_SRI = 'sha384-4xaIisuLEy2lo2HkB2C4rEf7v8jbTb2kuogX6TkuEt9feTWKBSFSOzsqNNbV+sKh';
 let currentLang = localStorage.getItem('dpdf_lang') || 'en';
 let pagesLines = [];   // [pageIdx] -> [{runs:[{str,bold,ital,fs}], y, fs}]
 let pagesHLines = [];  // [pageIdx] -> [{y,x0,x1}] full-width separator lines
@@ -1339,6 +1340,8 @@ function loadDocxLib() {
     if (window.docx) return resolve(window.docx);
     const s = document.createElement('script');
     s.src = DOCX_CDN;
+    s.integrity = DOCX_SRI;
+    s.crossOrigin = 'anonymous';
     s.onload = () => window.docx ? resolve(window.docx) : reject(new Error('docx global missing'));
     s.onerror = () => reject(new Error('docx load failed'));
     document.body.appendChild(s);

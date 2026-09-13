@@ -40,7 +40,7 @@
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
 <style>
 :root{
   --bg:#fff;--bg2:#f8f8f8;--bg3:#f1f1f1;
@@ -343,6 +343,7 @@ function togglePwd(id){
 /* qpdf compiled to WASM — gives real AES-256 PDF encryption fully in-browser.
    pdf-lib cannot encrypt, so we lazy-load qpdf only when the user protects a file. */
 var QPDF_JS='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.js';
+var QPDF_JS_SRI='sha384-viHHfnvZlwDzjAQCrTUX3UR1zDr3OW9ItyLOqwH2wTHYHXWK8NdKi5LFp++BT8NL';
 var QPDF_WASM='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm';
 var _qpdfScript=null;
 function loadQpdfScript(){
@@ -350,7 +351,7 @@ function loadQpdfScript(){
   _qpdfScript=new Promise(function(resolve,reject){
     if(typeof Module==='function'){resolve();return;}
     var s=document.createElement('script');
-    s.src=QPDF_JS;
+    s.src=QPDF_JS;s.integrity=QPDF_JS_SRI;s.crossOrigin='anonymous';
     s.onload=function(){typeof Module==='function'?resolve():reject(new Error('qpdf engine unavailable'));};
     s.onerror=function(){_qpdfScript=null;reject(new Error('Could not load the encryption engine. Check your connection.'));};
     document.head.appendChild(s);
