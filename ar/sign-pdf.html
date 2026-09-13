@@ -646,7 +646,7 @@ async function loadPDF(f){
   if(!f||(f.type!=='application/pdf'&&!f.name.endsWith('.pdf'))){showToast('Invalid PDF','error');return;}
   pdfFile=f;pdfPages=[];if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
   pdfBytes=await f.arrayBuffer();
-  pdfJsDoc=await pdfjsLib.getDocument({data:pdfBytes.slice(0)}).promise;
+  pdfJsDoc=await pdfjsLib.getDocument({isEvalSupported:false, data:pdfBytes.slice(0)}).promise;
   for(let i=0;i<pdfJsDoc.numPages;i++){const pg=await pdfJsDoc.getPage(i+1);const vp=pg.getViewport({scale:1});pdfPages.push({pdfPage:pg,nativeW:vp.width,nativeH:vp.height,canvas:null,sigs:[]});}
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('viewerArea').style.display='flex';document.getElementById('thumbSidebar').classList.add('open');

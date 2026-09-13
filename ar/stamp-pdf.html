@@ -713,7 +713,7 @@ async function loadPDF(file) {
   document.getElementById('pagesArea').innerHTML = '';
   try {
     var bytes = await file.arrayBuffer();
-    S.pdfDoc  = await pdfjsLib.getDocument({ data: bytes }).promise;
+    S.pdfDoc  = await pdfjsLib.getDocument({isEvalSupported:false,  data: bytes }).promise;
     for (var i = 0; i < S.pdfDoc.numPages; i++) {
       var pg  = await S.pdfDoc.getPage(i + 1);
       var vp0 = pg.getViewport({ scale: 1 });

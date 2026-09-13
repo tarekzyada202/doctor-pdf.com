@@ -755,7 +755,7 @@ async function loadPDF(f) {
   S.file=f; S.deleted=new Set(); S.splits=new Set(); S.selected=new Set();
   if(S.pdfJsDoc){ try{S.pdfJsDoc.destroy();}catch(e){} }
   S.pdfBytes = await f.arrayBuffer();
-  S.pdfJsDoc = await pdfjsLib.getDocument({data:S.pdfBytes.slice(0)}).promise;
+  S.pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false, data:S.pdfBytes.slice(0)}).promise;
   S.pageCount = S.pdfJsDoc.numPages;
 
   document.getElementById('dropzone').classList.add('hidden');

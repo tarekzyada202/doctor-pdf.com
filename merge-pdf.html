@@ -358,7 +358,7 @@ async function loadFiles(files){
     S.files.push(f);
     try{
       var bytes=await f.arrayBuffer();
-      var doc=await pdfjsLib.getDocument({data:bytes}).promise;
+      var doc=await pdfjsLib.getDocument({isEvalSupported:false, data:bytes}).promise;
       for(var p=0;p<doc.numPages;p++){
         var page=await doc.getPage(p+1);
         var vp0=page.getViewport({scale:1});

@@ -601,7 +601,7 @@ async function loadPDF(file) {
 
   try {
     const arrayBuffer = await file.arrayBuffer();
-    pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    pdfDoc = await pdfjsLib.getDocument({isEvalSupported:false,  data: arrayBuffer }).promise;
     totalPages = pdfDoc.numPages;
 
     document.getElementById('pagesTotalBadge').textContent = totalPages;

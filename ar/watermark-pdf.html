@@ -504,7 +504,7 @@ async function loadPDF(f) {
   if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
   try {
     pdfBytes = await f.arrayBuffer();
-    pdfJsDoc = await pdfjsLib.getDocument({data: pdfBytes.slice(0)}).promise;
+    pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false, data: pdfBytes.slice(0)}).promise;
   } catch(err){ console.error(err); toast(lang==='ar'?'تعذّر فتح الملف':'Could not open file','error'); return; }
   numPages = pdfJsDoc.numPages;
   curPage = 1;

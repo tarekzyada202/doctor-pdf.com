@@ -673,7 +673,7 @@ async function compressPDF() {
     const keepText = keepTextEl ? keepTextEl.checked : false;
     if (!keepText) {
       setProgress(66, 'Optimising pages…');
-      const pdfJs = await pdfjsLib.getDocument({ data: origBytes.slice(0) }).promise;
+      const pdfJs = await pdfjsLib.getDocument({isEvalSupported:false,  data: origBytes.slice(0) }).promise;
       const total = pdfJs.numPages;
       const rPdf = await PDFLib.PDFDocument.create();
       for(let i=1; i<=total; i++) {

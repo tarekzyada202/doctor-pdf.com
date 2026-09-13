@@ -676,7 +676,7 @@ async function loadPDF(f) {
   if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
 
   pdfBytes = await f.arrayBuffer();
-  pdfJsDoc = await pdfjsLib.getDocument({data: pdfBytes.slice(0)}).promise;
+  pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false, data: pdfBytes.slice(0)}).promise;
 
   /* store page natural dimensions only — canvas rendered on demand at correct zoom */
   for(let i=0;i<pdfJsDoc.numPages;i++){

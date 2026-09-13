@@ -521,7 +521,7 @@ async function loadPDF(file){
   if(!file||file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){showToast(tr('T_dzMain'),'error');return;}
   pdfFile=file; selected=null;
   pdfBytes=new Uint8Array(await file.arrayBuffer());
-  try{pdfJsDoc=await pdfjsLib.getDocument({data:pdfBytes.slice(0)}).promise;}catch(e){showToast('Invalid PDF','error');return;}
+  try{pdfJsDoc=await pdfjsLib.getDocument({isEvalSupported:false, data:pdfBytes.slice(0)}).promise;}catch(e){showToast('Invalid PDF','error');return;}
   pages=[];
   for(let i=0;i<pdfJsDoc.numPages;i++){
     const pg=await pdfJsDoc.getPage(i+1);

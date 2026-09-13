@@ -544,7 +544,7 @@ async function loadPDF(file) {
   let pdfJsDoc = null;
   try {
     const buf = await file.arrayBuffer();
-    pdfJsDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+    pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false,  data: buf }).promise;
     const numPages = pdfJsDoc.numPages;
     document.getElementById('fileName').textContent = file.name;
 

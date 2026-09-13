@@ -662,7 +662,7 @@ async function handleFiles(files) {
 
 async function renderPdfToSources(file) {
   const buf = await file.arrayBuffer();
-  const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+  const doc = await pdfjsLib.getDocument({isEvalSupported:false,  data: buf }).promise;
   const n = doc.numPages;
   for (let i = 1; i <= n; i++) {
     showBar(Math.round((i-1)/n*15), `${tr('T_rendering')} ${i} / ${n}`);
