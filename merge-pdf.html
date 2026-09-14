@@ -540,6 +540,79 @@ function rotatePage(idx, delta){
   }
 }
 
+/* ── FORM FIELDS ──
+   copyPages keeps the field widgets but not the document's AcroForm, and copies of the same form share
+   identical field names. Viewers treat same-named fields as ONE field, so every copy showed the first
+   copy's data. Fix: rename clashing top-level fields per file (name_2, name_3 …) before copying, then
+   rebuild a single AcroForm (Fields + DA + DR fonts) so every page keeps its own data and stays fillable. */
+function prepareFormFields(srcDoc,merged,form){
+  var N=PDFLib.PDFName.of;
+  var acro=srcDoc.catalog.lookup(N('AcroForm'));
+  if(!(acro instanceof PDFLib.PDFDict))return;
+  var fields=acro.lookup(N('Fields'));
+  if(fields instanceof PDFLib.PDFArray){
+    var own={};
+    for(var i=0;i<fields.size();i++){
+      var f=fields.lookup(i);
+      if(!(f instanceof PDFLib.PDFDict))continue;
+      var t=f.lookup(N('T'));
+      if(!t||!t.decodeText)continue;
+      var name=t.decodeText(), nn=name;
+      if(form.usedNames[nn]&&!own[nn]){var k=2;while(form.usedNames[name+'_'+k])k++;nn=name+'_'+k;f.set(N('T'),PDFLib.PDFHexString.fromText(nn));}
+      own[nn]=true;
+    }
+    Object.keys(own).forEach(function(n){form.usedNames[n]=true;});
+  }
+  var na=acro.lookup(N('NeedAppearances'));
+  if(na&&String(na)==='true')form.needApp=true;
+  var da=acro.lookup(N('DA'));
+  if(!form.da&&da)form.da=da.decodeText?da.decodeText():String(da);
+  var dr=acro.lookup(N('DR'));
+  var fonts=dr instanceof PDFLib.PDFDict?dr.lookup(N('Font')):null;
+  if(fonts instanceof PDFLib.PDFDict){
+    var copier=PDFLib.PDFObjectCopier.for(srcDoc.context,merged.context);
+    fonts.keys().forEach(function(key){
+      var ks=String(key);
+      if(!form.fonts[ks])form.fonts[ks]={key:key,val:copier.copy(fonts.get(key))};
+    });
+  }
+}
+function buildMergedAcroForm(merged,form){
+  var N=PDFLib.PDFName.of, ctx=merged.context;
+  var roots=[], seen={};
+  merged.getPages().forEach(function(page){
+    var annots=page.node.lookup(N('Annots'));
+    if(!(annots instanceof PDFLib.PDFArray))return;
+    for(var i=0;i<annots.size();i++){
+      var ref=annots.get(i), a=annots.lookup(i);
+      if(!(a instanceof PDFLib.PDFDict)||String(a.get(N('Subtype')))!=='/Widget')continue;
+      /* widgets whose value has no drawn appearance need the viewer to draw it */
+      if(a.get(N('V'))||(a.lookup(N('Parent'))instanceof PDFLib.PDFDict&&a.lookup(N('Parent')).get(N('V')))){
+        var ap=a.lookup(N('AP')), apn=ap instanceof PDFLib.PDFDict?ap.lookup(N('N')):null;
+        if(!apn||(apn instanceof PDFLib.PDFStream&&apn.getContentsSize&&apn.getContentsSize()===0))form.needApp=true;
+      }
+      /* climb to the top-level field */
+      var cur=a, curRef=ref, guard=0;
+      while(cur.get(N('Parent'))&&guard++<32){curRef=cur.get(N('Parent'));cur=ctx.lookup(curRef);if(!(cur instanceof PDFLib.PDFDict))break;}
+      if(!(cur instanceof PDFLib.PDFDict)||!(curRef instanceof PDFLib.PDFRef))continue;
+      if(!cur.get(N('T'))&&!cur.get(N('FT')))continue;
+      var key=curRef.toString();
+      if(!seen[key]){seen[key]=true;roots.push(curRef);}
+    }
+  });
+  if(!roots.length)return;
+  var acro=ctx.obj({Fields:roots});
+  if(form.da)acro.set(N('DA'),PDFLib.PDFString.of(form.da));
+  var fontKeys=Object.keys(form.fonts);
+  if(fontKeys.length){
+    var fd=ctx.obj({});
+    fontKeys.forEach(function(k){fd.set(form.fonts[k].key,form.fonts[k].val);});
+    acro.set(N('DR'),ctx.obj({Font:fd}));
+  }
+  if(form.needApp)acro.set(N('NeedAppearances'),PDFLib.PDFBool.True);
+  merged.catalog.set(N('AcroForm'),ctx.register(acro));
+}
+
 /* ── MERGE ── */
 async function doMerge(){
   if(S.pages.length<2)return;
@@ -549,25 +622,32 @@ async function doMerge(){
   try{
     setProgress(5,tr('T_pCreate'));
     var merged=await PDFLib.PDFDocument.create();
-    var fileBytes={};
+    var form={usedNames:{},needApp:false,da:null,fonts:{}};
+    var copiedByFi={};
     var uniqueFis=[...new Set(S.pages.map(function(p){return p.fi;}))];
+    /* each source file is loaded ONCE and all its pages are copied in ONE call
+       (shared fonts/images/form fields are copied once, not per page) */
     for(var i=0;i<uniqueFis.length;i++){
       var fi=uniqueFis[i];
-      setProgress(5+Math.round(i/uniqueFis.length*40),tr('T_pLoad')+' '+S.files[fi].name);
-      fileBytes[fi]=await S.files[fi].arrayBuffer();
+      setProgress(5+Math.round(i/uniqueFis.length*45),tr('T_pLoad')+' '+S.files[fi].name);
+      var srcDoc=await PDFLib.PDFDocument.load(await S.files[fi].arrayBuffer(),{ignoreEncryption:true});
+      prepareFormFields(srcDoc,merged,form);
+      var idxs=[...new Set(S.pages.filter(function(p){return p.fi===fi;}).map(function(p){return p.pi;}))];
+      var copied=await merged.copyPages(srcDoc,idxs);
+      copiedByFi[fi]={};
+      idxs.forEach(function(pi,k){copiedByFi[fi][pi]=copied[k];});
     }
     for(var j=0;j<S.pages.length;j++){
-      setProgress(45+Math.round(j/S.pages.length*48),tr('T_pAdd')+' '+(j+1));
+      setProgress(50+Math.round(j/S.pages.length*43),tr('T_pAdd')+' '+(j+1));
       var pg=S.pages[j];
-      var srcDoc=await PDFLib.PDFDocument.load(fileBytes[pg.fi],{ignoreEncryption:true});
-      var copied=await merged.copyPages(srcDoc,[pg.pi]);
-      var copiedPage=copied[0];
+      var copiedPage=copiedByFi[pg.fi][pg.pi];
       if(pg.rot){
         var curRot=copiedPage.getRotation().angle||0;
         copiedPage.setRotation(PDFLib.degrees((curRot+pg.rot)%360));
       }
       merged.addPage(copiedPage);
     }
+    buildMergedAcroForm(merged,form);
     setProgress(95,tr('T_pSave'));
     var out=await merged.save();
     var url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
