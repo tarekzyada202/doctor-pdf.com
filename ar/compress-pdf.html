@@ -493,6 +493,7 @@ const levelQuality = { light:0.72, balanced:0.45, max:0.22 };
 const levelScale   = { light:1.0,  balanced:0.75, max:0.55 };
 const imgMaxDim    = { light:1600, balanced:1100, max:800 };  // image-recompression: cap longest image side (px)
 const imgQuality   = { light:0.6,  balanced:0.5,  max:0.4  };  // image-recompression: JPEG quality
+const qpdfJpegQ    = { light:75,   balanced:60,   max:45   };  // qpdf --optimize-images JPEG quality (non-JPEG images)
 
 // ══════════════════════════════════════════
 // BOOT
@@ -607,6 +608,41 @@ function formatSize(b) {
 }
 
 // ══════════════════════════════════════════
+// QPDF ENGINE (lazy) — recompresses Flate/Indexed images to JPEG + object streams, keeps text.
+// Same engine/CDN as protect & unlock. No pdf.js decoding involved, so it cannot hang on odd images.
+// ══════════════════════════════════════════
+var QPDF_JS='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.js';
+var QPDF_JS_SRI='sha384-viHHfnvZlwDzjAQCrTUX3UR1zDr3OW9ItyLOqwH2wTHYHXWK8NdKi5LFp++BT8NL';
+var QPDF_WASM='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm';
+var _qpdfScript=null;
+function loadQpdfScript(){
+  if(_qpdfScript)return _qpdfScript;
+  _qpdfScript=new Promise(function(resolve,reject){
+    if(typeof Module==='function'){resolve();return;}
+    var s=document.createElement('script');
+    s.src=QPDF_JS;s.integrity=QPDF_JS_SRI;s.crossOrigin='anonymous';
+    s.onload=function(){typeof Module==='function'?resolve():reject(new Error('qpdf engine unavailable'));};
+    s.onerror=function(){_qpdfScript=null;reject(new Error('qpdf engine unavailable'));};
+    document.head.appendChild(s);
+  });
+  return _qpdfScript;
+}
+/* fresh module instance per run — re-running main() in one Emscripten instance is unsafe */
+async function qpdfOptimize(bytes, jpegQ) {
+  await loadQpdfScript();
+  const q = await Module({ locateFile:function(){ return QPDF_WASM; }, print:function(){}, printErr:function(){} });
+  q.FS.writeFile('/in.pdf', bytes);
+  let rc;
+  try { rc = q.callMain(['--object-streams=generate','--compress-streams=y','--recompress-flate','--compression-level=9',
+                         '--optimize-images','--jpeg-quality='+jpegQ,'/in.pdf','/out.pdf']); }
+  catch(e) { rc = (e && typeof e.status === 'number') ? e.status : 2; }
+  if (rc !== 0 && rc !== 3) return null;             /* 3 = succeeded with warnings */
+  let out = null;
+  try { out = q.FS.readFile('/out.pdf'); } catch(e) {}
+  return (out && out.length) ? out : null;
+}
+
+// ══════════════════════════════════════════
 // COMPRESS — dual strategy
 // ══════════════════════════════════════════
 async function compressPDF() {
@@ -669,6 +705,20 @@ async function compressPDF() {
     }
     const strategy2 = await imgDoc.save({ useObjectStreams:true });
 
+    // ── STRATEGY 4: qpdf on top of strategy 2 — also recompresses non-JPEG (Flate/Indexed) images, KEEPS text ──
+    let strategy4 = null;
+    try {
+      setProgress(62, 'Optimising images…');
+      const pageCount = imgDoc.getPageCount();
+      let q4 = await qpdfOptimize(strategy2, qpdfJpegQ[currentLevel]);
+      if (!q4) q4 = await qpdfOptimize(new Uint8Array(origBytes), qpdfJpegQ[currentLevel]);
+      if (q4) {
+        /* sanity check: output must load and keep every page, otherwise ignore it */
+        const chk = await PDFLib.PDFDocument.load(q4, { ignoreEncryption:true });
+        if (chk.getPageCount() === pageCount) strategy4 = q4;
+      }
+    } catch(e) { strategy4 = null; }   /* engine unavailable / odd file → fall back to the other strategies */
+
     // ── STRATEGY 3: full rasterise (maximum size; drops the selectable text) — skipped when "keep text" is on ──
     let strategy3 = null;
     const keepTextEl = document.getElementById('keepText');
@@ -710,6 +760,7 @@ async function compressPDF() {
       { data:new Uint8Array(origBytes), size:origSize }
     ];
     if (strategy3) candidates.push({ data:strategy3, size:strategy3.length });
+    if (strategy4) candidates.push({ data:strategy4, size:strategy4.length });
     candidates.sort((a,b)=>a.size-b.size);
 
     const winner = candidates[0];
