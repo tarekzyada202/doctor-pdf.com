@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<!-- dpdf-logo-v1 -->
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:image" content="https://doctor-pdf.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Doctor PDF">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://doctor-pdf.com/og-image.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحويل PDF إلى Excel أونلاين مجاناً – جداول PDF إلى XLSX | Doctor PDF</title>
+<meta name="description" content="حوّل جداول PDF إلى ملف Excel (XLSX) مجاناً. أرقام حقيقية، أوراق عربية من اليمين لليسار، ودمج الجداول الممتدة على عدة صفحات. 100% داخل المتصفح بدون رفع.">
+<meta name="keywords" content="تحويل pdf الى excel, تحويل pdf إلى اكسل, pdf الى اكسيل, تحويل جدول pdf الى excel, pdf to excel">
+<link rel="canonical" href="https://doctor-pdf.com/ar/pdf-to-excel.html">
+<link rel="alternate" hreflang="en" href="https://doctor-pdf.com/pdf-to-excel.html">
+<link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/pdf-to-excel.html">
+<link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/pdf-to-excel.html">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:locale:alternate" content="en_US">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script>/* dpdf_lang_redirect */
+(function(){try{
+  if(location.pathname==='/ar'||location.pathname.slice(0,4)==='/ar/')return;        /* already on an Arabic URL */
+  var pref=localStorage.getItem('dpdf_lang');
+  var goAr;
+  if(pref==='ar')goAr=true;
+  else if(pref==='en')goAr=false;
+  else{var ls=navigator.languages||[navigator.language||''];goAr=ls.some(function(l){return (l||'').slice(0,2).toLowerCase()==='ar';});}
+  if(!goAr)return;
+  var p=location.pathname;
+  var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
+  location.replace(target+location.search+location.hash);
+}catch(e){}})();
+</script>
+<script>
+(function(){
+  var d=localStorage.getItem('dpdf_dark');
+  if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
+  var l=localStorage.getItem('dpdf_lang')||'ar';
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+})();
+</script>
+<style>
+:root{
+  --bg:#ffffff;--bg2:#f8f8f8;--bg3:#f1f1f1;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:#e0e0e0;--border2:#d0d0d0;
+  --primary:#6366f1;--primary-h:#4f46e5;--primary-light:#eef2ff;
+  --secondary:#8b5cf6;
+  --danger:#ef4444;--danger-light:#fef2f2;
+  --success:#22c55e;--success-light:#f0fdf4;
+  --warn:#f59e0b;--warn-light:#fffbeb;
+  --radius:10px;--radius-sm:6px;--radius-lg:14px;
+  --panel:360px;
+  --font-en:'Inter',sans-serif;--font-ar:'Cairo',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#18181b;--bg2:#1f1f23;--bg3:#27272a;
+  --text:#fafafa;--text2:#a1a1aa;--text3:#71717a;
+  --border:#3f3f46;--border2:#52525b;
+  --primary-light:#312e81;
+  --danger-light:#2d1010;--success-light:#052e16;--warn-light:#1c1500;
+}
+html[lang="ar"] *{font-family:var(--font-ar)}
+html[lang="en"] *{font-family:var(--font-en)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg2);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+.nav{height:56px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:17px;color:var(--primary)}
+.nav-logo svg{width:28px;height:28px}
+.nav-sep{flex:1}
+.nav-btn{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.nav-btn:hover{background:var(--bg3);border-color:var(--border2);color:var(--text)}
+.nav-privacy{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--success-light);border:1px solid var(--success);border-radius:20px;font-size:11px;font-weight:600;color:var(--success);white-space:nowrap;cursor:default}
+.nav-privacy svg{width:12px;height:12px;flex-shrink:0}
+@media(max-width:700px){.nav-privacy span{display:none}}
+.tools-dropdown{position:relative}
+.tools-menu{position:absolute;top:calc(100%+6px);left:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px;min-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;z-index:999}
+[dir="rtl"] .tools-menu{left:auto;right:0}
+.tools-menu.open{display:block}
+.tools-menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--text);text-decoration:none;font-size:13px;transition:background .1s}
+.tools-menu a:hover{background:var(--bg3)}
+
+/* WORKSPACE */
+.workspace{height:calc(100vh - 56px);display:flex;overflow:hidden}
+.seo-content{max-width:820px;margin:0 auto;width:100%;padding:52px 24px 72px;box-sizing:border-box}
+.seo-content h2{font-size:1.55em;font-weight:800;margin:0 0 22px;color:var(--text)}
+.seo-content .seo-about h2{margin-top:8px}
+.seo-content .seo-about h2:not(:first-child){margin-top:40px}
+.seo-about p{line-height:1.85;color:var(--text2);margin:0 0 16px;font-size:1.02em}
+.seo-list{margin:0 0 14px;padding-inline-start:22px;color:var(--text2);line-height:1.9}
+.seo-list li{margin-bottom:9px}
+.priv-cta{display:block;margin:6px 0 30px;padding:13px 18px;background:var(--success-light);border:1px solid var(--success);border-radius:10px;color:var(--success);font-weight:700;text-decoration:none;text-align:center;line-height:1.6}
+html[lang="ar"] .priv-cta .en{display:none}
+html[lang="en"] .priv-cta .ar{display:none}
+.seo-steps{list-style:none;padding:0;margin:0 0 44px;counter-reset:step}
+.seo-steps li{position:relative;padding-inline-start:46px;margin-bottom:16px;line-height:1.7;color:var(--text2)}
+.seo-steps li::before{counter-increment:step;content:counter(step);position:absolute;inset-inline-start:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9em}
+.faq-item{border-top:1px solid var(--border);padding:18px 0}
+.faq-item:last-child{border-bottom:1px solid var(--border)}
+.faq-item h3{font-size:1.05em;font-weight:700;margin:0 0 8px;color:var(--text)}
+.faq-item p{margin:0;color:var(--text2);line-height:1.75}
+.why{background:var(--primary-light);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;margin-bottom:46px}
+.why h2{margin-top:0;margin-bottom:10px}
+.why-lead{color:var(--text2);margin:0 0 20px;line-height:1.7}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.why-item{display:flex;align-items:flex-start;gap:10px;color:var(--text);line-height:1.5;font-weight:600;font-size:.95em}
+.why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
+@media(max-width:560px){.why-grid{grid-template-columns:1fr}}
+
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.panel{width:var(--panel);background:var(--bg);border-inline-start:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+
+/* DROP ZONE */
+.dropzone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;padding:40px}
+.dropzone.hidden{display:none}
+.drop-icon{width:72px;height:72px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center}
+.drop-icon svg{width:36px;height:36px;color:var(--primary)}
+.drop-title{font-size:20px;font-weight:600;color:var(--text);text-align:center}
+.drop-sub{font-size:14px;color:var(--text2);text-align:center;max-width:360px;line-height:1.6}
+.browse-btn{height:40px;padding:0 24px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.browse-btn:hover{background:var(--primary-h)}
+
+/* CONVERT PROGRESS */
+.convert-bar{display:none;padding:12px 20px;background:var(--primary-light);border-bottom:1px solid var(--border);align-items:center;gap:12px}
+.convert-bar.show{display:flex}
+.cv-bar-fill-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.cv-bar-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .2s}
+.cv-bar-txt{font-size:12px;color:var(--primary);font-weight:500;white-space:nowrap}
+
+/* PREVIEW */
+.preview-area{flex:1;display:none;flex-direction:column;overflow:hidden}
+.prev-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px;flex-wrap:wrap}
+.prev-header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.prev-title{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+.prev-stats{font-size:12px;color:var(--text3);white-space:nowrap}
+.change-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.change-btn:hover{background:var(--bg3);color:var(--text)}
+.prev-scroll{flex:1;overflow-y:auto;padding:24px;background:var(--bg2)}
+.doc-prev{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:36px 44px;max-width:760px;margin:0 auto;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.doc-prev .dp-h1{font-size:1.5em;font-weight:700;margin:18px 0 10px;color:var(--text);line-height:1.4}
+.doc-prev .dp-h2{font-size:1.2em;font-weight:700;margin:16px 0 8px;color:var(--text);line-height:1.4}
+.doc-prev .dp-p{font-size:.95em;line-height:1.85;color:var(--text);margin:0 0 12px;word-break:break-word}
+.doc-prev .dp-pgbrk{border-top:2px dashed var(--border2);margin:26px 0;position:relative}
+.doc-prev .dp-pgbrk span{position:absolute;top:-10px;inset-inline-start:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:10px;color:var(--text3);letter-spacing:.05em}
+[dir="rtl"] .doc-prev .dp-pgbrk span{transform:translateX(50%)}
+.doc-prev [dir="rtl"]{text-align:right}
+.dp-table{border-collapse:collapse;width:100%;margin:6px 0 18px;font-size:.9em}
+.dp-table th,.dp-table td{border:1px solid var(--border2);padding:5px 9px;vertical-align:top;line-height:1.5;color:var(--text)}
+.dp-table th{background:var(--bg3);font-weight:700;text-align:start}
+.dp-table td{text-align:start}
+
+/* SHEET PREVIEW */
+.sheet-tabs{display:flex;gap:4px;padding:10px 20px 0;overflow-x:auto;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--bg)}
+.sheet-tab{height:30px;padding:0 12px;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;white-space:nowrap}
+.sheet-tab.active{background:var(--bg);color:var(--primary);font-weight:600;border-color:var(--primary)}
+.sheet-wrap{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;max-width:100%;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.xl{border-collapse:collapse;font-size:12px;min-width:100%}
+.xl th,.xl td{border:1px solid var(--border);padding:4px 8px;white-space:nowrap;max-width:420px;overflow:hidden;text-overflow:ellipsis;color:var(--text);text-align:start}
+.xl .rh,.xl .ch{background:var(--bg3);color:var(--text3);font-weight:500;text-align:center;font-size:11px;position:sticky}
+.xl .ch{top:0;z-index:1}
+.xl .rh{inset-inline-start:0;min-width:34px}
+.xl td.head{background:var(--primary-light);font-weight:700;text-align:center}
+.xl td.title{font-weight:700;font-size:13px;border-color:transparent}
+.xl td.text{border-color:transparent;color:var(--text2)}
+.xl td.num{text-align:end;font-variant-numeric:tabular-nums}
+.xl-more{padding:10px;font-size:12px;color:var(--text3);text-align:center}
+.select-full{width:100%;height:36px;padding:0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:13px;outline:none;margin-bottom:10px}
+.select-full:focus{border-color:var(--primary)}
+.toggle-row.disabled{opacity:.45}
+
+/* PANEL */
+.panel-section{padding:16px;border-bottom:1px solid var(--border)}
+.panel-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.toggle-label{font-size:13px;color:var(--text)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--primary)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
+.info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+.info-box svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.warn-box{background:var(--warn-light);border:1px solid var(--warn);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--warn);line-height:1.5;display:none;gap:8px;margin-top:10px}
+.warn-box.show{display:flex}
+.warn-box a{color:var(--warn);font-weight:700}
+
+/* PANEL FOOTER */
+.panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
+.stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-item{text-align:center}
+.stat-val{font-size:18px;font-weight:600;color:var(--primary)}
+.stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.download-btn{width:100%;height:48px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.download-btn:hover:not(:disabled){background:var(--primary-h)}
+.download-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* DRAG OVERLAY */
+.drag-overlay{position:fixed;inset:0;background:rgba(99,102,241,.12);border:3px dashed var(--primary);border-radius:var(--radius-lg);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
+.drag-overlay.show{display:flex}
+.drag-overlay-text{font-size:22px;font-weight:600;color:var(--primary)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+[dir="rtl"] .toast-wrap{transform:translateX(50%)}
+.toast{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;pointer-events:all;animation:slideUp .2s ease}
+.toast.success{border-color:var(--success);color:var(--success);background:var(--success-light)}
+.toast.error{border-color:var(--danger);color:var(--danger);background:var(--danger-light)}
+.toast.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-light)}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:700px){
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
+  .workspace{flex-direction:column}
+  .doc-prev{padding:20px 18px}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل تحويل PDF إلى Excel مجاني؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يحوّل Doctor PDF ملفات PDF إلى Excel مجاناً 100% بدون حدود أو علامة مائية أو تسجيل."}},{"@type":"Question","name":"هل يُرفع ملفي إلى خادم؟","acceptedAnswer":{"@type":"Answer","text":"لا. يُقرأ الـ PDF ويُبنى ملف Excel داخل متصفحك — مستندك لا يغادر جهازك أبداً."}},{"@type":"Question","name":"هل تبقى الأرقام أرقاماً؟","acceptedAnswer":{"@type":"Answer","text":"نعم. المبالغ مثل 1,800.00 والنسب مثل 15% تصبح أرقام Excel حقيقية يمكن جمعها ورسمها، بينما تبقى أرقام الهواتف والهويات والتواريخ نصاً."}},{"@type":"Question","name":"هل يدعم الجداول العربية؟","acceptedAnswer":{"@type":"Answer","text":"نعم. تحتفظ الجداول العربية بترتيب أعمدتها، وتُضبط الورقة من اليمين لليسار تلقائياً."}},{"@type":"Question","name":"ماذا عن جدول يكمل في الصفحة التالية؟","acceptedAnswer":{"@type":"Answer","text":"يستطيع Doctor PDF دمج الجدول الممتد على عدة صفحات في جدول واحد مع حذف العنوان المكرر — بينما تعطيك معظم المحولات ورقة لكل صفحة."}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="dpdfLogoG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs><g transform="translate(50 50) skewX(-7) translate(-50 -50)"><rect x="6" y="4" width="88" height="92" rx="22" fill="url(#dpdfLogoG)"/></g><path d="M24 22H50a28 28 0 0 1 0 56H24Z" fill="#fff"/></svg>
+    Doctor PDF
+  </a>
+  <div class="tools-dropdown">
+    <button class="nav-btn" id="toolsBtn" aria-expanded="false">
+      <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span id="T_tools">كل الأدوات</span>
+      <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="tools-menu" id="toolsMenu">
+      <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
+      <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
+      <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
+      <a href="pdf-to-word.html"><span id="T_pdf2word">PDF إلى Word</span></a>
+      <a href="pdf-to-excel.html" style="color:var(--primary)"><span id="T_pdf2excel">PDF إلى Excel</span></a>
+      <a href="image-to-pdf.html"><span id="T_img2pdf">صورة إلى PDF</span></a>
+      <a href="pdf-to-image.html"><span id="T_pdf2img">PDF إلى صورة</span></a>
+      <a href="rotate-pdf.html"><span id="T_rotate">تدوير PDF</span></a>
+      <a href="watermark-pdf.html"><span id="T_watermark">علامة مائية</span></a>
+      <a href="protect-pdf.html"><span id="T_protect">حماية PDF</span></a>
+      <a href="extract-text.html"><span id="T_extract">استخراج النص</span></a>
+      <a href="ocr.html"><span id="T_ocr">OCR</span></a>
+      <a href="edit-pdf.html"><span id="T_editpdf">تعديل PDF</span></a>
+      <a href="unlock-pdf.html"><span id="T_unlock">فك قفل PDF</span></a>
+    </div>
+  </div>
+  <div class="nav-sep"></div>
+
+  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+    <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span id="T_privacyBadge">خصوصية 100%</span>
+  </div>
+  <button class="nav-btn" id="themeBtn">
+    <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <button class="nav-btn" id="langBtn">
+    <svg viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 2c-2 2-2 10 0 12M2 8h12" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span id="langLabel">EN</span>
+  </button>
+</nav>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+  <div class="content" id="contentArea">
+
+    <!-- Drop zone -->
+    <div class="dropzone" id="dropzone">
+      <div class="drop-icon">
+        <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="5" width="28" height="26" rx="3" stroke="currentColor" stroke-width="2"/><path d="M4 13h28M4 21h28M14 5v26M23 5v26" stroke="currentColor" stroke-width="1.6" opacity=".6"/></svg>
+      </div>
+      <div>
+        <div class="drop-title" id="T_dropTitle">حوّل PDF إلى Excel</div>
+        <div class="drop-sub" id="T_dropSub">اسحب وأفلت ملف PDF هنا، أو اضغط للاختيار. تتحول الجداول إلى ملف Excel حقيقي داخل متصفحك — بدون رفع، خصوصية كاملة.</div>
+      </div>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر ملف PDF</span></button>
+    </div>
+
+    <!-- Converting progress bar -->
+    <div class="convert-bar" id="convertBar">
+      <div class="cv-bar-fill-wrap"><div class="cv-bar-fill" id="cvBarFill"></div></div>
+      <span class="cv-bar-txt" id="cvBarTxt">Converting...</span>
+    </div>
+
+    <!-- Preview area -->
+    <div class="preview-area" id="previewArea">
+      <div class="prev-header">
+        <div class="prev-header-left">
+          <span class="prev-title" id="fileName">document.pdf</span>
+          <span class="prev-stats" id="prevStats"></span>
+        </div>
+        <button class="change-btn" id="changeFileBtn">
+          <svg viewBox="0 0 12 12" fill="none" width="11"><path d="M2 6H1V2a1 1 0 011-1h4l3 3v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M6 7h5M9 5l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span id="T_changeFile">تغيير الملف</span>
+        </button>
+      </div>
+      <div class="sheet-tabs" id="sheetTabs"></div>
+      <div class="prev-scroll">
+        <div class="sheet-wrap" id="sheetPrev"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <aside class="panel">
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_optionsTitle">خيارات التحويل</div>
+      <label class="toggle-label" id="T_optMode" style="display:block;margin-bottom:6px">ماذا تريد في Excel</label>
+      <select class="select-full" id="modeSelect">
+        <option value="pages" id="T_modePages">كل صفحة — النصوص والجداول</option>
+        <option value="tables" id="T_modeTables">الجداول فقط — ورقة لكل جدول</option>
+        <option value="one" id="T_modeOne">كل الجداول في ورقة واحدة</option>
+      </select>
+      <div class="toggle-row" id="joinRow">
+        <span class="toggle-label" id="T_optJoin">دمج الجداول التي تكمل في الصفحة التالية</span>
+        <label class="toggle"><input type="checkbox" id="toggleJoin" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="toggle-row" style="margin-top:6px">
+        <span class="toggle-label" id="T_optNumbers">تحويل الأرقام إلى أرقام Excel حقيقية</span>
+        <label class="toggle"><input type="checkbox" id="toggleNumbers" checked><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="info-box">
+        <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span id="T_privacyNote">يُبنى ملف Excel مباشرة في متصفحك. مستندك لا يغادر جهازك أبداً.</span>
+      </div>
+      <div class="warn-box" id="scannedWarn">
+        <svg viewBox="0 0 14 14" fill="none" width="16" style="flex-shrink:0"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span><span id="T_scannedWarn">بعض الصفحات لا تحتوي نصاً قابلاً للتحديد (ممسوحة ضوئياً؟). استخدم OCR لتلك الصفحات:</span> <a href="ocr.html" id="T_scannedLink">أداة OCR</a></span>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title" id="T_aboutTitle">عن تحويل PDF إلى Excel</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.7" id="T_aboutText">تُعاد بناء الجداول من موضع كل كلمة، بما فيها الجداول العربية من اليمين لليسار والصفوف الممتدة على سطرين. الملفات الممسوحة ضوئياً لا تحتوي نصاً — استخدم OCR أولاً.</p>
+    </div>
+
+    <div class="panel-footer">
+      <div class="stats-box" id="statsBox">
+        <div class="stat-item">
+          <div class="stat-val" id="statPages">—</div>
+          <div class="stat-label" id="T_statPagesLabel">صفحة</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statTables">—</div>
+          <div class="stat-label" id="T_statTablesLabel">جدول</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statRows">—</div>
+          <div class="stat-label" id="T_statRowsLabel">صف</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="statNums">—</div>
+          <div class="stat-label" id="T_statNumsLabel">رقم</div>
+        </div>
+      </div>
+      <button class="download-btn" id="downloadBtn" disabled>
+        <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="T_downloadXlsx">تحميل ملف Excel (.xlsx)</span>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<!-- Drag overlay -->
+<div class="drag-overlay" id="dragOverlay">
+  <svg viewBox="0 0 48 48" fill="none" width="56"><rect x="2" y="2" width="44" height="44" rx="10" stroke="#6366f1" stroke-width="2.5"/><path d="M14 4h14l10 10v28H14V4z" fill="none" stroke="#6366f1" stroke-width="2"/><path d="M28 4v10h10" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/></svg>
+  <div class="drag-overlay-text" id="T_dropHere">أفلت PDF هنا</div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<input type="file" id="fileInput" accept="application/pdf,.pdf" style="display:none">
+
+<script>
+(function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
+
+<script src="/js/pdf-layout.js?v=20260915a"></script>
+<script src="/js/xlsx-writer.js?v=20260915a"></script>
+<script>
+// ══════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════
+const LANGS = {
+  en:{
+    T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',
+    T_pdf2word:'PDF to Word',T_pdf2excel:'PDF to Excel',T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_rotate:'Rotate PDF',
+    T_watermark:'Watermark PDF',T_protect:'Protect PDF',T_extract:'Extract Text',T_ocr:'OCR',T_editpdf:'Edit PDF',T_unlock:'Unlock PDF',
+    T_privacyBadge:'100% Private',
+    T_dropTitle:'Convert PDF to Excel',
+    T_dropSub:'Drag & drop your PDF here, or click to browse. Tables become a real Excel workbook right in your browser — no upload, 100% private.',
+    T_browse:'Choose PDF File',
+    T_changeFile:'Change file',
+    T_optionsTitle:'Conversion Options',
+    T_optMode:'Put in Excel',
+    T_modePages:'Every page — text and tables',
+    T_modeTables:'Tables only — one sheet per table',
+    T_modeOne:'All tables in one sheet',
+    T_optJoin:'Join tables that continue on the next page',
+    T_optNumbers:'Turn numbers into real Excel numbers',
+    T_privacyNote:'The Excel file is built directly in your browser. Your document never leaves your device.',
+    T_scannedWarn:'Some pages contain no selectable text (scanned?). Use OCR for those pages:',
+    T_qualityWarn:'This PDF stores text with a damaged character map, so some letters may appear as �. For a cleaner result try the OCR tool:',
+    T_scannedLink:'OCR tool',
+    T_aboutTitle:'About PDF to Excel',
+    T_aboutText:'Tables are rebuilt from the position of every word, including Arabic right-to-left tables and rows that wrap onto two lines. Scanned PDFs have no text — run OCR first.',
+    T_statPagesLabel:'Pages',T_statTablesLabel:'Tables',T_statRowsLabel:'Rows',T_statNumsLabel:'Numbers',
+    T_downloadXlsx:'Download Excel File (.xlsx)',
+    T_dropHere:'Drop PDF here',
+    T_reading:'Reading page',
+    T_building:'Building Excel file…',
+    T_done:'Excel file downloaded!',
+    T_errLoad:'Failed to load PDF. The file may be corrupted or password-protected.',
+    T_errBuild:'Could not build the Excel file.',
+    T_allScanned:'This PDF has no selectable text (scanned document). Use the OCR tool first.',
+    T_noTables:'No tables were found in this PDF — showing every page instead.',
+    T_sheetWord:'sheet',T_sheetsWord:'sheets',T_rowsWord:'rows',T_sheetPage:'Page',T_sheetTable:'Table',T_sheetTables:'Tables',T_pagesWord:'page',
+    T_moreRows:'more rows are in the Excel file',
+    langLabel:'AR'
+  ,A_h2:"What does converting PDF to Excel mean?",A_p1:"Converting PDF to Excel means taking the tables printed inside a PDF — price quotations, invoices, bank statements, bills of quantities, payment certificates — and turning them into a real spreadsheet with rows, columns and numbers you can sort, sum and chart. Instead of retyping hundreds of cells, you get an .xlsx workbook ready for Microsoft Excel, Google Sheets or LibreOffice.",A_p2:"Doctor PDF rebuilds each table from the exact position of every word, keeps Arabic tables right-to-left, turns amounts and percentages into real numbers, and can join a table that continues across several pages into one — entirely inside your browser.",A_useH:"When do you need to convert PDF to Excel?",A_u1:"Reusing the items and prices of a supplier quotation in your own calculation.",A_u2:"Totalling or filtering the lines of an invoice, statement or payment certificate.",A_u3:"Moving a bill of quantities from a PDF into a spreadsheet for costing.",A_u4:"Analysing a report whose tables were only shared as PDF.",A_u5:"Building a chart from figures you received in a PDF.",A_howH:"How Doctor PDF converts to Excel privately",A_hp1:"Most PDF to Excel services upload your file to their servers. Doctor PDF never does: the PDF is read and the Excel file is written inside your browser, so invoices, statements and contracts never leave your device.",A_hp2:"Because there is no upload, conversion is instant, has no daily limit, and keeps working on large multi-page documents.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Joins tables that continue across pages — others give you one sheet per page",F_h2:"How to convert PDF to Excel online",F_s1:"Open the PDF to Excel tool and drop your PDF into the page.",F_s2:"Choose what goes into Excel: every page, one sheet per table, or all tables in one sheet.",F_s3:"Check the spreadsheet preview — numbers are already real Excel numbers.",F_s4:"Download your .xlsx file — nothing is ever uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to Excel free?",F_a1:"Yes. Doctor PDF converts PDF to Excel 100% free with no limits, watermarks, or sign-up.",F_q2:"Is my file uploaded to a server?",F_a2:"No. The PDF is read and the Excel file is built inside your browser — your document never leaves your device.",F_q3:"Does it keep numbers as numbers?",F_a3:"Yes. Amounts like 1,800.00 and percentages like 15% become real Excel numbers you can sum and chart, while phone numbers, IDs and dates stay as text.",F_q4:"Does it support Arabic tables?",F_a4:"Yes. Arabic tables keep their column order and the sheet is set right-to-left automatically.",F_q5:"What about a table that continues on the next page?",F_a5:"Doctor PDF can join a table that continues across pages into one table, dropping the repeated header — most converters give you one sheet per page instead."
+  },
+  ar:{
+    T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
+    T_pdf2word:'PDF إلى Word',T_pdf2excel:'PDF إلى Excel',T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
+    T_watermark:'علامة مائية',T_protect:'حماية PDF',T_extract:'استخراج النص',T_ocr:'OCR',T_editpdf:'تعديل PDF',T_unlock:'فك قفل PDF',
+    T_privacyBadge:'خصوصية 100%',
+    T_dropTitle:'حوّل PDF إلى Excel',
+    T_dropSub:'اسحب وأفلت ملف PDF هنا، أو اضغط للاختيار. تتحول الجداول إلى ملف Excel حقيقي داخل متصفحك — بدون رفع، خصوصية كاملة.',
+    T_browse:'اختر ملف PDF',
+    T_changeFile:'تغيير الملف',
+    T_optionsTitle:'خيارات التحويل',
+    T_optMode:'ماذا تريد في Excel',
+    T_modePages:'كل صفحة — النصوص والجداول',
+    T_modeTables:'الجداول فقط — ورقة لكل جدول',
+    T_modeOne:'كل الجداول في ورقة واحدة',
+    T_optJoin:'دمج الجداول التي تكمل في الصفحة التالية',
+    T_optNumbers:'تحويل الأرقام إلى أرقام Excel حقيقية',
+    T_privacyNote:'يُبنى ملف Excel مباشرة في متصفحك. مستندك لا يغادر جهازك أبداً.',
+    T_scannedWarn:'بعض الصفحات لا تحتوي نصاً قابلاً للتحديد (ممسوحة ضوئياً؟). استخدم OCR لتلك الصفحات:',
+    T_qualityWarn:'هذا الملف يخزّن النص بخريطة حروف تالفة، فقد تظهر بعض الحروف كـ �. لنتيجة أنظف جرّب أداة OCR:',
+    T_scannedLink:'أداة OCR',
+    T_aboutTitle:'عن تحويل PDF إلى Excel',
+    T_aboutText:'تُعاد بناء الجداول من موضع كل كلمة، بما فيها الجداول العربية من اليمين لليسار والصفوف الممتدة على سطرين. الملفات الممسوحة ضوئياً لا تحتوي نصاً — استخدم OCR أولاً.',
+    T_statPagesLabel:'صفحة',T_statTablesLabel:'جدول',T_statRowsLabel:'صف',T_statNumsLabel:'رقم',
+    T_downloadXlsx:'تحميل ملف Excel (.xlsx)',
+    T_dropHere:'أفلت PDF هنا',
+    T_reading:'قراءة الصفحة',
+    T_building:'…جاري بناء ملف Excel',
+    T_done:'!تم تحميل ملف Excel',
+    T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو محمياً بكلمة مرور',
+    T_errBuild:'.تعذّر بناء ملف Excel',
+    T_allScanned:'.هذا الملف لا يحتوي نصاً قابلاً للتحديد (مستند ممسوح). استخدم أداة OCR أولاً',
+    T_noTables:'لم يتم العثور على جداول في هذا الملف — يتم عرض كل الصفحات بدلاً من ذلك.',
+    T_sheetWord:'ورقة',T_sheetsWord:'أوراق',T_rowsWord:'صف',T_sheetPage:'صفحة',T_sheetTable:'جدول',T_sheetTables:'الجداول',T_pagesWord:'صفحة',
+    T_moreRows:'صفاً إضافياً موجودة في ملف Excel',
+    langLabel:'EN'
+  ,A_h2:"ماذا يعني تحويل PDF إلى Excel؟",A_p1:"تحويل PDF إلى Excel يعني أخذ الجداول المطبوعة داخل ملف PDF — عروض الأسعار، الفواتير، كشوف الحسابات، جداول الكميات، شهادات الدفعات — وتحويلها إلى جدول بيانات حقيقي بصفوف وأعمدة وأرقام يمكنك ترتيبها وجمعها ورسمها. فبدلاً من إعادة كتابة مئات الخلايا، تحصل على ملف ‎.xlsx جاهز لـ Microsoft Excel أو Google Sheets أو LibreOffice.",A_p2:"يعيد Doctor PDF بناء كل جدول من الموضع الدقيق لكل كلمة، ويحافظ على الجداول العربية من اليمين لليسار، ويحوّل المبالغ والنسب المئوية إلى أرقام حقيقية، ويمكنه دمج الجدول الذي يمتد على عدة صفحات في جدول واحد — بالكامل داخل متصفحك.",A_useH:"متى تحتاج إلى تحويل PDF إلى Excel؟",A_u1:"إعادة استخدام بنود وأسعار عرض سعر من مورد في حساباتك.",A_u2:"جمع أو تصفية بنود فاتورة أو كشف حساب أو شهادة دفعة.",A_u3:"نقل جدول كميات من PDF إلى جدول بيانات لحساب التكلفة.",A_u4:"تحليل تقرير لم تُرسل جداوله إلا بصيغة PDF.",A_u5:"إنشاء رسم بياني من أرقام وصلتك في ملف PDF.",A_howH:"كيف يحوّل Doctor PDF إلى Excel بخصوصية تامة",A_hp1:"معظم خدمات تحويل PDF إلى Excel ترفع ملفك إلى خوادمها. Doctor PDF لا يفعل ذلك أبداً: يُقرأ الـ PDF ويُكتب ملف Excel داخل متصفحك، فلا تغادر الفواتير وكشوف الحسابات والعقود جهازك.",A_hp2:"ولأنه لا يوجد رفع، يكون التحويل فورياً، وبدون حد يومي، ويعمل مع المستندات الكبيرة متعددة الصفحات.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"يدمج الجداول الممتدة على عدة صفحات — غيره يعطيك ورقة لكل صفحة",F_h2:"كيفية تحويل PDF إلى Excel أونلاين",F_s1:"افتح أداة PDF إلى Excel وأسقط ملفك في الصفحة.",F_s2:"اختر ما يدخل في Excel: كل الصفحات، أو ورقة لكل جدول، أو كل الجداول في ورقة واحدة.",F_s3:"راجع معاينة الجدول — الأرقام أصبحت أرقام Excel حقيقية.",F_s4:"حمّل ملف ‎.xlsx — لا يُرفع أي شيء أبداً.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى Excel مجاني؟",F_a1:"نعم. يحوّل Doctor PDF ملفات PDF إلى Excel مجاناً 100% بدون حدود أو علامة مائية أو تسجيل.",F_q2:"هل يُرفع ملفي إلى خادم؟",F_a2:"لا. يُقرأ الـ PDF ويُبنى ملف Excel داخل متصفحك — مستندك لا يغادر جهازك أبداً.",F_q3:"هل تبقى الأرقام أرقاماً؟",F_a3:"نعم. المبالغ مثل 1,800.00 والنسب مثل 15% تصبح أرقام Excel حقيقية يمكن جمعها ورسمها، بينما تبقى أرقام الهواتف والهويات والتواريخ نصاً.",F_q4:"هل يدعم الجداول العربية؟",F_a4:"نعم. تحتفظ الجداول العربية بترتيب أعمدتها، وتُضبط الورقة من اليمين لليسار تلقائياً.",F_q5:"ماذا عن جدول يكمل في الصفحة التالية؟",F_a5:"يستطيع Doctor PDF دمج الجدول الممتد على عدة صفحات في جدول واحد مع حذف العنوان المكرر — بينما تعطيك معظم المحولات ورقة لكل صفحة."
+  }
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentLang = localStorage.getItem('dpdf_lang')||'ar';
+let pagesLines = [];   // read by buildBlocks() in /js/pdf-layout.js
+let pagesHLines = [];
+let pagesImages = [];
+let blocks = [];
+let sheets = [];       // [{ name, rtl, rows }]
+let activeSheet = 0;
+let scannedPages = 0;
+let warnKind = null;
+let baseName = 'document';
+let noTablesShown = false;
+let sheetsArePages = true;
+const PREVIEW_ROWS = 400;
+
+function applyWarn() {
+  const box = document.getElementById('scannedWarn');
+  if (warnKind) {
+    document.getElementById('T_scannedWarn').textContent = tr(warnKind);
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════
+// LANG & THEME
+// ══════════════════════════════════════════
+function applyLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  Object.keys(t).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t[id];
+  });
+  applyWarn();
+  if (pagesLines.length) rebuild();
+}
+
+function tr(k) { return (LANGS[currentLang]||LANGS.en)[k]||k; }
+
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+  document.getElementById('iconSun').style.display = dark ? 'none' : '';
+  document.getElementById('iconMoon').style.display = dark ? '' : 'none';
+  localStorage.setItem('dpdf_dark', dark ? '1' : '0');
+}
+
+// ══════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════
+function bindEvents() {
+  document.getElementById('themeBtn').onclick = () =>
+    applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+
+  document.getElementById('langBtn').onclick = () => {
+    const next = currentLang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('dpdf_lang', next);
+    applyLang(next);
+  };
+
+  document.getElementById('toolsBtn').onclick = (e) => {
+    e.stopPropagation();
+    document.getElementById('toolsMenu').classList.toggle('open');
+  };
+  document.addEventListener('click', () => document.getElementById('toolsMenu').classList.remove('open'));
+
+  const fi = document.getElementById('fileInput');
+  document.getElementById('browseBtn').onclick = () => fi.click();
+  document.getElementById('dropzone').onclick = (e) => { if(!e.target.closest('#browseBtn')) fi.click(); };
+  fi.onchange = (e) => { if(e.target.files[0]) loadPDF(e.target.files[0]); fi.value=''; };
+  document.getElementById('changeFileBtn').onclick = () => fi.click();
+
+  document.getElementById('downloadBtn').onclick = downloadXlsx;
+
+  document.getElementById('modeSelect').onchange = () => { activeSheet = 0; syncOptions(); if (pagesLines.length) rebuild(); };
+  ['toggleJoin','toggleNumbers'].forEach(id => {
+    document.getElementById(id).onchange = () => { if (pagesLines.length) rebuild(); };
+  });
+
+  document.addEventListener('dragenter', (e) => {
+    if(e.dataTransfer.types.includes('Files')) document.getElementById('dragOverlay').classList.add('show');
+  });
+  document.addEventListener('dragleave', (e) => {
+    if(!e.relatedTarget||e.relatedTarget===document.documentElement)
+      document.getElementById('dragOverlay').classList.remove('show');
+  });
+  document.addEventListener('dragover', (e) => e.preventDefault());
+  document.addEventListener('drop', (e) => {
+    e.preventDefault();
+    document.getElementById('dragOverlay').classList.remove('show');
+    const file = Array.from(e.dataTransfer.files).find(f=>f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'));
+    if(file) loadPDF(file);
+  });
+  syncOptions();
+}
+
+/* joining only makes sense when tables are listed on their own */
+function syncOptions() {
+  const pages = document.getElementById('modeSelect').value === 'pages';
+  document.getElementById('joinRow').classList.toggle('disabled', pages);
+  document.getElementById('toggleJoin').disabled = pages;
+}
+
+// ══════════════════════════════════════════
+// LOAD & PARSE PDF (layout engine: /js/pdf-layout.js)
+// ══════════════════════════════════════════
+async function loadPDF(file) {
+  if(!file) return;
+  if(typeof pdfjsLib === 'undefined') { showToast('pdf.js not loaded','error'); return; }
+
+  pagesLines = []; pagesHLines = []; pagesImages = []; scannedPages = 0; activeSheet = 0; noTablesShown = false;
+  baseName = (file.name || 'document').replace(/\.pdf$/i,'');
+
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('previewArea').style.display = 'none';
+  document.getElementById('convertBar').classList.add('show');
+  document.getElementById('cvBarFill').style.width = '0';
+  document.getElementById('scannedWarn').classList.remove('show');
+
+  let pdfJsDoc = null;
+  try {
+    const buf = await file.arrayBuffer();
+    pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false, data: buf }).promise;
+    const numPages = pdfJsDoc.numPages;
+    document.getElementById('fileName').textContent = file.name;
+
+    for (let i = 1; i <= numPages; i++) {
+      document.getElementById('cvBarFill').style.width = Math.round((i/numPages)*100) + '%';
+      document.getElementById('cvBarTxt').textContent = `${tr('T_reading')} ${i} / ${numPages}`;
+      const page = await pdfJsDoc.getPage(i);
+      const vp = page.getViewport({ scale: 1 });
+      let colors = [], hlines = [];
+      let _olRef = null;
+      try { const _ol = await page.getOperatorList(); _olRef = _ol; colors = extractTextColors(_ol); hlines = extractHLines(_ol, vp.width); } catch(e) {}
+      const content = await page.getTextContent();
+      try { if (_olRef) fixRtlLigatures(_olRef, content); } catch(e) {}
+      try { foldPersianForms(content); } catch(e) {}
+      const lines = pageToLines(page, content, vp.width, colors);
+      if (!lines.length) scannedPages++;
+      pagesLines.push(lines);
+      pagesHLines.push(hlines);
+      pagesImages.push([]);          /* images are not needed in a spreadsheet */
+      await new Promise(r => setTimeout(r, 0));
+    }
+
+    document.getElementById('convertBar').classList.remove('show');
+
+    if (scannedPages === pagesLines.length) {
+      document.getElementById('dropzone').classList.remove('hidden');
+      showToast(tr('T_allScanned'), 'warn');
+      pagesLines = [];
+      return;
+    }
+    warnKind = null;
+    if (scannedPages > 0) {
+      warnKind = 'T_scannedWarn';
+    } else {
+      const all = pagesLines.flat().flatMap(l => l.runs).map(r => r.str).join('');
+      const bad = (all.match(/�/g) || []).length;
+      if (bad > 0 && bad / Math.max(all.replace(/\s/g, '').length, 1) > 0.02) warnKind = 'T_qualityWarn';
+    }
+    applyWarn();
+
+    document.getElementById('previewArea').style.display = 'flex';
+    rebuild();
+    document.getElementById('downloadBtn').disabled = false;
+
+    if(typeof gtag!=='undefined') {
+      gtag('event','pdf_to_excel',{event_category:'pdf_to_excel',event_label:'parsed',value:numPages});
+    }
+  } catch(err) {
+    console.error(err);
+    document.getElementById('convertBar').classList.remove('show');
+    document.getElementById('dropzone').classList.remove('hidden');
+    showToast(tr('T_errLoad'), 'error');
+  } finally {
+    if (pdfJsDoc) { try { pdfJsDoc.destroy(); } catch(e){} }
+  }
+}
+
+// ══════════════════════════════════════════
+// PDF BLOCKS -> SHEETS
+// ══════════════════════════════════════════
+const AR_RE = /[؀-ۿ]/;
+function blockText(b) { return b.type === 'table' ? b.rows.flat().join(' ') : (b.text || (b.runs || []).map(r => r.str).join('')); }
+function mostlyArabic(texts) {
+  let ar = 0, la = 0;
+  texts.forEach(t => { ar += (t.match(/[؀-ۿ]/g) || []).length; la += (t.match(/[A-Za-z]/g) || []).length; });
+  return ar > la;
+}
+function hasNumber(row) { return row.some(c => c != null && DpdfXlsx.parseNumber(String(c).trim())); }
+function tableRows(t, numbers) {
+  const firstIsHeader = !hasNumber(t.rows[0] || []);   /* a first row of figures is data, not a header */
+  return t.rows.map((r, ri) => r.map((c, ci) => {
+    if (c == null || String(c).trim() === '') return null;
+    const head = t.infoGrid ? ci === 0 : (ri === 0 && firstIsHeader);
+    return { v: String(c).trim(), style: head ? 'head' : 'cell', keepText: !numbers };
+  }));
+}
+function normRow(r) { return r.map(c => String(c).replace(/\s+/g, ' ').trim().toLowerCase()).join('\u0001'); }
+
+/* join a table with the first table of the next page when it has the same columns and either
+   repeats the header (dropped) or starts straight with data */
+function joinTables(list) {
+  const isFirst = list.map((t, i) => !list.some((o, k) => k < i && o.page === t.page));
+  const isLast = list.map((t, i) => !list.some((o, k) => k > i && o.page === t.page));
+  const out = [];
+  list.forEach((t, i) => {
+    const prev = out[out.length - 1];
+    const lastT = prev ? list[prev.lastIdx] : null;
+    const nextPage = prev && isLast[prev.lastIdx] && isFirst[i] && t.page === lastT.page + 1;
+    const samePageNext = prev && t.page === lastT.page && prev.lastIdx === i - 1;   /* a table split in two on the same page */
+    if ((nextPage || samePageNext) && t.rows[0] && prev.rows[0] && t.rows[0].length === prev.rows[0].length) {
+      const sameHeader = normRow(t.rows[0]) === normRow(prev.rows[0]);
+      const startsWithData = t.rows[0].some(c => DpdfXlsx.parseNumber(String(c)));
+      if (sameHeader || startsWithData) {
+        prev.rows = prev.rows.concat(sameHeader ? t.rows.slice(1) : t.rows);
+        prev.pages.push(t.page); prev.lastIdx = i;
+        return;
+      }
+    }
+    out.push({ rows: t.rows.slice(), rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page], lastIdx: i });
+  });
+  return out;
+}
+
+/* the table on the same page closest (vertically) to a paragraph whose lines have several cells over its columns */
+function gridTableFor(b, pb) {
+  if (!b.lines || !b.lines.some(l => l.cells && l.cells.length >= 2)) return null;
+  let best = null, bestD = 160;
+  pb.forEach(t => {
+    if (t.type !== 'table' || t.infoGrid || !t.colX || !t.colX.length || t.yTop == null) return;
+    const d = Math.max(0, b.yBot - t.yTop, t.yBot - b.yTop);
+    const x0 = t.colX[0].x0, x1 = t.colX[t.colX.length - 1].x1;
+    const over = b.lines.some(l => (l.cells || []).length >= 2 && l.cells.some(c => c.x1 > x0 && c.x0 < x1));
+    if (over && d < bestD) { bestD = d; best = t; }
+  });
+  return best;
+}
+
+function buildSheets() {
+  const mode = document.getElementById('modeSelect').value;
+  const join = document.getElementById('toggleJoin').checked;
+  const numbers = document.getElementById('toggleNumbers').checked;
+  const content = blocks.filter(b => b.type !== 'image');
+  let tables = content.filter(b => b.type === 'table' && !b.infoGrid);
+  if (!tables.length) tables = content.filter(b => b.type === 'table');
+
+  if (mode !== 'pages' && !tables.length) {
+    if (!noTablesShown) { showToast(tr('T_noTables'), 'warn'); noTablesShown = true; }
+  }
+  sheetsArePages = mode === 'pages' || !tables.length;
+  if (sheetsArePages) {
+    const out = [];
+    for (let pi = 0; pi < pagesLines.length; pi++) {
+      const pb = content.filter(b => b.page === pi);
+      if (!pb.length) continue;
+      const rows = [];
+      let lastRef = null;   /* the table the previous rows belong to (blank row only between different blocks) */
+      pb.forEach(b => {
+        if (b.type === 'table') {
+          if (rows.length && lastRef !== b) rows.push([]);
+          tableRows(b, numbers).forEach(r => rows.push(r));
+          lastRef = b;
+        } else {
+          const grid = gridTableFor(b, pb);
+          if (grid && rows.length && lastRef !== grid) rows.push([]);
+          if (!grid && lastRef) rows.push([]);
+          lastRef = grid || null;
+          if (grid) {
+            /* multi-cell lines next to a table (its header, rows the detector left out, totals) go into that table's columns */
+            b.lines.forEach(l => {
+              if (!l.cells || l.cells.length < 2) { const t = lineText(l).trim(); if (t) rows.push([{ v: t, style: 'text' }]); return; }
+              const n = grid.colX.length, row = new Array(n).fill(null);
+              /* a wide line of labels without figures reads as the table's header */
+              l.cells.forEach(c => {
+                if (!c.str.trim()) return;
+                let k = nearestColByEdge(grid.colX, c.x0, c.x1);
+                if (grid.rtl) k = n - 1 - k;
+                row[k] = { v: row[k] ? row[k].v + ' ' + c.str : c.str, style: 'cell', keepText: !numbers };
+              });
+              const filledCols = row.filter(Boolean).length;
+              if (filledCols >= Math.max(3, Math.ceil(n * 0.6)) && !row.some(c => c && DpdfXlsx.parseNumber(c.v.trim()))) row.forEach(c => { if (c) c.style = 'head'; });
+              rows.push(row);
+            });
+          } else {
+            const t = blockText(b).trim();
+            if (t) rows.push([{ v: t, style: b.head ? 'title' : 'text' }]);
+          }
+        }
+      });
+      while (rows.length && !rows[rows.length - 1].length) rows.pop();
+      /* a page with right-to-left tables must be a right-to-left sheet, or its columns would read mirrored */
+      const pt = pb.filter(x => x.type === 'table' && !x.infoGrid);
+      const rtl = pt.length ? pt.filter(x => x.rtl).length * 2 > pt.length : mostlyArabic(pb.map(blockText));
+      out.push({ name: tr('T_sheetPage') + ' ' + (pi + 1), rtl, rows });
+    }
+    return out;
+  }
+
+  const groups = join ? joinTables(tables) : tables.map(t => ({ rows: t.rows, rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page] }));
+  const pagesLabel = g => tr('T_pagesWord') + ' ' + (g.pages.length > 1 ? (g.pages[0] + 1) + '–' + (g.pages[g.pages.length - 1] + 1) : (g.pages[0] + 1));
+  if (mode === 'tables') {
+    return groups.map((g, i) => ({ name: tr('T_sheetTable') + ' ' + (i + 1), rtl: !!g.rtl, rows: tableRows(g, numbers) }));
+  }
+  const rows = [];
+  groups.forEach((g, i) => {
+    if (rows.length) rows.push([]);
+    rows.push([{ v: tr('T_sheetTable') + ' ' + (i + 1) + ' — ' + pagesLabel(g), style: 'title' }]);
+    tableRows(g, numbers).forEach(r => rows.push(r));
+  });
+  return [{ name: tr('T_sheetTables'), rtl: groups.filter(g => g.rtl).length > groups.length / 2, rows }];
+}
+
+function rebuild() {
+  blocks = buildBlocks();
+  sheets = buildSheets();
+  if (activeSheet >= sheets.length) activeSheet = 0;
+  renderTabs();
+  renderSheet();
+  updateStats();
+}
+
+// ══════════════════════════════════════════
+// PREVIEW
+// ══════════════════════════════════════════
+function renderTabs() {
+  const tabs = document.getElementById('sheetTabs');
+  tabs.innerHTML = '';
+  const names = DpdfXlsx.sheetNames(sheets);
+  sheets.forEach((sh, i) => {
+    const b = document.createElement('button');
+    b.className = 'sheet-tab' + (i === activeSheet ? ' active' : '');
+    b.textContent = names[i];
+    b.onclick = () => { activeSheet = i; renderTabs(); renderSheet(); };
+    tabs.appendChild(b);
+  });
+}
+
+function renderSheet() {
+  const wrap = document.getElementById('sheetPrev');
+  wrap.innerHTML = '';
+  const sh = sheets[activeSheet];
+  if (!sh) return;
+  const numbers = document.getElementById('toggleNumbers').checked;
+  let cols = 1;
+  sh.rows.forEach(r => { if (r.length > cols) cols = r.length; });
+  const tbl = document.createElement('table');
+  tbl.className = 'xl';
+  tbl.dir = sh.rtl ? 'rtl' : 'ltr';
+  const hr = document.createElement('tr');
+  const corner = document.createElement('th'); corner.className = 'rh ch'; hr.appendChild(corner);
+  for (let c = 0; c < cols; c++) { const th = document.createElement('th'); th.className = 'ch'; th.textContent = DpdfXlsx.colName(c); hr.appendChild(th); }
+  tbl.appendChild(hr);
+  sh.rows.slice(0, PREVIEW_ROWS).forEach((r, ri) => {
+    const trEl = document.createElement('tr');
+    const rh = document.createElement('td'); rh.className = 'rh'; rh.textContent = ri + 1; trEl.appendChild(rh);
+    for (let c = 0; c < cols; c++) {
+      const td = document.createElement('td');
+      const cell = r[c];
+      if (cell) {
+        td.textContent = cell.v;
+        td.dir = AR_RE.test(cell.v) ? 'rtl' : 'ltr';
+        if (cell.style === 'head' || cell.style === 'title' || cell.style === 'text') td.className = cell.style;
+        else if (numbers && DpdfXlsx.parseNumber(cell.v)) td.className = 'num';
+      } else if (r.length === 1 && c > 0 && r[0] && (r[0].style === 'title' || r[0].style === 'text')) {
+        td.className = r[0].style;
+      }
+      trEl.appendChild(td);
+    }
+    tbl.appendChild(trEl);
+  });
+  wrap.appendChild(tbl);
+  if (sh.rows.length > PREVIEW_ROWS) {
+    const more = document.createElement('div');
+    more.className = 'xl-more';
+    more.textContent = (sh.rows.length - PREVIEW_ROWS).toLocaleString() + ' ' + tr('T_moreRows');
+    wrap.appendChild(more);
+  }
+}
+
+function updateStats() {
+  const numbers = document.getElementById('toggleNumbers').checked;
+  let rows = 0, nums = 0;
+  sheets.forEach(sh => sh.rows.forEach(r => {
+    if (r.length && r.some(c => c && (c.style === 'cell' || c.style === 'head'))) rows++;
+    r.forEach(c => { if (c && c.style === 'cell' && numbers && DpdfXlsx.parseNumber(c.v)) nums++; });
+  }));
+  const mode = document.getElementById('modeSelect').value;
+  const tableCount = sheetsArePages ? blocks.filter(b => b.type === 'table' && !b.infoGrid).length
+    : (mode === 'tables' ? sheets.length : sheets.reduce((n, sh) => n + sh.rows.filter(r => r.length === 1 && r[0] && r[0].style === 'title').length, 0));
+  document.getElementById('statPages').textContent = pagesLines.length;
+  document.getElementById('statTables').textContent = tableCount;
+  document.getElementById('statRows').textContent = rows.toLocaleString();
+  document.getElementById('statNums').textContent = nums.toLocaleString();
+  document.getElementById('prevStats').textContent = `${sheets.length} ${tr(sheets.length === 1 ? 'T_sheetWord' : 'T_sheetsWord')} · ${rows.toLocaleString()} ${tr('T_rowsWord')}`;
+}
+
+// ══════════════════════════════════════════
+// XLSX
+// ══════════════════════════════════════════
+async function downloadXlsx() {
+  if (!sheets.length) return;
+  const btn = document.getElementById('downloadBtn');
+  const lbl = document.getElementById('T_downloadXlsx');
+  btn.disabled = true;
+  lbl.textContent = tr('T_building');
+  try {
+    const blob = await DpdfXlsx.build(sheets.map(sh => ({ name: sh.name, rtl: sh.rtl, rows: sh.rows })));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = baseName + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    showToast(tr('T_done'), 'success');
+    if(typeof gtag!=='undefined') gtag('event','download_xlsx',{event_category:'pdf_to_excel',event_label:document.getElementById('modeSelect').value});
+  } catch(e) {
+    console.error(e);
+    showToast(tr('T_errBuild'), 'error');
+  }
+  btn.disabled = false;
+  lbl.textContent = tr('T_downloadXlsx');
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = {
+    success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    warn:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M7 2l5 9H2l5-9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>'
+  };
+  t.innerHTML = (icons[type]||icons.success) + msg;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+// ══════════════════════════════════════════
+// BOOT (always last)
+// ══════════════════════════════════════════
+function boot() {
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  applyLang(currentLang);
+  applyTheme(localStorage.getItem('dpdf_dark') === '1');
+  bindEvents();
+}
+
+boot();
+</script>
+
+<script>if(location.hostname==='mypdftools-1lg.pages.dev')location.replace('https://doctor-pdf.com'+location.pathname+location.search+location.hash);</script>
+<script>/* dpdf-perf-v1: load GA after the page is ready */addEventListener("load",function(){setTimeout(function(){var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-4SP6D9Z565";document.head.appendChild(s);},1500);});</script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-4SP6D9Z565');
+</script>
+
+<section class="seo-content">
+  <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
+  <div class="seo-about">
+    <h2 id="A_h2">ماذا يعني تحويل PDF إلى Excel؟</h2>
+    <p id="A_p1">تحويل PDF إلى Excel يعني أخذ الجداول المطبوعة داخل ملف PDF — عروض الأسعار، الفواتير، كشوف الحسابات، جداول الكميات، شهادات الدفعات — وتحويلها إلى جدول بيانات حقيقي بصفوف وأعمدة وأرقام يمكنك ترتيبها وجمعها ورسمها. فبدلاً من إعادة كتابة مئات الخلايا، تحصل على ملف ‎.xlsx جاهز لـ Microsoft Excel أو Google Sheets أو LibreOffice.</p>
+    <p id="A_p2">يعيد Doctor PDF بناء كل جدول من الموضع الدقيق لكل كلمة، ويحافظ على الجداول العربية من اليمين لليسار، ويحوّل المبالغ والنسب المئوية إلى أرقام حقيقية، ويمكنه دمج الجدول الذي يمتد على عدة صفحات في جدول واحد — بالكامل داخل متصفحك.</p>
+    <h2 id="A_useH">متى تحتاج إلى تحويل PDF إلى Excel؟</h2>
+    <ul class="seo-list">
+      <li id="A_u1">إعادة استخدام بنود وأسعار عرض سعر من مورد في حساباتك.</li>
+      <li id="A_u2">جمع أو تصفية بنود فاتورة أو كشف حساب أو شهادة دفعة.</li>
+      <li id="A_u3">نقل جدول كميات من PDF إلى جدول بيانات لحساب التكلفة.</li>
+      <li id="A_u4">تحليل تقرير لم تُرسل جداوله إلا بصيغة PDF.</li>
+      <li id="A_u5">إنشاء رسم بياني من أرقام وصلتك في ملف PDF.</li>
+    </ul>
+    <h2 id="A_howH">كيف يحوّل Doctor PDF إلى Excel بخصوصية تامة</h2>
+    <p id="A_hp1">معظم خدمات تحويل PDF إلى Excel ترفع ملفك إلى خوادمها. Doctor PDF لا يفعل ذلك أبداً: يُقرأ الـ PDF ويُكتب ملف Excel داخل متصفحك، فلا تغادر الفواتير وكشوف الحسابات والعقود جهازك.</p>
+    <p id="A_hp2">ولأنه لا يوجد رفع، يكون التحويل فورياً، وبدون حد يومي، ويعمل مع المستندات الكبيرة متعددة الصفحات.</p>
+  </div>
+  <div class="why">
+    <h2 id="W_h2">ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟</h2>
+    <p class="why-lead" id="W_lead">زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:</p>
+    <div class="why-grid">
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W1">بدون إعلانات مزعجة — نهائياً</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W2">بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W3">خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W4">مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية</span></div>
+      <div class="why-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="W5">يدمج الجداول الممتدة على عدة صفحات — غيره يعطيك ورقة لكل صفحة</span></div>
+    </div>
+  </div>
+  <h2 id="F_h2">كيفية تحويل PDF إلى Excel أونلاين</h2>
+  <ol class="seo-steps">
+    <li id="F_s1">افتح أداة PDF إلى Excel وأسقط ملفك في الصفحة.</li>
+    <li id="F_s2">اختر ما يدخل في Excel: كل الصفحات، أو ورقة لكل جدول، أو كل الجداول في ورقة واحدة.</li>
+    <li id="F_s3">راجع معاينة الجدول — الأرقام أصبحت أرقام Excel حقيقية.</li>
+    <li id="F_s4">حمّل ملف ‎.xlsx — لا يُرفع أي شيء أبداً.</li>
+  </ol>
+  <h2 id="F_faqH">الأسئلة الشائعة</h2>
+  <div class="faq-item"><h3 id="F_q1">هل تحويل PDF إلى Excel مجاني؟</h3><p id="F_a1">نعم. يحوّل Doctor PDF ملفات PDF إلى Excel مجاناً 100% بدون حدود أو علامة مائية أو تسجيل.</p></div>
+  <div class="faq-item"><h3 id="F_q2">هل يُرفع ملفي إلى خادم؟</h3><p id="F_a2">لا. يُقرأ الـ PDF ويُبنى ملف Excel داخل متصفحك — مستندك لا يغادر جهازك أبداً.</p></div>
+  <div class="faq-item"><h3 id="F_q3">هل تبقى الأرقام أرقاماً؟</h3><p id="F_a3">نعم. المبالغ مثل 1,800.00 والنسب مثل 15% تصبح أرقام Excel حقيقية يمكن جمعها ورسمها، بينما تبقى أرقام الهواتف والهويات والتواريخ نصاً.</p></div>
+  <div class="faq-item"><h3 id="F_q4">هل يدعم الجداول العربية؟</h3><p id="F_a4">نعم. تحتفظ الجداول العربية بترتيب أعمدتها، وتُضبط الورقة من اليمين لليسار تلقائياً.</p></div>
+  <div class="faq-item"><h3 id="F_q5">ماذا عن جدول يكمل في الصفحة التالية؟</h3><p id="F_a5">يستطيع Doctor PDF دمج الجدول الممتد على عدة صفحات في جدول واحد مع حذف العنوان المكرر — بينما تعطيك معظم المحولات ورقة لكل صفحة.</p></div>
+</section>
+<script>/* dpdf_lang_nav */
+document.addEventListener("click",function(e){
+  if(!e.target.closest)return;
+  if(!e.target.closest("#langBtn"))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  var p=location.pathname;
+  var isAr=p==="/ar"||p.slice(0,4)==="/ar/";
+  try{localStorage.setItem("dpdf_lang",isAr?"en":"ar");}catch(_){}
+  var t;
+  if(isAr){t=p==="/ar"?"/":p.slice(3);if(t==="")t="/";}
+  else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
+  location.href=t+location.search+location.hash;
+},true);
+</script>
+</body>
+</html>

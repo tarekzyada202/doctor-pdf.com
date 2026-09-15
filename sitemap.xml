@@ -180,6 +180,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://doctor-pdf.com/pdf-to-excel.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/pdf-to-excel.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/pdf-to-excel.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/pdf-to-excel.html"/>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 
   <url>
     <loc>https://doctor-pdf.com/edit-pdf.html</loc>
@@ -369,6 +379,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/pdf-to-excel.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/pdf-to-excel.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/pdf-to-excel.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/pdf-to-excel.html"/>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 
   <!-- Edit PDF — تعديل PDF -->
   <url>

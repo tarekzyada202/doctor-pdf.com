@@ -16,7 +16,7 @@ def check_site():
         'compress-pdf','stamp-pdf','rotate-pdf','merge-pdf',
         'split-pdf','sign-pdf','protect-pdf','watermark-pdf',
         'image-to-pdf','pdf-to-image','extract-text',
-        'convert-image','remove-background','ocr','pdf-to-word','edit-pdf','unlock-pdf'
+        'convert-image','remove-background','ocr','pdf-to-word','pdf-to-excel','edit-pdf','unlock-pdf'
     ]
     working, broken = [], []
     for tool in tools:
@@ -170,7 +170,7 @@ def analyze_competitors():
 
     competitors = ['ilovepdf.com', 'smallpdf.com', 'pdf24.org', 'sejda.com']
     my_tools = ('دمج، تقسيم، ضغط، تدوير، توقيع، حماية بكلمة مرور، علامة مائية، ختم، '
-                'صورة→PDF، PDF→صورة، استخراج نص، تحويل صيغ الصور، إزالة خلفية، OCR، PDF→Word، تعديل PDF، فك قفل PDF')
+                'صورة→PDF، PDF→صورة، استخراج نص، تحويل صيغ الصور، إزالة خلفية، OCR، PDF→Word، PDF→Excel، تعديل PDF، فك قفل PDF')
 
     search_prompt = f"""أنت محلل استراتيجي متخصص في مواقع أدوات PDF. حلّل المنافسين ({', '.join(competitors)}) لصالح موقع Doctor PDF.
 
@@ -230,7 +230,7 @@ def generate_strategic_report(site_data, competitor_analysis, gsc_text):
 {competitor_analysis}
 
 == ما تم إنجازه بالفعل (لا تُوصِ ببناء أو عمل أيٍّ منها — كلها منفّذة بالكامل) ==
-- 17 أداة شغّالة (دمج، تقسيم، ضغط، تدوير، توقيع، حماية، علامة مائية، ختم، صورة↔PDF، استخراج نص، تحويل صور، إزالة خلفية، OCR، PDF→Word، تعديل PDF، فك قفل PDF).
+- 18 أداة شغّالة (دمج، تقسيم، ضغط، تدوير، توقيع، حماية، علامة مائية، ختم، صورة↔PDF، استخراج نص، تحويل صور، إزالة خلفية، OCR، PDF→Word، PDF→Excel، تعديل PDF، فك قفل PDF).
 - صفحات هبوط عربية `/ar/` كاملة لكل أداة + الصفحة الرئيسية، بمحتوى غني + قسم FAQ + Schema (FAQPage) + hreflang.
 - بانر خصوصية «100% داخل المتصفح» أعلى كل أداة + صفحتا /privacy-security و /ar/privacy-security.
 - عناوين ووصف ميتا محسّنة للـ CTR (بدون رفع / بدون حدود / بدون علامة مائية).
@@ -245,7 +245,7 @@ def generate_strategic_report(site_data, competitor_analysis, gsc_text):
 رتّب 1-3 مهام فقط حسب الأولوية (الأعلى تأثيراً أولاً). لكل مهمة: ماذا تفعل بالضبط + لماذا (مدعوماً برقم من البيانات) + الأثر المتوقع. ركّز على المكاسب السريعة (فرص الترتيب 5-20، أو أداة سهلة ناقصة).
 
 ## 🧩 فجوة الأدوات — الأولوية
-هل توجد أداة **غير موجودة فعلاً** في قائمة الـ17 أعلاه وعليها طلب كبير (خاصة عربياً)؟ (واحدة فقط، ويجب ألا تكون من أدواتنا الحالية مثل دمج/ضغط/PDF→Word/تعديل PDF/فك قفل PDF). إن لم توجد فجوة حقيقية فاكتب صراحةً: «لا توجد فجوة أدوات حرجة — ركّز على التسويق والـ SEO».
+هل توجد أداة **غير موجودة فعلاً** في قائمة الـ18 أعلاه وعليها طلب كبير (خاصة عربياً)؟ (واحدة فقط، ويجب ألا تكون من أدواتنا الحالية مثل دمج/ضغط/PDF→Word/PDF→Excel/تعديل PDF/فك قفل PDF). إن لم توجد فجوة حقيقية فاكتب صراحةً: «لا توجد فجوة أدوات حرجة — ركّز على التسويق والـ SEO».
 
 ## ⚠️ استغلال نقاط ضعف المنافسين
 نقطة ضعف واحدة عند المنافسين + كيف نسوّق ضدها هذا الأسبوع.
