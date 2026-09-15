@@ -668,6 +668,31 @@ function extractHLines(ol, pageW){
   return out;
 }
 
+/* cell text from fragments: rebuild spaces from x-gaps; visual-order Arabic -> logical (reverse, re-flip Latin runs) */
+function bidiCellText(frs) {
+  const chs = frs.slice().sort((a,b)=>a.x-b.x);
+  const t = chs.map(c => c.str).join('');
+  const ar = (t.match(/[؀-ۿ]/g)||[]).length;
+  const cvis = chs.length>1 && chs[chs.length-1].x > chs[0].x;
+  let toks = [];
+  for (let k = 0; k < chs.length; k++) {
+    if (k>0){ const g = chs[k].x - chs[k-1].x1; if (g > (chs[k].fs||10)*0.18) toks.push(' '); }
+    toks.push(chs[k].str);
+  }
+  if (ar > 0 && cvis) {
+    toks.reverse();
+    const hA = z => /[؀-ۿ]/.test(z), hL = z => /[A-Za-z0-9]/.test(z);
+    let p = 0;
+    while (p < toks.length) {
+      if (hL(toks[p]) && !hA(toks[p])) {
+        let q = p+1; while (q < toks.length && !hA(toks[q])) q++;
+        const rev = toks.slice(p,q).reverse(); for (let z2=0; z2<rev.length; z2++) toks[p+z2]=rev[z2]; p = q;
+      } else p++;
+    }
+  }
+  return toks.join('').replace(/\s+/g, ' ').trim();
+}
+
 function pageToLines(page, content, pageW, colors) {
   /* 1) collect non-rotated chunks with position + width + style */
   const raw = [];
@@ -746,28 +771,8 @@ function pageToLines(page, content, pageW, colors) {
     }
     if (cell) cells.push(cell);
     cells.forEach(cl => {
-      let chs = cl.chunks.slice().sort((a,b)=>a.x-b.x);
-      const t = chs.map(c => c.str).join('');
-      const ar = (t.match(/[؀-ۿ]/g)||[]).length, la = (t.match(/[A-Za-z]/g)||[]).length;
-      const cvis = chs.length>1 && chs[chs.length-1].x > chs[0].x;
-      let toks = [];
-      for (let k = 0; k < chs.length; k++) {
-        if (k>0){ const g = chs[k].x - (chs[k-1].x + (chs[k-1].w||0)); if (g > (chs[k].fs||10)*0.18) toks.push(' '); }
-        toks.push(chs[k].str);
-      }
-      if (ar > 0 && cvis) {
-        toks.reverse();
-        const hA = z => /[؀-ۿ]/.test(z), hL = z => /[A-Za-z0-9]/.test(z);
-        let p = 0;
-        while (p < toks.length) {
-          if (hL(toks[p]) && !hA(toks[p])) {
-            let q = p+1; while (q < toks.length && !hA(toks[q])) q++;
-            const rev = toks.slice(p,q).reverse(); for (let z2=0; z2<rev.length; z2++) toks[p+z2]=rev[z2]; p = q;
-          } else p++;
-        }
-      }
-      let s = toks.join('');
-      cl.str = s.replace(/\s+/g, ' ').trim();
+      cl.frags = cl.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs }));
+      cl.str = bidiCellText(cl.frags);
       delete cl.chunks;
     });
     ln.cells = cells;
@@ -998,6 +1003,79 @@ function fragGroups(l){
   fr.forEach(f=>{ if(cur && f.x-cur.x1 > l.fs*2){ g.push(cur); cur=null; } if(!cur) cur={x:f.x,x1:f.x1}; else cur.x1=f.x1; });
   if(cur) g.push(cur); return g;
 }
+/* Arabic / bidi table region -> grid built from line CELLS (their text is already bidi-fixed).
+   rows = y-bands (wrapped lines merge), columns = overlapping x-ranges, RTL-aware order */
+function tableFromCells(reg){
+  const fsz=reg[0].fs||11;
+  const bands=[]; let cur=null, lastY=null;
+  reg.forEach(l=>{ if(!cur || lastY-l.y > fsz*1.5){ cur={lines:[]}; bands.push(cur); } cur.lines.push(l); lastY=l.y; });
+  if(bands.length<3) return null;
+  /* per band: merge cells of wrapped lines that overlap horizontally */
+  const mergeBands=(cellsOf)=>bands.forEach(b=>{
+    const cs=[];
+    b.lines.forEach(l=>cellsOf(l).forEach(c=>{ if(!c.str.trim()) return;
+      const m=cs.find(k=>c.x0<=k.x1 && c.x1>=k.x0);
+      if(m){ m.x0=Math.min(m.x0,c.x0); m.x1=Math.max(m.x1,c.x1); m.parts.push({y:l.y,x1:c.x1,str:c.str}); }
+      else cs.push({x0:c.x0,x1:c.x1,parts:[{y:l.y,x1:c.x1,str:c.str}]});
+    }));
+    b.cells=cs;
+  });
+  mergeBands(l=>l.cells||[]);
+  const pad=Math.max(fsz*0.6,4);
+  let cols=tableColumns(bands.filter(b=>b.cells.length>=2),pad);
+  /* a line cell covering 2+ columns (numbers jammed together) is split by its fragments' columns */
+  const splitCells=l=>{ const outC=[]; (l.cells||[]).forEach(c=>{
+    const over=cols.filter(k=>Math.min(c.x1,k.x1)-Math.max(c.x0,k.x0)>2);
+    if(over.length<2 || !c.frags || c.frags.length<2){ outC.push(c); return; }
+    /* split only at real gaps (> 1 em), never inside a word */
+    const runs=[]; c.frags.filter(f=>f.str.trim()).sort((a,b)=>a.x-b.x).forEach(f=>{ const r=runs[runs.length-1]; if(r && f.x-r.x1<=(f.fs||fsz)){ r.fr.push(f); r.x1=Math.max(r.x1,f.x1); } else runs.push({x0:f.x,x1:f.x1,fr:[f]}); });
+    const g=new Map(); runs.forEach(r=>{ const i=nearestColByEdge(cols,r.x0,r.x1); if(!g.has(i)) g.set(i,[]); r.fr.forEach(f=>g.get(i).push(f)); });
+    if(g.size<2){ outC.push(c); return; }
+    g.forEach(fr=>outC.push({ x0:Math.min.apply(null,fr.map(f=>f.x)), x1:Math.max.apply(null,fr.map(f=>f.x1)), str:bidiCellText(fr), frags:fr }));
+  }); return outC; };
+  mergeBands(splitCells);
+  /* keep columns that actually receive cells in at least half the rows; re-assign until stable */
+  const minRows=Math.max(2,Math.ceil(bands.length*0.5));
+  for(let it=0; it<4 && cols.length; it++){
+    const use=cols.map(()=>new Set());
+    bands.forEach((b,ri)=>b.cells.forEach(c=>use[colIndexFor(cols,c,pad,false)].add(ri)));
+    const kept=cols.filter((k,i)=>use[i].size>=minRows);
+    if(kept.length===cols.length) break;
+    cols=kept;
+  }
+  if(cols.length<3) return null;
+  const grid=bands.map(()=>cols.map(()=>[]));
+  const colCells=cols.map(()=>[]);
+  bands.forEach((b,ri)=>b.cells.forEach(c=>{ const k=colIndexFor(cols,c,pad,false); c.parts.forEach(p=>grid[ri][k].push(p)); colCells[k].push({x0:c.x0,x1:c.x1,head:ri===0}); }));
+  let rows=grid.map(r=>r.map(ps=>ps.sort((a,b)=>(b.y-a.y)||(b.x1-a.x1)).map(p=>p.str).join(' ').replace(/\s+/g,' ').trim()));
+  const filled=rows.reduce((n,r)=>n+r.filter(c=>c!=='').length,0);
+  const ratio=filled/(rows.length*cols.length);
+  const fullRowFrac=rows.filter(r=>r.every(c=>c!=='')).length/rows.length;
+  if(!(ratio>=0.7 && fullRowFrac>=0.7 && rows[0].every(c=>c!==''))) return null;
+  let al=colCells.map(cc=>colAlignment(cc,fsz));
+  const arRe=/[؀-ۿ]/;
+  const arRows=rows.filter(r=>r.some(c=>arRe.test(c))).length;
+  const rtl=arRows>rows.length/2 || (rows[0].some(c=>arRe.test(c)) && al.filter(a=>a==='right').length>al.filter(a=>a==='left').length);
+  al=al.map(a=>a||(rtl?'right':'left'));
+  if(rtl){ rows.forEach(r=>r.reverse()); al.reverse(); }
+  return { rows:rows, rtl:rtl, aligns:al };
+}
+/* whole region first; if it isn't one table, split at standalone single-cell lines (titles between tables) */
+function cellTables(reg,s){
+  const t=tableFromCells(reg);
+  if(t){ t.start=s; t.end=s+reg.length-1; return [t]; }
+  const out=[]; let a=0;
+  const fsz=reg[0].fs||11;
+  const isBreak=i=>{ const l=reg[i]; if((l.cells||[]).length>1) return false;
+    const up=i>0?reg[i-1].y-l.y:1e9, dn=i<reg.length-1?l.y-reg[i+1].y:1e9; return up>fsz*1.5 && dn>fsz*1.5; };
+  for(let i=0;i<=reg.length;i++){
+    if(i===reg.length || isBreak(i)){
+      if(i>a && i-a<reg.length){ const p=tableFromCells(reg.slice(a,i)); if(p){ p.start=s+a; p.end=s+i-1; out.push(p); } }
+      a=i+1;
+    }
+  }
+  return out;
+}
 function findTables(lines){
   const anchors=lines.map((l,i)=>({i,n:fragGroups(l).length})).filter(a=>a.n>=2);
   const out=[]; let ci=0;
@@ -1005,6 +1083,7 @@ function findTables(lines){
     let s=anchors[ci].i, e=anchors[ci].i, cj=ci;
     while(cj+1<anchors.length && anchors[cj+1].i-anchors[cj].i<=4){ cj++; e=anchors[cj].i; }
     const reg=lines.slice(s,e+1);
+    if(reg.some(l=>/[؀-ۿ]/.test(lineText(l)))){ cellTables(reg,s).forEach(t=>out.push(t)); ci=cj+1; continue; }
     const frags=[]; reg.forEach(l=>(l.frags||[]).forEach(f=>{ if(f.str.trim()!=="") frags.push({x:f.x,y:l.y,str:f.str}); }));
     const fsz=reg[0].fs||11;
     if(frags.length){
@@ -1084,13 +1163,13 @@ function buildBlocks() {
         processRange(a, b);
       }
     };
-    /* first pass: geometric multi-column (LTR) tables consume their lines; existing logic handles the gaps */
+    /* first pass: geometric multi-column tables (LTR from fragments, Arabic from cells) consume their lines */
     let fTables = [];
-    try { fTables = findTables(lines).filter(t => !t.rtl).sort((a, b) => a.start - b.start); } catch (e) { fTables = []; }
+    try { fTables = findTables(lines).sort((a, b) => a.start - b.start); } catch (e) { fTables = []; }
     let cursor = 0;
     fTables.forEach(t => {
       handleSegment(cursor, t.start);
-      blk.push({ type:'table', rows: t.rows, ncols: t.rows[0].length, rtl: false,
+      blk.push({ type:'table', rows: t.rows, ncols: t.rows[0].length, rtl: !!t.rtl, aligns: t.aligns,
                  page: pi, firstOfPage: !blk.some(b2 => b2.page === pi) });
       cursor = t.end + 1;
     });
@@ -1130,6 +1209,65 @@ function buildBlocks() {
   return withImg;
 }
 
+/* table columns from cell x-ranges: cells whose ranges overlap share a column; two clusters are
+   never merged if one row has a cell in each (they are distinct columns in that row) */
+function tableColumns(lines, pad) {
+  const cl = [];
+  const order = lines.map((l, ri) => ({ l, ri })).sort((a, b) => b.l.cells.length - a.l.cells.length);
+  order.forEach(({ l, ri }) => {
+    l.cells.forEach(c => {
+      const hits = cl.filter(k => c.x0 - pad <= k.x1 && c.x1 + pad >= k.x0);
+      if (!hits.length) { cl.push({ x0: c.x0, x1: c.x1, rows: new Set([ri]) }); return; }
+      let tgt = hits[0];
+      for (let h = 1; h < hits.length; h++) {
+        const o = hits[h];
+        const clash = [...o.rows].some(r => tgt.rows.has(r));
+        if (!clash) { tgt.x0 = Math.min(tgt.x0, o.x0); tgt.x1 = Math.max(tgt.x1, o.x1); o.rows.forEach(r => tgt.rows.add(r)); cl.splice(cl.indexOf(o), 1); }
+      }
+      if (hits.some(h => h !== tgt && cl.indexOf(h) >= 0)) return; /* spans distinct columns */
+      if (tgt.rows.has(ri)) {
+        /* this row already has a cell here: keep it a separate column */
+        const ov = k => Math.min(c.x1, k.x1) - Math.max(c.x0, k.x0);
+        const alt = hits.filter(k => cl.indexOf(k) >= 0 && !k.rows.has(ri)).sort((a, b) => ov(b) - ov(a))[0];
+        if (alt) tgt = alt; else { cl.push({ x0: c.x0, x1: c.x1, rows: new Set([ri]) }); return; }
+      }
+      tgt.x0 = Math.min(tgt.x0, c.x0); tgt.x1 = Math.max(tgt.x1, c.x1); tgt.rows.add(ri);
+    });
+  });
+  return cl.sort((a, b) => a.x0 - b.x0).map(k => ({ x0: k.x0, x1: k.x1 }));
+}
+/* column whose x-range is closest to [x0,x1] (0 when overlapping; ties -> larger overlap) */
+function nearestColByEdge(cols, x0, x1) {
+  let bi = 0, bd = 1e9;
+  cols.forEach((k, i) => { const d = Math.max(k.x0 - x1, x0 - k.x1); if (d < bd) { bd = d; bi = i; } });
+  return bi;
+}
+/* column for a cell: largest overlap, else (unless strict) the nearest column centre */
+function colIndexFor(cols, c, pad, strict) {
+  let bi = -1, bo = 0;
+  cols.forEach((k, i) => { const o = Math.min(c.x1 + pad, k.x1) - Math.max(c.x0 - pad, k.x0); if (o > bo) { bo = o; bi = i; } });
+  if (bi >= 0 || strict) return bi;
+  const cc = (c.x0 + c.x1) / 2; let bd = 1e9;
+  cols.forEach((k, i) => { const d = Math.abs((k.x0 + k.x1) / 2 - cc); if (d < bd) { bd = d; bi = i; } });
+  return bi;
+}
+/* left / right / center: the edge most cells line up on (inliers around the median, so one
+   total/footer row can't skew it). '' = no clear signal (e.g. all cells the same width) */
+function colAlignment(cells, body) {
+  let cs = cells.filter(c => !c.head);
+  if (cs.length < 2) cs = cells;
+  if (cs.length < 2) return '';
+  const ws = cs.map(c => c.x1 - c.x0).sort((p, q) => p - q);
+  const tol = Math.max(1.5, Math.min(body * 0.5, ws[Math.floor(ws.length / 2)] * 0.2));
+  const inl = f => { const v = cs.map(f).sort((p, q) => p - q); const med = v[Math.floor(v.length / 2)]; return v.filter(x => Math.abs(x - med) <= tol).length; };
+  const nl = inl(c => c.x0), nr = inl(c => c.x1), nc = inl(c => (c.x0 + c.x1) / 2);
+  const best = Math.max(nl, nr, nc);
+  if (best < cs.length * 0.6) return '';
+  if (nl === best && nr === best) return '';
+  if (nc === best && nl < best && nr < best) return 'center';
+  return nl === best ? 'left' : (nr === best ? 'right' : '');
+}
+
 /* try to turn a run of multi-cell lines into a table block; returns true if it did */
 function emitTable(seg, pi, blk, body, geo) {
   if (seg.length < 3) return false;
@@ -1139,15 +1277,19 @@ function emitTable(seg, pi, blk, body, geo) {
   Object.keys(counts).forEach(k => { if (counts[k] > modeF) { modeF = counts[k]; modeN = +k; } });
   if (modeN < 2 || modeF < 3) return false;
 
-  /* define columns from the dominant rows */
-  const tol = Math.max(body * 3.5, 35);
-  const xsDom = [];
-  seg.forEach(l => { if (l.cells.length === modeN) l.cells.forEach(c => xsDom.push(c.x0)); });
-  let cols = cluster1D(xsDom, tol);
+  /* define columns from the dominant rows by horizontal OVERLAP (alignment-agnostic:
+     right-aligned Arabic columns have ragged left edges, centred columns ragged both) */
+  const pad = Math.max(body * 0.6, 4);
+  const cols = tableColumns(seg.filter(l => l.cells.length === modeN), pad);
   if (cols.length < 2) return false;
 
-  /* a line belongs to the table if >=2 of its cells align to defined columns */
-  const aligns = l => l.cells.length === modeN && l.cells.filter(c => cols.some(cx => Math.abs(c.x0 - cx) <= tol*1.3)).length >= Math.min(2, modeN);
+  /* a line belongs to the table if >=2 of its cells land in distinct columns */
+  const aligns = l => {
+    if (l.cells.length !== modeN) return false;
+    const hit = new Set();
+    l.cells.forEach(c => { const k = colIndexFor(cols, c, pad, true); if (k >= 0) hit.add(k); });
+    return hit.size >= Math.min(2, modeN);
+  };
   /* longest contiguous run of aligned lines */
   let bestS = 0, bestL = 0, s = -1;
   for (let k = 0; k <= seg.length; k++) {
@@ -1161,28 +1303,31 @@ function emitTable(seg, pi, blk, body, geo) {
   const after = seg.slice(bestS + bestL);
   if (before.length) paragraphsFromLines(before, pi, blk, body, geo);
 
-  const rtlCount = rowsLines.filter(l => /[؀-ۿ]/.test(lineText(l))).length;
-  const rtl = rtlCount > rowsLines.length / 2;
-  const rows = rowsLines.map(l => {
-    const row = new Array(cols.length).fill('');
+  let rows = rowsLines.map(() => new Array(cols.length).fill(''));
+  const colCells = cols.map(() => []);
+  rowsLines.forEach((l, ri) => {
     l.cells.forEach(c => {
-      let bi = 0, bd = 1e9;
-      for (let k = 0; k < cols.length; k++) { const d = Math.abs(c.x0 - cols[k]); if (d < bd) { bd = d; bi = k; } }
-      row[bi] = row[bi] ? (row[bi] + ' ' + c.str) : c.str;
+      const k = colIndexFor(cols, c, pad, false);
+      rows[ri][k] = rows[ri][k] ? (rows[ri][k] + ' ' + c.str) : c.str;
+      colCells[k].push({ x0: c.x0, x1: c.x1, head: ri === 0 });
     });
-    return row;
   });
-  /* drop columns that are empty in every row (spurious split from over-clustering) */
-  {
-    const keep = [];
-    for (let c = 0; c < cols.length; c++) { if (rows.some(r => (r[c]||"").trim() !== "")) keep.push(c); }
-    if (keep.length >= 2 && keep.length < cols.length) {
-      cols = keep.map(c => cols[c]);
-      for (let r = 0; r < rows.length; r++) rows[r] = keep.map(c => rows[r][c]);
-    }
-  }
-  if (rtl) { cols.reverse(); rows.forEach(r => r.reverse()); }
-  blk.push({ type:'table', rows: rows, ncols: cols.length, rtl: rtl, page: pi,
+  /* drop columns that are empty in every row */
+  let keep = [];
+  for (let c = 0; c < cols.length; c++) { if (rows.some(r => (r[c]||'').trim() !== '')) keep.push(c); }
+  if (keep.length < 2) return false;
+  rows = rows.map(r => keep.map(c => r[c]));
+  const kCells = keep.map(c => colCells[c]);
+
+  /* direction: Arabic-majority rows, OR an Arabic header over right-aligned columns */
+  const arRe = /[؀-ۿ]/;
+  const rtlCount = rowsLines.filter(l => arRe.test(lineText(l))).length;
+  let colAlign = kCells.map(cc => colAlignment(cc, body));
+  const rightCols = colAlign.filter(a => a === 'right').length, leftCols = colAlign.filter(a => a === 'left').length;
+  const rtl = rtlCount > rowsLines.length / 2 || (rows[0].some(c => arRe.test(c)) && rightCols > leftCols);
+  colAlign = colAlign.map(a => a || (rtl ? 'right' : 'left'));
+  if (rtl) { rows.forEach(r => r.reverse()); colAlign.reverse(); }
+  blk.push({ type:'table', rows: rows, ncols: keep.length, rtl: rtl, aligns: colAlign, page: pi,
              firstOfPage: !blk.some(b => b.page === pi) });
 
   if (after.length) paragraphsFromLines(after, pi, blk, body, geo);
@@ -1290,6 +1435,7 @@ function renderPreview() {
           if (b.infoGrid) { cell.style.border = 'none'; if (ci === 0) cell.style.fontWeight = '600'; }
           cell.dir = /[؀-ۿ]/.test(cellText) ? 'rtl' : 'ltr';
           cell.textContent = cellText;
+          if (b.aligns && b.aligns[ci]) cell.style.textAlign = b.aligns[ci];
           trEl.appendChild(cell);
         });
         tbl.appendChild(trEl);
@@ -1376,6 +1522,14 @@ async function downloadDocx() {
     const styles = document.getElementById('toggleStyles').checked;
     const breaks = document.getElementById('toggleBreaks').checked;
     const alignMap = { center: AlignmentType.CENTER, right: AlignmentType.RIGHT, left: AlignmentType.LEFT };
+    /* Word reads w:jc left/right as start/end inside a bidi (RTL) paragraph (MS-OE376 2.3.1.13):
+       right-aligned RTL = default (no jc); physically-left RTL = 'right' */
+    const jcFor = (a, bidi) => {
+      if (!a) return undefined;
+      if (a === 'center') return AlignmentType.CENTER;
+      if (!bidi) return alignMap[a];
+      return a === 'left' ? AlignmentType.RIGHT : undefined;
+    };
     const bd = { style: BorderStyle.SINGLE, size: 4, color: '999999' };
     const cellBorders = { top: bd, bottom: bd, left: bd, right: bd };
 
@@ -1393,7 +1547,7 @@ async function downloadDocx() {
         children: runs,
         heading: p.head ? (p.level === 1 ? HeadingLevel.HEADING_1 : HeadingLevel.HEADING_2) : undefined,
         bidirectional: p.rtl ? true : undefined,
-        alignment: alignMap[p.align] || undefined,
+        alignment: jcFor(p.align, p.rtl),
         spacing: p.head ? { before: 80, after: 40 } : { after: 0 },
         border: p.brBottom ? { bottom: { style: BorderStyle.SINGLE, size: 12, color: '000000', space: 6 } } : undefined,
         pageBreakBefore: breaks && p.firstOfPage && p.page > 0 ? true : undefined
@@ -1407,10 +1561,12 @@ async function downloadDocx() {
         children: row.map((cellText, ci) => {
           const isRtl = /[؀-ۿ]/.test(cellText);
           const boldCell = b.infoGrid ? (ci === 0) : (ri === 0);
+          const ca = b.aligns ? b.aligns[ci] : '';
           return new TableCell({
             borders: b.infoGrid ? noBorders : cellBorders,
             children: [ new Paragraph({
               bidirectional: isRtl ? true : undefined,
+              alignment: jcFor(ca, isRtl),
               children: [ new TextRun({ text: cellText, bold: boldCell ? true : undefined, rightToLeft: isRtl ? true : undefined }) ]
             }) ]
           });
