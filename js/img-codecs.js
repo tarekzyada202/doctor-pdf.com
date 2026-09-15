@@ -1,11 +1,12 @@
 /* Doctor PDF — image codecs shared by convert-image, image-to-pdf and pdf-to-image.
    Everything runs in the browser. Heavy codecs load on demand from /js/codecs/ (self-hosted):
    AVIF + JPEG XL + WebP (jSquash / Squoosh, Apache-2.0), TIFF decode (UTIF.js MIT + pako MIT/Zlib),
-   GIF encode (gifenc, MIT). BMP, ICO and TIFF (multi-page, LZW) writers are implemented here.
+   BMP, ICO and TIFF (multi-page, LZW) writers are implemented here; GIF + animated images live in
+   /js/img-anim.js (also our own code).
    API (window.DpdfImg):
      INPUT_ACCEPT                      <input accept> string for every readable format
      isImageFile(file)                 true if we can probably read it
-     decode(file|blob, {allPages})     -> [{ canvas, width, height }]  (TIFF: every page when allPages)
+     decode(file|blob, {allPages})     -> [{ canvas, width, height, animated? }]  (TIFF: every page; animated = gif|apng|webp)
      encode(canvas, fmt, {quality})    -> Blob   fmt: jpg png webp avif jxl bmp gif ico tiff
      encodeTiff([canvas...])           -> Blob   multi-page TIFF
      createTiffWriter()                -> { addPage(canvas), pageCount(), finish() -> Blob }
@@ -50,7 +51,12 @@
         .then(function () { return window.UTIF; });
     });
   }
-  function gifenc() { return once('gifenc', function () { return import(BASE + 'gifenc/gifenc.esm.js'); }); }
+  /* animated images + GIF writer: our own code in /js/img-anim.js */
+  function anim() {
+    return once('anim', function () {
+      return (window.DpdfAnim ? Promise.resolve() : loadScript('/js/img-anim.js')).then(function () { return window.DpdfAnim; });
+    });
+  }
 
   /* ── helpers ── */
   function canvasOf(w, h) { var c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
@@ -126,6 +132,16 @@
         });
       }
       var blob = new Blob([buf], { type: file.type || '' });
+      /* GIF / PNG / WebP may be animated: report it (frames are decoded later, only if needed) */
+      var head = new Uint8Array(buf, 0, Math.min(buf.byteLength, 64));
+      var maybeAnim = (head[0] === 0x47 && head[1] === 0x49) || (head[0] === 0x89 && head[1] === 0x50) ||
+        (head[8] === 0x57 && head[9] === 0x45 && head[12] === 0x56 && head[15] === 0x58);
+      if (kind === 'native' && maybeAnim) {
+        return anim().then(function (A) {
+          var ak = A.detect(new Uint8Array(buf));
+          return decodeNative(blob).then(function (c) { return [{ canvas: c, width: c.width, height: c.height, animated: ak }]; });
+        });
+      }
       if (kind === 'svg') return one(decodeViaImg(new Blob([buf], { type: 'image/svg+xml' }), true));
       if (kind === 'jxl' || kind === 'avif') {
         /* native first (Safari/Chrome AVIF, Safari JXL), wasm decoder as fallback */
@@ -198,16 +214,7 @@
   }
 
   function encodeGIF(canvas) {
-    return gifenc().then(function (G) {
-      var id = rgbaOf(canvas), w = id.width, h = id.height;
-      var palette = G.quantize(id.data, 256, { format: 'rgba4444', oneBitAlpha: true });
-      var index = G.applyPalette(id.data, palette, 'rgba4444');
-      var ti = palette.findIndex(function (c) { return c.length > 3 && c[3] === 0; });
-      var gif = G.GIFEncoder();
-      gif.writeFrame(index, w, h, ti >= 0 ? { palette: palette, transparent: true, transparentIndex: ti } : { palette: palette });
-      gif.finish();
-      return new Blob([gif.bytes()], { type: 'image/gif' });
-    });
+    return anim().then(function (A) { return A.encodeGIF([{ canvas: canvas, delay: 0 }], {}); });
   }
 
   /* TIFF LZW (with early change), one strip per page */
@@ -341,5 +348,5 @@
   }
 
   window.DpdfImg = { INPUT_ACCEPT: INPUT_ACCEPT, OUTPUTS: OUTPUTS, isImageFile: isImageFile,
-    decode: decode, encode: encode, encodeTiff: encodeTiff, createTiffWriter: createTiffWriter };
+    decode: decode, encode: encode, encodeTiff: encodeTiff, createTiffWriter: createTiffWriter, loadAnim: anim };
 })();
