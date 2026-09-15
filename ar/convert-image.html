@@ -232,7 +232,7 @@ html[lang="en"] .priv-cta .ar{display:none}
   .img-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل تحويل الصور مجاني؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يحوّل Doctor PDF الصور بين الصيغ مجاناً 100% بدون حدود."}},{"@type":"Question","name":"بين أي صيغ يمكنني التحويل؟","acceptedAnswer":{"@type":"Answer","text":"حوّل بين الصيغ الشائعة مثل JPG وPNG وWebP وغيرها."}},{"@type":"Question","name":"هل يمكنني تغيير الحجم أثناء التحويل؟","acceptedAnswer":{"@type":"Answer","text":"نعم. غيّر الأبعاد والجودة في نفس وقت التحويل."}},{"@type":"Question","name":"هل ملفاتي خاصة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم."}},{"@type":"Question","name":"هل تعمل على الهاتف؟","acceptedAnswer":{"@type":"Answer","text":"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل تحويل الصور مجاني؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يحوّل Doctor PDF الصور بين الصيغ مجاناً 100% بدون حدود."}},{"@type":"Question","name":"بين أي صيغ يمكنني التحويل؟","acceptedAnswer":{"@type":"Answer","text":"يقرأ JPG وPNG وWebP وAVIF وGIF وBMP وTIFF وSVG وICO وJPEG XL، ويحوّل إلى JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF أو BMP أو GIF أو ICO."}},{"@type":"Question","name":"هل يمكنني تغيير الحجم أثناء التحويل؟","acceptedAnswer":{"@type":"Answer","text":"نعم. غيّر الأبعاد والجودة في نفس وقت التحويل."}},{"@type":"Question","name":"هل ملفاتي خاصة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم."}},{"@type":"Question","name":"هل تعمل على الهاتف؟","acceptedAnswer":{"@type":"Answer","text":"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}}]}</script>
 </head>
 <body>
 
@@ -301,6 +301,10 @@ html[lang="en"] .priv-cta .ar{display:none}
         <span class="fmt-badge">BMP</span>
         <span class="fmt-badge">GIF</span>
         <span class="fmt-badge">TIFF</span>
+        <span class="fmt-badge">AVIF</span>
+        <span class="fmt-badge">SVG</span>
+        <span class="fmt-badge">ICO</span>
+        <span class="fmt-badge">JXL</span>
       </div>
       <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر الصور</span></button>
     </div>
@@ -332,12 +336,15 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-section">
       <div class="panel-section-title" id="T_targetFormat">التنسيق المستهدف</div>
       <div class="fmt-grid-big">
-        <button class="fmt-big-btn active" data-fmt="jpg"><span>JPG</span><small id="T_fmtJpgHint">الأصغر</small></button>
+        <button class="fmt-big-btn active" data-fmt="jpg"><span>JPG</span><small id="T_fmtJpgHint">يفتح في كل مكان</small></button>
         <button class="fmt-big-btn" data-fmt="png"><span>PNG</span><small id="T_fmtPngHint">بدون فقدان</small></button>
         <button class="fmt-big-btn" data-fmt="webp"><span>WebP</span><small id="T_fmtWebpHint">حديث</small></button>
+        <button class="fmt-big-btn" data-fmt="avif"><span>AVIF</span><small id="T_fmtAvifHint">الأصغر حجماً</small></button>
+        <button class="fmt-big-btn" data-fmt="jxl"><span>JPEG XL</span><small id="T_fmtJxlHint">الجيل القادم</small></button>
+        <button class="fmt-big-btn" data-fmt="tiff"><span>TIFF</span><small id="T_fmtTiffHint">للطباعة والأرشفة</small></button>
         <button class="fmt-big-btn" data-fmt="bmp"><span>BMP</span><small id="T_fmtBmpHint">غير مضغوط</small></button>
-        <button class="fmt-big-btn" data-fmt="gif"><span>GIF</span><small id="T_fmtGifHint">متحرك</small></button>
-        <button class="fmt-big-btn" data-fmt="ico"><span>ICO</span><small id="T_fmtIcoHint">أيقونة</small></button>
+        <button class="fmt-big-btn" data-fmt="gif"><span>GIF</span><small id="T_fmtGifHint">256 لون</small></button>
+        <button class="fmt-big-btn" data-fmt="ico"><span>ICO</span><small id="T_fmtIcoHint">أيقونة بكل المقاسات</small></button>
       </div>
     </div>
 
@@ -350,7 +357,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
         <span id="T_small">حجم أصغر</span><span id="T_hq">جودة أفضل</span>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="qualityNote">Applies to JPG and WebP output</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="qualityNote">Applies to JPG output</div>
     </div>
 
     <div class="panel-section">
@@ -374,8 +381,8 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-section">
       <div class="panel-section-title" id="T_bgTitle">الخلفية</div>
       <div class="toggle-row">
-        <span class="toggle-label" id="T_whiteBg">خلفية بيضاء (للـ JPG)</span>
-        <label class="toggle"><input type="checkbox" id="whiteBg" checked><span class="toggle-slider"></span></label>
+        <span class="toggle-label" id="T_whiteBg">ملء الشفافية باللون الأبيض</span>
+        <label class="toggle"><input type="checkbox" id="whiteBg"><span class="toggle-slider"></span></label>
       </div>
       <div class="info-box" style="margin-top:12px">
         <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -407,12 +414,13 @@ html[lang="en"] .priv-cta .ar{display:none}
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
-<input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+<input type="file" id="fileInput" accept="image/*,.jpg,.jpeg,.jfif,.png,.apng,.webp,.gif,.bmp,.dib,.ico,.cur,.svg,.avif,.tif,.tiff,.jxl" multiple style="display:none">
 
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
 </script>
 
+<script src="/js/img-codecs.js"></script>
 <script>
 // ══════════════════════════════════════════
 // TRANSLATIONS
@@ -427,12 +435,15 @@ const LANGS = {
     T_browse:'Choose Images',
     T_imagesLabel:'Images',T_addMore:'Add more',T_clearAll:'Clear all',
     T_targetFormat:'Target Format',
-    T_fmtJpgHint:'Smallest',T_fmtPngHint:'Lossless',T_fmtWebpHint:'Modern',
-    T_fmtBmpHint:'Uncompressed',T_fmtGifHint:'Animated',T_fmtIcoHint:'Favicon',
+    T_fmtJpgHint:'Works everywhere',T_fmtPngHint:'Lossless',T_fmtWebpHint:'Modern',
+    T_fmtAvifHint:'Smallest',T_fmtJxlHint:'Next-gen',T_fmtTiffHint:'Print & archive',
+    T_fmtBmpHint:'Uncompressed',T_fmtGifHint:'256 colors',T_fmtIcoHint:'Icon (all sizes)',
+    T_errHeic:'HEIC photos are not supported yet — export them as JPG from your phone first.',
+    T_errRead:'Could not read this image:',
     T_qualityTitle:'Quality',T_small:'Smaller file',T_hq:'Better quality',
     T_resizeTitle:'Resize (optional)',T_widthLabel:'Width (px)',T_heightLabel:'Height (px)',
     T_keepRatio:'Keep aspect ratio',
-    T_bgTitle:'Background',T_whiteBg:'White background (for JPG)',
+    T_bgTitle:'Background',T_whiteBg:'Fill transparency with white',
     T_privacyNote:'All conversions happen locally in your browser. No files are ever uploaded.',
     T_readyLabel:'Ready to convert',T_imagesWord:'images',T_convertBtn:'Convert All',
     T_dropHere:'Drop images here',
@@ -440,7 +451,7 @@ const LANGS = {
     T_errNoFiles:'Please add at least one image.',
     T_statusDone:'Done',T_statusErr:'Error',T_statusPending:'Pending',
     langLabel:'AR'
-  ,A_h2:"What does converting an image mean?",A_p1:"Converting an image means changing it from one format to another — for example turning a PNG into a JPG, a HEIC photo into a standard JPG, or any image into modern WebP. Each format has a purpose: JPG for small photos, PNG for transparency and sharp graphics, WebP for the smallest size on the web. Converting lets you meet a website's required format, shrink a file, or make an image open on any device.",A_p2:"With Doctor PDF you drop an image, pick the output format, optionally resize it, and download the converted file instantly — with no quality lost to a server round-trip.",A_useH:"When do you need to convert an image?",A_u1:"A form or website only accepts JPG but your image is PNG or HEIC.",A_u2:"Shrinking a large photo by converting it to WebP or JPG.",A_u3:"Turning a screenshot into a smaller, shareable format.",A_u4:"Converting a transparent logo to PNG, or a photo to JPG for printing.",A_u5:"Making an iPhone HEIC photo open on Windows or older devices.",A_howH:"How Doctor PDF converts images privately",A_hp1:"Every conversion happens inside your browser. Your images — personal photos, ID scans, screenshots — are never uploaded to any server and never leave your device.",A_hp2:"Because there is no upload, conversion is instant, works offline once the page is loaded, and has no limit on how many images you can convert.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to convert image formats online",F_s1:"Open the Convert Image tool and drop your images into the page.",F_s2:"Choose the output format you need (JPG, PNG, WebP, and more).",F_s3:"Resize or adjust quality if you like, then convert.",F_s4:"Download your converted images instantly — nothing is uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is converting images free?",F_a1:"Yes. Doctor PDF converts images between formats 100% free with no limits.",F_q2:"Which formats can I convert between?",F_a2:"Convert between popular formats including JPG, PNG, WebP, and more.",F_q3:"Can I resize while converting?",F_a3:"Yes. Change the dimensions and quality at the same time as converting.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
+  ,A_h2:"What does converting an image mean?",A_p1:"Converting an image means changing it from one format to another — for example turning a PNG into a JPG, a TIFF scan into a light JPG, or any image into modern WebP or AVIF. Each format has a purpose: JPG for photos that open everywhere, PNG for transparency and sharp graphics, WebP and AVIF for the smallest size on the web, TIFF for print and archiving, ICO for website icons. Converting lets you meet a website's required format, shrink a file, or make an image open on any device.",A_p2:"With Doctor PDF you drop an image, pick the output format, optionally resize it, and download the converted file instantly — with no quality lost to a server round-trip.",A_useH:"When do you need to convert an image?",A_u1:"A form or website only accepts JPG but your image is PNG, WebP or AVIF.",A_u2:"Shrinking a large photo by converting it to WebP or JPG.",A_u3:"Turning a screenshot into a smaller, shareable format.",A_u4:"Converting a transparent logo to PNG, or a photo to JPG for printing.",A_u5:"Opening a TIFF scan or an AVIF / JPEG XL image on a device that can't read it.",A_howH:"How Doctor PDF converts images privately",A_hp1:"Every conversion happens inside your browser. Your images — personal photos, ID scans, screenshots — are never uploaded to any server and never leave your device.",A_hp2:"Because there is no upload, conversion is instant, works offline once the page is loaded, and has no limit on how many images you can convert.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to convert image formats online",F_s1:"Open the Convert Image tool and drop your images into the page.",F_s2:"Choose the output format you need: JPG, PNG, WebP, AVIF, JPEG XL, TIFF, BMP, GIF or ICO.",F_s3:"Resize or adjust quality if you like, then convert.",F_s4:"Download your converted images instantly — nothing is uploaded.",F_faqH:"Frequently asked questions",F_q1:"Is converting images free?",F_a1:"Yes. Doctor PDF converts images between formats 100% free with no limits.",F_q2:"Which formats can I convert between?",F_a2:"Read JPG, PNG, WebP, AVIF, GIF, BMP, TIFF, SVG, ICO and JPEG XL, and convert to JPG, PNG, WebP, AVIF, JPEG XL, TIFF, BMP, GIF or ICO.",F_q3:"Can I resize while converting?",F_a3:"Yes. Change the dimensions and quality at the same time as converting.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
@@ -450,12 +461,15 @@ const LANGS = {
     T_browse:'اختر الصور',
     T_imagesLabel:'الصور',T_addMore:'إضافة المزيد',T_clearAll:'مسح الكل',
     T_targetFormat:'التنسيق المستهدف',
-    T_fmtJpgHint:'الأصغر',T_fmtPngHint:'بدون فقدان',T_fmtWebpHint:'حديث',
-    T_fmtBmpHint:'غير مضغوط',T_fmtGifHint:'متحرك',T_fmtIcoHint:'أيقونة',
+    T_fmtJpgHint:'يفتح في كل مكان',T_fmtPngHint:'بدون فقدان',T_fmtWebpHint:'حديث',
+    T_fmtAvifHint:'الأصغر حجماً',T_fmtJxlHint:'الجيل القادم',T_fmtTiffHint:'للطباعة والأرشفة',
+    T_fmtBmpHint:'غير مضغوط',T_fmtGifHint:'256 لون',T_fmtIcoHint:'أيقونة بكل المقاسات',
+    T_errHeic:'صور HEIC غير مدعومة حالياً — صدّرها من الهاتف بصيغة JPG أولاً.',
+    T_errRead:'تعذّرت قراءة الصورة:',
     T_qualityTitle:'الجودة',T_small:'حجم أصغر',T_hq:'جودة أفضل',
     T_resizeTitle:'تغيير الحجم (اختياري)',T_widthLabel:'العرض (px)',T_heightLabel:'الارتفاع (px)',
     T_keepRatio:'الحفاظ على النسبة',
-    T_bgTitle:'الخلفية',T_whiteBg:'خلفية بيضاء (للـ JPG)',
+    T_bgTitle:'الخلفية',T_whiteBg:'ملء الشفافية باللون الأبيض',
     T_privacyNote:'كل التحويلات تتم محلياً في متصفحك. لا تُرفع أي ملفات أبداً.',
     T_readyLabel:'جاهز للتحويل',T_imagesWord:'صور',T_convertBtn:'تحويل الكل',
     T_dropHere:'أفلت الصور هنا',
@@ -463,7 +477,7 @@ const LANGS = {
     T_errNoFiles:'.يرجى إضافة صورة واحدة على الأقل',
     T_statusDone:'تم',T_statusErr:'خطأ',T_statusPending:'انتظار',
     langLabel:'EN'
-  ,A_h2:"ماذا يعني تحويل صيغة الصورة؟",A_p1:"تحويل الصورة يعني تغييرها من صيغة إلى أخرى — مثل تحويل PNG إلى JPG، أو صورة HEIC إلى JPG عادية، أو أي صورة إلى صيغة WebP الحديثة. لكل صيغة استخدام: JPG للصور الصغيرة، PNG للشفافية والرسومات الحادة، WebP لأصغر حجم على الويب. التحويل يتيح لك تلبية الصيغة المطلوبة في موقع ما، أو تصغير الملف، أو جعل الصورة تفتح على أي جهاز.",A_p2:"مع Doctor PDF تُسقط الصورة، تختار صيغة الإخراج، تغيّر مقاسها إن أردت، وتحمّل الملف المحوّل فوراً — دون فقدان جودة في رحلة لخادم.",A_useH:"متى تحتاج إلى تحويل صيغة صورة؟",A_u1:"نموذج أو موقع يقبل JPG فقط بينما صورتك PNG أو HEIC.",A_u2:"تصغير صورة كبيرة بتحويلها إلى WebP أو JPG.",A_u3:"تحويل لقطة شاشة إلى صيغة أصغر يسهل مشاركتها.",A_u4:"تحويل شعار شفاف إلى PNG، أو صورة إلى JPG للطباعة.",A_u5:"جعل صورة HEIC من الآيفون تفتح على ويندوز أو الأجهزة القديمة.",A_howH:"كيف يحوّل Doctor PDF صورك بخصوصية تامة",A_hp1:"كل تحويل يتم داخل متصفحك. صورك — الصور الشخصية، صور الهوية، لقطات الشاشة — لا تُرفع أبداً إلى أي خادم ولا تغادر جهازك.",A_hp2:"ولأنه لا يوجد رفع، يكون التحويل فورياً، ويعمل دون اتصال بعد تحميل الصفحة، وبدون أي حد على عدد الصور التي يمكنك تحويلها.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل صيغ الصور أونلاين",F_s1:"افتح أداة تحويل الصور وأسقط صورك في الصفحة.",F_s2:"اختر صيغة الإخراج التي تحتاجها (JPG وPNG وWebP وغيرها).",F_s3:"غيّر الحجم أو اضبط الجودة إن أردت، ثم حوّل.",F_s4:"حمّل صورك المحوّلة فوراً — لا يُرفع أي شيء.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل الصور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF الصور بين الصيغ مجاناً 100% بدون حدود.",F_q2:"بين أي صيغ يمكنني التحويل؟",F_a2:"حوّل بين الصيغ الشائعة مثل JPG وPNG وWebP وغيرها.",F_q3:"هل يمكنني تغيير الحجم أثناء التحويل؟",F_a3:"نعم. غيّر الأبعاد والجودة في نفس وقت التحويل.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
+  ,A_h2:"ماذا يعني تحويل صيغة الصورة؟",A_p1:"تحويل الصورة يعني تغييرها من صيغة إلى أخرى — مثل تحويل PNG إلى JPG، أو ملف TIFF ممسوح إلى JPG خفيف، أو أي صورة إلى صيغة WebP أو AVIF الحديثة. لكل صيغة استخدام: JPG لصور تفتح في كل مكان، PNG للشفافية والرسومات الحادة، WebP وAVIF لأصغر حجم على الويب، TIFF للطباعة والأرشفة، ICO لأيقونات المواقع. التحويل يتيح لك تلبية الصيغة المطلوبة في موقع ما، أو تصغير الملف، أو جعل الصورة تفتح على أي جهاز.",A_p2:"مع Doctor PDF تُسقط الصورة، تختار صيغة الإخراج، تغيّر مقاسها إن أردت، وتحمّل الملف المحوّل فوراً — دون فقدان جودة في رحلة لخادم.",A_useH:"متى تحتاج إلى تحويل صيغة صورة؟",A_u1:"نموذج أو موقع يقبل JPG فقط بينما صورتك PNG أو WebP أو AVIF.",A_u2:"تصغير صورة كبيرة بتحويلها إلى WebP أو JPG.",A_u3:"تحويل لقطة شاشة إلى صيغة أصغر يسهل مشاركتها.",A_u4:"تحويل شعار شفاف إلى PNG، أو صورة إلى JPG للطباعة.",A_u5:"فتح ملف TIFF ممسوح أو صورة AVIF / JPEG XL على جهاز لا يقرأها.",A_howH:"كيف يحوّل Doctor PDF صورك بخصوصية تامة",A_hp1:"كل تحويل يتم داخل متصفحك. صورك — الصور الشخصية، صور الهوية، لقطات الشاشة — لا تُرفع أبداً إلى أي خادم ولا تغادر جهازك.",A_hp2:"ولأنه لا يوجد رفع، يكون التحويل فورياً، ويعمل دون اتصال بعد تحميل الصفحة، وبدون أي حد على عدد الصور التي يمكنك تحويلها.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل صيغ الصور أونلاين",F_s1:"افتح أداة تحويل الصور وأسقط صورك في الصفحة.",F_s2:"اختر صيغة الإخراج التي تحتاجها: JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF أو BMP أو GIF أو ICO.",F_s3:"غيّر الحجم أو اضبط الجودة إن أردت، ثم حوّل.",F_s4:"حمّل صورك المحوّلة فوراً — لا يُرفع أي شيء.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل الصور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF الصور بين الصيغ مجاناً 100% بدون حدود.",F_q2:"بين أي صيغ يمكنني التحويل؟",F_a2:"يقرأ JPG وPNG وWebP وAVIF وGIF وBMP وTIFF وSVG وICO وJPEG XL، ويحوّل إلى JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF أو BMP أو GIF أو ICO.",F_q3:"هل يمكنني تغيير الحجم أثناء التحويل؟",F_a3:"نعم. غيّر الأبعاد والجودة في نفس وقت التحويل.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
 };
 
 // ══════════════════════════════════════════
@@ -560,7 +574,7 @@ function bindEvents() {
   document.addEventListener('drop', (e) => {
     e.preventDefault();
     document.getElementById('dragOverlay').classList.remove('show');
-    const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
+    const files = Array.from(e.dataTransfer.files).filter(f=>DpdfImg.isImageFile(f));
     if(files.length) addFiles(files);
   });
 }
@@ -568,8 +582,8 @@ function bindEvents() {
 function updateQualityNote() {
   const fmt = document.querySelector('.fmt-big-btn.active')?.dataset.fmt || 'jpg';
   const notes = {
-    en:{ jpg:'Applies to JPG output', png:'PNG is lossless — quality slider ignored', webp:'Applies to WebP output', bmp:'BMP is uncompressed — quality ignored', gif:'GIF uses 256 colors — quality ignored', ico:'ICO uses lossless encoding' },
-    ar:{ jpg:'تنطبق على مخرجات JPG', png:'PNG بدون فقدان — منزلق الجودة لا يؤثر', webp:'تنطبق على مخرجات WebP', bmp:'BMP غير مضغوط — الجودة لا تؤثر', gif:'GIF يستخدم 256 لون', ico:'ICO يستخدم ترميز بدون فقدان' }
+    en:{ jpg:'Applies to JPG output', png:'PNG is lossless — quality slider ignored', webp:'Applies to WebP output', avif:'Applies to AVIF output — same look at a fraction of the size', jxl:'Applies to JPEG XL output', tiff:'TIFF is lossless (LZW) — quality ignored', bmp:'BMP is uncompressed — quality ignored', gif:'GIF uses 256 colors — quality ignored', ico:'ICO contains 16–256 px icons — quality ignored' },
+    ar:{ jpg:'تنطبق على مخرجات JPG', png:'PNG بدون فقدان — منزلق الجودة لا يؤثر', webp:'تنطبق على مخرجات WebP', avif:'تنطبق على مخرجات AVIF — نفس الشكل بحجم أصغر بكثير', jxl:'تنطبق على مخرجات JPEG XL', tiff:'TIFF بدون فقدان (LZW) — الجودة لا تؤثر', bmp:'BMP غير مضغوط — الجودة لا تؤثر', gif:'GIF يستخدم 256 لون — الجودة لا تؤثر', ico:'ICO يحتوي أيقونات من 16 إلى 256 بكسل — الجودة لا تؤثر' }
   };
   document.getElementById('qualityNote').textContent = (notes[currentLang]||notes.en)[fmt] || '';
 }
@@ -577,27 +591,32 @@ function updateQualityNote() {
 // ══════════════════════════════════════════
 // FILE HANDLING
 // ══════════════════════════════════════════
-function addFiles(files) {
-  const valid = files.filter(f => f.type.startsWith('image/'));
+function previewOf(canvas) {
+  const k = Math.min(1, 320 / Math.max(canvas.width, canvas.height));
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, Math.round(canvas.width * k)); c.height = Math.max(1, Math.round(canvas.height * k));
+  c.getContext('2d').drawImage(canvas, 0, 0, c.width, c.height);
+  return c.toDataURL('image/png');
+}
+
+async function addFiles(files) {
+  const valid = files.filter(f => DpdfImg.isImageFile(f));
   if(!valid.length) return;
-
-  const promises = valid.map(file => new Promise(res => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => res({ id:Math.random().toString(36).slice(2), file, name:file.name, dataUrl:e.target.result, w:img.naturalWidth, h:img.naturalHeight, status:'pending' });
-      img.onerror = () => res(null);
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }));
-
-  Promise.all(promises).then(results => {
-    results.filter(Boolean).forEach(img => images.push(img));
-    renderGrid();
-    updateUI();
-    document.getElementById('fileInput').value = '';
-  });
+  for (const file of valid) {
+    try {
+      const pages = await DpdfImg.decode(file, { allPages: true });
+      pages.forEach((pg, pi) => {
+        const name = pages.length > 1 ? file.name.replace(/(\.[^.]+)?$/, '-page' + (pi + 1) + '$1') : file.name;
+        images.push({ id:Math.random().toString(36).slice(2), file, name, source:pg.canvas, dataUrl:previewOf(pg.canvas), w:pg.width, h:pg.height, status:'pending' });
+      });
+    } catch (e) {
+      console.error('Read error for', file.name, e);
+      showToast(e.message === 'HEIC_UNSUPPORTED' ? tr('T_errHeic') : (tr('T_errRead') + ' ' + file.name), 'error');
+    }
+  }
+  renderGrid();
+  updateUI();
+  document.getElementById('fileInput').value = '';
 }
 
 function removeImage(id) {
@@ -689,9 +708,7 @@ async function convertAll() {
   const keepRatio = document.getElementById('keepRatio').checked;
   const whiteBg = document.getElementById('whiteBg').checked;
 
-  const mimeMap = { jpg:'image/jpeg', png:'image/png', webp:'image/webp', bmp:'image/bmp', gif:'image/gif', ico:'image/png' };
-  const mimeType = mimeMap[fmt] || 'image/jpeg';
-  const ext = fmt === 'ico' ? 'ico' : fmt;
+  const ext = (DpdfImg.OUTPUTS[fmt] || DpdfImg.OUTPUTS.jpg).ext;
 
   const btn = document.getElementById('convertBtn');
   const progressWrap = document.getElementById('progressWrap');
@@ -713,8 +730,7 @@ async function convertAll() {
 
     try {
       const canvas = document.createElement('canvas');
-      const source = new Image();
-      await new Promise((res, rej) => { source.onload=res; source.onerror=rej; source.src=imgData.dataUrl; });
+      const source = imgData.source;
 
       let dw = imgData.w, dh = imgData.h;
 
@@ -740,26 +756,29 @@ async function convertAll() {
         }
       }
 
-      // ICO size constraint
-      if (fmt === 'ico') { dw = Math.min(dw, 256); dh = Math.min(dh, 256); }
+      // ICO: the encoder builds 16–256 px icons from the image
+      if (fmt === 'ico') { const k = Math.min(1, 256 / Math.max(dw, dh)); dw = Math.max(1, Math.round(dw * k)); dh = Math.max(1, Math.round(dh * k)); }
 
       canvas.width = dw;
       canvas.height = dh;
       const ctx = canvas.getContext('2d');
 
-      if (whiteBg && mimeType !== 'image/png') {
+      if (whiteBg || fmt === 'jpg') {
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, dw, dh);
       }
 
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(source, 0, 0, dw, dh);
 
-      const dataUrl = canvas.toDataURL(mimeType, quality);
+      const blob = await DpdfImg.encode(canvas, fmt, { quality });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       const baseName = imgData.name.replace(/\.[^.]+$/, '');
-      a.href = dataUrl;
+      a.href = url;
       a.download = `${baseName}.${ext}`;
-      a.click();
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
 
       setCardStatus(imgData.id, 'done');
       doneCount++;
@@ -818,15 +837,15 @@ gtag('config','G-4SP6D9Z565');
   <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
   <div class="seo-about">
     <h2 id="A_h2">ماذا يعني تحويل صيغة الصورة؟</h2>
-    <p id="A_p1">تحويل الصورة يعني تغييرها من صيغة إلى أخرى — مثل تحويل PNG إلى JPG، أو صورة HEIC إلى JPG عادية، أو أي صورة إلى صيغة WebP الحديثة. لكل صيغة استخدام: JPG للصور الصغيرة، PNG للشفافية والرسومات الحادة، WebP لأصغر حجم على الويب. التحويل يتيح لك تلبية الصيغة المطلوبة في موقع ما، أو تصغير الملف، أو جعل الصورة تفتح على أي جهاز.</p>
+    <p id="A_p1">تحويل الصورة يعني تغييرها من صيغة إلى أخرى — مثل تحويل PNG إلى JPG، أو ملف TIFF ممسوح إلى JPG خفيف، أو أي صورة إلى صيغة WebP أو AVIF الحديثة. لكل صيغة استخدام: JPG لصور تفتح في كل مكان، PNG للشفافية والرسومات الحادة، WebP وAVIF لأصغر حجم على الويب، TIFF للطباعة والأرشفة، ICO لأيقونات المواقع. التحويل يتيح لك تلبية الصيغة المطلوبة في موقع ما، أو تصغير الملف، أو جعل الصورة تفتح على أي جهاز.</p>
     <p id="A_p2">مع Doctor PDF تُسقط الصورة، تختار صيغة الإخراج، تغيّر مقاسها إن أردت، وتحمّل الملف المحوّل فوراً — دون فقدان جودة في رحلة لخادم.</p>
     <h2 id="A_useH">متى تحتاج إلى تحويل صيغة صورة؟</h2>
     <ul class="seo-list">
-      <li id="A_u1">نموذج أو موقع يقبل JPG فقط بينما صورتك PNG أو HEIC.</li>
+      <li id="A_u1">نموذج أو موقع يقبل JPG فقط بينما صورتك PNG أو WebP أو AVIF.</li>
       <li id="A_u2">تصغير صورة كبيرة بتحويلها إلى WebP أو JPG.</li>
       <li id="A_u3">تحويل لقطة شاشة إلى صيغة أصغر يسهل مشاركتها.</li>
       <li id="A_u4">تحويل شعار شفاف إلى PNG، أو صورة إلى JPG للطباعة.</li>
-      <li id="A_u5">جعل صورة HEIC من الآيفون تفتح على ويندوز أو الأجهزة القديمة.</li>
+      <li id="A_u5">فتح ملف TIFF ممسوح أو صورة AVIF / JPEG XL على جهاز لا يقرأها.</li>
     </ul>
     <h2 id="A_howH">كيف يحوّل Doctor PDF صورك بخصوصية تامة</h2>
     <p id="A_hp1">كل تحويل يتم داخل متصفحك. صورك — الصور الشخصية، صور الهوية، لقطات الشاشة — لا تُرفع أبداً إلى أي خادم ولا تغادر جهازك.</p>
@@ -846,13 +865,13 @@ gtag('config','G-4SP6D9Z565');
   <h2 id="F_h2">كيفية تحويل صيغ الصور أونلاين</h2>
   <ol class="seo-steps">
     <li id="F_s1">افتح أداة تحويل الصور وأسقط صورك في الصفحة.</li>
-    <li id="F_s2">اختر صيغة الإخراج التي تحتاجها (JPG وPNG وWebP وغيرها).</li>
+    <li id="F_s2">اختر صيغة الإخراج التي تحتاجها: JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF أو BMP أو GIF أو ICO.</li>
     <li id="F_s3">غيّر الحجم أو اضبط الجودة إن أردت، ثم حوّل.</li>
     <li id="F_s4">حمّل صورك المحوّلة فوراً — لا يُرفع أي شيء.</li>
   </ol>
   <h2 id="F_faqH">الأسئلة الشائعة</h2>
   <div class="faq-item"><h3 id="F_q1">هل تحويل الصور مجاني؟</h3><p id="F_a1">نعم. يحوّل Doctor PDF الصور بين الصيغ مجاناً 100% بدون حدود.</p></div>
-  <div class="faq-item"><h3 id="F_q2">بين أي صيغ يمكنني التحويل؟</h3><p id="F_a2">حوّل بين الصيغ الشائعة مثل JPG وPNG وWebP وغيرها.</p></div>
+  <div class="faq-item"><h3 id="F_q2">بين أي صيغ يمكنني التحويل؟</h3><p id="F_a2">يقرأ JPG وPNG وWebP وAVIF وGIF وBMP وTIFF وSVG وICO وJPEG XL، ويحوّل إلى JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF أو BMP أو GIF أو ICO.</p></div>
   <div class="faq-item"><h3 id="F_q3">هل يمكنني تغيير الحجم أثناء التحويل؟</h3><p id="F_a3">نعم. غيّر الأبعاد والجودة في نفس وقت التحويل.</p></div>
   <div class="faq-item"><h3 id="F_q4">هل ملفاتي خاصة؟</h3><p id="F_a4">نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.</p></div>
   <div class="faq-item"><h3 id="F_q5">هل تعمل على الهاتف؟</h3><p id="F_a5">نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر.</p></div>

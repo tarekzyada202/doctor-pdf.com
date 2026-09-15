@@ -328,6 +328,11 @@ html[lang="en"] .priv-cta .ar{display:none}
         <button class="fmt-btn active" data-fmt="jpg">JPG</button>
         <button class="fmt-btn" data-fmt="png">PNG</button>
         <button class="fmt-btn" data-fmt="webp">WebP</button>
+        <button class="fmt-btn" data-fmt="avif">AVIF</button>
+        <button class="fmt-btn" data-fmt="jxl">JPEG XL</button>
+        <button class="fmt-btn" data-fmt="tiff">TIFF</button>
+        <button class="fmt-btn" data-fmt="bmp">BMP</button>
+        <button class="fmt-btn" data-fmt="gif">GIF</button>
       </div>
       <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="fmtHint">JPG — smaller size, great for photos</div>
     </div>
@@ -365,6 +370,7 @@ html[lang="en"] .priv-cta .ar{display:none}
           <select id="downloadMode">
             <option value="zip" id="T_dlZip">ملف ZIP (كل الصفحات)</option>
             <option value="single" id="T_dlSingle">ملفات منفصلة</option>
+            <option value="tiffmulti" id="T_dlTiffMulti" hidden>ملف TIFF واحد متعدد الصفحات</option>
           </select>
         </div>
       </div>
@@ -412,6 +418,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <!-- JSZip for ZIP download -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
+<script src="/js/img-codecs.js"></script>
 
 <script>
 // ══════════════════════════════════════════
@@ -430,7 +437,7 @@ const LANGS = {
     T_qualityLabel:'Quality',T_small:'Small file',T_hq:'High quality',
     T_dpiLabel:'Resolution (DPI)',
     T_downloadLabel:'Download Options',T_downloadModeLabel:'Mode',
-    T_dlZip:'ZIP archive (all pages)',T_dlSingle:'Individual files',
+    T_dlZip:'ZIP archive (all pages)',T_dlSingle:'Individual files',T_dlTiffMulti:'One multi-page TIFF file',
     T_prefixLabel:'Filename prefix',
     T_privacyNote:'PDF pages render in your browser. No file upload. 100% private.',
     T_selectedLabel:'Pages selected',T_convertBtn:'Convert to Images',
@@ -441,7 +448,7 @@ const LANGS = {
     T_errLoad:'Failed to load PDF. The file may be corrupted or encrypted.',
     T_page:'Page',
     langLabel:'AR'
-  ,A_h2:"What does converting a PDF to images mean?",A_p1:"Converting a PDF to images means turning each page of a PDF into a separate picture file (PNG or JPG). This is useful when you need to post a page as an image, insert it into a slide or chat, or use a page where PDFs are not accepted. Each page becomes a high-quality image you can use anywhere an image works.",A_p2:"With Doctor PDF you open your PDF, choose the format, and download all the page images — packaged in a ZIP when there are many — in one step.",A_useH:"When do you need to convert a PDF to images?",A_u1:"Posting a PDF page as an image on social media or in a chat.",A_u2:"Inserting a PDF page into a presentation or document as a picture.",A_u3:"Uploading to a site that accepts images but not PDFs.",A_u4:"Creating thumbnails or previews of document pages.",A_u5:"Extracting a page as an image to edit it in an image editor.",A_howH:"How Doctor PDF converts your PDF privately",A_hp1:"Each page is rendered to an image inside your browser. Your PDF is never uploaded, so confidential documents stay entirely on your device.",A_hp2:"Because there is no server, conversion is instant, works on any number of pages, and has no daily limits.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to convert PDF to images online",F_s1:"Open the PDF to Image tool and drop your PDF into the page.",F_s2:"Choose the image quality and format you want for each page.",F_s3:"Click Convert to turn every page into a high-quality image.",F_s4:"Download the images individually or as a ZIP — all in your browser.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to images free?",F_a1:"Yes. Doctor PDF converts PDF pages to images 100% free with no limits.",F_q2:"Can I download all pages at once?",F_a2:"Yes. Download every page as a single ZIP file, or save them one by one.",F_q3:"What image quality will I get?",F_a3:"You can pick high resolution for crisp, print-ready images.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
+  ,A_h2:"What does converting a PDF to images mean?",A_p1:"Converting a PDF to images means turning each page of a PDF into a separate picture file — JPG, PNG, WebP, AVIF, JPEG XL, TIFF (even one multi-page TIFF), BMP or GIF. This is useful when you need to post a page as an image, insert it into a slide or chat, or use a page where PDFs are not accepted. Each page becomes a high-quality image you can use anywhere an image works.",A_p2:"With Doctor PDF you open your PDF, choose the format, and download all the page images — packaged in a ZIP when there are many — in one step.",A_useH:"When do you need to convert a PDF to images?",A_u1:"Posting a PDF page as an image on social media or in a chat.",A_u2:"Inserting a PDF page into a presentation or document as a picture.",A_u3:"Uploading to a site that accepts images but not PDFs.",A_u4:"Creating thumbnails or previews of document pages.",A_u5:"Extracting a page as an image to edit it in an image editor.",A_howH:"How Doctor PDF converts your PDF privately",A_hp1:"Each page is rendered to an image inside your browser. Your PDF is never uploaded, so confidential documents stay entirely on your device.",A_hp2:"Because there is no server, conversion is instant, works on any number of pages, and has no daily limits.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to convert PDF to images online",F_s1:"Open the PDF to Image tool and drop your PDF into the page.",F_s2:"Choose the image quality and format you want for each page.",F_s3:"Click Convert to turn every page into a high-quality image.",F_s4:"Download the images individually or as a ZIP — all in your browser.",F_faqH:"Frequently asked questions",F_q1:"Is converting PDF to images free?",F_a1:"Yes. Doctor PDF converts PDF pages to images 100% free with no limits.",F_q2:"Can I download all pages at once?",F_a2:"Yes. Download every page as a single ZIP file, or save them one by one.",F_q3:"What image quality will I get?",F_a3:"You can pick high resolution for crisp, print-ready images.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
   ar:{
     T_tools:'كل الأدوات',T_merge:'دمج PDF',T_split:'تقسيم PDF',T_compress:'ضغط PDF',
     T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_rotate:'تدوير PDF',
@@ -454,7 +461,7 @@ const LANGS = {
     T_qualityLabel:'الجودة',T_small:'حجم صغير',T_hq:'جودة عالية',
     T_dpiLabel:'الدقة (DPI)',
     T_downloadLabel:'خيارات التحميل',T_downloadModeLabel:'الطريقة',
-    T_dlZip:'ملف ZIP (كل الصفحات)',T_dlSingle:'ملفات منفصلة',
+    T_dlZip:'ملف ZIP (كل الصفحات)',T_dlSingle:'ملفات منفصلة',T_dlTiffMulti:'ملف TIFF واحد متعدد الصفحات',
     T_prefixLabel:'بادئة اسم الملف',
     T_privacyNote:'صفحات PDF تُعرض في متصفحك. لا رفع ملفات. خصوصية كاملة.',
     T_selectedLabel:'صفحات محددة',T_convertBtn:'تحويل إلى صور',
@@ -465,7 +472,7 @@ const LANGS = {
     T_errLoad:'.فشل تحميل PDF. قد يكون الملف تالفاً أو مشفراً',
     T_page:'صفحة',
     langLabel:'EN'
-  ,A_h2:"ماذا يعني تحويل PDF إلى صور؟",A_p1:"تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل (PNG أو JPG). هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.",A_p2:"مع Doctor PDF تفتح ملفك، تختار الصيغة، وتحمّل صور كل الصفحات — مجمّعة في ملف ZIP عند تعددها — في خطوة واحدة.",A_useH:"متى تحتاج إلى تحويل PDF إلى صور؟",A_u1:"نشر صفحة PDF كصورة على وسائل التواصل أو في محادثة.",A_u2:"إدراج صفحة PDF في عرض تقديمي أو مستند كصورة.",A_u3:"الرفع إلى موقع يقبل الصور ولا يقبل PDF.",A_u4:"إنشاء صور مصغّرة أو معاينات لصفحات المستند.",A_u5:"استخراج صفحة كصورة لتعديلها في محرر صور.",A_howH:"كيف يحوّل Doctor PDF ملفك بخصوصية تامة",A_hp1:"تُحوّل كل صفحة إلى صورة داخل متصفحك. ملف PDF الخاص بك لا يُرفع أبداً، فتبقى المستندات السرية على جهازك بالكامل.",A_hp2:"ولأنه لا يوجد خادم، يكون التحويل فورياً، ويعمل على أي عدد من الصفحات، وبدون قيود يومية.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل PDF إلى صور أونلاين",F_s1:"افتح أداة PDF إلى صورة وأسقط ملفك في الصفحة.",F_s2:"اختر جودة وصيغة الصورة التي تريدها لكل صفحة.",F_s3:"اضغط تحويل لتحويل كل صفحة إلى صورة عالية الجودة.",F_s4:"حمّل الصور منفردة أو كملف ZIP — كل ذلك في متصفحك.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى صور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF صفحات PDF إلى صور مجاناً 100% بدون حدود.",F_q2:"هل يمكنني تحميل كل الصفحات دفعة واحدة؟",F_a2:"نعم. حمّل كل الصفحات كملف ZIP واحد، أو احفظها واحدة واحدة.",F_q3:"ما جودة الصور التي سأحصل عليها؟",F_a3:"يمكنك اختيار دقة عالية للحصول على صور واضحة جاهزة للطباعة.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
+  ,A_h2:"ماذا يعني تحويل PDF إلى صور؟",A_p1:"تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل — JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF (حتى ملف TIFF واحد متعدد الصفحات) أو BMP أو GIF. هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.",A_p2:"مع Doctor PDF تفتح ملفك، تختار الصيغة، وتحمّل صور كل الصفحات — مجمّعة في ملف ZIP عند تعددها — في خطوة واحدة.",A_useH:"متى تحتاج إلى تحويل PDF إلى صور؟",A_u1:"نشر صفحة PDF كصورة على وسائل التواصل أو في محادثة.",A_u2:"إدراج صفحة PDF في عرض تقديمي أو مستند كصورة.",A_u3:"الرفع إلى موقع يقبل الصور ولا يقبل PDF.",A_u4:"إنشاء صور مصغّرة أو معاينات لصفحات المستند.",A_u5:"استخراج صفحة كصورة لتعديلها في محرر صور.",A_howH:"كيف يحوّل Doctor PDF ملفك بخصوصية تامة",A_hp1:"تُحوّل كل صفحة إلى صورة داخل متصفحك. ملف PDF الخاص بك لا يُرفع أبداً، فتبقى المستندات السرية على جهازك بالكامل.",A_hp2:"ولأنه لا يوجد خادم، يكون التحويل فورياً، ويعمل على أي عدد من الصفحات، وبدون قيود يومية.",W_h2:"ليه Doctor PDF أفضل من iLovePDF و Smallpdf؟",W_lead:"زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:",W1:"بدون إعلانات مزعجة — نهائياً",W2:"بدون حدود يومية — Smallpdf يسمح بمهمتين فقط يومياً و Sejda بثلاث مهام في الساعة",W3:"خصوصية 100% — المنافسون يرفعون ملفاتك إلى خوادمهم، أما ملفاتك هنا فلا تغادر جهازك",W4:"مجاني تماماً — بدون علامات مائية، بدون تسجيل، وبدون رسوم مخفية",W5:"فوري — يعمل مباشرة في متصفحك",F_h2:"كيفية تحويل PDF إلى صور أونلاين",F_s1:"افتح أداة PDF إلى صورة وأسقط ملفك في الصفحة.",F_s2:"اختر جودة وصيغة الصورة التي تريدها لكل صفحة.",F_s3:"اضغط تحويل لتحويل كل صفحة إلى صورة عالية الجودة.",F_s4:"حمّل الصور منفردة أو كملف ZIP — كل ذلك في متصفحك.",F_faqH:"الأسئلة الشائعة",F_q1:"هل تحويل PDF إلى صور مجاني؟",F_a1:"نعم. يحوّل Doctor PDF صفحات PDF إلى صور مجاناً 100% بدون حدود.",F_q2:"هل يمكنني تحميل كل الصفحات دفعة واحدة؟",F_a2:"نعم. حمّل كل الصفحات كملف ZIP واحد، أو احفظها واحدة واحدة.",F_q3:"ما جودة الصور التي سأحصل عليها؟",F_a3:"يمكنك اختيار دقة عالية للحصول على صور واضحة جاهزة للطباعة.",F_q4:"هل ملفاتي خاصة؟",F_a4:"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم.",F_q5:"هل تعمل على الهاتف؟",F_a5:"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}
 };
 
 // ══════════════════════════════════════════
@@ -745,10 +752,17 @@ function updateSelBtns() {
 function updateFmtHint() {
   const fmt = document.querySelector('.fmt-btn.active')?.dataset.fmt || 'jpg';
   const hints = {
-    en: { jpg:'JPG — smaller size, great for photos', png:'PNG — lossless, great for text and graphics', webp:'WebP — modern format, smallest file size' },
-    ar: { jpg:'JPG — حجم أصغر، مثالي للصور الفوتوغرافية', png:'PNG — بدون فقدان جودة، مثالي للنصوص', webp:'WebP — تنسيق حديث، أصغر حجم ممكن' }
+    en: { jpg:'JPG — smaller size, opens everywhere', png:'PNG — lossless, great for text and graphics', webp:'WebP — modern format, small files',
+          avif:'AVIF — smallest files at the same quality', jxl:'JPEG XL — next-gen format, small and sharp', tiff:'TIFF — lossless, for print, fax and archives (can be one multi-page file)',
+          bmp:'BMP — uncompressed, very large files', gif:'GIF — 256 colors, for simple graphics' },
+    ar: { jpg:'JPG — حجم أصغر، يفتح في كل مكان', png:'PNG — بدون فقدان جودة، مثالي للنصوص', webp:'WebP — تنسيق حديث، ملفات صغيرة',
+          avif:'AVIF — أصغر حجم بنفس الجودة', jxl:'JPEG XL — صيغة الجيل القادم، صغيرة وحادة', tiff:'TIFF — بدون فقدان، للطباعة والفاكس والأرشفة (ممكن ملف واحد متعدد الصفحات)',
+          bmp:'BMP — غير مضغوط، ملفات كبيرة جداً', gif:'GIF — 256 لون، للرسومات البسيطة' }
   };
   document.getElementById('fmtHint').textContent = (hints[currentLang]||hints.en)[fmt];
+  /* multi-page TIFF download option only for TIFF */
+  const opt = document.getElementById('T_dlTiffMulti'), sel = document.getElementById('downloadMode');
+  if (opt) { opt.hidden = fmt !== 'tiff'; if (fmt !== 'tiff' && sel.value === 'tiffmulti') sel.value = 'zip'; }
 }
 
 function updateDpiHint() {
@@ -774,8 +788,14 @@ async function convertToImages() {
   const scale = dpi / 72; // pdf.js uses 72dpi baseline
   const mode = document.getElementById('downloadMode').value;
   const prefix = document.getElementById('prefixInput').value.trim() || 'page';
-  const mimeType = fmt === 'png' ? 'image/png' : fmt === 'webp' ? 'image/webp' : 'image/jpeg';
-  const ext = fmt;
+  const ext = (DpdfImg.OUTPUTS[fmt] || DpdfImg.OUTPUTS.jpg).ext;
+  const saveBlob = (blob, name) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  };
 
   const btn = document.getElementById('convertBtn');
   const progressWrap = document.getElementById('progressWrap');
@@ -788,7 +808,19 @@ async function convertToImages() {
   const pages = Array.from(selectedPages).sort((a,b)=>a-b);
 
   try {
-    if (mode === 'zip' && typeof JSZip !== 'undefined') {
+    if (mode === 'tiffmulti' && fmt === 'tiff') {
+      // one multi-page TIFF (each page compressed as soon as it's rendered)
+      const writer = DpdfImg.createTiffWriter();
+      for (let i = 0; i < pages.length; i++) {
+        const pageNum = pages[i];
+        progressFill.style.width = ((i / pages.length) * 95) + '%';
+        progressLabel.textContent = `${tr('T_converting')} ${pageNum} / ${totalPages}`;
+        writer.addPage(await renderPageFull(pageNum, scale, fmt));
+        await new Promise(r => setTimeout(r, 0));
+      }
+      saveBlob(writer.finish(), `${prefix}-pages.tiff`);
+
+    } else if (mode === 'zip' && typeof JSZip !== 'undefined') {
       // ZIP download
       const zip = new JSZip();
 
@@ -797,22 +829,16 @@ async function convertToImages() {
         progressFill.style.width = ((i / pages.length) * 95) + '%';
         progressLabel.textContent = `${tr('T_converting')} ${pageNum} / ${totalPages}`;
 
-        const dataUrl = await renderPageFull(pageNum, scale, mimeType, quality);
-        const base64 = dataUrl.split(',')[1];
+        const blob = await DpdfImg.encode(await renderPageFull(pageNum, scale, fmt), fmt, { quality });
         const padded = String(pageNum).padStart(3, '0');
-        zip.file(`${prefix}-${padded}.${ext}`, base64, { base64: true });
+        zip.file(`${prefix}-${padded}.${ext}`, blob);
         await new Promise(r => setTimeout(r, 0));
       }
 
       progressFill.style.width = '100%';
       progressLabel.textContent = 'Creating ZIP...';
       const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${prefix}-images.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
+      saveBlob(blob, `${prefix}-images.zip`);
 
     } else {
       // Individual downloads
@@ -821,12 +847,9 @@ async function convertToImages() {
         progressFill.style.width = ((i / pages.length) * 95) + '%';
         progressLabel.textContent = `${tr('T_converting')} ${pageNum} / ${totalPages}`;
 
-        const dataUrl = await renderPageFull(pageNum, scale, mimeType, quality);
-        const a = document.createElement('a');
+        const blob = await DpdfImg.encode(await renderPageFull(pageNum, scale, fmt), fmt, { quality });
         const padded = String(pageNum).padStart(3, '0');
-        a.href = dataUrl;
-        a.download = `${prefix}-${padded}.${ext}`;
-        a.click();
+        saveBlob(blob, `${prefix}-${padded}.${ext}`);
         await new Promise(r => setTimeout(r, 300));
       }
     }
@@ -848,7 +871,7 @@ async function convertToImages() {
   }
 }
 
-async function renderPageFull(pageNum, scale, mimeType, quality) {
+async function renderPageFull(pageNum, scale, fmt) {
   const page = await pdfDoc.getPage(pageNum);
   const viewport = page.getViewport({ scale });
   const canvas = document.createElement('canvas');
@@ -856,14 +879,14 @@ async function renderPageFull(pageNum, scale, mimeType, quality) {
   canvas.height = Math.round(viewport.height);
   const ctx = canvas.getContext('2d');
 
-  // White background for JPEG
-  if (mimeType !== 'image/png') {
+  // White page background (PNG keeps transparency)
+  if (fmt !== 'png') {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   await page.render({ canvasContext: ctx, viewport }).promise;
-  return canvas.toDataURL(mimeType, quality);
+  return canvas;
 }
 
 // ══════════════════════════════════════════
@@ -902,7 +925,7 @@ gtag('config','G-4SP6D9Z565');
   <a class="priv-cta" href="privacy-security.html"><span class="en">🔒 Your files never leave your device. See how Doctor PDF protects your privacy →</span><span class="ar">🔒 ملفاتك لا تغادر جهازك أبداً. اعرف كيف يحمي Doctor PDF خصوصيتك ←</span></a>
   <div class="seo-about">
     <h2 id="A_h2">ماذا يعني تحويل PDF إلى صور؟</h2>
-    <p id="A_p1">تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل (PNG أو JPG). هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.</p>
+    <p id="A_p1">تحويل PDF إلى صور يعني تحويل كل صفحة من ملف PDF إلى ملف صورة منفصل — JPG أو PNG أو WebP أو AVIF أو JPEG XL أو TIFF (حتى ملف TIFF واحد متعدد الصفحات) أو BMP أو GIF. هذا مفيد عندما تحتاج لنشر صفحة كصورة، أو إدراجها في شريحة أو محادثة، أو استخدام صفحة في مكان لا يقبل ملفات PDF. تصبح كل صفحة صورة عالية الجودة يمكنك استخدامها في أي مكان يقبل الصور.</p>
     <p id="A_p2">مع Doctor PDF تفتح ملفك، تختار الصيغة، وتحمّل صور كل الصفحات — مجمّعة في ملف ZIP عند تعددها — في خطوة واحدة.</p>
     <h2 id="A_useH">متى تحتاج إلى تحويل PDF إلى صور؟</h2>
     <ul class="seo-list">
