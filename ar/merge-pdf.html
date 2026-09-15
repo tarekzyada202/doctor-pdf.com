@@ -362,6 +362,12 @@ var lang=localStorage.getItem('dpdf_lang')||'ar';
 var DR={on:false,el:null,ghost:null,idx:-1,ox:0,oy:0};
 
 /* ── LOAD FILES ── */
+/* Pages appear immediately as placeholders; each thumbnail is rendered once, only when it scrolls
+   near the viewport (on-screen pages first), and kept on the page object — reorder / rotate /
+   delete never re-render. The pdf.js document of each file stays open for that and is destroyed
+   when its pages are all removed or the tool is reset. */
+var TH={docs:{},queue:[],busy:false,io:null,gen:0};
+
 async function loadFiles(files){
   for(var i=0;i<files.length;i++){
     var f=files[i];
@@ -371,20 +377,71 @@ async function loadFiles(files){
     try{
       var bytes=await f.arrayBuffer();
       var doc=await pdfjsLib.getDocument({isEvalSupported:false, data:bytes}).promise;
+      TH.docs[fi]=doc;
+      var p1=await doc.getPage(1);
+      var v1=p1.getViewport({scale:1});
+      var h=Math.round(THUMB_W*v1.height/v1.width);
       for(var p=0;p<doc.numPages;p++){
-        var page=await doc.getPage(p+1);
-        var vp0=page.getViewport({scale:1});
-        var scale=THUMB_W/vp0.width;
-        var vp=page.getViewport({scale:scale});
-        var cv=document.createElement('canvas');
-        cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
-        await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
-        S.pages.push({cv:cv,fi:fi,pi:p,name:f.name,rot:0});
+        S.pages.push({cv:null,w:THUMB_W,h:h,fi:fi,pi:p,name:f.name,rot:0});
       }
-      await doc.destroy();
+      render();
     }catch(e){console.error('Error loading',f.name,e);}
   }
   render();
+}
+
+function thumbObserver(){
+  if(TH.io)return TH.io;
+  TH.io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting)return;
+      TH.io.unobserve(en.target);
+      var pg=en.target.__pg;
+      if(pg&&!pg.cv&&TH.queue.indexOf(pg)<0){TH.queue.push(pg);pumpThumbs();}
+    });
+  },{root:null,rootMargin:'600px'});
+  return TH.io;
+}
+
+async function pumpThumbs(){
+  if(TH.busy)return;
+  TH.busy=true;
+  try{
+    while(TH.queue.length){
+      /* on-screen pages first */
+      var pick=TH.queue.findIndex(function(pg){
+        var t=pg.__thumb; if(!t||!t.isConnected)return false;
+        var r=t.getBoundingClientRect(); return r.bottom>0&&r.top<window.innerHeight;
+      });
+      if(pick<0)pick=0;
+      var pg=TH.queue.splice(pick,1)[0];
+      var gen=TH.gen;
+      if(pg.cv||S.pages.indexOf(pg)<0)continue;
+      var doc=TH.docs[pg.fi];
+      if(!doc)continue;
+      try{
+        var page=await doc.getPage(pg.pi+1);
+        var vp0=page.getViewport({scale:1});
+        var vp=page.getViewport({scale:THUMB_W/vp0.width});
+        var cv=document.createElement('canvas');
+        cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
+        await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        if(gen!==TH.gen)continue;
+        pg.cv=cv;pg.w=cv.width;pg.h=cv.height;
+        var t=pg.__thumb;
+        var ph=t&&t.querySelector('canvas');
+        if(ph){cv.style.cssText=ph.style.cssText;ph.replaceWith(cv);}
+      }catch(e){}
+    }
+  }finally{TH.busy=false;}
+}
+
+/* close pdf.js documents whose pages are all gone */
+function releaseDocs(){
+  Object.keys(TH.docs).forEach(function(k){
+    var fi=+k;
+    if(!S.pages.some(function(p){return p.fi===fi;})){try{TH.docs[k].destroy();}catch(e){} delete TH.docs[k];}
+  });
 }
 
 /* ── RENDER ── */
@@ -410,19 +467,23 @@ function renderStats(){
 function renderGrid(){
   var grid=document.getElementById('pagesGrid');
   grid.innerHTML='';
+  var io=thumbObserver();
+  io.disconnect();
   S.pages.forEach(function(pg,i){
     var color=FILE_COLORS[pg.fi%FILE_COLORS.length];
     var thumb=document.createElement('div');
     thumb.className='pg-thumb';
     thumb.dataset.i=i;
+    thumb.__pg=pg;pg.__thumb=thumb;
 
-    var cv=document.createElement('canvas');
-    cv.width=pg.cv.width;cv.height=pg.cv.height;
-    cv.getContext('2d').drawImage(pg.cv,0,0);
+    /* the cached thumbnail itself (moved, not copied), or a blank placeholder until it's rendered */
+    var cv=pg.cv;
+    if(!cv){cv=document.createElement('canvas');cv.width=pg.w;cv.height=pg.h;}
     var rotDeg=pg.rot||0;
-    var rotScale=(rotDeg===90||rotDeg===270)?'scale('+Math.round(pg.cv.height/pg.cv.width*100)/100+')':'';
-    cv.style.cssText='border:2.5px solid '+color+';border-radius:5px;box-shadow:0 2px 8px '+color+'44;transform:rotate('+rotDeg+'deg) '+rotScale+';transition:transform .25s;';
+    var rotScale=(rotDeg===90||rotDeg===270)?'scale('+Math.round(pg.h/pg.w*100)/100+')':'';
+    cv.style.cssText='border:2.5px solid '+color+';border-radius:5px;box-shadow:0 2px 8px '+color+'44;background:var(--bg3);transform:rotate('+rotDeg+'deg) '+rotScale+';transition:transform .25s;';
     thumb.appendChild(cv);
+    if(!pg.cv)io.observe(thumb);
 
     var lbl=document.createElement('div');
     lbl.className='pg-thumb-lbl';
@@ -432,7 +493,7 @@ function renderGrid(){
     var del=document.createElement('button');
     del.className='pg-thumb-del';
     del.textContent='✕';
-    del.onclick=function(e){e.stopPropagation();S.pages.splice(i,1);render();};
+    del.onclick=function(e){e.stopPropagation();S.pages.splice(i,1);releaseDocs();render();};
     thumb.appendChild(del);
 
     var rotWrap=document.createElement('div');
@@ -459,8 +520,8 @@ function renderGrid(){
       var gh=document.createElement('div');
       gh.style.cssText='position:fixed;pointer-events:none;z-index:9999;opacity:.8;transform:scale(1.06) rotate(2deg);box-shadow:0 12px 32px rgba(0,0,0,.25);border-radius:8px;width:'+rect.width+'px;height:'+rect.height+'px;left:'+rect.left+'px;top:'+rect.top+'px;background:var(--bg);overflow:hidden;';
       var ghCv=document.createElement('canvas');
-      ghCv.width=pg.cv.width;ghCv.height=pg.cv.height;
-      ghCv.getContext('2d').drawImage(pg.cv,0,0);
+      ghCv.width=pg.w;ghCv.height=pg.h;
+      if(pg.cv)ghCv.getContext('2d').drawImage(pg.cv,0,0);
       ghCv.style.cssText='display:block;width:100%;';
       gh.appendChild(ghCv);
       document.body.appendChild(gh);
@@ -527,6 +588,7 @@ function renderFileList(){
 function removeFile(fi){
   S.pages=S.pages.filter(function(p){return p.fi!==fi;});
   if(!S.pages.length)S.files=[];
+  releaseDocs();
   render();
 }
 
@@ -544,7 +606,7 @@ function rotatePage(idx, delta){
   if(thumb){
     var cv=thumb.querySelector('canvas');
     if(cv){
-      var rotScale=(pg.rot===90||pg.rot===270)?'scale('+Math.round(pg.cv.height/pg.cv.width*100)/100+')':'';
+      var rotScale=(pg.rot===90||pg.rot===270)?'scale('+Math.round(pg.h/pg.w*100)/100+')':'';
       cv.style.transform='rotate('+pg.rot+'deg) '+rotScale;
     }
     var badge=document.getElementById('rb-'+idx);
@@ -679,6 +741,7 @@ function setProgress(pct,msg){document.getElementById('progressFill').style.widt
 
 function resetTool(){
   S.files=[];S.pages=[];
+  TH.gen++;TH.queue=[];if(TH.io)TH.io.disconnect();releaseDocs();
   document.getElementById('pdfInput').value='';
   document.getElementById('pagesGrid').innerHTML='';
   document.getElementById('fileList').innerHTML='';

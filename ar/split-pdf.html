@@ -169,7 +169,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 /* PAGE CARD */
 .pg-item{display:flex;align-items:stretch;flex-shrink:0}
 .pg-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border-radius:var(--radius-sm);transition:background .15s;cursor:pointer}
-.pg-wrap canvas{display:block;border-radius:var(--radius-sm);border:2px solid var(--border);transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pg-wrap canvas{display:block;background:var(--bg3);border-radius:var(--radius-sm);border:2px solid var(--border);transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .pg-wrap:hover canvas{border-color:var(--primary)}
 .pg-wrap.selected canvas{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
 .pg-wrap.selected{background:var(--primary-light)}
@@ -514,6 +514,7 @@ const S = {
   deleted:new Set(),
   splits:new Set(),
   selected:new Set(),
+  thumbs:new Map(),   // 'pageIdx@width' -> rendered canvas
   mode:'visual',
   zoom:1.0
 };
@@ -550,7 +551,7 @@ function bindEvents() {
     const next = currentLang==='en'?'ar':'en';
     localStorage.setItem('dpdf_lang',next);
     applyLang(next);
-    if(S.pdfJsDoc) renderPages();
+    for(let i=0;i<S.pageCount;i++) updatePageEl(i);
   };
   document.getElementById('toolsBtn').onclick = (e) => {
     e.stopPropagation();
@@ -735,9 +736,10 @@ function updateSelectionUI() {
 }
 
 function deleteSelected() {
+  const touched = [...S.selected];
   S.selected.forEach(i => S.deleted.add(i));
   S.selected.clear();
-  renderPages();
+  touched.forEach(updatePageEl);
   updateStats();
   updateSelectionUI();
 }
@@ -765,11 +767,13 @@ async function loadPDF(f) {
   if(!f||(f.type!=='application/pdf'&&!f.name.endsWith('.pdf'))) {
     showToast(tr('T_errInvalid'),'error'); return;
   }
-  S.file=f; S.deleted=new Set(); S.splits=new Set(); S.selected=new Set();
+  S.file=f; S.deleted=new Set(); S.splits=new Set(); S.selected=new Set(); S.thumbs=new Map();
+  RENDER.gen++; RENDER.queue=[];
   if(S.pdfJsDoc){ try{S.pdfJsDoc.destroy();}catch(e){} }
   S.pdfBytes = await f.arrayBuffer();
   S.pdfJsDoc = await pdfjsLib.getDocument({isEvalSupported:false, data:S.pdfBytes.slice(0)}).promise;
   S.pageCount = S.pdfJsDoc.numPages;
+  try { const p1 = await S.pdfJsDoc.getPage(1); const v1 = p1.getViewport({scale:1}); RENDER.ratio = v1.height / v1.width; } catch(e) {}
 
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('pagesArea').style.display = 'flex';
@@ -782,36 +786,134 @@ async function loadPDF(f) {
   document.getElementById('resultBox').style.display = 'none';
 
   updateStats();
-  await renderPages();
+  renderPages();
 }
 
 // ── RENDER PAGES ──
-async function renderPages() {
-  const row = document.getElementById('pagesRow');
-  row.innerHTML = '';
-  const thumbW = Math.round(THUMB_BASE * S.zoom);
+/* The grid is built instantly with placeholders; each thumbnail is rendered ONCE per zoom width
+   (cached in S.thumbs), only when it scrolls near the viewport, one at a time. Delete / restore /
+   select only touch the affected card, so nothing is re-rendered. */
+const RENDER = { gen:0, queue:[], busy:false, task:null, io:null, ratio:1.4142 };
 
+function renderPages() {
+  const row = document.getElementById('pagesRow');
+  const thumbW = Math.round(THUMB_BASE * S.zoom);
+  RENDER.gen++;
+  RENDER.queue = [];
+  if(RENDER.task){ try{ RENDER.task.cancel(); }catch(e){} RENDER.task = null; }
+  if(RENDER.io) RENDER.io.disconnect();
+  /* keep cached thumbnails for this width and the base width only */
+  S.thumbs.forEach((cv,key) => { const w = +key.split('@')[1]; if(w !== thumbW && w !== THUMB_BASE) S.thumbs.delete(key); });
+
+  row.innerHTML = '';
+  const frag = document.createDocumentFragment();
   for(let i=0; i<S.pageCount; i++) {
-    if(i>0) row.appendChild(makeSep(i-1));
-    row.appendChild(await makePageEl(i, thumbW));
+    if(i>0) frag.appendChild(makeSep(i-1));
+    frag.appendChild(makePageEl(i, thumbW));
   }
+  row.appendChild(frag);
+
+  RENDER.io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ RENDER.io.unobserve(en.target); enqueueThumb(+en.target.dataset.i, thumbW); } });
+  }, { root: document.getElementById('pagesScroll'), rootMargin: '600px' });
+  row.querySelectorAll('.pg-wrap').forEach(w => { if(w.dataset.ready !== '1') RENDER.io.observe(w); });
 }
 
-async function makePageEl(i, thumbW) {
-  const page = await S.pdfJsDoc.getPage(i+1);
-  const vp0 = page.getViewport({scale:1});
-  const scale = thumbW / vp0.width;
-  const vp = page.getViewport({scale});
-  const cv = document.createElement('canvas');
-  cv.width = Math.round(vp.width);
-  cv.height = Math.round(vp.height);
-  await page.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise;
+function enqueueThumb(i, thumbW) {
+  RENDER.queue.push({ i, thumbW, gen: RENDER.gen });
+  pumpThumbs();
+}
+
+async function pumpThumbs() {
+  if(RENDER.busy) return;
+  RENDER.busy = true;
+  try {
+    while(RENDER.queue.length) {
+      /* pages on screen right now first (the user may have jumped far down) */
+      const sr = document.getElementById('pagesScroll').getBoundingClientRect();
+      let pick = RENDER.queue.findIndex(j => {
+        const w = document.querySelector('.pg-wrap[data-i="'+j.i+'"]'); if(!w) return false;
+        const r = w.getBoundingClientRect(); return r.bottom > sr.top && r.top < sr.bottom;
+      });
+      if(pick < 0) pick = 0;
+      const job = RENDER.queue.splice(pick, 1)[0];
+      if(job.gen !== RENDER.gen || !S.pdfJsDoc) continue;
+      const key = job.i + '@' + job.thumbW;
+      let cv = S.thumbs.get(key);
+      if(!cv) {
+        const doc = S.pdfJsDoc;
+        try {
+          const page = await doc.getPage(job.i+1);
+          if(job.gen !== RENDER.gen) continue;
+          const vp0 = page.getViewport({scale:1});
+          const vp = page.getViewport({scale: job.thumbW / vp0.width});
+          cv = document.createElement('canvas');
+          cv.width = Math.round(vp.width);
+          cv.height = Math.round(vp.height);
+          RENDER.task = page.render({canvasContext:cv.getContext('2d'), viewport:vp});
+          await RENDER.task.promise;
+          RENDER.task = null;
+          if(doc !== S.pdfJsDoc) continue;
+          S.thumbs.set(key, cv);
+          if(job.i === 0) RENDER.ratio = vp0.height / vp0.width;
+        } catch(e) { RENDER.task = null; continue; }
+      }
+      if(job.gen !== RENDER.gen) continue;
+      const wrap = document.querySelector('.pg-wrap[data-i="'+job.i+'"]');
+      const ph = wrap && wrap.querySelector('canvas');
+      if(ph && ph !== cv) { ph.replaceWith(cv); wrap.dataset.ready = '1'; }
+    }
+  } finally { RENDER.busy = false; }
+}
+
+/* refresh one card's classes + hover buttons (no re-render) */
+function updatePageEl(i) {
+  const wrap = document.querySelector('.pg-wrap[data-i="'+i+'"]');
+  if(!wrap) return;
+  wrap.classList.toggle('deleted', S.deleted.has(i));
+  wrap.classList.toggle('selected', S.selected.has(i));
+  const num = wrap.querySelector('.pg-num');
+  if(num) num.textContent = tr('T_page')+(i+1);
+  const old = wrap.querySelector('.pg-overlay');
+  if(old) old.replaceWith(makeOverlay(i));
+}
+
+function makeOverlay(i) {
+  const ov = document.createElement('div');
+  ov.className = 'pg-overlay';
+  if(!S.deleted.has(i)) {
+    const delBtn = document.createElement('button');
+    delBtn.className='ov-btn ov-del'; delBtn.textContent='🗑 '+tr('T_delete');
+    delBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
+    const extBtn = document.createElement('button');
+    extBtn.className='ov-btn ov-ext'; extBtn.textContent='⬇ '+tr('T_extract');
+    extBtn.onclick=(e)=>{ e.stopPropagation(); extractSinglePage(i); };
+    ov.appendChild(delBtn); ov.appendChild(extBtn);
+  } else {
+    const restBtn = document.createElement('button');
+    restBtn.className='ov-btn ov-ext'; restBtn.textContent='↩ '+tr('T_restore');
+    restBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
+    ov.appendChild(restBtn);
+  }
+  return ov;
+}
+
+function makePageEl(i, thumbW) {
+  let cv = S.thumbs.get(i + '@' + thumbW);
+  const ready = !!cv;
+  if(!cv) {
+    /* placeholder with the (first page's) aspect ratio until the real thumbnail is rendered */
+    cv = document.createElement('canvas');
+    cv.width = thumbW;
+    cv.height = Math.round(thumbW * RENDER.ratio);
+  }
 
   const wrap = document.createElement('div');
   wrap.className = 'pg-wrap' +
     (S.deleted.has(i)?' deleted':'') +
     (S.selected.has(i)?' selected':'');
   wrap.dataset.i = i;
+  if(ready) wrap.dataset.ready = '1';
 
   // Selection checkbox
   const chk = document.createElement('div');
@@ -834,23 +936,7 @@ async function makePageEl(i, thumbW) {
   });
 
   // Hover overlay (delete/extract/restore) — only shows when NOT selected
-  const ov = document.createElement('div');
-  ov.className = 'pg-overlay';
-  if(!S.deleted.has(i)) {
-    const delBtn = document.createElement('button');
-    delBtn.className='ov-btn ov-del'; delBtn.textContent='🗑 '+tr('T_delete');
-    delBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
-    const extBtn = document.createElement('button');
-    extBtn.className='ov-btn ov-ext'; extBtn.textContent='⬇ '+tr('T_extract');
-    extBtn.onclick=(e)=>{ e.stopPropagation(); extractSinglePage(i); };
-    ov.appendChild(delBtn); ov.appendChild(extBtn);
-  } else {
-    const restBtn = document.createElement('button');
-    restBtn.className='ov-btn ov-ext'; restBtn.textContent='↩ '+tr('T_restore');
-    restBtn.onclick=(e)=>{ e.stopPropagation(); toggleDelete(i); };
-    ov.appendChild(restBtn);
-  }
-  wrap.appendChild(ov);
+  wrap.appendChild(makeOverlay(i));
 
   const item = document.createElement('div');
   item.className='pg-item'; item.appendChild(wrap);
@@ -876,7 +962,7 @@ function makeSep(afterIdx) {
 function toggleDelete(i) {
   if(S.deleted.has(i)) S.deleted.delete(i); else S.deleted.add(i);
   S.selected.delete(i);
-  renderPages(); updateStats(); updateSelectionUI();
+  updatePageEl(i); updateStats(); updateSelectionUI();
 }
 
 async function extractSinglePage(i) {
@@ -892,7 +978,11 @@ async function extractSinglePage(i) {
   showToast((currentLang==='ar'?'صفحة مستخرجة ':'Page '+(i+1)+' extracted'),'success');
 }
 
-function restoreAll() { S.deleted.clear(); S.selected.clear(); renderPages(); updateStats(); updateSelectionUI(); }
+function restoreAll() {
+  const touched = new Set([...S.deleted, ...S.selected]);
+  S.deleted.clear(); S.selected.clear();
+  touched.forEach(updatePageEl); updateStats(); updateSelectionUI();
+}
 function clearSplits() {
   S.splits.clear();
   document.querySelectorAll('.split-sep.active').forEach(s=>s.classList.remove('active'));
@@ -1046,9 +1136,11 @@ function showResult(title,url,filename) {
 }
 
 function resetTool() {
+  RENDER.gen++; RENDER.queue=[]; if(RENDER.io) RENDER.io.disconnect();
+  if(RENDER.task){ try{ RENDER.task.cancel(); }catch(e){} RENDER.task=null; }
   if(S.pdfJsDoc){try{S.pdfJsDoc.destroy();}catch(e){}}
   S.file=null;S.pdfJsDoc=null;S.pdfBytes=null;
-  S.pageCount=0;S.deleted=new Set();S.splits=new Set();S.selected=new Set();
+  S.pageCount=0;S.deleted=new Set();S.splits=new Set();S.selected=new Set();S.thumbs=new Map();
   document.getElementById('fileInput').value='';
   document.getElementById('dropzone').classList.remove('hidden');
   document.getElementById('pagesArea').style.display='none';
