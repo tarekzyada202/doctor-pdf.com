@@ -54,7 +54,7 @@
   /* animated images + GIF writer: our own code in /js/img-anim.js */
   function anim() {
     return once('anim', function () {
-      return (window.DpdfAnim ? Promise.resolve() : loadScript('/js/img-anim.js')).then(function () { return window.DpdfAnim; });
+      return (window.DpdfAnim ? Promise.resolve() : loadScript('/js/img-anim.js?v=20260915b')).then(function () { return window.DpdfAnim; });
     });
   }
 
