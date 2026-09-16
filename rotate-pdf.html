@@ -160,7 +160,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 .pg-card:hover{border-color:var(--primary)}
 .pg-card.selected{border-color:var(--primary);background:var(--primary-light);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 .pg-canvas-wrap{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.pg-canvas-wrap canvas{display:block;border-radius:4px;pointer-events:none;transition:transform .25s ease}
+.pg-canvas-wrap canvas{display:block;border-radius:4px;pointer-events:none;transition:transform .25s ease;background:var(--bg3)}
 .pg-num{font-size:11px;font-weight:600;color:var(--text3)}
 .pg-card.selected .pg-num{color:var(--primary)}
 
@@ -522,8 +522,7 @@ function applyTheme(dark) {
 function zoomSet(v) {
   zoom = Math.max(0.5, Math.min(10.0, v));
   document.getElementById('zoomPct').textContent = Math.round(zoom*100)+'%';
-  /* clear cache so pages re-render at new zoom */
-  pages.forEach(p => { p.cachedZoom = -1; });
+  /* each page re-renders when its cached zoom no longer matches */
   if(pages.length && pdfJsDoc) renderAll();
 }
 function zoomStep(dir) {
@@ -592,7 +591,8 @@ function toggleSel(i, e) {
   } else {
     if(selected.has(i)) selected.delete(i); else selected.add(i);
   }
-  renderAll(); /* cheapest re-render to update classes */
+  /* only the classes change — no page is re-rendered */
+  document.querySelectorAll('.pg-card').forEach(c => c.classList.toggle('selected', selected.has(+c.dataset.i)));
   updateSelUI();
 }
 function selAll() {
@@ -652,8 +652,9 @@ async function updateCardVisual(i) {
   if(!cv) return;
   cv.width  = swap ? renderH : renderW;
   cv.height = swap ? renderW : renderH;
-  /* use cached canvas if zoom unchanged */
+  /* use the cached render if we have one at this zoom, else render this page now */
   if(pg.cachedZoom !== zoom || !pg.cachedCanvas) {
+    if(!pdfJsDoc) return;
     const page = await pdfJsDoc.getPage(i+1);
     const vp   = page.getViewport({scale});
     const raw  = document.createElement('canvas');
@@ -661,13 +662,7 @@ async function updateCardVisual(i) {
     await page.render({canvasContext:raw.getContext('2d'),viewport:vp}).promise;
     pg.cachedCanvas=raw; pg.cachedZoom=zoom;
   }
-  const ctx=cv.getContext('2d');
-  ctx.clearRect(0,0,cv.width,cv.height);
-  ctx.save();
-  ctx.translate(cv.width/2,cv.height/2);
-  ctx.rotate(rot*Math.PI/180);
-  ctx.drawImage(pg.cachedCanvas,-renderW/2,-renderH/2,renderW,renderH);
-  ctx.restore();
+  drawPageInto(cv, pg, renderW, renderH);
   /* rotation badge */
   let rotBadge = card.querySelector('.pg-rot');
   if(rot!==0){
@@ -708,10 +703,20 @@ async function loadPDF(f) {
   updateActionBtn();
 }
 
-/* ── RENDER ALL CARDS ── */
-async function renderAll() {
+/* ── RENDER ALL CARDS ──
+   Cards appear immediately with blank canvases; each page is rendered by pdf.js once per zoom
+   (cached on the page object), only when it scrolls near the viewport, on-screen pages first.
+   Selecting, rotating and restoring only touch the card that changed. */
+const RENDER = { gen:0, queue:[], busy:false, task:null, io:null };
+
+function renderAll() {
   const inner = document.getElementById('pagesInner');
+  RENDER.gen++;
+  RENDER.queue = [];
+  if(RENDER.task){ try{ RENDER.task.cancel(); }catch(e){} RENDER.task = null; }
+  if(RENDER.io) RENDER.io.disconnect();
   inner.innerHTML='';
+  const frag = document.createDocumentFragment();
 
   for(let i=0; i<pages.length; i++) {
     const pg = pages[i];
@@ -723,30 +728,11 @@ async function renderAll() {
     const renderW = Math.round(pg.origW * scale);
     const renderH = Math.round(pg.origH * scale);
 
-    /* Create display canvas */
+    /* Create display canvas (filled in when the page is rendered) */
     const cv = document.createElement('canvas');
     cv.width  = swap ? renderH : renderW;
     cv.height = swap ? renderW : renderH;
-
-    /* Re-render from pdf.js if zoom changed or no cache */
-    if(pg.cachedZoom !== zoom || !pg.cachedCanvas) {
-      const page = await pdfJsDoc.getPage(i+1);
-      const vp   = page.getViewport({scale});
-      const raw  = document.createElement('canvas');
-      raw.width  = Math.round(vp.width);
-      raw.height = Math.round(vp.height);
-      await page.render({canvasContext:raw.getContext('2d'), viewport:vp}).promise;
-      pg.cachedCanvas = raw;
-      pg.cachedZoom   = zoom;
-    }
-
-    /* Draw with rotation */
-    const ctx = cv.getContext('2d');
-    ctx.save();
-    ctx.translate(cv.width/2, cv.height/2);
-    ctx.rotate(rot * Math.PI / 180);
-    ctx.drawImage(pg.cachedCanvas, -renderW/2, -renderH/2, renderW, renderH);
-    ctx.restore();
+    if(pg.cachedZoom === zoom && pg.cachedCanvas) drawPageInto(cv, pg, renderW, renderH);
 
     /* card */
     const card=document.createElement('div');
@@ -787,8 +773,62 @@ async function renderAll() {
       toggleSel(i, e);
     });
 
-    inner.appendChild(card);
+    frag.appendChild(card);
   }
+  inner.appendChild(frag);
+
+  RENDER.io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if(en.isIntersecting){ RENDER.io.unobserve(en.target); RENDER.queue.push({ i:+en.target.dataset.i, zoom:zoom, gen:RENDER.gen }); pumpPages(); } });
+  }, { root: document.getElementById('pagesScroll'), rootMargin:'600px' });
+  document.querySelectorAll('.pg-card').forEach(c => { const p = pages[+c.dataset.i]; if(!(p.cachedZoom === zoom && p.cachedCanvas)) RENDER.io.observe(c); });
+}
+
+/* draw a cached page into a card canvas with its rotation */
+function drawPageInto(cv, pg, renderW, renderH) {
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.save();
+  ctx.translate(cv.width/2, cv.height/2);
+  ctx.rotate((pg.rot||0) * Math.PI / 180);
+  ctx.drawImage(pg.cachedCanvas, -renderW/2, -renderH/2, renderW, renderH);
+  ctx.restore();
+}
+
+async function pumpPages() {
+  if(RENDER.busy) return;
+  RENDER.busy = true;
+  try {
+    while(RENDER.queue.length) {
+      /* pages on screen right now first */
+      const sr = document.getElementById('pagesScroll').getBoundingClientRect();
+      let pick = RENDER.queue.findIndex(j => {
+        const c = document.querySelector('.pg-card[data-i="'+j.i+'"]'); if(!c) return false;
+        const r = c.getBoundingClientRect(); return r.bottom > sr.top && r.top < sr.bottom;
+      });
+      if(pick < 0) pick = 0;
+      const job = RENDER.queue.splice(pick, 1)[0];
+      const pg = pages[job.i];
+      if(job.gen !== RENDER.gen || !pg || !pdfJsDoc) continue;
+      if(!(pg.cachedZoom === job.zoom && pg.cachedCanvas)) {
+        const doc = pdfJsDoc;
+        try {
+          const page = await doc.getPage(job.i+1);
+          if(job.gen !== RENDER.gen) continue;
+          const scale = (THUMB_BASE * job.zoom) / pg.origW;
+          const vp = page.getViewport({scale});
+          const raw = document.createElement('canvas');
+          raw.width = Math.round(vp.width); raw.height = Math.round(vp.height);
+          RENDER.task = page.render({canvasContext:raw.getContext('2d'), viewport:vp});
+          await RENDER.task.promise;
+          RENDER.task = null;
+          if(doc !== pdfJsDoc || job.gen !== RENDER.gen) continue;
+          pg.cachedCanvas = raw; pg.cachedZoom = job.zoom;
+        } catch(e) { RENDER.task = null; continue; }
+      }
+      if(job.gen !== RENDER.gen) continue;
+      updateCardVisual(job.i);
+    }
+  } finally { RENDER.busy = false; }
 }
 
 /* ── DO ROTATE & DOWNLOAD ── */
@@ -867,6 +907,8 @@ function updateActionBtn(){
 
 /* ── RESET ── */
 function resetTool(){
+  RENDER.gen++; RENDER.queue=[]; if(RENDER.io) RENDER.io.disconnect();
+  if(RENDER.task){ try{ RENDER.task.cancel(); }catch(e){} RENDER.task=null; }
   if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
   pdfJsDoc=null; pdfBytes=null; fileName='';
   pages=[]; selected=new Set();
