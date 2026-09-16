@@ -720,6 +720,80 @@ function gridTableFor(b, pb) {
   return best;
 }
 
+/* words of a line: fragment runs split at real gaps (> ~1 em), text bidi-fixed */
+function lineGroups(l) {
+  const fr = (l.frags || []).filter(f => f.str.trim() !== '').sort((a, b) => a.x - b.x);
+  if (!fr.length) return (l.cells || []).filter(c => c.str.trim()).map(c => ({ x0: c.x0, x1: c.x1, str: c.str.trim() }));
+  const out = []; let cur = null;
+  fr.forEach(f => {
+    /* a bullet glyph stays with the text after it */
+    const bullet = cur && cur.frs.length === 1 && /^[•‣⁃▪◦●○∙]$/.test(cur.frs[0].str.trim());
+    if (cur && !bullet && f.x - cur.x1 > Math.max((f.fs || l.fs || 10) * 1.3, 5)) { out.push(cur); cur = null; }
+    if (!cur) cur = { x0: f.x, x1: f.x1, frs: [f] }; else { cur.x1 = Math.max(cur.x1, f.x1); cur.frs.push(f); }
+  });
+  if (cur) out.push(cur);
+  return out.map(g => ({ x0: g.x0, x1: g.x1, str: bidiCellText(g.frs) })).filter(g => g.str);
+}
+/* rows of words: lines closer than a line height (stacked header labels, offset baselines) share one row;
+   words stacked over each other join top-first */
+function gridBands(lines, titleLines) {
+  const bands = [];
+  lines.forEach(l => {
+    const gs = lineGroups(l);
+    if (!gs.length) return;
+    const b = bands[bands.length - 1];
+    const dy = b ? b.lastY - l.y : -1;
+    if (b && dy >= 0 && dy < Math.max(l.fs, b.fs) * 0.6) {
+      gs.forEach(g => { const h = b.groups.find(k => g.x0 < k.x1 && g.x1 > k.x0);
+        if (h) { h.x0 = Math.min(h.x0, g.x0); h.x1 = Math.max(h.x1, g.x1); h.str += ' ' + g.str; } else b.groups.push(g); });
+      b.lastY = l.y; b.fs = Math.max(b.fs, l.fs); b.title = false;
+    } else bands.push({ groups: gs, lastY: l.y, fs: l.fs, title: !!(titleLines && titleLines.has(l)) });
+  });
+  bands.forEach(b => b.groups.sort((p, q) => p.x0 - q.x0));
+  return bands;
+}
+/* lay bands onto columns (x-ranges, left to right). A label wider than one column goes to its first column and,
+   on header rows, becomes a merged cell over the columns it covers */
+function pushGridRows(bands, cols, flip, numbers, rows, merges, singleAsText) {
+  const n = cols.length, start = rows.length;
+  const isNum = s => !!DpdfXlsx.parseNumber(String(s).trim());
+  const spansOf = [];
+  bands.forEach(bd => {
+    /* single phrases stay whole-line text when asked, and always for titles and running text */
+    if (bd.groups.length < 2 && (singleAsText || bd.title || bd.groups[0].str.length > 40)) {
+      rows.push([{ v: bd.groups.map(g => g.str).join(' '), style: bd.title ? 'title' : 'text' }]); spansOf.push(null); return;
+    }
+    const row = new Array(n).fill(null), spans = [];
+    bd.groups.forEach(g => {
+      const over = [];
+      cols.forEach((k, i) => { if (Math.min(g.x1, k.x1) - Math.max(g.x0, k.x0) > 2.5) over.push(flip ? n - 1 - i : i); });
+      let c = over.length ? colIndexFor(cols, g, 0, true) : nearestColByEdge(cols, g.x0, g.x1);
+      if (flip) c = n - 1 - c;
+      const cell = { v: row[c] ? row[c].v + ' ' + g.str : g.str, style: bd.title && bd.groups.length === 1 ? 'title' : 'cell', keepText: !numbers };
+      row[c] = cell;
+      if (over.length > 1 && !isNum(g.str)) spans.push({ cell, c, a: Math.min.apply(null, over), b: Math.max.apply(null, over) });
+    });
+    rows.push(row); spansOf.push(spans);
+  });
+  const numCount = r => r ? r.filter(c => c && isNum(c.v)).length : 0;
+  for (let i = 0; i < bands.length; i++) {
+    if (!spansOf[i]) continue;
+    const row = rows[start + i], filled = row.filter(Boolean);
+    if (filled.length < 3 || filled.some(c => isNum(c.v) || !/[A-Za-z؀-ۿ]/.test(c.v))) continue;
+    /* labels right above a row of figures are a header; next to a detected table, a wide row of labels too */
+    const dataBelow = i + 1 < bands.length && spansOf[i + 1] && numCount(rows[start + i + 1]) >= 2;
+    if (!dataBelow && !(singleAsText && filled.length >= Math.max(3, Math.ceil(n * 0.6)))) continue;
+    filled.forEach(c => { c.style = 'head'; });
+    /* a label over several columns starts at the first of them and is merged across */
+    spansOf[i].forEach(s => {
+      if (row[s.c] !== s.cell) return;
+      for (let c = s.a; c <= s.b; c++) if (c !== s.c && row[c]) return;
+      row[s.c] = null; row[s.a] = s.cell;
+      merges.push({ r: start + i, c0: s.a, c1: s.b });
+    });
+  }
+}
+
 function buildSheets() {
   const mode = document.getElementById('modeSelect').value;
   const join = document.getElementById('toggleJoin').checked;
@@ -737,45 +811,55 @@ function buildSheets() {
     for (let pi = 0; pi < pagesLines.length; pi++) {
       const pb = content.filter(b => b.page === pi);
       if (!pb.length) continue;
-      const rows = [];
-      let lastRef = null;   /* the table the previous rows belong to (blank row only between different blocks) */
-      pb.forEach(b => {
-        if (b.type === 'table') {
-          if (rows.length && lastRef !== b) rows.push([]);
-          tableRows(b, numbers).forEach(r => rows.push(r));
-          lastRef = b;
-        } else {
-          const grid = gridTableFor(b, pb);
-          if (grid && rows.length && lastRef !== grid) rows.push([]);
-          if (!grid && lastRef) rows.push([]);
-          lastRef = grid || null;
-          if (grid) {
-            /* multi-cell lines next to a table (its header, rows the detector left out, totals) go into that table's columns */
-            b.lines.forEach(l => {
-              if (!l.cells || l.cells.length < 2) { const t = lineText(l).trim(); if (t) rows.push([{ v: t, style: 'text' }]); return; }
-              const n = grid.colX.length, row = new Array(n).fill(null);
-              /* a wide line of labels without figures reads as the table's header */
-              l.cells.forEach(c => {
-                if (!c.str.trim()) return;
-                let k = nearestColByEdge(grid.colX, c.x0, c.x1);
-                if (grid.rtl) k = n - 1 - k;
-                row[k] = { v: row[k] ? row[k].v + ' ' + c.str : c.str, style: 'cell', keepText: !numbers };
-              });
-              const filledCols = row.filter(Boolean).length;
-              if (filledCols >= Math.max(3, Math.ceil(n * 0.6)) && !row.some(c => c && DpdfXlsx.parseNumber(c.v.trim()))) row.forEach(c => { if (c) c.style = 'head'; });
-              rows.push(row);
-            });
-          } else {
-            const t = blockText(b).trim();
-            if (t) rows.push([{ v: t, style: b.head ? 'title' : 'text' }]);
-          }
-        }
-      });
-      while (rows.length && !rows[rows.length - 1].length) rows.pop();
       /* a page with right-to-left tables must be a right-to-left sheet, or its columns would read mirrored */
       const pt = pb.filter(x => x.type === 'table' && !x.infoGrid);
       const rtl = pt.length ? pt.filter(x => x.rtl).length * 2 > pt.length : mostlyArabic(pb.map(blockText));
-      out.push({ name: tr('T_sheetPage') + ' ' + (pi + 1), rtl, rows });
+      const rows = [], merges = [];
+      let lastRef = null;   /* the table the previous rows belong to (blank row only between different blocks) */
+      /* consecutive layout lines outside any table (invoice fields, small tables the detector can't see)
+         are laid out together on one column grid, like the page */
+      let pend = [];
+      const titles = new Set();
+      const flush = () => {
+        if (!pend.length) return;
+        const bands = gridBands(pend, titles); pend = [];
+        if (lastRef) rows.push([]);
+        lastRef = null;
+        const multi = bands.filter(bd => bd.groups.length >= 2);
+        const cols = multi.length >= 2 ? tableColumns(multi.map(bd => ({ cells: bd.groups })), 2) : [];
+        if (cols.length < 2) { bands.forEach(bd => rows.push([{ v: bd.groups.map(g => g.str).join(' '), style: bd.title ? 'title' : 'text' }])); return; }
+        pushGridRows(bands, cols, rtl, numbers, rows, merges, false);
+      };
+      pb.forEach(b => {
+        if (b.type === 'table') {
+          flush();
+          if (rows.length && lastRef !== b) rows.push([]);
+          tableRows(b, numbers).forEach(r => rows.push(r));
+          lastRef = b;
+          return;
+        }
+        const grid = gridTableFor(b, pb);
+        if (grid) {
+          flush();
+          if (rows.length && lastRef !== grid) rows.push([]);
+          lastRef = grid;
+          /* multi-cell lines next to a table (its header, rows the detector left out, totals) go into that table's columns */
+          pushGridRows(gridBands(b.lines), grid.colX, grid.rtl, numbers, rows, merges, true);
+          return;
+        }
+        const lines = b.lines || [];
+        /* a paragraph with one wide gap is still running text; lines that are mostly split into phrases are layout */
+        const layout = lines.length === 1 || lines.filter(l => lineGroups(l).length >= 2).length * 2 >= lines.length;
+        if (layout) { if (b.head) lines.forEach(l => titles.add(l)); lines.forEach(l => pend.push(l)); return; }
+        flush();
+        if (lastRef) rows.push([]);
+        lastRef = null;
+        const t = blockText(b).trim();
+        if (t) rows.push([{ v: t, style: b.head ? 'title' : 'text' }]);
+      });
+      flush();
+      while (rows.length && !rows[rows.length - 1].length) rows.pop();
+      out.push({ name: tr('T_sheetPage') + ' ' + (pi + 1), rtl, rows, merges });
     }
     return out;
   }
@@ -834,11 +918,15 @@ function renderSheet() {
   const corner = document.createElement('th'); corner.className = 'rh ch'; hr.appendChild(corner);
   for (let c = 0; c < cols; c++) { const th = document.createElement('th'); th.className = 'ch'; th.textContent = DpdfXlsx.colName(c); hr.appendChild(th); }
   tbl.appendChild(hr);
+  const spanAt = new Map();
+  (sh.merges || []).forEach(m => spanAt.set(m.r + ':' + m.c0, m.c1 - m.c0 + 1));
   sh.rows.slice(0, PREVIEW_ROWS).forEach((r, ri) => {
     const trEl = document.createElement('tr');
     const rh = document.createElement('td'); rh.className = 'rh'; rh.textContent = ri + 1; trEl.appendChild(rh);
     for (let c = 0; c < cols; c++) {
       const td = document.createElement('td');
+      const span = spanAt.get(ri + ':' + c);
+      if (span > 1) { td.colSpan = span; td.style.textAlign = 'center'; }
       const cell = r[c];
       if (cell) {
         td.textContent = cell.v;
@@ -849,6 +937,7 @@ function renderSheet() {
         td.className = r[0].style;
       }
       trEl.appendChild(td);
+      if (span > 1) c += span - 1;
     }
     tbl.appendChild(trEl);
   });
@@ -888,7 +977,8 @@ async function downloadXlsx() {
   btn.disabled = true;
   lbl.textContent = tr('T_building');
   try {
-    const blob = await DpdfXlsx.build(sheets.map(sh => ({ name: sh.name, rtl: sh.rtl, rows: sh.rows })));
+    const blob = await DpdfXlsx.build(sheets.map(sh => ({ name: sh.name, rtl: sh.rtl, rows: sh.rows,
+      merges: (sh.merges || []).map(m => DpdfXlsx.colName(m.c0) + (m.r + 1) + ':' + DpdfXlsx.colName(m.c1) + (m.r + 1)) })));
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
