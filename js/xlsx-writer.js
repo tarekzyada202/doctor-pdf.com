@@ -1,6 +1,7 @@
 /* Doctor PDF — minimal XLSX writer, written from scratch (Office Open XML SpreadsheetML + ZIP).
    API (window.DpdfXlsx):
-     parseNumber(text)  -> { value, fmt: 'int'|'dec'|'pct'|'pct2' } or null   (conservative: phones, IDs, dates stay text)
+     parseNumber(text)  -> { value, fmt: 'int'|'dec'|'thou'|'pct'|'pct2'|'cur', code? } or null   (conservative: phones, IDs, dates stay text;
+                           'cur' = amount with a currency before/after it, code = Excel number format showing that currency)
      build(sheets)      -> Promise<Blob>
        sheets: [{ name, rtl, rows: [[cell, ...], ...], merges: ['A1:C1'], widths: [chars...] }]
        cell:   null | string | number | { v, style }   style: 'head' | 'cell' | 'text' | 'title'
@@ -14,12 +15,20 @@
     return s.replace(/[٠-٩۰-۹]/g, function (d) { var i = AR_DIGITS.indexOf(d); return String(i >= 0 ? i : FA_DIGITS.indexOf(d)); })
       .replace(/٫/g, '.').replace(/٬/g, ',');
   }
+  /* currency written before or after an amount: "AED 25,428.57", "150,000.00 د.إ", "$1,200" */
+  var CUR = '(?:AED|SAR|QAR|KWD|BHD|OMR|JOD|EGP|USD|EUR|GBP|Dhs?|US\\$|\\$|€|£|د\\.?\\s?إ|درهم|ر\\.?\\s?س|ريال|ج\\.?\\s?م|جنيه|د\\.?\\s?ك|ر\\.?\\s?ق|د\\.?\\s?ب|ر\\.?\\s?ع|د\\.?\\s?أ|دينار|دولار|يورو)\\.?';
+  var CUR_PRE = new RegExp('^(' + CUR + ')(\\s*)(.+)$', 'i'), CUR_POST = new RegExp('^(.+?)(\\s*)(' + CUR + ')$', 'i');
+  function fmtQuote(t) { return '"' + t.replace(/"/g, '') + '"'; }
   function parseNumber(text) {
     if (typeof text !== 'string') return null;
     var s = westernDigits(text.trim());
-    if (!s || s.length > 24) return null;
-    var neg = false, pct = false;
+    if (!s || s.length > 32) return null;
+    var neg = false, pct = false, cur = null, m;
     if (/^\(.*\)$/.test(s)) { neg = true; s = s.slice(1, -1).trim(); }
+    if (/^[-−]/.test(s) && CUR_PRE.test(s.slice(1).trim())) { neg = !neg; s = s.slice(1).trim(); }
+    if ((m = CUR_PRE.exec(s)) && /\d/.test(m[3]) && !/\d/.test(m[1])) { cur = { sym: m[1], sp: m[2] ? ' ' : '', pre: true }; s = m[3].trim(); }
+    else if ((m = CUR_POST.exec(s)) && /\d$/.test(m[1])) { cur = { sym: m[3], sp: m[2] ? ' ' : '', pre: false }; s = m[1].trim(); }
+    if (s.length > 24) return null;
     if (/%$/.test(s)) { pct = true; s = s.slice(0, -1).trim(); }
     else if (/^%/.test(s)) { pct = true; s = s.slice(1).trim(); }
     if (/^[-−]/.test(s)) { neg = !neg; s = s.slice(1).trim(); }
@@ -31,7 +40,13 @@
     if (!isFinite(v)) return null;
     if (neg) v = -v;
     var dec = s.indexOf('.') >= 0;
-    if (pct) return { value: v / 100, fmt: dec ? 'pct2' : 'pct' };
+    if (pct) return cur ? null : { value: v / 100, fmt: dec ? 'pct2' : 'pct' };
+    if (cur) {
+      /* the amount stays a real number; the currency is shown by the cell's number format */
+      var body = dec ? '#,##0.' + new Array(Math.min(s.split('.')[1].length, 4) + 1).join('0') : '#,##0';
+      var code = cur.pre ? fmtQuote(cur.sym + cur.sp) + body : body + fmtQuote(cur.sp + cur.sym);
+      return { value: v, fmt: 'cur', code: code };
+    }
     return { value: v, fmt: dec ? 'dec' : (s.indexOf(',') >= 0 ? 'thou' : 'int') };
   }
 
@@ -45,9 +60,18 @@
 
   /* style ids in styles.xml (cellXfs order) */
   var XF = { text: 0, head: 1, cell: 2, dec: 3, int: 4, pct: 5, pct2: 6, thou: 7, title: 8 };
-  var STYLES = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+  /* currency formats are added per workbook: numFmtId 167+, cellXfs index 9+ */
+  function stylesXml(curCodes) {
+    /* joined, not String.replace: a "$" currency in the format would be read as a replacement pattern */
+    return STYLES_HEAD.split('{NUMFMTS}').join('<numFmts count="' + (3 + curCodes.length) + '"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="0.00%"/><numFmt numFmtId="166" formatCode="#,##0"/>' +
+        curCodes.map(function (c, i) { return '<numFmt numFmtId="' + (167 + i) + '" formatCode="' + esc(c) + '"/>'; }).join('') + '</numFmts>') +
+      '<cellXfs count="' + (9 + curCodes.length) + '">' + XFS +
+      curCodes.map(function (c, i) { return '<xf numFmtId="' + (167 + i) + '" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>'; }).join('') +
+      STYLES_TAIL;
+  }
+  var STYLES_HEAD = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
     '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
-    '<numFmts count="3"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="0.00%"/><numFmt numFmtId="166" formatCode="#,##0"/></numFmts>' +
+    '{NUMFMTS}' +
     '<fonts count="3"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font>' +
     '<font><b/><sz val="11"/><name val="Calibri"/><family val="2"/></font>' +
     '<font><b/><sz val="13"/><name val="Calibri"/><family val="2"/></font></fonts>' +
@@ -56,8 +80,8 @@
     '<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border>' +
     '<border><left style="thin"><color rgb="FFB4B4C0"/></left><right style="thin"><color rgb="FFB4B4C0"/></right>' +
     '<top style="thin"><color rgb="FFB4B4C0"/></top><bottom style="thin"><color rgb="FFB4B4C0"/></bottom><diagonal/></border></borders>' +
-    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
-    '<cellXfs count="9">' +
+    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>';
+  var XFS =
     '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>' +
     '<xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>' +
     '<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>' +
@@ -66,10 +90,10 @@
     '<xf numFmtId="9" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>' +
     '<xf numFmtId="165" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>' +
     '<xf numFmtId="166" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment vertical="top"/></xf>' +
-    '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>' +
-    '</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+    '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>';
+  var STYLES_TAIL = '</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
 
-  function sheetXml(sh) {
+  function sheetXml(sh, curCodes) {
     var rows = sh.rows || [], maxCols = 0, widths = [];
     rows.forEach(function (r) { if (r && r.length > maxCols) maxCols = r.length; });
     var out = [];
@@ -90,7 +114,9 @@
         var num = typeof v === 'number' ? { value: v, fmt: Number.isInteger(v) ? 'int' : 'dec' } :
           (!keepText && (style === 'cell') ? parseNumber(v) : null);
         if (num) {
-          cells.push('<c r="' + ref + '" s="' + XF[num.fmt] + '"><v>' + num.value + '</v></c>');
+          var s = XF[num.fmt];
+          if (num.fmt === 'cur') { var ci2 = curCodes.indexOf(num.code); if (ci2 < 0) { ci2 = curCodes.length; curCodes.push(num.code); } s = 9 + ci2; }
+          cells.push('<c r="' + ref + '" s="' + s + '"><v>' + num.value + '</v></c>');
           len = String(typeof v === 'number' ? v : v).length + 1;
         } else {
           var t = String(v); if (t.length > 32767) t = t.slice(0, 32767);
@@ -198,8 +224,9 @@
       sheets.map(function (s, i) { return '<Relationship Id="rId' + (i + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>'; }).join('') +
       '<Relationship Id="rId' + (sheets.length + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
       '</Relationships>' });
-    files.push({ name: 'xl/styles.xml', data: STYLES });
-    sheets.forEach(function (s, i) { files.push({ name: 'xl/worksheets/sheet' + (i + 1) + '.xml', data: sheetXml(s) }); });
+    var curCodes = [], sheetFiles = sheets.map(function (s, i) { return { name: 'xl/worksheets/sheet' + (i + 1) + '.xml', data: sheetXml(s, curCodes) }; });
+    files.push({ name: 'xl/styles.xml', data: stylesXml(curCodes) });
+    sheetFiles.forEach(function (f) { files.push(f); });
     return zip(files);
   }
 
