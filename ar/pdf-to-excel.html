@@ -696,12 +696,14 @@ function joinTables(list) {
       const sameHeader = normRow(t.rows[0]) === normRow(prev.rows[0]);
       const startsWithData = t.rows[0].some(c => DpdfXlsx.parseNumber(String(c)));
       if (sameHeader || startsWithData) {
+        const off = prev.rows.length - (sameHeader ? 1 : 0);
+        (t.merges || []).forEach(m => { if (!(sameHeader && m.r === 0)) prev.merges.push({ r: m.r + off, c0: m.c0, c1: m.c1 }); });
         prev.rows = prev.rows.concat(sameHeader ? t.rows.slice(1) : t.rows);
         prev.pages.push(t.page); prev.lastIdx = i;
         return;
       }
     }
-    out.push({ rows: t.rows.slice(), rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page], lastIdx: i });
+    out.push({ rows: t.rows.slice(), rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page], lastIdx: i, merges: (t.merges || []).slice() });
   });
   return out;
 }
@@ -794,20 +796,55 @@ function pushGridRows(bands, cols, flip, numbers, rows, merges, singleAsText) {
   }
 }
 
-function buildSheets() {
-  const mode = document.getElementById('modeSelect').value;
-  const join = document.getElementById('toggleJoin').checked;
-  const numbers = document.getElementById('toggleNumbers').checked;
-  const content = blocks.filter(b => b.type !== 'image');
-  let tables = content.filter(b => b.type === 'table' && !b.infoGrid);
-  if (!tables.length) tables = content.filter(b => b.type === 'table');
-
-  if (mode !== 'pages' && !tables.length) {
-    if (!noTablesShown) { showToast(tr('T_noTables'), 'warn'); noTablesShown = true; }
+/* small tables inside a page layout grid: a header row of labels right above rows of figures, followed by the
+   rows that still carry figures (totals, VAT, net value). Invoices with one or two item rows only show up here —
+   the table detector needs three rows */
+function gridTablesIn(rows, merges, start, end, n, rtl, page) {
+  const isNum = c => !!(c && DpdfXlsx.parseNumber(String(c.v).trim()));
+  const grid = r => r && r.length === n;
+  const found = [];
+  let i = start;
+  while (i < end - 1) {
+    const filled = grid(rows[i]) ? rows[i].filter(Boolean) : [];
+    if (filled.length >= 3 && filled.every(c => c.style === 'head') && grid(rows[i + 1]) && rows[i + 1].filter(isNum).length >= 2) {
+      let j = i + 1;
+      while (j < end && grid(rows[j]) && rows[j].some(isNum)) j++;
+      const sub = rows.slice(i, j);
+      /* neighbouring grid columns that never hold a value in the same row are one column of the table
+         (a centred header label and its narrow figures can land on different grid columns) */
+      const groups = [];
+      for (let c = 0; c < n; c++) {
+        if (!sub.some(r => r[c])) continue;
+        const g = groups[groups.length - 1];
+        if (g && !sub.some(r => r[c] && g.some(k => r[k]))) g.push(c); else groups.push([c]);
+      }
+      const colOf = c => groups.findIndex(g => g[0] <= c && c <= g[g.length - 1]);
+      let tRows = sub.map(r => groups.map(g => { const k = g.find(c => r[c]); return k == null ? '' : r[k].v; }));
+      let tMerges = merges.filter(m => m.r >= i && m.r < j)
+        .map(m => ({ r: m.r - i, c0: colOf(m.c0), c1: groups.filter(g => g[0] <= m.c1).length - 1 }))
+        .filter(m => m.c0 >= 0 && m.c1 > m.c0);
+      /* the table's own language decides its direction (an English invoice on a mostly Arabic page stays left-to-right) */
+      const own = mostlyArabic(tRows.flat());
+      if (own !== rtl) {
+        const w = groups.length;
+        tRows = tRows.map(r => r.slice().reverse());
+        tMerges = tMerges.map(m => {
+          const c0 = w - 1 - m.c1, c1 = w - 1 - m.c0, row = tRows[m.r];
+          row[c0] = row[c1]; row[c1] = '';          /* a merged label keeps its value in the merge's first cell */
+          return { r: m.r, c0, c1 };
+        });
+      }
+      found.push({ type: 'table', layout: true, page, rtl: own, rows: tRows, merges: tMerges });
+      i = j;
+    } else i++;
   }
-  sheetsArePages = mode === 'pages' || !tables.length;
-  if (sheetsArePages) {
-    const out = [];
+  return found;
+}
+
+/* one sheet per page (text + tables laid out like the page); also lists the page's tables in reading order,
+   including the small tables found in its layout grid */
+function pageSheets(content, numbers) {
+    const out = [], entries = [];
     for (let pi = 0; pi < pagesLines.length; pi++) {
       const pb = content.filter(b => b.page === pi);
       if (!pb.length) continue;
@@ -828,11 +865,14 @@ function buildSheets() {
         const multi = bands.filter(bd => bd.groups.length >= 2);
         const cols = multi.length >= 2 ? tableColumns(multi.map(bd => ({ cells: bd.groups })), 2) : [];
         if (cols.length < 2) { bands.forEach(bd => rows.push([{ v: bd.groups.map(g => g.str).join(' '), style: bd.title ? 'title' : 'text' }])); return; }
+        const s0 = rows.length;
         pushGridRows(bands, cols, rtl, numbers, rows, merges, false);
+        gridTablesIn(rows, merges, s0, rows.length, cols.length, rtl, pi).forEach(t => entries.push(t));
       };
       pb.forEach(b => {
         if (b.type === 'table') {
           flush();
+          entries.push(b);
           if (rows.length && lastRef !== b) rows.push([]);
           tableRows(b, numbers).forEach(r => rows.push(r));
           lastRef = b;
@@ -861,21 +901,38 @@ function buildSheets() {
       while (rows.length && !rows[rows.length - 1].length) rows.pop();
       out.push({ name: tr('T_sheetPage') + ' ' + (pi + 1), rtl, rows, merges });
     }
-    return out;
-  }
+    return { sheets: out, entries };
+}
 
-  const groups = join ? joinTables(tables) : tables.map(t => ({ rows: t.rows, rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page] }));
+function buildSheets() {
+  const mode = document.getElementById('modeSelect').value;
+  const join = document.getElementById('toggleJoin').checked;
+  const numbers = document.getElementById('toggleNumbers').checked;
+  const content = blocks.filter(b => b.type !== 'image');
+  const paged = pageSheets(content, numbers);
+  let tables = paged.entries.filter(b => !b.infoGrid);
+  if (!tables.length) tables = paged.entries;
+
+  if (mode !== 'pages' && !tables.length) {
+    if (!noTablesShown) { showToast(tr('T_noTables'), 'warn'); noTablesShown = true; }
+  }
+  sheetsArePages = mode === 'pages' || !tables.length;
+  if (sheetsArePages) return paged.sheets;
+
+  const groups = join ? joinTables(tables) : tables.map(t => ({ rows: t.rows, rtl: t.rtl, infoGrid: t.infoGrid, pages: [t.page], merges: t.merges || [] }));
   const pagesLabel = g => tr('T_pagesWord') + ' ' + (g.pages.length > 1 ? (g.pages[0] + 1) + '–' + (g.pages[g.pages.length - 1] + 1) : (g.pages[0] + 1));
   if (mode === 'tables') {
-    return groups.map((g, i) => ({ name: tr('T_sheetTable') + ' ' + (i + 1), rtl: !!g.rtl, rows: tableRows(g, numbers) }));
+    return groups.map((g, i) => ({ name: tr('T_sheetTable') + ' ' + (i + 1), rtl: !!g.rtl, rows: tableRows(g, numbers), merges: g.merges }));
   }
-  const rows = [];
+  const rows = [], merges = [];
   groups.forEach((g, i) => {
     if (rows.length) rows.push([]);
     rows.push([{ v: tr('T_sheetTable') + ' ' + (i + 1) + ' — ' + pagesLabel(g), style: 'title' }]);
+    const r0 = rows.length;
     tableRows(g, numbers).forEach(r => rows.push(r));
+    g.merges.forEach(m => merges.push({ r: m.r + r0, c0: m.c0, c1: m.c1 }));
   });
-  return [{ name: tr('T_sheetTables'), rtl: groups.filter(g => g.rtl).length > groups.length / 2, rows }];
+  return [{ name: tr('T_sheetTables'), rtl: groups.filter(g => g.rtl).length > groups.length / 2, rows, merges }];
 }
 
 function rebuild() {
