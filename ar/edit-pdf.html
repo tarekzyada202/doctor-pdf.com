@@ -751,6 +751,83 @@ function sampleTextColor(p,run){
     return '#'+h2(rs/take)+h2(gs/take)+h2(bs/take);
   }catch(e){return null;}
 }
+/* some fonts/producers (Chrome, many Arabic PDFs) map Arabic yeh/heh glyphs to the Persian code points
+   ی (U+06CC) / ھ (U+06BE): looks identical but breaks search in Word. Fold them to ي / ه when the page
+   is Arabic (has ة) and has no Persian/Urdu-only letters (پ چ ژ گ ڈ ٹ ں ے). */
+function foldPersianForms(content) {
+  const nf = t => (t && t.normalize) ? t.normalize('NFKC') : (t || '');
+  const all = content.items.map(it => nf(it.str)).join('');
+  if (!/[\u06CC\u06BE]/.test(all) || !/\u0629/.test(all) || /[\u067E\u0686\u0698\u06AF\u0688\u0679\u06BA\u06D2]/.test(all)) return;
+  content.items.forEach(it => { if (typeof it.str === 'string') it.str = nf(it.str).replace(/\u06CC/g, '\u064A').replace(/\u06BE/g, '\u0647'); });
+}
+
+/* pdf.js reverses RTL text CHARACTER by character, so a ligature glyph whose ToUnicode is two
+   characters (Word's lam-alef "لأ") comes out swapped ("األعمال", "كابالت"). The operator list has
+   the glyphs in visual order with each ligature as ONE unit, so we know where every ligature sits
+   and which letters surround it, and swap only those occurrences ("ألف", "إلى" stay untouched). */
+function fixRtlLigatures(ol, content) {
+  const OPS = pdfjsLib.OPS, arRe = /[؀-ۿ]/;
+  const units = [];
+  for (let i = 0; i < ol.fnArray.length; i++) {
+    const fn = ol.fnArray[i];
+    if (fn !== OPS.showText && fn !== OPS.showSpacedText) continue;
+    const gl = ol.argsArray[i] && ol.argsArray[i][0];
+    if (!Array.isArray(gl)) continue;
+    gl.forEach(g => { if (g && typeof g === 'object' && typeof g.unicode === 'string' && g.unicode !== '') units.push(g.unicode); });
+  }
+  const rev = t => [...t].reverse().join('');
+  const isAr = ch => !!ch && arRe.test(ch) && !/\s/.test(ch);
+  const fixes = [];
+  units.forEach((u, i) => {
+    if ([...u].length < 2 || !arRe.test(u)) return;
+    /* up to 2 Arabic neighbour glyphs each side; 'edge' = the word ends there */
+    const side = dir => { const out = []; let k = i + dir;
+      for (; k >= 0 && k < units.length && out.length < 2; k += dir) { if (!isAr(units[k])) break; out.push(units[k]); }
+      return { g: out, edge: out.length < 2 }; };
+    const L = side(-1), R = side(1);            /* visual left / right */
+    /* pdf.js output = reverse(L2 L1 lig R1 R2) = rev(R2) rev(R1) rev(lig) rev(L1) rev(L2) */
+    /* a neighbouring ligature may already be fixed (or not yet): accept both spellings of the context */
+    const variants = [];
+    [true, false].forEach(revNb => {
+      const nb = g => ([...g].length > 1 && !revNb) ? g : rev(g);
+      const before = R.g.map(nb).reverse().join(''), after = L.g.map(nb).join('');
+      const v = { bad: before + rev(u) + after, good: before + u + after };
+      if (!variants.some(x => x.bad === v.bad)) variants.push(v);
+    });
+    fixes.push({ variants, needStart: R.edge, needEnd: L.edge });
+  });
+  if (!fixes.length) return;
+  const items = content.items.filter(it => typeof it.str === 'string' && arRe.test(it.str));
+  fixes.forEach(f => {
+    for (const v of f.variants) {
+      if (v.bad === v.good) return;
+      for (const it of items) {
+        let from = 0, at;
+        while ((at = it.str.indexOf(v.bad, from)) >= 0) {
+          const okS = !f.needStart || !isAr(it.str[at - 1]);
+          const okE = !f.needEnd || !isAr(it.str[at + v.bad.length]);
+          if (okS && okE) { it.str = it.str.slice(0, at) + v.good + it.str.slice(at + v.bad.length); return; }
+          from = at + 1;
+        }
+      }
+    }
+  });
+}
+
+/* the chunks of a right-to-left line arrive left to right: read them (and the spaces between them) right to left,
+   then put runs of Latin/number chunks back in left-to-right order — the same rule as extract-text / PDF→Word */
+function arabicLineText(toks){
+  if(toks.filter(t=>!t.sp).length<2)return toks;
+  const r=toks.slice().reverse();
+  const hasAr=z=>/[؀-ۿ]/.test(z),hasLat=z=>/[A-Za-z0-9]/.test(z);
+  let i=0;
+  while(i<r.length){
+    if(r[i].s!=null&&hasLat(r[i].s)&&!hasAr(r[i].s)){let j=i+1;while(j<r.length&&(r[j].sp||(r[j].s!=null&&!hasAr(r[j].s))))j++;
+      const seg=r.slice(i,j).reverse();for(let k=0;k<seg.length;k++)r[i+k]=seg[k];i=j;}
+    else i++;
+  }
+  return r;
+}
 function reorderVisualAr(s){
   const arr=[...s].reverse();const L=/[A-Za-z0-9@._\-\/:#&%]/,LS=/[A-Za-z0-9@._\-\/:#&%\s]/;let i=0;
   while(i<arr.length){if(L.test(arr[i])){let j=i;while(j<arr.length&&LS.test(arr[j]))j++;const seg=arr.slice(i,j).reverse();for(let k=i;k<j;k++)arr[k]=seg[k-i];i=j;}else i++;}
@@ -759,8 +836,11 @@ function reorderVisualAr(s){
 async function extractTextRuns(p){
   if(p.textRuns)return p.textRuns;
   let tc;try{tc=await p.pdfPage.getTextContent();}catch(e){p.textRuns=[];return p.textRuns;}
+  try{foldPersianForms(tc);}catch(e){}
+  /* the operator list is only needed when the text shows the reversed lam-alef spellings (Word-made Arabic PDFs) */
+  try{if(/ا[آأإا]ل/.test(tc.items.map(i=>i.str||'').join(''))){const ol=await p.pdfPage.getOperatorList();fixRtlLigatures(ol,tc);}}catch(e){}
   const vp=p.pdfPage.getViewport({scale:1});const items=[];
-  tc.items.forEach(it=>{if(!it.str||!it.str.trim())return;const t=it.transform;const pt=vp.convertToViewportPoint(t[4],t[5]);const sz=Math.hypot(t[2],t[3])||it.height||12;items.push({str:it.str,x:pt[0],y:pt[1],w:it.width||it.str.length*sz*0.5,sz,font:it.fontName||''});});
+  tc.items.forEach(it=>{if(!it.str)return;const t=it.transform;const pt=vp.convertToViewportPoint(t[4],t[5]);const sz=Math.hypot(t[2],t[3])||it.height||12;items.push({str:it.str,x:pt[0],y:pt[1],w:it.width||it.str.length*sz*0.5,sz,font:it.fontName||'',sp:!it.str.trim()});});
   items.sort((a,b)=>a.y-b.y||a.x-b.x);
   const lines=[];
   items.forEach(it=>{let ln=null;for(const l of lines){if(Math.abs(l.y-it.y)<=it.sz*0.6){ln=l;break;}}if(!ln){ln={y:it.y,items:[]};lines.push(ln);}ln.items.push(it);});
@@ -770,14 +850,15 @@ async function extractTextRuns(p){
     ln.items.sort((a,b)=>a.x-b.x);
     let its=ln.items;
     if(its.length>1&&BUL.test((its[0].str||'').trim()))its=its.slice(1); /* keep the original bullet untouched — edit only the text after it */
-    let txt='';let prev=null;
-    its.forEach(it=>{if(prev){const gap=it.x-(prev.x+prev.w);if(gap>it.sz*0.28)txt+=' ';}txt+=it.str;prev=it;});
-    txt=txt.normalize('NFKC').replace(/\s+/g,' ').trim();if(!txt)return;
-    const isAr=/[؀-ۿ]/.test(txt);if(isAr)txt=reorderVisualAr(txt);
-    const xs=its.map(i=>i.x),xe=its.map(i=>i.x+i.w);
-    const szs=its.map(i=>i.sz).sort((a,b)=>a-b);const sz=szs[Math.floor(szs.length/2)]||12;
+    const toks=[];let prev=null;
+    its.forEach(it=>{if(prev&&it.x-(prev.x+prev.w)>it.sz*0.18)toks.push({sp:true});toks.push(it.sp?{sp:true}:{s:it.str.normalize('NFKC')});prev=it;});
+    const isAr=toks.some(t=>t.s&&/[؀-ۿ]/.test(t.s));
+    const txt=(isAr?arabicLineText(toks):toks).map(t=>t.sp?' ':t.s).join('').replace(/\s+/g,' ').trim();if(!txt)return;
+    const ink=its.filter(i=>!i.sp);
+    const xs=ink.map(i=>i.x),xe=ink.map(i=>i.x+i.w);
+    const szs=ink.map(i=>i.sz).sort((a,b)=>a-b);const sz=szs[Math.floor(szs.length/2)]||12;
     const x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xe);
-    const ff=fontFlags(p,its[0].font);
+    const ff=fontFlags(p,ink[0].font);
     runs.push({text:txt,x:x0,y:ln.y-sz*0.80,w:Math.max(x1-x0,sz),h:sz*1.05,size:Math.max(7,Math.round(sz)),fam:ff.fam,bold:ff.bold,italic:ff.italic,rtl:isAr});
   });
   p.textRuns=runs;return runs;
