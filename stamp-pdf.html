@@ -732,7 +732,6 @@ async function loadPDF(file) {
     document.getElementById('pagesArea').style.display = 'flex';
     document.getElementById('pagesArea').innerHTML = '';
     /* render all pages at current zoom + devicePixelRatio */
-    await rerenderAllPages();
     document.getElementById('applyBtn').disabled = false;
     document.getElementById('zoomBar').classList.add('show');
     buildThumbnails();
@@ -794,23 +793,65 @@ function doRemoveBG() {
 /* ───────────────────────────────────────────────── */
 /* RE-RENDER ALL PAGES (HiDPI + zoom aware)           */
 /* ───────────────────────────────────────────────── */
-async function rerenderAllPages() {
-  var dpr   = Math.min(window.devicePixelRatio || 1, 3); /* cap at 3× */
-  var baseW = getBaseWidth();
-  for (var i = 0; i < S.pages.length; i++) {
-    var pg       = S.pages[i];
-    var cssW     = Math.round(baseW * S.zoom);
-    var cssH     = Math.round(pg.nativeH * cssW / pg.nativeW);
-    var renderSc = (cssW / pg.nativeW) * dpr;   /* actual pixels = CSS × DPR */
-    var vp       = pg.pdfPage.getViewport({ scale: renderSc });
-    var cv       = document.createElement('canvas');
-    cv.width     = Math.round(vp.width);   /* physical pixels */
-    cv.height    = Math.round(vp.height);
-    cv._cssW     = cssW;                   /* CSS pixels — set on element */
-    cv._cssH     = cssH;
-    await pg.pdfPage.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-    pg.canvas = cv;
-  }
+/* Lazy page rendering — the grid is built immediately from the stored page
+   dimensions; pages render one at a time, on-screen first, and are cached per
+   zoom level on the page object. */
+var RENDER = { gen:0, queue:[], busy:false, task:null, io:null };
+
+async function pumpStampPages() {
+  if (RENDER.busy) return;
+  RENDER.busy = true;
+  try {
+    while (RENDER.queue.length) {
+      var area = document.getElementById('pagesArea');
+      var sr   = area.getBoundingClientRect();
+      var pick = RENDER.queue.findIndex(function(j) {
+        var c = area.querySelector('.page-card[data-pi="' + j.i + '"]');
+        if (!c) return false;
+        var r = c.getBoundingClientRect();
+        return r.bottom > sr.top && r.top < sr.bottom;
+      });
+      if (pick < 0) pick = 0;
+      var job = RENDER.queue.splice(pick, 1)[0];
+      var pg  = S.pages[job.i];
+      if (job.gen !== RENDER.gen || !pg) continue;
+      if (!(pg.cachedZoom === job.zoom && pg.cachedCanvas)) {
+        try {
+          var dpr = Math.min(window.devicePixelRatio || 1, 3);
+          var vp  = pg.pdfPage.getViewport({ scale: (job.w / pg.nativeW) * dpr });
+          var raw = document.createElement('canvas');
+          raw.width  = Math.round(vp.width);
+          raw.height = Math.round(vp.height);
+          RENDER.task = pg.pdfPage.render({ canvasContext: raw.getContext('2d'), viewport: vp });
+          await RENDER.task.promise;
+          RENDER.task = null;
+          if (job.gen !== RENDER.gen) continue;
+          pg.cachedCanvas = raw; pg.cachedZoom = job.zoom;
+        } catch (e) { RENDER.task = null; continue; }
+      }
+      if (job.gen !== RENDER.gen) continue;
+      showStampPage(job.i);
+    }
+  } finally { RENDER.busy = false; }
+}
+
+/* put a freshly rendered page into its card, keeping the stamp overlays */
+function showStampPage(i) {
+  var pg   = S.pages[i];
+  var area = document.getElementById('pagesArea');
+  var card = area ? area.querySelector('.page-card[data-pi="' + i + '"]') : null;
+  if (!pg || !card || !pg.cachedCanvas) return;
+  var old = card.querySelector('canvas');
+  var cv  = pg.cachedCanvas;
+  cv._cssW = old ? old._cssW : pg.canvas._cssW;
+  cv._cssH = old ? old._cssH : pg.canvas._cssH;
+  cv.style.width  = cv._cssW + 'px';
+  cv.style.height = cv._cssH + 'px';
+  if (old && old !== cv) card.replaceChild(cv, old);
+  else if (!old) card.insertBefore(cv, card.firstChild);
+  pg.canvas = cv;
+  Array.prototype.forEach.call(card.querySelectorAll('.stamp-el'), function(e){ e.remove(); });
+  pg.stamps.forEach(function(st, si) { card.appendChild(buildStampEl(st, i, si, cv)); });
 }
 
 /* ───────────────────────────────────────────────── */
@@ -827,9 +868,27 @@ function getBaseWidth() {
 /* ───────────────────────────────────────────────── */
 function renderPages() {
   var area = document.getElementById('pagesArea');
+  RENDER.gen++;
+  RENDER.queue = [];
+  if (RENDER.task) { try { RENDER.task.cancel(); } catch(e){} RENDER.task = null; }
+  if (RENDER.io) { RENDER.io.disconnect(); RENDER.io = null; }
   area.innerHTML = '';
   area.style.display = 'flex';
-  S.pages.forEach(function(pg, i) { area.appendChild(buildCard(pg, i)); });
+  var cssW = Math.round(getBaseWidth() * S.zoom);
+  S.pages.forEach(function(pg, i) { area.appendChild(buildCard(pg, i, cssW)); });
+  RENDER.io = new IntersectionObserver(function(ents) {
+    ents.forEach(function(en) {
+      if (en.isIntersecting) {
+        RENDER.io.unobserve(en.target);
+        RENDER.queue.push({ i:+en.target.dataset.pi, zoom:S.zoom, w:cssW, gen:RENDER.gen });
+        pumpStampPages();
+      }
+    });
+  }, { root: area, rootMargin: '600px' });
+  Array.prototype.forEach.call(area.querySelectorAll('.page-card'), function(c) {
+    var p = S.pages[+c.dataset.pi];
+    if (!(p.cachedZoom === S.zoom && p.cachedCanvas)) RENDER.io.observe(c);
+  });
   updateThumbBadges();
 }
 
@@ -840,7 +899,6 @@ function renderPages() {
     clearTimeout(timer);
     timer = setTimeout(async function() {
       if (S.pages.length > 0) {
-        await rerenderAllPages();
         renderPages();
       }
     }, 150);
@@ -857,7 +915,6 @@ async function zoomTo(val) {
   S.zoom = Math.max(0.25, Math.min(3.0, val));
   document.getElementById('zoomPct').textContent = Math.round(S.zoom * 100) + '%';
   if (!S.pages.length) return;
-  await rerenderAllPages();
   renderPages();
 }
 
@@ -884,17 +941,23 @@ document.getElementById('pagesArea').addEventListener('wheel', function(e) {
   e.deltaY < 0 ? zoomIn() : zoomOut();
 }, { passive: false });
 
-function buildCard(pg, pi) {
+function buildCard(pg, pi, cssW) {
   var card = document.createElement('div');
   card.className  = 'page-card';
   card.dataset.pi = pi;
   if (S.placing) card.classList.add('can-place');
 
   /*
-   * pg.canvas has physical pixels = cssW × devicePixelRatio.
+   * A rendered canvas has physical pixels = cssW × devicePixelRatio; until the
+   * page is rendered this is a blank canvas sized from the stored dimensions.
    * We set CSS width/height explicitly so it displays crisp on HiDPI screens.
    */
-  var cv = pg.canvas;
+  if (cssW == null) cssW = Math.round(getBaseWidth() * S.zoom);
+  var cached = (pg.cachedZoom === S.zoom && pg.cachedCanvas);
+  var cv = cached ? pg.cachedCanvas : document.createElement('canvas');
+  cv._cssW = cssW;
+  cv._cssH = Math.round(pg.nativeH * cssW / pg.nativeW);
+  pg.canvas = cv;
   cv.style.width  = cv._cssW + 'px';
   cv.style.height = cv._cssH + 'px';
   card.appendChild(cv);
@@ -1581,13 +1644,11 @@ function buildThumbnails() {
     var item = document.createElement('div');
     item.className = 'thumb-item' + (i === 0 ? ' active' : '');
     item.dataset.pi = i;
-    /* small canvas */
-    var scale = THUMB_SIDEBAR_W / pg.canvas.width;
-    var tw = Math.round(pg.canvas.width  * scale);
-    var th = Math.round(pg.canvas.height * scale);
+    /* small canvas — sized from the page dimensions, rendered lazily below */
+    var scale = THUMB_SIDEBAR_W / pg.nativeW;
     var cv = document.createElement('canvas');
-    cv.width = tw; cv.height = th;
-    cv.getContext('2d').drawImage(pg.canvas, 0, 0, tw, th);
+    cv.width  = Math.round(pg.nativeW * scale);
+    cv.height = Math.round(pg.nativeH * scale);
     item.appendChild(cv);
     /* stamp badge */
     if (pg.stamps.length > 0) {
@@ -1609,7 +1670,41 @@ function buildThumbnails() {
     });
     list.appendChild(item);
   });
+  if (THUMB.io) THUMB.io.disconnect();
+  THUMB.gen++;
+  THUMB.io = new IntersectionObserver(function(ents) {
+    ents.forEach(function(en) {
+      if (en.isIntersecting) {
+        THUMB.io.unobserve(en.target);
+        THUMB.queue.push({ i:+en.target.dataset.pi, gen:THUMB.gen });
+        pumpStampThumbs();
+      }
+    });
+  }, { root: list, rootMargin: '400px' });
+  Array.prototype.forEach.call(list.querySelectorAll('.thumb-item'), function(t){ THUMB.io.observe(t); });
   initScrollSync();
+}
+
+var THUMB = { gen:0, queue:[], busy:false, io:null };
+
+async function pumpStampThumbs() {
+  if (THUMB.busy) return;
+  THUMB.busy = true;
+  try {
+    while (THUMB.queue.length) {
+      var job = THUMB.queue.shift();
+      var pg  = S.pages[job.i];
+      if (job.gen !== THUMB.gen || !pg || pg.thumbDone) continue;
+      var item = document.querySelector('.thumb-item[data-pi="' + job.i + '"]');
+      var cv   = item ? item.querySelector('canvas') : null;
+      if (!cv) continue;
+      try {
+        var vp = pg.pdfPage.getViewport({ scale: THUMB_SIDEBAR_W / pg.nativeW });
+        await pg.pdfPage.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+        if (job.gen === THUMB.gen) pg.thumbDone = true;
+      } catch (e) {}
+    }
+  } finally { THUMB.busy = false; }
 }
 
 function setActiveThumb(idx) {
