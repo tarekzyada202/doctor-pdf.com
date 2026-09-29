@@ -186,6 +186,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 .toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
 
 .info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+.info-box svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
 
 .panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
 .stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -209,8 +210,9 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:700px){
-  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
-  .workspace{flex-direction:column}
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);overflow-y:visible}
+  .workspace{flex-direction:column;height:auto;overflow:visible}
+  .content{height:70vh;flex:none}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is OCR free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Doctor PDF runs OCR 100% free with no limits, watermarks, or sign-up."}},{"@type":"Question","name":"Does OCR support Arabic?","acceptedAnswer":{"@type":"Answer","text":"Yes. Doctor PDF recognises Arabic and English text, including mixed documents."}},{"@type":"Question","name":"Are my scanned documents uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. OCR runs entirely in your browser — your documents are never uploaded."}},{"@type":"Question","name":"Are my files private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Everything runs locally in your browser — your files are never uploaded to any server."}},{"@type":"Question","name":"Does it work on mobile?","acceptedAnswer":{"@type":"Answer","text":"Yes, on any modern browser — phone, tablet, or computer."}}]}</script>

@@ -188,6 +188,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 .toggle input:checked+.toggle-slider::before{transform:translateX(16px)}
 
 .info-box{background:var(--primary-light);border:1px solid var(--primary);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:var(--primary);line-height:1.5;display:flex;gap:8px}
+.info-box svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
 
 .panel-footer{padding:16px;margin-top:auto;border-top:1px solid var(--border)}
 .stats-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -211,8 +212,9 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:700px){
-  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
-  .workspace{flex-direction:column}
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);overflow-y:visible}
+  .workspace{flex-direction:column;height:auto;overflow:visible}
+  .content{height:70vh;flex:none}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل OCR مجاني؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يشغّل Doctor PDF تقنية OCR مجاناً 100% بدون حدود أو علامة مائية أو تسجيل."}},{"@type":"Question","name":"هل يدعم OCR اللغة العربية؟","acceptedAnswer":{"@type":"Answer","text":"نعم. يتعرّف Doctor PDF على النص العربي والإنجليزي، بما في ذلك المستندات المختلطة."}},{"@type":"Question","name":"هل تُرفع مستنداتي الممسوحة؟","acceptedAnswer":{"@type":"Answer","text":"لا. تعمل OCR بالكامل داخل متصفحك — مستنداتك لا تُرفع أبداً."}},{"@type":"Question","name":"هل ملفاتي خاصة؟","acceptedAnswer":{"@type":"Answer","text":"نعم. كل شيء يتم داخل متصفحك — ملفاتك لا تُرفع أبداً إلى أي خادم."}},{"@type":"Question","name":"هل تعمل على الهاتف؟","acceptedAnswer":{"@type":"Answer","text":"نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر."}}]}</script>
