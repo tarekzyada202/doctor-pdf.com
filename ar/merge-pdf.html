@@ -488,7 +488,7 @@ function renderGrid(){
 
     var lbl=document.createElement('div');
     lbl.className='pg-thumb-lbl';
-    lbl.innerHTML='<span style="color:'+color+'">●</span> p.'+(pg.pi+1)+' · '+pg.name.replace(/\.pdf$/i,'').substring(0,10);
+    lbl.innerHTML='<span style="color:'+color+'">●</span> p.'+(pg.pi+1)+' · ';lbl.appendChild(document.createTextNode(pg.name.replace(/\.pdf$/i,'').substring(0,10)));
     thumb.appendChild(lbl);
 
     var del=document.createElement('button');

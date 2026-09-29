@@ -927,7 +927,7 @@ function toast(msg,type='success'){
   const w=document.getElementById('toastWrap');
   const t=document.createElement('div'); t.className='toast '+type;
   const ic={success:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',error:'<svg viewBox="0 0 14 14" fill="none" width="16"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'};
-  t.innerHTML=(ic[type]||ic.success)+msg;
+  t.innerHTML=(ic[type]||ic.success);t.appendChild(document.createTextNode(msg));
   w.appendChild(t); setTimeout(()=>t.remove(),4000);
 }
 
