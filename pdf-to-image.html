@@ -221,8 +221,15 @@ html[lang="en"] .priv-cta .ar{display:none}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:700px){
-  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
-  .workspace{flex-direction:column}
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);overflow-y:visible}
+  .workspace{flex-direction:column;height:auto;overflow:visible}
+  .content{height:70vh;flex:none}
+}
+
+/* dpdf-nav-fit-v1 */
+@media(max-width:430px){
+  .nav{padding:0 12px;gap:8px}
+  .nav-logo{font-size:0;gap:0}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is converting PDF to images free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Doctor PDF converts PDF pages to images 100% free with no limits."}},{"@type":"Question","name":"Can I download all pages at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. Download every page as a single ZIP file, or save them one by one."}},{"@type":"Question","name":"What image quality will I get?","acceptedAnswer":{"@type":"Answer","text":"You can pick high resolution for crisp, print-ready images."}},{"@type":"Question","name":"Are my files private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Everything runs locally in your browser — your files are never uploaded to any server."}},{"@type":"Question","name":"Does it work on mobile?","acceptedAnswer":{"@type":"Answer","text":"Yes, on any modern browser — phone, tablet, or computer."}}]}</script>
