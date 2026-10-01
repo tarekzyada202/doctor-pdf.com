@@ -284,8 +284,9 @@ html[lang="en"] .priv-cta .ar{display:none}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:700px){
-  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border)}
-  .workspace{flex-direction:column}
+  .panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);overflow-y:visible}
+  .workspace{flex-direction:column;height:auto;overflow:visible}
+  .content{height:70vh;flex:none}
 }
 
 /* dpdf-nav-fit-v1 */
