@@ -151,7 +151,25 @@ html[lang="en"] .priv-cta .ar{display:none}
 .hdr-btn:hover{background:var(--bg3);color:var(--text)}
 
 /* SCROLL + RUBBER BAND */
+.viewer-body{flex:1;display:flex;overflow:hidden;min-height:0}
 .pages-scroll{flex:1;overflow:auto;position:relative;user-select:none;cursor:default}
+/* page thumbnails sidebar — same pattern as sign-pdf / stamp-pdf */
+.thumb-sidebar{width:0;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);overflow:hidden;transition:width .25s;display:flex;flex-direction:column;height:100%}
+.thumb-sidebar.open{width:110px}
+.thumb-sidebar-hdr{padding:8px 6px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
+.thumb-sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.thumb-sidebar-count{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:1px 6px;border-radius:8px}
+.thumb-list{flex:1;overflow-y:auto;padding:6px 5px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.thumb-list::-webkit-scrollbar{width:3px}
+.thumb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.thumb-item{position:relative;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s;flex-shrink:0;background:var(--bg2);padding:3px}
+.thumb-item:hover{border-color:rgba(99,102,241,.4)}
+.thumb-item.active{border-color:var(--primary);background:var(--primary-light)}
+.thumb-item canvas{display:block;width:100%;border-radius:3px}
+.thumb-num{text-align:center;font-size:10px;font-weight:700;color:var(--text3);margin-top:3px}
+.thumb-item.active .thumb-num{color:var(--primary)}
+.thumb-sel-dot{position:absolute;top:3px;inset-inline-end:3px;width:14px;height:14px;border-radius:50%;background:var(--primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+@media(max-width:700px){.thumb-sidebar.open{width:78px}}
 .pages-inner{display:flex;flex-wrap:wrap;gap:14px;padding:20px;align-content:flex-start}
 .rubber-band{position:absolute;border:2px solid var(--primary);background:rgba(99,102,241,.1);border-radius:3px;pointer-events:none;display:none;z-index:50}
 
@@ -321,10 +339,19 @@ html[lang="en"] .priv-cta .ar{display:none}
         <button class="hdr-btn" onclick="clearSel()" id="T_deselectAll">Deselect</button>
       </div>
 
-      <!-- Scrollable pages with rubber band -->
-      <div class="pages-scroll" id="pagesScroll">
-        <div class="pages-inner" id="pagesInner"></div>
-        <div class="rubber-band" id="rubberBand"></div>
+      <div class="viewer-body">
+        <div class="thumb-sidebar open" id="thumbSidebar">
+          <div class="thumb-sidebar-hdr">
+            <span class="thumb-sidebar-title" id="T_pages">Pages</span>
+            <span class="thumb-sidebar-count" id="thumbCount">0</span>
+          </div>
+          <div class="thumb-list" id="thumbList"></div>
+        </div>
+        <!-- Scrollable pages with rubber band -->
+        <div class="pages-scroll" id="pagesScroll">
+          <div class="pages-inner" id="pagesInner"></div>
+          <div class="rubber-band" id="rubberBand"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -411,7 +438,7 @@ const LANGS = {
     T_dropSub:'Drop a PDF to rotate pages. Click or drag to select multiple pages, then choose a rotation direction.',
     T_browse:'Choose PDF File',
     T_zoomLbl:'Zoom:',T_clearSel:'Clear',T_changeFile:'Change file',
-    T_pagesLbl:'Pages',T_selAll:'Select all',T_deselectAll:'Deselect',
+    T_pagesLbl:'Pages',T_pages:'Pages',T_selAll:'Select all',T_deselectAll:'Deselect',
     T_rotDir:'Rotation Direction',
     T_r90:'90° Right',T_r90s:'Clockwise',
     T_r270:'90° Left',T_r270s:'Counter-CW',
@@ -434,7 +461,7 @@ const LANGS = {
     T_dropSub:'اسحب PDF لتدوير الصفحات. اضغط أو اسحب لتحديد صفحات متعددة، ثم اختر اتجاه التدوير.',
     T_browse:'اختر ملف PDF',
     T_zoomLbl:'تكبير:',T_clearSel:'مسح',T_changeFile:'تغيير الملف',
-    T_pagesLbl:'الصفحات',T_selAll:'تحديد الكل',T_deselectAll:'إلغاء التحديد',
+    T_pagesLbl:'الصفحات',T_pages:'الصفحات',T_selAll:'تحديد الكل',T_deselectAll:'إلغاء التحديد',
     T_rotDir:'اتجاه التدوير',
     T_r90:'90° يمين',T_r90s:'عقارب الساعة',
     T_r270:'90° يسار',T_r270s:'عكس عقارب الساعة',
@@ -612,6 +639,7 @@ function clearSel() {
   updateSelUI();
 }
 function updateSelUI() {
+  if(typeof updateThumbSel==='function')updateThumbSel();
   const n=selected.size;
   const badge=document.getElementById('selBadge');
   const clrBtn=document.getElementById('selClearBtn');
@@ -705,8 +733,86 @@ async function loadPDF(f) {
   document.getElementById('pagesBadge').textContent=pages.length;
   document.getElementById('resultBox').style.display='none';
   renderAll();
+  buildThumbs();
   updateSelUI();
   updateActionBtn();
+}
+
+/* ── page thumbnails sidebar (same behaviour as sign-pdf / stamp-pdf) ── */
+const THUMB={gen:0,queue:[],busy:false,io:null,active:-1};
+
+function buildThumbs(){
+  const list=document.getElementById('thumbList');
+  const count=document.getElementById('thumbCount');
+  if(!list)return;
+  list.innerHTML='';
+  count.textContent=pages.length;
+  THUMB.gen++;THUMB.queue=[];
+  if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}
+  pages.forEach((p,i)=>{
+    const item=document.createElement('div');
+    item.className='thumb-item'+(i===0?' active':'');
+    item.dataset.i=i;
+    const cv=document.createElement('canvas');
+    const sc=90/p.origW;
+    cv.width=Math.round(p.origW*sc);cv.height=Math.round(p.origH*sc);
+    item.appendChild(cv);
+    const num=document.createElement('div');num.className='thumb-num';num.textContent=i+1;
+    item.appendChild(num);
+    item.addEventListener('click',()=>{
+      const card=document.querySelector('.pg-card[data-i="'+i+'"]');
+      if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
+      setActiveThumb(i);
+    });
+    list.appendChild(item);
+  });
+  THUMB.active=0;
+  updateThumbSel();
+  THUMB.io=new IntersectionObserver(ents=>{
+    ents.forEach(en=>{if(en.isIntersecting){THUMB.io.unobserve(en.target);THUMB.queue.push({i:+en.target.dataset.i,gen:THUMB.gen});pumpThumbs();}});
+  },{root:list,rootMargin:'400px'});
+  list.querySelectorAll('.thumb-item').forEach(t=>THUMB.io.observe(t));
+}
+
+async function pumpThumbs(){
+  if(THUMB.busy)return;
+  THUMB.busy=true;
+  try{
+    while(THUMB.queue.length){
+      const job=THUMB.queue.shift();
+      const p=pages[job.i];
+      if(job.gen!==THUMB.gen||!p||p.thumbDone||!pdfJsDoc)continue;
+      const item=document.querySelector('.thumb-item[data-i="'+job.i+'"]');
+      const cv=item?item.querySelector('canvas'):null;
+      if(!cv)continue;
+      try{
+        const page=await pdfJsDoc.getPage(job.i+1);
+        if(job.gen!==THUMB.gen)continue;
+        const vp=page.getViewport({scale:90/p.origW});
+        await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        if(job.gen===THUMB.gen)p.thumbDone=true;
+      }catch(e){}
+    }
+  }finally{THUMB.busy=false;}
+}
+
+function setActiveThumb(i){
+  if(i===THUMB.active)return;
+  THUMB.active=i;
+  document.querySelectorAll('.thumb-item').forEach((el,n)=>el.classList.toggle('active',n===i));
+  const act=document.querySelector('.thumb-item.active');
+  if(act)act.scrollIntoView({block:'nearest'});
+}
+
+/* mirror the page selection onto the thumbnails */
+function updateThumbSel(){
+  document.querySelectorAll('.thumb-item').forEach(item=>{
+    const i=+item.dataset.i;
+    const on=selected.has(i);
+    let dot=item.querySelector('.thumb-sel-dot');
+    if(on&&!dot){dot=document.createElement('div');dot.className='thumb-sel-dot';dot.textContent='✓';item.appendChild(dot);}
+    else if(!on&&dot)dot.remove();
+  });
 }
 
 /* ── RENDER ALL CARDS ──
@@ -914,6 +1020,8 @@ function updateActionBtn(){
 /* ── RESET ── */
 function resetTool(){
   RENDER.gen++; RENDER.queue=[]; if(RENDER.io) RENDER.io.disconnect();
+  THUMB.gen++; THUMB.queue=[]; if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;} THUMB.active=-1;
+  {const tl=document.getElementById('thumbList');if(tl)tl.innerHTML='';const tc=document.getElementById('thumbCount');if(tc)tc.textContent='0';}
   if(RENDER.task){ try{ RENDER.task.cancel(); }catch(e){} RENDER.task=null; }
   if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
   pdfJsDoc=null; pdfBytes=null; fileName='';

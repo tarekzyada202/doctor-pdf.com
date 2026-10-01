@@ -97,7 +97,24 @@ body{font-family:var(--font-en);background:var(--bg2);color:var(--text);min-heig
 .vtop .z-btn:hover{background:var(--bg3)}
 .zpct{font-size:12px;font-weight:600;min-width:42px;text-align:center}
 .vsep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.viewer-body{flex:1;display:flex;overflow:hidden;min-height:0}
 .pages-area{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;align-items:center;gap:20px;background:var(--bg3)}
+/* page thumbnails sidebar — same pattern as sign-pdf / stamp-pdf */
+.thumb-sidebar{width:0;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);overflow:hidden;transition:width .25s;display:flex;flex-direction:column;height:100%}
+.thumb-sidebar.open{width:110px}
+.thumb-sidebar-hdr{padding:8px 6px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
+.thumb-sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.thumb-sidebar-count{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:1px 6px;border-radius:8px}
+.thumb-list{flex:1;overflow-y:auto;padding:6px 5px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.thumb-list::-webkit-scrollbar{width:3px}
+.thumb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.thumb-item{position:relative;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s;flex-shrink:0;background:var(--bg2);padding:3px}
+.thumb-item:hover{border-color:rgba(99,102,241,.4)}
+.thumb-item.active{border-color:var(--primary);background:var(--primary-light)}
+.thumb-item canvas{display:block;width:100%;border-radius:3px}
+.thumb-num{text-align:center;font-size:10px;font-weight:700;color:var(--text3);margin-top:3px}
+.thumb-item.active .thumb-num{color:var(--primary)}
+@media(max-width:700px){.thumb-sidebar.open{width:78px}}
 .text-bar{display:flex;align-items:center;gap:7px;padding:7px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .text-bar .tb-label{font-size:14px;font-weight:800;color:var(--primary)}
 .text-bar .tb-a{font-size:13px;font-weight:700;color:var(--text3);user-select:none}
@@ -301,7 +318,16 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
         <div class="tb-sw-wrap" id="smSwatches"></div>
         <input type="color" id="smColorPick" class="tb-color" value="#16a34a" title="Custom color">
       </div>
-      <div class="pages-area" id="pagesArea"></div>
+      <div class="viewer-body">
+        <div class="thumb-sidebar open" id="thumbSidebar">
+          <div class="thumb-sidebar-hdr">
+            <span class="thumb-sidebar-title" id="T_pages">الصفحات</span>
+            <span class="thumb-sidebar-count" id="thumbCount">0</span>
+          </div>
+          <div class="thumb-list" id="thumbList"></div>
+        </div>
+        <div class="pages-area" id="pagesArea"></div>
+      </div>
     </div>
   </div>
 
@@ -407,7 +433,7 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 <script>
 const LANGS={
   en:{T_privacyBadge:'100% Private',T_allTools:'Tools',T_back:'← All tools',T_toolName:'Edit PDF',T_toolDesc:'Add text, draw, highlight & more',
-    T_dzMain:'Click or drop a PDF to edit',T_dzSub:'Add text, draw, highlight, shapes, images — 100% in your browser',
+    T_pages:'Pages',T_dzMain:'Click or drop a PDF to edit',T_dzSub:'Add text, draw, highlight, shapes, images — 100% in your browser',
     T_toolsLabel:'Tools',T_hint:'Pick a tool, then click or drag on the page. Use Select to move or resize items.',
     T_propsLabel:'Properties',T_color:'Color',T_size:'Size',T_font:'Font size',T_family:'Font',T_style:'Style',
     T_save:'Download edited PDF',T_resultTitle:'✅ Done!',T_download:'Download',T_reset:'Edit another file',T_secure:'Permanently remove covered / redacted text (flattens edited pages)',
@@ -420,7 +446,7 @@ const LANGS={
     F_h2:'How to edit a PDF online',F_s1:'Open the Edit PDF tool and drop your PDF into the page.',F_s2:'Pick a tool — add text, draw, highlight, shapes, an image, whiteout or redact.',F_s3:'Click or drag on the page to apply it, then use Select to move or resize.',F_s4:'Download your edited PDF instantly — your file never leaves your device.',
     F_faqH:'Frequently asked questions',F_q1:'Is editing a PDF free?',F_a1:'Yes. Doctor PDF lets you edit PDFs 100% free with no limits, watermarks, or sign-up.',F_q2:'Can I add text and draw on the PDF?',F_a2:'Yes. Add text anywhere, draw freehand, highlight, add shapes and images, whiteout or redact areas.',F_q3:'Are my files private?',F_a3:'Completely. All editing happens locally in your browser — your file is never uploaded to any server.',F_q4:'Can I edit the existing text in the PDF?',F_a4:'You can cover existing content with whiteout and type new text on top. Editing the original text directly is not supported in the browser.',F_q5:'Does it work on mobile?',F_a5:'Yes, on any modern browser — phone, tablet, or computer.'},
   ar:{T_privacyBadge:'خصوصية 100%',T_allTools:'الأدوات',T_back:'كل الأدوات ←',T_toolName:'تعديل PDF',T_toolDesc:'أضف نص، ارسم، ظلّل والمزيد',
-    T_dzMain:'اضغط أو أسقط ملف PDF للتعديل',T_dzSub:'أضف نص، ارسم، ظلّل، أشكال، صور — 100% في متصفحك',
+    T_pages:'الصفحات',T_dzMain:'اضغط أو أسقط ملف PDF للتعديل',T_dzSub:'أضف نص، ارسم، ظلّل، أشكال، صور — 100% في متصفحك',
     T_toolsLabel:'الأدوات',T_hint:'اختر أداة، ثم اضغط أو اسحب على الصفحة. استخدم "تحديد" لتحريك أو تكبير العناصر.',
     T_propsLabel:'الخصائص',T_color:'اللون',T_size:'الحجم',T_font:'حجم الخط',T_family:'نوع الخط',T_style:'النمط',
     T_save:'تحميل الملف المعدّل',T_resultTitle:'✅ تم!',T_download:'تحميل',T_reset:'تعديل ملف آخر',T_secure:'إزالة آمنة للنص المغطّى/المحجوب (تُسطّح الصفحات المعدّلة)',
@@ -553,6 +579,91 @@ async function loadPDF(file){
   setTool('select'); buildSwatches();
   undoStack=[]; redoStack=[];
   await renderPages();
+  buildThumbs();
+}
+
+/* ── page thumbnails sidebar (same behaviour as sign-pdf / stamp-pdf) ── */
+const THUMB={gen:0,queue:[],busy:false,io:null,active:-1};
+
+function buildThumbs(){
+  const list=document.getElementById('thumbList');
+  const count=document.getElementById('thumbCount');
+  if(!list)return;
+  list.innerHTML='';
+  count.textContent=pages.length;
+  THUMB.gen++; THUMB.queue=[];
+  if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}
+  pages.forEach((p,i)=>{
+    const item=document.createElement('div');
+    item.className='thumb-item'+(i===0?' active':'');
+    item.dataset.i=i;
+    const cv=document.createElement('canvas');
+    const sc=90/p.nativeW;
+    cv.width=Math.round(p.nativeW*sc); cv.height=Math.round(p.nativeH*sc);
+    item.appendChild(cv);
+    const num=document.createElement('div'); num.className='thumb-num'; num.textContent=i+1;
+    item.appendChild(num);
+    item.addEventListener('click',()=>{
+      const wrap=document.querySelectorAll('.page-wrap')[i];
+      if(wrap)wrap.scrollIntoView({behavior:'smooth',block:'start'});
+      setActiveThumb(i);
+    });
+    list.appendChild(item);
+  });
+  THUMB.active=0;
+  THUMB.io=new IntersectionObserver(ents=>{
+    ents.forEach(en=>{if(en.isIntersecting){THUMB.io.unobserve(en.target);THUMB.queue.push({i:+en.target.dataset.i,gen:THUMB.gen});pumpThumbs();}});
+  },{root:list,rootMargin:'400px'});
+  list.querySelectorAll('.thumb-item').forEach(t=>THUMB.io.observe(t));
+  syncThumbToScroll();
+}
+
+async function pumpThumbs(){
+  if(THUMB.busy)return;
+  THUMB.busy=true;
+  try{
+    while(THUMB.queue.length){
+      const job=THUMB.queue.shift();
+      const p=pages[job.i];
+      if(job.gen!==THUMB.gen||!p||p.thumbDone)continue;
+      const item=document.querySelector('.thumb-item[data-i="'+job.i+'"]');
+      const cv=item?item.querySelector('canvas'):null;
+      if(!cv)continue;
+      try{
+        const vp=p.pdfPage.getViewport({scale:90/p.nativeW});
+        await p.pdfPage.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        if(job.gen===THUMB.gen)p.thumbDone=true;
+      }catch(e){}
+    }
+  }finally{THUMB.busy=false;}
+}
+
+function setActiveThumb(i){
+  if(i===THUMB.active)return;
+  THUMB.active=i;
+  document.querySelectorAll('.thumb-item').forEach((el,n)=>el.classList.toggle('active',n===i));
+  const act=document.querySelector('.thumb-item.active');
+  if(act)act.scrollIntoView({block:'nearest'});
+}
+
+/* highlight the thumbnail of the page currently in view */
+function syncThumbToScroll(){
+  const area=document.getElementById('pagesArea');
+  if(!area||area.dataset.thumbSync)return;
+  area.dataset.thumbSync='1';
+  let tick=false;
+  area.addEventListener('scroll',()=>{
+    if(tick)return; tick=true;
+    requestAnimationFrame(()=>{
+      tick=false;
+      const wraps=document.querySelectorAll('.page-wrap');
+      const mid=area.getBoundingClientRect().top+area.clientHeight*0.35;
+      for(let i=0;i<wraps.length;i++){
+        const r=wraps[i].getBoundingClientRect();
+        if(r.bottom>mid){setActiveThumb(i);break;}
+      }
+    });
+  });
 }
 function dispScale(p){return zoom*Math.min(900/p.nativeW,1.6);}
 async function renderPages(){
@@ -1123,6 +1234,7 @@ function resetTool(){
   if(pdfJsDoc){try{pdfJsDoc.destroy();}catch(e){}}
   pdfJsDoc=null;pdfFile=null;pdfBytes=null;pages=[];formFields=[];zoom=1;selected=null;undoStack=[];redoStack=[];
   document.getElementById('fileInput').value='';
+  {const tl=document.getElementById('thumbList');if(tl)tl.innerHTML='';const tc=document.getElementById('thumbCount');if(tc)tc.textContent='0';THUMB.gen++;THUMB.queue=[];if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}THUMB.active=-1;}
   document.getElementById('dropzone').classList.remove('hidden');
   document.getElementById('viewer').style.display='none';
   document.getElementById('pagesArea').innerHTML='';

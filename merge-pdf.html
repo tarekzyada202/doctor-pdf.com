@@ -116,6 +116,32 @@ html[lang="en"] .priv-cta .ar{display:none}
 .why-item svg{flex-shrink:0;width:20px;height:20px;color:var(--success);margin-top:1px}
 @media(max-width:560px){.why-grid{grid-template-columns:1fr}}
 .content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;position:relative}
+.viewer-body{flex:1;display:flex;overflow:hidden;min-height:0}
+/* page thumbnails sidebar — same pattern as sign-pdf / stamp-pdf */
+.thumb-sidebar{width:0;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);overflow:hidden;transition:width .25s;display:flex;flex-direction:column;height:100%}
+.thumb-sidebar.open{width:110px}
+.thumb-sidebar-hdr{padding:8px 6px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
+.thumb-sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.thumb-sidebar-count{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:1px 6px;border-radius:8px}
+.thumb-list{flex:1;overflow-y:auto;padding:6px 5px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.thumb-list::-webkit-scrollbar{width:3px}
+.thumb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.thumb-item{position:relative;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s;flex-shrink:0;background:var(--bg2);padding:3px}
+.thumb-item:hover{border-color:rgba(99,102,241,.4)}
+.thumb-item.active{border-color:var(--primary);background:var(--primary-light)}
+.thumb-item canvas{display:block;width:100%;border-radius:3px}
+.thumb-num{text-align:center;font-size:10px;font-weight:700;color:var(--text3);margin-top:3px}
+.thumb-item.active .thumb-num{color:var(--primary)}
+.thumb-sel-dot{position:absolute;top:3px;inset-inline-end:3px;width:14px;height:14px;border-radius:50%;background:var(--primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.thumb-item.gone canvas{opacity:.35}
+@media(max-width:700px){.thumb-sidebar.open{width:78px}}
+.zoom-bar{display:none;align-items:center;gap:6px;flex-shrink:0}
+.zoom-bar.show{display:flex}
+.z-btn{height:28px;min-width:28px;padding:0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:14px;cursor:pointer}
+.z-btn:hover{background:var(--bg3);color:var(--text)}
+.z-pct{font-size:12px;font-weight:600;color:var(--text2);min-width:44px;text-align:center}
+.z-reset{font-size:11px}
+
 
 /* EMPTY */
 .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--text2);text-align:center;cursor:pointer;padding:48px;border:2.5px dashed var(--border);border-radius:16px;transition:.2s;background:var(--bg);min-height:200px}
@@ -246,7 +272,21 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <div class="workspace">
   <!-- CONTENT -->
+  <div class="viewer-body">
+  <div class="thumb-sidebar" id="thumbSidebar">
+    <div class="thumb-sidebar-hdr">
+      <span class="thumb-sidebar-title" id="T_pages">Pages</span>
+      <span class="thumb-sidebar-count" id="thumbCount">0</span>
+    </div>
+    <div class="thumb-list" id="thumbList"></div>
+  </div>
   <div class="content" id="contentArea">
+    <div class="zoom-bar" id="zoomBar">
+      <button class="z-btn" onclick="zoomStep(-1)">−</button>
+      <span class="z-pct" id="zoomPct">100%</span>
+      <button class="z-btn" onclick="zoomStep(1)">+</button>
+      <button class="z-btn z-reset" onclick="zoomSet(1)" id="T_zoomReset">Reset</button>
+    </div>
     <div class="empty-state" id="emptyState">
       <span class="empty-ic">🔗</span>
       <span class="empty-main" id="T_emptyMain">Click or drop PDF files here</span>
@@ -259,6 +299,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <button class="add-more-btn" id="addMoreBtn"><span id="T_addMore">+ Add more</span></button>
     </div>
     <div class="pages-grid" id="pagesGrid"></div>
+  </div>
   </div>
 
   <!-- PANEL -->
@@ -356,6 +397,9 @@ html[lang="en"] .priv-cta .ar{display:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
 <script>
 var THUMB_W=120;
+var ZOOM_STEPS=[0.5,0.75,1,1.25,1.5,2,2.5,3];
+var S_zoom=1;
+function thumbW(){return Math.round(THUMB_W*S_zoom);}
 var FILE_COLORS=['#6366f1','#ef4444','#10b981','#f59e0b','#06b6d4','#8b5cf6','#ec4899','#14b8a6'];
 var S={
   files:[],  /* original File objects */
@@ -427,7 +471,7 @@ async function pumpThumbs(){
       try{
         var page=await doc.getPage(pg.pi+1);
         var vp0=page.getViewport({scale:1});
-        var vp=page.getViewport({scale:THUMB_W/vp0.width});
+        var vp=page.getViewport({scale:thumbW()/vp0.width});
         var cv=document.createElement('canvas');
         cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
         await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
@@ -455,6 +499,101 @@ function render(){
   renderGrid();
   renderFileList();
   updateBtn();
+  buildThumbs();
+  var has=S.pages.length>0;
+  document.getElementById('zoomBar').classList.toggle('show',has);
+  document.getElementById('thumbSidebar').classList.toggle('open',has);
+}
+
+/* ── ZOOM — pages are re-rendered by pdf.js at the new width, lazily ── */
+function zoomSet(v){
+  v=Math.max(0.5,Math.min(3,v));
+  if(v===S_zoom)return;
+  S_zoom=v;
+  document.getElementById('zoomPct').textContent=Math.round(v*100)+'%';
+  TH.gen++; TH.queue=[];
+  S.pages.forEach(function(pg){ pg.cv=null; });   /* drop cached canvases, re-rendered on view */
+  renderGrid();
+}
+function zoomStep(d){
+  var z=S_zoom;
+  if(d>0){ var up=ZOOM_STEPS.find(function(x){return x>z+0.01;}); zoomSet(up||3); }
+  else { var dn=0.5; ZOOM_STEPS.forEach(function(x){ if(x<z-0.01) dn=x; }); zoomSet(dn); }
+}
+
+/* ── page thumbnails sidebar (same behaviour as sign-pdf / stamp-pdf) ── */
+var THUMB={gen:0,queue:[],busy:false,io:null,active:-1};
+
+function buildThumbs(){
+  var list=document.getElementById('thumbList');
+  var count=document.getElementById('thumbCount');
+  if(!list)return;
+  list.innerHTML='';
+  count.textContent=S.pages.length;
+  THUMB.gen++; THUMB.queue=[];
+  if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}
+  S.pages.forEach(function(pg,i){
+    var item=document.createElement('div');
+    item.className='thumb-item'+(i===0?' active':'');
+    item.dataset.i=i;
+    var cv=document.createElement('canvas');
+    cv.width=90; cv.height=Math.round(90*(pg.h/pg.w||1.414));
+    item.appendChild(cv);
+    var num=document.createElement('div'); num.className='thumb-num'; num.textContent=i+1;
+    item.appendChild(num);
+    item.addEventListener('click',function(){
+      var card=document.querySelectorAll('#pagesGrid .pg-thumb')[i];
+      if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
+      setActiveThumb(i);
+    });
+    list.appendChild(item);
+  });
+  THUMB.active=0;
+  THUMB.io=new IntersectionObserver(function(ents){
+    ents.forEach(function(en){
+      if(en.isIntersecting){
+        THUMB.io.unobserve(en.target);
+        THUMB.queue.push({i:+en.target.dataset.i,gen:THUMB.gen});
+        pumpSideThumbs();
+      }
+    });
+  },{root:list,rootMargin:'400px'});
+  Array.prototype.forEach.call(list.querySelectorAll('.thumb-item'),function(t){THUMB.io.observe(t);});
+}
+
+async function pumpSideThumbs(){
+  if(THUMB.busy)return;
+  THUMB.busy=true;
+  try{
+    while(THUMB.queue.length){
+      var job=THUMB.queue.shift();
+      if(job.gen!==THUMB.gen)continue;
+      var pg=S.pages[job.i];
+      if(!pg)continue;
+      var item=document.querySelector('.thumb-item[data-i="'+job.i+'"]');
+      var cv=item?item.querySelector('canvas'):null;
+      if(!cv||cv.dataset.done)continue;
+      var doc=TH.docs[pg.fi];
+      if(!doc)continue;
+      try{
+        var page=await doc.getPage(pg.pi+1);
+        if(job.gen!==THUMB.gen)continue;
+        var vp0=page.getViewport({scale:1});
+        var vp=page.getViewport({scale:90/vp0.width});
+        cv.width=Math.round(vp.width); cv.height=Math.round(vp.height);
+        await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        if(job.gen===THUMB.gen)cv.dataset.done='1';
+      }catch(e){}
+    }
+  }finally{THUMB.busy=false;}
+}
+
+function setActiveThumb(i){
+  if(i===THUMB.active)return;
+  THUMB.active=i;
+  Array.prototype.forEach.call(document.querySelectorAll('.thumb-item'),function(el,n){el.classList.toggle('active',n===i);});
+  var act=document.querySelector('.thumb-item.active');
+  if(act)act.scrollIntoView({block:'nearest'});
 }
 
 function renderStats(){
@@ -762,7 +901,7 @@ var LANGS={
   en:{T_tools:'All Tools',T_split:'Split PDF',T_compress:'Compress PDF',T_rotate:'Rotate PDF',T_sign:'Sign PDF',T_protect:'Protect PDF',T_watermark:'Watermark',T_stamp:'Stamp PDF',T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_extract:'Extract Text',T_convert:'Convert Image',T_removebg:'Remove BG',
     T_privacyBadge:'100% Private',
     T_back:'← All tools',T_toolName:'Merge PDF',T_toolDesc:'Combine multiple PDFs into one. Drag to reorder.',
-    T_emptyMain:'Click or drop PDF files here',T_emptySub:'Add multiple PDFs to merge them into one · Drag to reorder',
+    T_pages:'Pages',T_zoomReset:'Reset',T_emptyMain:'Click or drop PDF files here',T_emptySub:'Add multiple PDFs to merge them into one · Drag to reorder',
     T_filesLabel:'PDF Files',T_pdfBtn:'Click or drop PDF files here',T_pdfSub:'Select multiple files at once',
     T_statFiles:'files',T_statPages:'pages',T_addMore:'+ Add more',
     T_hint:'Drag pages to reorder them. Hover a page to delete it.',
@@ -802,7 +941,8 @@ var LANGS={
   ar:{T_tools:'كل الأدوات',T_split:'تقسيم PDF',T_compress:'ضغط PDF',T_rotate:'تدوير PDF',T_sign:'توقيع PDF',T_protect:'حماية PDF',T_watermark:'علامة مائية',T_stamp:'ختم PDF',T_img2pdf:'صورة إلى PDF',T_pdf2img:'PDF إلى صورة',T_extract:'استخراج النص',T_convert:'تحويل الصور',T_removebg:'إزالة الخلفية',
     T_privacyBadge:'خصوصية 100%',
     T_back:'كل الأدوات ←',T_toolName:'دمج PDF',T_toolDesc:'ادمج عدة ملفات PDF في ملف واحد. اسحب لإعادة الترتيب.',
-    T_emptyMain:'اضغط هنا أو أسقط ملفات PDF',T_emptySub:'أضف عدة ملفات PDF لدمجها في ملف واحد',
+    T_pages:'الصفحات',T_zoomReset:'إعادة',T_emptyMain:'اضغط هنا أو أسقط ملفات PDF',
+T_emptySub:'أضف عدة ملفات PDF لدمجها في ملف واحد',
     T_filesLabel:'ملفات PDF',T_pdfBtn:'اضغط أو أسقط ملفات PDF هنا',T_pdfSub:'اختر عدة ملفات دفعة واحدة',
     T_statFiles:'ملفات',T_statPages:'صفحات',T_addMore:'+ إضافة المزيد',
     T_hint:'اسحب الصفحات لإعادة ترتيبها. مرر الماوس فوق صفحة لحذفها.',

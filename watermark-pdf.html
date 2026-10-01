@@ -129,6 +129,26 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 /* PREVIEW AREA */
 .preview-area{flex:1;display:none;flex-direction:column;overflow:hidden}
+.viewer-body{flex:1;display:flex;overflow:hidden;min-height:0}
+/* page thumbnails sidebar — same pattern as sign-pdf / stamp-pdf */
+.thumb-sidebar{width:0;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);overflow:hidden;transition:width .25s;display:flex;flex-direction:column;height:100%}
+.thumb-sidebar.open{width:110px}
+.thumb-sidebar-hdr{padding:8px 6px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
+.thumb-sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.thumb-sidebar-count{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:1px 6px;border-radius:8px}
+.thumb-list{flex:1;overflow-y:auto;padding:6px 5px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.thumb-list::-webkit-scrollbar{width:3px}
+.thumb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.thumb-item{position:relative;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s;flex-shrink:0;background:var(--bg2);padding:3px}
+.thumb-item:hover{border-color:rgba(99,102,241,.4)}
+.thumb-item.active{border-color:var(--primary);background:var(--primary-light)}
+.thumb-item canvas{display:block;width:100%;border-radius:3px}
+.thumb-num{text-align:center;font-size:10px;font-weight:700;color:var(--text3);margin-top:3px}
+.thumb-item.active .thumb-num{color:var(--primary)}
+.thumb-sel-dot{position:absolute;top:3px;inset-inline-end:3px;width:14px;height:14px;border-radius:50%;background:var(--primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.thumb-item.gone canvas{opacity:.35}
+@media(max-width:700px){.thumb-sidebar.open{width:78px}}
+
 .toolbar{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .tb-btn{height:30px;padding:0 10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .15s;white-space:nowrap;font-family:inherit}
 .tb-btn:hover:not(:disabled){border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
@@ -273,12 +293,24 @@ html[lang="en"] .priv-cta .ar{display:none}
         <button class="tb-btn" id="prevPageBtn" onclick="changePage(-1)">‹</button>
         <span class="tb-page" id="pageInfo">1 / 1</span>
         <button class="tb-btn" id="nextPageBtn" onclick="changePage(1)">›</button>
+        <button class="tb-btn" onclick="zoomStep(-1)">−</button>
+        <span class="tb-page" id="zoomPct">100%</span>
+        <button class="tb-btn" onclick="zoomStep(1)">+</button>
         <div class="tb-right">
           <button class="tb-btn" id="changeFBtn"><span id="T_changeFile">Change file</span></button>
         </div>
       </div>
-      <div class="preview-scroll">
-        <div class="preview-canvas-wrap"><canvas id="previewCanvas"></canvas></div>
+      <div class="viewer-body">
+        <div class="thumb-sidebar open" id="thumbSidebar">
+          <div class="thumb-sidebar-hdr">
+            <span class="thumb-sidebar-title" id="T_pages">Pages</span>
+            <span class="thumb-sidebar-count" id="thumbCount">0</span>
+          </div>
+          <div class="thumb-list" id="thumbList"></div>
+        </div>
+        <div class="preview-scroll">
+          <div class="preview-canvas-wrap"><canvas id="previewCanvas"></canvas></div>
+        </div>
       </div>
     </div>
   </div>
@@ -366,7 +398,7 @@ const LANGS = {
     T_dropTitle:'Add Watermark to PDF',
     T_dropSub:'Drop a PDF to add a text watermark across every page. Customize the text, color, opacity, size and position with a live preview.',
     T_browse:'Choose PDF File',
-    T_previewLbl:'Preview',T_changeFile:'Change file',
+    T_pages:'Pages',T_previewLbl:'Preview',T_changeFile:'Change file',
     T_textTitle:'Watermark Text',T_colorTitle:'Color',T_opTitle:'Opacity',T_sizeTitle:'Font Size',
     T_diagLbl:'Diagonal',T_posTitle:'Position',
     T_privacy:'All processing happens locally in your browser. No files are ever uploaded.',
@@ -384,7 +416,7 @@ const LANGS = {
     T_dropTitle:'إضافة علامة مائية إلى PDF',
     T_dropSub:'اسحب ملف PDF لإضافة علامة مائية نصية على كل الصفحات. خصّص النص واللون والشفافية والحجم والموضع مع معاينة حية.',
     T_browse:'اختر ملف PDF',
-    T_previewLbl:'معاينة',T_changeFile:'تغيير الملف',
+    T_pages:'الصفحات',T_previewLbl:'معاينة',T_changeFile:'تغيير الملف',
     T_textTitle:'نص العلامة المائية',T_colorTitle:'اللون',T_opTitle:'الشفافية',T_sizeTitle:'حجم الخط',
     T_diagLbl:'قطري',T_posTitle:'الموضع',
     T_privacy:'كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.',
@@ -526,6 +558,7 @@ async function loadPDF(f) {
   document.getElementById('previewArea').style.display='flex';
   document.getElementById('resultBox').style.display='none';
   document.getElementById('actionBtn').disabled=false;
+  buildThumbs();
   updatePageNav();
   updatePreview();
 }
@@ -537,8 +570,59 @@ function changePage(d) {
   updatePageNav();
   updatePreview();
 }
+var ZOOM_STEPS=[0.5,0.75,1,1.25,1.5,2,2.5,3];
+let wmZoom=1;
+function zoomSet(v){v=Math.max(0.5,Math.min(3,v));if(v===wmZoom)return;wmZoom=v;document.getElementById("zoomPct").textContent=Math.round(v*100)+"%";updatePreview();}
+function zoomStep(d){const z=wmZoom;if(d>0){const up=ZOOM_STEPS.find(x=>x>z+0.01);zoomSet(up||3);}else{let dn=0.5;ZOOM_STEPS.forEach(x=>{if(x<z-0.01)dn=x;});zoomSet(dn);}}
+
+/* page thumbnails sidebar — clicking a page switches the preview */
+const THUMB={gen:0,queue:[],busy:false,io:null};
+function buildThumbs(){
+  const list=document.getElementById("thumbList");const count=document.getElementById("thumbCount");
+  if(!list)return;
+  list.innerHTML="";count.textContent=numPages;
+  THUMB.gen++;THUMB.queue=[];
+  if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}
+  for(let i=0;i<numPages;i++){
+    const item=document.createElement("div");
+    item.className="thumb-item"+(i===0?" active":"");
+    item.dataset.i=i;
+    const cv=document.createElement("canvas");cv.width=90;cv.height=127;
+    item.appendChild(cv);
+    const num=document.createElement("div");num.className="thumb-num";num.textContent=i+1;
+    item.appendChild(num);
+    item.addEventListener("click",()=>{curPage=i+1;updatePageNav();updatePreview();});
+    list.appendChild(item);
+  }
+  THUMB.io=new IntersectionObserver(ents=>{ents.forEach(en=>{if(en.isIntersecting){THUMB.io.unobserve(en.target);THUMB.queue.push({i:+en.target.dataset.i,gen:THUMB.gen});pumpThumbs();}});},{root:list,rootMargin:"400px"});
+  list.querySelectorAll(".thumb-item").forEach(t=>THUMB.io.observe(t));
+}
+async function pumpThumbs(){
+  if(THUMB.busy)return;THUMB.busy=true;
+  try{
+    while(THUMB.queue.length){
+      const job=THUMB.queue.shift();
+      if(job.gen!==THUMB.gen||!pdfJsDoc)continue;
+      const item=document.querySelector(".thumb-item[data-i='"+job.i+"']");
+      const cv=item?item.querySelector("canvas"):null;
+      if(!cv||cv.dataset.done)continue;
+      try{
+        const page=await pdfJsDoc.getPage(job.i+1);
+        if(job.gen!==THUMB.gen)continue;
+        const v0=page.getViewport({scale:1});
+        const vp=page.getViewport({scale:90/v0.width});
+        cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
+        await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+        if(job.gen===THUMB.gen)cv.dataset.done="1";
+      }catch(e){}
+    }
+  }finally{THUMB.busy=false;}
+}
+
 function updatePageNav() {
   document.getElementById('pageInfo').textContent = curPage+' / '+numPages;
+  document.querySelectorAll('.thumb-item').forEach((el,n)=>el.classList.toggle('active',n===curPage-1));
+  {const act=document.querySelector('.thumb-item.active');if(act)act.scrollIntoView({block:'nearest'});}
   document.getElementById('prevPageBtn').disabled = curPage<=1;
   document.getElementById('nextPageBtn').disabled = curPage>=numPages;
 }
@@ -551,7 +635,7 @@ async function updatePreview() {
   if(token!==renderToken) return;
   const vp1 = page.getViewport({scale:1});
   const maxW = 640;
-  const scale = Math.min(maxW/vp1.width, 1.4);
+  const scale = Math.min(maxW/vp1.width, 1.4) * wmZoom;
   const vp = page.getViewport({scale});
   const cv = document.getElementById('previewCanvas');
   cv.width = Math.round(vp.width);

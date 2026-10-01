@@ -158,6 +158,26 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 /* PAGES SCROLL — rubber band container */
 .pages-scroll{flex:1;overflow:auto;padding:20px;position:relative;user-select:none}
+.viewer-body{flex:1;display:flex;overflow:hidden;min-height:0}
+/* page thumbnails sidebar — same pattern as sign-pdf / stamp-pdf */
+.thumb-sidebar{width:0;flex-shrink:0;background:var(--bg);border-inline-end:1px solid var(--border);overflow:hidden;transition:width .25s;display:flex;flex-direction:column;height:100%}
+.thumb-sidebar.open{width:110px}
+.thumb-sidebar-hdr{padding:8px 6px 6px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border)}
+.thumb-sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.thumb-sidebar-count{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:1px 6px;border-radius:8px}
+.thumb-list{flex:1;overflow-y:auto;padding:6px 5px;display:flex;flex-direction:column;gap:6px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.thumb-list::-webkit-scrollbar{width:3px}
+.thumb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.thumb-item{position:relative;cursor:pointer;border-radius:5px;border:2px solid transparent;transition:all .15s;flex-shrink:0;background:var(--bg2);padding:3px}
+.thumb-item:hover{border-color:rgba(99,102,241,.4)}
+.thumb-item.active{border-color:var(--primary);background:var(--primary-light)}
+.thumb-item canvas{display:block;width:100%;border-radius:3px}
+.thumb-num{text-align:center;font-size:10px;font-weight:700;color:var(--text3);margin-top:3px}
+.thumb-item.active .thumb-num{color:var(--primary)}
+.thumb-sel-dot{position:absolute;top:3px;inset-inline-end:3px;width:14px;height:14px;border-radius:50%;background:var(--primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.thumb-item.gone canvas{opacity:.35}
+@media(max-width:700px){.thumb-sidebar.open{width:78px}}
+
 .pages-inner{display:flex;flex-wrap:wrap;gap:0;align-content:flex-start;position:relative}
 
 /* RUBBER BAND SELECTION */
@@ -378,10 +398,19 @@ html[lang="en"] .priv-cta .ar{display:none}
         </div>
       </div>
 
-      <!-- Pages scroll (rubber band container) -->
-      <div class="pages-scroll" id="pagesScroll">
-        <div class="pages-inner" id="pagesRow"></div>
-        <div class="rubber-band" id="rubberBand"></div>
+      <div class="viewer-body">
+        <div class="thumb-sidebar open" id="thumbSidebar">
+          <div class="thumb-sidebar-hdr">
+            <span class="thumb-sidebar-title" id="T_pages">Pages</span>
+            <span class="thumb-sidebar-count" id="thumbCount">0</span>
+          </div>
+          <div class="thumb-list" id="thumbList"></div>
+        </div>
+        <!-- Pages scroll (rubber band container) -->
+        <div class="pages-scroll" id="pagesScroll">
+          <div class="pages-inner" id="pagesRow"></div>
+          <div class="rubber-band" id="rubberBand"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -472,7 +501,7 @@ const LANGS = {
     T_zoomLabel:'Zoom:',
     T_selAll:'Select all',T_selNone:'Deselect all',T_delSel:'Delete selected',T_extSel:'Extract selected',
     T_changeFile:'Change file',
-    T_pagesLabel:'Pages',T_restoreAll:'↩ Restore all',T_clearSplits:'✕ Clear splits',
+    T_pagesLabel:'Pages',T_pages:'Pages',T_restoreAll:'↩ Restore all',T_clearSplits:'✕ Clear splits',
     T_modeTitle:'Split Mode',T_modeVisual:'✂ Visual',T_modeRange:'Range',T_modeEach:'Each Page',
     T_from:'From',T_to:'to',
     T_statsTitle:'Statistics',T_statTotal:'Total',T_statDeleted:'Deleted',T_statSplits:'Splits',
@@ -496,7 +525,7 @@ const LANGS = {
     T_zoomLabel:'تكبير:',
     T_selAll:'تحديد الكل',T_selNone:'إلغاء التحديد',T_delSel:'حذف المحدد',T_extSel:'استخراج المحدد',
     T_changeFile:'تغيير الملف',
-    T_pagesLabel:'الصفحات',T_restoreAll:'↩ استعادة الكل',T_clearSplits:'✕ مسح التقسيمات',
+    T_pagesLabel:'الصفحات',T_pages:'الصفحات',T_restoreAll:'↩ استعادة الكل',T_clearSplits:'✕ مسح التقسيمات',
     T_modeTitle:'نمط التقسيم',T_modeVisual:'✂ بصري',T_modeRange:'نطاق',T_modeEach:'كل صفحة',
     T_from:'من',T_to:'إلى',
     T_statsTitle:'الإحصائيات',T_statTotal:'الإجمالي',T_statDeleted:'المحذوفة',T_statSplits:'نقاط التقسيم',
@@ -791,6 +820,85 @@ async function loadPDF(f) {
 
   updateStats();
   renderPages();
+  buildThumbs();
+}
+
+/* ── page thumbnails sidebar (same behaviour as sign-pdf / stamp-pdf) ── */
+const THUMB={gen:0,queue:[],busy:false,io:null,active:-1};
+
+function buildThumbs(){
+  const list=document.getElementById('thumbList');
+  const count=document.getElementById('thumbCount');
+  if(!list)return;
+  list.innerHTML='';
+  count.textContent=S.pageCount;
+  THUMB.gen++;THUMB.queue=[];
+  if(THUMB.io){THUMB.io.disconnect();THUMB.io=null;}
+  for(let i=0;i<S.pageCount;i++){
+    const item=document.createElement('div');
+    item.className='thumb-item'+(i===0?' active':'');
+    item.dataset.i=i;
+    const cv=document.createElement('canvas');
+    cv.width=90; cv.height=Math.round(90*RENDER.ratio);
+    item.appendChild(cv);
+    const num=document.createElement('div');num.className='thumb-num';num.textContent=i+1;
+    item.appendChild(num);
+    item.addEventListener('click',()=>{
+      const card=document.querySelector('.page-card[data-i="'+i+'"]');
+      if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
+      setActiveThumb(i);
+    });
+    list.appendChild(item);
+  }
+  THUMB.active=0;
+  updateThumbState();
+  THUMB.io=new IntersectionObserver(ents=>{
+    ents.forEach(en=>{if(en.isIntersecting){THUMB.io.unobserve(en.target);THUMB.queue.push({i:+en.target.dataset.i,gen:THUMB.gen});pumpSideThumbs();}});
+  },{root:list,rootMargin:'400px'});
+  list.querySelectorAll('.thumb-item').forEach(t=>THUMB.io.observe(t));
+}
+
+async function pumpSideThumbs(){
+  if(THUMB.busy)return;
+  THUMB.busy=true;
+  try{
+    while(THUMB.queue.length){
+      const job=THUMB.queue.shift();
+      if(job.gen!==THUMB.gen||!S.pdfJsDoc)continue;
+      const item=document.querySelector('.thumb-item[data-i="'+job.i+'"]');
+      const cv=item?item.querySelector('canvas'):null;
+      if(!cv||cv.dataset.done)continue;
+      try{
+        const page=await S.pdfJsDoc.getPage(job.i+1);
+        if(job.gen!==THUMB.gen)continue;
+        const v0=page.getViewport({scale:1});
+        const vp=page.getViewport({scale:90/v0.width});
+        cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
+        await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        if(job.gen===THUMB.gen)cv.dataset.done='1';
+      }catch(e){}
+    }
+  }finally{THUMB.busy=false;}
+}
+
+function setActiveThumb(i){
+  if(i===THUMB.active)return;
+  THUMB.active=i;
+  document.querySelectorAll('.thumb-item').forEach((el,n)=>el.classList.toggle('active',n===i));
+  const act=document.querySelector('.thumb-item.active');
+  if(act)act.scrollIntoView({block:'nearest'});
+}
+
+/* mirror selection + deletion onto the thumbnails */
+function updateThumbState(){
+  document.querySelectorAll('.thumb-item').forEach(item=>{
+    const i=+item.dataset.i;
+    item.classList.toggle('gone',S.deleted.has(i));
+    const on=S.selected.has(i);
+    let dot=item.querySelector('.thumb-sel-dot');
+    if(on&&!dot){dot=document.createElement('div');dot.className='thumb-sel-dot';dot.textContent='✓';item.appendChild(dot);}
+    else if(!on&&dot)dot.remove();
+  });
 }
 
 // ── RENDER PAGES ──
@@ -994,6 +1102,7 @@ function clearSplits() {
 }
 
 function updateStats() {
+  if(typeof updateThumbState==='function')updateThumbState();
   document.getElementById('statTotal').textContent = S.pageCount||'—';
   document.getElementById('statDeleted').textContent = S.deleted.size;
   document.getElementById('statSplits').textContent = S.splits.size;
