@@ -1181,20 +1181,70 @@ function finishSave(bytes){
   document.getElementById('saveBtn').disabled=false;
 }
 /* form export: fill AcroForm on the original doc (copyPages drops form fields) + draw annotations on it */
+/* ── Arabic in PDF form fields ────────────────────────────────────────────
+   pdf-lib writes a field's appearance with the form's own /DA font (usually
+   Helvetica/WinAnsi), which cannot encode Arabic at all — filling any field
+   in Arabic used to abort the whole save. We embed a real Arabic font with
+   fontkit, which shapes the letters (joining forms, lam-alef) for us.
+   fontkit lays RTL runs out correctly BUT reverses digits inside them, so a
+   plot number 1234 would silently become 4321. We therefore pre-reverse each
+   non-Arabic run, let fontkit's own reversal put it back, and afterwards
+   restore the real logical value so the STORED field value stays correct. */
+const AR_RX=/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const FONTKIT_JS='https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js';
+const FONTKIT_SRI='sha384-2p6U+1mmqF10USehFeRiyG2ESG9FwIqN+jxULn5w9jjQIihSn9Pt13dVCn/Hawjn';
+const AR_FONT_URL='/fonts/Tajawal-Regular.ttf';
+let _fontkitP=null,_arFontP=null;
+function loadFontkit(){
+  if(window.fontkit)return Promise.resolve(window.fontkit);
+  if(!_fontkitP)_fontkitP=new Promise((res,rej)=>{const sc=document.createElement('script');
+    sc.src=FONTKIT_JS;sc.integrity=FONTKIT_SRI;sc.crossOrigin='anonymous';
+    sc.onload=()=>res(window.fontkit);sc.onerror=()=>rej(new Error('fontkit'));document.head.appendChild(sc);});
+  return _fontkitP;
+}
+function loadArFont(){
+  if(!_arFontP)_arFontP=fetch(AR_FONT_URL).then(r=>{if(!r.ok)throw new Error('font '+r.status);return r.arrayBuffer();});
+  return _arFontP;
+}
+/* reverse every non-Arabic run, but only inside a string that HAS Arabic —
+   a pure-Latin value must be left exactly as typed. */
+function arFormText(v){
+  if(!AR_RX.test(v))return v;
+  return v.replace(/[^\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g,function(m){
+    if(!/\S/.test(m))return m;
+    var lead=(m.match(/^\s*/)||[''])[0],trail=(m.match(/\s*$/)||[''])[0];
+    var core=m.slice(lead.length,m.length-trail.length);
+    return lead+core.split('').reverse().join('')+trail;
+  });
+}
+
 async function exportWithForm(){
   const src=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
   const form=src.getForm();
   const byName={};formFields.forEach(f=>{byName[f.name]=f;});
-  Object.values(byName).forEach(f=>{try{
-    if(f.type==='text')form.getTextField(f.name).setText(String(f.value==null?'':f.value));
+  const vals=Object.values(byName);
+  const txt=f=>String(f.value==null?'':f.value);
+  const needAr=vals.some(f=>f.type==='text'&&AR_RX.test(txt(f)));
+  let arFont=null;
+  if(needAr){try{
+    const fk=await loadFontkit();src.registerFontkit(fk);
+    arFont=await src.embedFont(new Uint8Array(await loadArFont()),{subset:true});
+  }catch(e){arFont=null;}}
+  vals.forEach(f=>{try{
+    if(f.type==='text'){const v=txt(f);form.getTextField(f.name).setText(arFont?arFormText(v):v);}
     else if(f.type==='check'){const c=form.getCheckBox(f.name);f.value?c.check():c.uncheck();}
     else if(f.type==='dropdown'){if(f.value)form.getDropdown(f.name).select(String(f.value));}
     else if(f.type==='radio'){if(f.value)form.getRadioGroup(f.name).select(String(f.value));}
   }catch(e){}});
+  if(arFont){
+    try{form.updateFieldAppearances(arFont);}catch(e){}
+    /* appearance is baked — put the true logical text back as the stored value */
+    vals.forEach(f=>{try{if(f.type==='text')form.getTextField(f.name).setText(txt(f));}catch(e){}});
+  }
   const srcPages=src.getPages();const fontCache={};
   const getFont=async(n)=>{if(!fontCache[n])fontCache[n]=await src.embedFont(PDFLib.StandardFonts[n]);return fontCache[n];};
   for(let i=0;i<pages.length;i++){const p=pages[i];const page=srcPages[p.origIndex];if(!page)continue;const H=page.getHeight();for(const o of p.objects){try{await drawObjPdf(src,page,H,o,getFont);}catch(e){}}}
-  return await src.save();
+  return await src.save(arFont?{updateFieldAppearances:false}:{});
 }
 
 /* ── export (vector — preserves the original PDF text layer; raster fallback only for rotated/failed pages) ── */
