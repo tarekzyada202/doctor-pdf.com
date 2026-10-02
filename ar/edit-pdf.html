@@ -1138,12 +1138,22 @@ async function detectFormFields(){
    no explanation. While such a field has focus, show its limit and a live
    count under it, in the page language; it turns amber when full. */
 function fieldHint(el,f){
-  const upd=h=>{h.textContent=tr('tMaxChars').replace('{n}',f.maxLen)+' · '+el.value.length+'/'+f.maxLen;h.classList.toggle('full',el.value.length>=f.maxLen);};
+  /* anchor the hint where the text STARTS: the field's right edge on an RTL page,
+     its left edge on an LTR one. Anchored left, an Arabic hint ran off-screen on a
+     scrolled page and hid the count. Re-placed on every keystroke because the
+     count can gain a digit, and kept inside the page. */
+  const place=h=>{
+    const L=parseFloat(el.style.left)||0,W=parseFloat(el.style.width)||0,hw=h.offsetWidth;
+    const x=document.documentElement.dir==='rtl'?L+W-hw:L;
+    const max=Math.max(0,(el.parentNode.clientWidth||L+W)-hw);
+    h.style.left=Math.min(Math.max(0,x),max)+'px';
+  };
+  const upd=h=>{h.textContent=tr('tMaxChars').replace('{n}',f.maxLen)+' · '+el.value.length+'/'+f.maxLen;h.classList.toggle('full',el.value.length>=f.maxLen);place(h);};
   el.addEventListener('focus',()=>{
     let h=document.getElementById('fieldHint');
     if(!h){h=document.createElement('div');h.id='fieldHint';h.className='field-hint';}
     el.parentNode.appendChild(h);
-    h.style.left=el.style.left;h.style.top=(parseFloat(el.style.top)+parseFloat(el.style.height)+3)+'px';
+    h.style.top=(parseFloat(el.style.top)+parseFloat(el.style.height)+3)+'px';
     h.style.display='block';upd(h);
   });
   el.addEventListener('input',()=>{const h=document.getElementById('fieldHint');if(h)upd(h);});
