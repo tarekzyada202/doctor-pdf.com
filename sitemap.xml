@@ -455,4 +455,112 @@
     <priority>0.7</priority>
   </url>
 
+  <url>
+    <loc>https://doctor-pdf.com/forms/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/forms/w-9.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/w-9.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/w-9.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/w-9.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/forms/w-4.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/w-4.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/w-4.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/w-4.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/forms/i-9.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/i-9.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/i-9.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/i-9.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/forms/1040.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/1040.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/1040.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/1040.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/forms/n-400.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/n-400.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/n-400.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/n-400.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/w-9.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/w-9.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/w-9.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/w-9.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/w-4.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/w-4.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/w-4.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/w-4.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/i-9.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/i-9.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/i-9.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/i-9.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/1040.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/1040.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/1040.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/1040.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://doctor-pdf.com/ar/forms/n-400.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://doctor-pdf.com/ar/forms/n-400.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://doctor-pdf.com/forms/n-400.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://doctor-pdf.com/forms/n-400.html"/>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
