@@ -219,6 +219,9 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 @media(max-width:560px){.why-grid{grid-template-columns:1fr}}
 @media(max-width:780px){.workspace{flex-direction:column}.panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);max-height:50vh}.content{min-height:50vh}}
 
+/* length hint under a capped form field (shown while it has focus) */
+.field-hint{position:absolute;z-index:7;display:none;font-size:11px;line-height:1.3;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--text2);border:1px solid var(--border);white-space:nowrap;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.field-hint.full{color:var(--warn);border-color:var(--warn);font-weight:600}
 /* dpdf-nav-fit-v1 */
 @media(max-width:430px){
   .nav{padding:0 12px;gap:8px}
@@ -440,7 +443,7 @@ const LANGS={
     T_privacy:'All editing happens locally in your browser. Your file is never uploaded.',T_dropHere:'Drop PDF here',
     tSelect:'Select',tText:'Text',tDraw:'Draw',tHighlight:'Highlight',tRect:'Rectangle',tLine:'Line',tImage:'Image',tSymbol:'Shapes',tWhite:'Whiteout',tRedact:'Redact',
     pUp:'Move page up',pDown:'Move page down',pDel:'Delete page',pLast:'Cannot delete the only page',pDeleted:'Page deleted',
-    gSelect:'Basic',gEdit:'Edit existing',gAdd:'Add',gDraw:'Draw & markup',gHide:'Cover & hide',tEditText:'Edit text',tEtNone:'Click directly on existing text to edit it',tFormPrep:'Preparing this protected form for filling…',tFormLost:'{n} field(s) could not be saved — please check them',tCopyFmt:'Copy format',tFmtHint:'Now click any text to copy its style onto your text',tFmtPick:'First select the text you added, then click Copy format',tFmtApplied:'🖌️ Style applied to your text',tFmtNone:'Click directly on existing text to copy its style',
+    gSelect:'Basic',gEdit:'Edit existing',gAdd:'Add',gDraw:'Draw & markup',gHide:'Cover & hide',tEditText:'Edit text',tEtNone:'Click directly on existing text to edit it',tFormPrep:'Preparing this protected form for filling…',tFormLost:'{n} field(s) could not be saved — please check them',tMaxChars:'Max {n} characters',tCopyFmt:'Copy format',tFmtHint:'Now click any text to copy its style onto your text',tFmtPick:'First select the text you added, then click Copy format',tFmtApplied:'🖌️ Style applied to your text',tFmtNone:'Click directly on existing text to copy its style',
     W_h2:'Why choose Doctor PDF?',W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",
     W1:'No annoying ads — ever',W2:'No limits on file size or number of tasks',W3:'100% private — files never leave your device',W4:'Completely free — no sign-up required',W5:'Instant — runs right in your browser',
     F_h2:'How to edit a PDF online',F_s1:'Open the Edit PDF tool and drop your PDF into the page.',F_s2:'Pick a tool — add text, draw, highlight, shapes, an image, whiteout or redact.',F_s3:'Click or drag on the page to apply it, then use Select to move or resize.',F_s4:'Download your edited PDF instantly — your file never leaves your device.',
@@ -453,7 +456,7 @@ const LANGS={
     T_privacy:'كل التعديل يتم داخل متصفحك. ملفك لا يُرفع أبداً.',T_dropHere:'أسقط ملف PDF هنا',
     tSelect:'تحديد',tText:'نص',tDraw:'رسم',tHighlight:'تظليل',tRect:'مستطيل',tLine:'خط',tImage:'صورة',tSymbol:'أشكال',tWhite:'تغطية',tRedact:'إخفاء',
     pUp:'تحريك الصفحة لأعلى',pDown:'تحريك الصفحة لأسفل',pDel:'حذف الصفحة',pLast:'لا يمكن حذف الصفحة الوحيدة',pDeleted:'تم حذف الصفحة',
-    gSelect:'أساسي',gEdit:'تعديل الموجود',gAdd:'إضافة',gDraw:'رسم وتعليق',gHide:'تغطية وإخفاء',tEditText:'تعديل نص',tEtNone:'اضغط على نص موجود مباشرة لتعديله',tFormPrep:'جارٍ تجهيز النموذج المحمي للتعبئة…',tFormLost:'تعذّر حفظ {n} حقل — راجعها من فضلك',tCopyFmt:'نسخ التنسيق',tFmtHint:'دلوقتي اضغط على أي نص لنسخ تنسيقه إلى نصّك',tFmtPick:'حدّد أولاً النص اللي ضفته، ثم اضغط نسخ التنسيق',tFmtApplied:'🖌️ تم تطبيق التنسيق على نصّك',tFmtNone:'اضغط على نص موجود مباشرة لنسخ تنسيقه',
+    gSelect:'أساسي',gEdit:'تعديل الموجود',gAdd:'إضافة',gDraw:'رسم وتعليق',gHide:'تغطية وإخفاء',tEditText:'تعديل نص',tEtNone:'اضغط على نص موجود مباشرة لتعديله',tFormPrep:'جارٍ تجهيز النموذج المحمي للتعبئة…',tFormLost:'تعذّر حفظ {n} حقل — راجعها من فضلك',tMaxChars:'الحد الأقصى للحروف: {n}',tCopyFmt:'نسخ التنسيق',tFmtHint:'دلوقتي اضغط على أي نص لنسخ تنسيقه إلى نصّك',tFmtPick:'حدّد أولاً النص اللي ضفته، ثم اضغط نسخ التنسيق',tFmtApplied:'🖌️ تم تطبيق التنسيق على نصّك',tFmtNone:'اضغط على نص موجود مباشرة لنسخ تنسيقه',
     W_h2:'ليه تختار Doctor PDF؟',W_lead:'زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:',
     W1:'بدون إعلانات مزعجة — نهائياً',W2:'بدون حدود على حجم الملف أو عدد العمليات',W3:'خصوصية 100% — ملفاتك لا تغادر جهازك',W4:'مجاني تماماً — بدون أي تسجيل',W5:'فوري — يعمل مباشرة في متصفحك',
     F_h2:'كيفية تعديل ملف PDF أونلاين',F_s1:'افتح أداة تعديل PDF وأسقط ملفك في الصفحة.',F_s2:'اختر أداة — أضف نص، ارسم، ظلّل، أشكال، صورة، تغطية أو إخفاء.',F_s3:'اضغط أو اسحب على الصفحة لتطبيقها، ثم استخدم "تحديد" للتحريك أو التكبير.',F_s4:'حمّل ملفك المعدّل فوراً — ملفك لا يغادر جهازك أبداً.',
@@ -1131,6 +1134,21 @@ async function detectFormFields(){
     });
   });
 }
+/* A capped field (maxLength) used to just stop accepting keys at the limit with
+   no explanation. While such a field has focus, show its limit and a live
+   count under it, in the page language; it turns amber when full. */
+function fieldHint(el,f){
+  const upd=h=>{h.textContent=tr('tMaxChars').replace('{n}',f.maxLen)+' · '+el.value.length+'/'+f.maxLen;h.classList.toggle('full',el.value.length>=f.maxLen);};
+  el.addEventListener('focus',()=>{
+    let h=document.getElementById('fieldHint');
+    if(!h){h=document.createElement('div');h.id='fieldHint';h.className='field-hint';}
+    el.parentNode.appendChild(h);
+    h.style.left=el.style.left;h.style.top=(parseFloat(el.style.top)+parseFloat(el.style.height)+3)+'px';
+    h.style.display='block';upd(h);
+  });
+  el.addEventListener('input',()=>{const h=document.getElementById('fieldHint');if(h)upd(h);});
+  el.addEventListener('blur',()=>{const h=document.getElementById('fieldHint');if(h)h.style.display='none';});
+}
 function renderFormOverlays(p,pi){
   formFields.filter(f=>f.pi===pi).forEach(f=>{
     const ds=p.ds;let el;
@@ -1141,6 +1159,7 @@ function renderFormOverlays(p,pi){
     el.style.left=(f.x*ds)+'px';el.style.top=(f.y*ds)+'px';
     if(f.type!=='check'){el.style.width=(f.w*ds)+'px';el.style.height=(f.h*ds)+'px';el.style.fontSize=Math.max(9,Math.min(f.h*ds*0.62,22))+'px';}
     else{el.style.width=el.style.height=Math.min(f.w,f.h)*ds+'px';}
+    if(f.type==='text'&&f.maxLen)fieldHint(el,f);
     p.wrap.appendChild(el);
   });
 }
