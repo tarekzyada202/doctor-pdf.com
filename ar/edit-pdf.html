@@ -440,7 +440,7 @@ const LANGS={
     T_privacy:'All editing happens locally in your browser. Your file is never uploaded.',T_dropHere:'Drop PDF here',
     tSelect:'Select',tText:'Text',tDraw:'Draw',tHighlight:'Highlight',tRect:'Rectangle',tLine:'Line',tImage:'Image',tSymbol:'Shapes',tWhite:'Whiteout',tRedact:'Redact',
     pUp:'Move page up',pDown:'Move page down',pDel:'Delete page',pLast:'Cannot delete the only page',pDeleted:'Page deleted',
-    gSelect:'Basic',gEdit:'Edit existing',gAdd:'Add',gDraw:'Draw & markup',gHide:'Cover & hide',tEditText:'Edit text',tEtNone:'Click directly on existing text to edit it',tCopyFmt:'Copy format',tFmtHint:'Now click any text to copy its style onto your text',tFmtPick:'First select the text you added, then click Copy format',tFmtApplied:'🖌️ Style applied to your text',tFmtNone:'Click directly on existing text to copy its style',
+    gSelect:'Basic',gEdit:'Edit existing',gAdd:'Add',gDraw:'Draw & markup',gHide:'Cover & hide',tEditText:'Edit text',tEtNone:'Click directly on existing text to edit it',tFormPrep:'Preparing this protected form for filling…',tFormLost:'{n} field(s) could not be saved — please check them',tCopyFmt:'Copy format',tFmtHint:'Now click any text to copy its style onto your text',tFmtPick:'First select the text you added, then click Copy format',tFmtApplied:'🖌️ Style applied to your text',tFmtNone:'Click directly on existing text to copy its style',
     W_h2:'Why choose Doctor PDF?',W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",
     W1:'No annoying ads — ever',W2:'No limits on file size or number of tasks',W3:'100% private — files never leave your device',W4:'Completely free — no sign-up required',W5:'Instant — runs right in your browser',
     F_h2:'How to edit a PDF online',F_s1:'Open the Edit PDF tool and drop your PDF into the page.',F_s2:'Pick a tool — add text, draw, highlight, shapes, an image, whiteout or redact.',F_s3:'Click or drag on the page to apply it, then use Select to move or resize.',F_s4:'Download your edited PDF instantly — your file never leaves your device.',
@@ -453,7 +453,7 @@ const LANGS={
     T_privacy:'كل التعديل يتم داخل متصفحك. ملفك لا يُرفع أبداً.',T_dropHere:'أسقط ملف PDF هنا',
     tSelect:'تحديد',tText:'نص',tDraw:'رسم',tHighlight:'تظليل',tRect:'مستطيل',tLine:'خط',tImage:'صورة',tSymbol:'أشكال',tWhite:'تغطية',tRedact:'إخفاء',
     pUp:'تحريك الصفحة لأعلى',pDown:'تحريك الصفحة لأسفل',pDel:'حذف الصفحة',pLast:'لا يمكن حذف الصفحة الوحيدة',pDeleted:'تم حذف الصفحة',
-    gSelect:'أساسي',gEdit:'تعديل الموجود',gAdd:'إضافة',gDraw:'رسم وتعليق',gHide:'تغطية وإخفاء',tEditText:'تعديل نص',tEtNone:'اضغط على نص موجود مباشرة لتعديله',tCopyFmt:'نسخ التنسيق',tFmtHint:'دلوقتي اضغط على أي نص لنسخ تنسيقه إلى نصّك',tFmtPick:'حدّد أولاً النص اللي ضفته، ثم اضغط نسخ التنسيق',tFmtApplied:'🖌️ تم تطبيق التنسيق على نصّك',tFmtNone:'اضغط على نص موجود مباشرة لنسخ تنسيقه',
+    gSelect:'أساسي',gEdit:'تعديل الموجود',gAdd:'إضافة',gDraw:'رسم وتعليق',gHide:'تغطية وإخفاء',tEditText:'تعديل نص',tEtNone:'اضغط على نص موجود مباشرة لتعديله',tFormPrep:'جارٍ تجهيز النموذج المحمي للتعبئة…',tFormLost:'تعذّر حفظ {n} حقل — راجعها من فضلك',tCopyFmt:'نسخ التنسيق',tFmtHint:'دلوقتي اضغط على أي نص لنسخ تنسيقه إلى نصّك',tFmtPick:'حدّد أولاً النص اللي ضفته، ثم اضغط نسخ التنسيق',tFmtApplied:'🖌️ تم تطبيق التنسيق على نصّك',tFmtNone:'اضغط على نص موجود مباشرة لنسخ تنسيقه',
     W_h2:'ليه تختار Doctor PDF؟',W_lead:'زهقت من الإعلانات، وحدود الملفات، ورفع مستنداتك لخادم مجهول؟ Doctor PDF مختلف:',
     W1:'بدون إعلانات مزعجة — نهائياً',W2:'بدون حدود على حجم الملف أو عدد العمليات',W3:'خصوصية 100% — ملفاتك لا تغادر جهازك',W4:'مجاني تماماً — بدون أي تسجيل',W5:'فوري — يعمل مباشرة في متصفحك',
     F_h2:'كيفية تعديل ملف PDF أونلاين',F_s1:'افتح أداة تعديل PDF وأسقط ملفك في الصفحة.',F_s2:'اختر أداة — أضف نص، ارسم، ظلّل، أشكال، صورة، تغطية أو إخفاء.',F_s3:'اضغط أو اسحب على الصفحة لتطبيقها، ثم استخدم "تحديد" للتحريك أو التكبير.',F_s4:'حمّل ملفك المعدّل فوراً — ملفك لا يغادر جهازك أبداً.',
@@ -560,10 +560,50 @@ function buildSwatches(){
 }
 
 /* ── load PDF ── */
+/* ── protected forms ───────────────────────────────────────────────────────
+   Many government forms (USCIS N-400, …) are encrypted with an owner password
+   that still allows filling. pdf-lib cannot read the form of an encrypted file,
+   so those forms opened with ZERO fillable fields and no explanation. When an
+   encrypted PDF carries a form we decrypt it with qpdf (same engine as the
+   Unlock tool). No password is ever guessed: if the file needs a user password
+   qpdf produces nothing and we keep the original bytes. Encrypted PDFs without
+   a form are left exactly as they were. */
+const QPDF_JS='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.js';
+const QPDF_JS_SRI='sha384-viHHfnvZlwDzjAQCrTUX3UR1zDr3OW9ItyLOqwH2wTHYHXWK8NdKi5LFp++BT8NL';
+const QPDF_WASM='https://cdn.jsdelivr.net/npm/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm';
+let _qpdfScript=null;
+function loadQpdfScript(){
+  if(_qpdfScript)return _qpdfScript;
+  _qpdfScript=new Promise((res,rej)=>{
+    if(typeof Module==='function'){res();return;}
+    const sc=document.createElement('script');
+    sc.src=QPDF_JS;sc.integrity=QPDF_JS_SRI;sc.crossOrigin='anonymous';
+    sc.onload=()=>typeof Module==='function'?res():rej(new Error('qpdf'));
+    sc.onerror=()=>{_qpdfScript=null;rej(new Error('qpdf'));};
+    document.head.appendChild(sc);
+  });
+  return _qpdfScript;
+}
+async function unlockFormIfNeeded(bytes){
+  let doc;try{doc=await PDFLib.PDFDocument.load(bytes,{ignoreEncryption:true,parseSpeed:PDFLib.ParseSpeeds.Fastest});}catch(e){return bytes;}
+  if(!doc.isEncrypted||!doc.catalog.get(PDFLib.PDFName.of('AcroForm')))return bytes;
+  try{
+    showToast(tr('tFormPrep'));
+    await loadQpdfScript();
+    const q=await Module({locateFile:()=>QPDF_WASM});   /* fresh instance per run */
+    q.FS.writeFile('/in.pdf',bytes);
+    try{q.callMain(['--decrypt','--','/in.pdf','/out.pdf']);}catch(e){}
+    let out=null;try{out=q.FS.readFile('/out.pdf');}catch(e){}
+    if(out&&out.length)return out;
+  }catch(e){}
+  return bytes;
+}
+
 async function loadPDF(file){
   if(!file||file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){showToast(tr('T_dzMain'),'error');return;}
   pdfFile=file; selected=null;
   pdfBytes=new Uint8Array(await file.arrayBuffer());
+  pdfBytes=await unlockFormIfNeeded(pdfBytes);
   try{pdfJsDoc=await pdfjsLib.getDocument({isEvalSupported:false, data:pdfBytes.slice(0)}).promise;}catch(e){showToast('Invalid PDF','error');return;}
   pages=[];
   for(let i=0;i<pdfJsDoc.numPages;i++){
@@ -1066,7 +1106,7 @@ async function pageAction(i,a){
 let formFields=[];
 async function detectFormFields(){
   formFields=[];
-  let doc;try{doc=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});}catch(e){return;}
+  let doc;try{doc=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true,parseSpeed:PDFLib.ParseSpeeds.Fastest});}catch(e){return;}
   let form,fields;try{form=doc.getForm();fields=form.getFields();}catch(e){return;}
   const libPages=doc.getPages();
   fields.forEach(field=>{
@@ -1078,13 +1118,16 @@ async function detectFormFields(){
     if(!type)return;
     const name=field.getName();let options=[];
     try{if(type==='dropdown'||type==='radio')options=field.getOptions();}catch(e){}
+    /* a text field may cap its length (e.g. a 9-box A-Number). The overlay must
+       enforce it: anything longer used to be typed, then silently dropped on save. */
+    let maxLen=0;try{if(type==='text'){const m=field.getMaxLength();if(m)maxLen=m;}}catch(e){}
     let val='';try{if(type==='text')val=field.getText()||'';else if(type==='check')val=field.isChecked();else if(type==='dropdown'){const s=field.getSelected();val=(s&&s[0])||'';}}catch(e){}
     let widgets=[];try{widgets=field.acroField.getWidgets();}catch(e){}
     widgets.forEach(w=>{
       let r;try{r=w.getRectangle();}catch(e){return;}
       let pi=0;try{const pref=w.P&&w.P();if(pref)libPages.forEach((pg,i)=>{if(pg.ref===pref||(pg.ref&&pref&&pg.ref.objectNumber===pref.objectNumber))pi=i;});}catch(e){}
       const p=pages[pi];if(!p)return;
-      formFields.push({pi,type,name,options,value:val,x:r.x,y:p.nativeH-(r.y+r.height),w:r.width,h:r.height});
+      formFields.push({pi,type,name,options,value:val,orig:val,maxLen,x:r.x,y:p.nativeH-(r.y+r.height),w:r.width,h:r.height});
     });
   });
 }
@@ -1093,7 +1136,7 @@ function renderFormOverlays(p,pi){
     const ds=p.ds;let el;
     if(f.type==='check'){el=document.createElement('input');el.type='checkbox';el.checked=!!f.value;el.onchange=()=>{f.value=el.checked;};}
     else if(f.type==='dropdown'||f.type==='radio'){el=document.createElement('select');(f.options||[]).forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;if(o===f.value)op.selected=true;el.appendChild(op);});el.onchange=()=>{f.value=el.value;};}
-    else{el=document.createElement('input');el.type='text';el.value=f.value||'';el.oninput=()=>{f.value=el.value;};}
+    else{el=document.createElement('input');el.type='text';if(f.maxLen)el.maxLength=f.maxLen;el.value=f.value||'';el.oninput=()=>{f.value=el.value;};}
     el.className='form-ov';el.title=f.name;el.style.cssText='position:absolute;box-sizing:border-box;z-index:6;border:1px solid var(--primary);background:rgba(99,102,241,.10);color:#111;padding:0 3px;border-radius:2px;font-family:inherit';
     el.style.left=(f.x*ds)+'px';el.style.top=(f.y*ds)+'px';
     if(f.type!=='check'){el.style.width=(f.w*ds)+'px';el.style.height=(f.h*ds)+'px';el.style.fontSize=Math.max(9,Math.min(f.h*ds*0.62,22))+'px';}
@@ -1221,10 +1264,10 @@ function arFormText(v){
 }
 
 async function exportWithForm(){
-  const src=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
+  const src=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true,parseSpeed:PDFLib.ParseSpeeds.Fastest});
   const form=src.getForm();
   const byName={};formFields.forEach(f=>{byName[f.name]=f;});
-  const vals=Object.values(byName);
+  const vals=Object.values(byName).filter(f=>f.value!==f.orig);
   const txt=f=>String(f.value==null?'':f.value);
   const needAr=vals.some(f=>f.type==='text'&&AR_RX.test(txt(f)));
   let arFont=null;
@@ -1232,12 +1275,14 @@ async function exportWithForm(){
     const fk=await loadFontkit();src.registerFontkit(fk);
     arFont=await src.embedFont(new Uint8Array(await loadArFont()),{subset:true});
   }catch(e){arFont=null;}}
+  const lost=[];
   vals.forEach(f=>{try{
     if(f.type==='text'){const v=txt(f);form.getTextField(f.name).setText(arFont?arFormText(v):v);}
     else if(f.type==='check'){const c=form.getCheckBox(f.name);f.value?c.check():c.uncheck();}
     else if(f.type==='dropdown'){if(f.value)form.getDropdown(f.name).select(String(f.value));}
     else if(f.type==='radio'){if(f.value)form.getRadioGroup(f.name).select(String(f.value));}
-  }catch(e){}});
+  }catch(e){if(f.type==='text'&&txt(f))lost.push(f.name);}});
+  if(lost.length)showToast(tr('tFormLost').replace('{n}',lost.length),'error');
   if(arFont){
     try{form.updateFieldAppearances(arFont);}catch(e){}
     /* appearance is baked — put the true logical text back as the stored value */
@@ -1246,7 +1291,7 @@ async function exportWithForm(){
   const srcPages=src.getPages();const fontCache={};
   const getFont=async(n)=>{if(!fontCache[n])fontCache[n]=await src.embedFont(PDFLib.StandardFonts[n]);return fontCache[n];};
   for(let i=0;i<pages.length;i++){const p=pages[i];const page=srcPages[p.origIndex];if(!page)continue;const H=page.getHeight();for(const o of p.objects){try{await drawObjPdf(src,page,H,o,getFont);}catch(e){}}}
-  return await src.save(arFont?{updateFieldAppearances:false}:{});
+  return await src.save(Object.assign({objectsPerTick:Infinity},arFont?{updateFieldAppearances:false}:{}));
 }
 
 /* ── export (vector — preserves the original PDF text layer; raster fallback only for rotated/failed pages) ── */
