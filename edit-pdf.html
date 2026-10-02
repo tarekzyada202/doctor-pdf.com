@@ -220,6 +220,10 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 /* length hint under a capped form field (shown while it has focus) */
 .field-hint{position:absolute;z-index:7;display:none;font-size:11px;line-height:1.3;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--text2);border:1px solid var(--border);white-space:nowrap;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .field-hint.full{color:var(--warn);border-color:var(--warn);font-weight:600}
+/* dpdf-forms-nav-v1: "Forms" in the nav bar on wide screens; phones reach it through the tools menu and the homepage card */
+.nav-forms{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--radius-sm,6px);color:var(--text,var(--tx));text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-forms:hover{background:var(--bg3)}
+@media(max-width:860px){.nav-forms{display:none}}
 /* dpdf-nav-fit-v1 */
 @media(max-width:430px){
   .nav{padding:0 12px;gap:8px}
@@ -231,12 +235,14 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 <nav class="nav">
   <a href="index.html" class="nav-logo"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="dpdfLogoG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs><g transform="translate(50 50) skewX(-7) translate(-50 -50)"><rect x="6" y="4" width="88" height="92" rx="22" fill="url(#dpdfLogoG)"/></g><path d="M24 22H50a28 28 0 0 1 0 56H24Z" fill="#fff"/></svg>Doctor PDF</a>
   <div class="nav-sep"></div>
+  <a class="nav-forms" href="forms/"><span id="T_formsNav">Forms</span></a>
   <div class="nav-privacy"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="T_privacyBadge">100% Private</span></div>
   <button class="nav-btn" id="themeBtn" title="Theme"><svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg><svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
   <button class="nav-btn" id="langBtn"><span id="langLabel">AR</span></button>
   <div class="tools-dd">
     <button class="nav-btn" id="toolsBtn"><span id="T_allTools">Tools</span> ▾</button>
     <div class="tools-menu" id="toolsMenu">
+      <a href="forms/"><span id="T_forms">Official Forms</span></a>
       <a href="merge-pdf.html">Merge PDF</a><a href="split-pdf.html">Split PDF</a><a href="compress-pdf.html">Compress PDF</a>
       <a href="rotate-pdf.html">Rotate PDF</a><a href="sign-pdf.html">Sign PDF</a><a href="protect-pdf.html">Protect PDF</a>
       <a href="watermark-pdf.html">Watermark</a><a href="stamp-pdf.html">Stamp PDF</a><a href="image-to-pdf.html">Image to PDF</a>

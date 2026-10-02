@@ -212,6 +212,10 @@ html[lang="en"] .priv-cta .ar{display:none}
   .thumbs-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
 }
 
+/* dpdf-forms-nav-v1: "Forms" in the nav bar on wide screens; phones reach it through the tools menu and the homepage card */
+.nav-forms{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--radius-sm,6px);color:var(--text,var(--tx));text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-forms:hover{background:var(--bg3)}
+@media(max-width:860px){.nav-forms{display:none}}
 /* dpdf-nav-fit-v1 */
 @media(max-width:430px){
   .nav{padding:0 12px;gap:8px}
@@ -236,6 +240,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
+      <a href="forms/"><span id="T_forms">النماذج الرسمية</span></a>
       <a href="merge-pdf.html"><svg viewBox="0 0 16 16" fill="none"><path d="M3 13V8l5-5 5 5v5H3z" stroke="currentColor" stroke-width="1.2"/></svg><span id="T_merge">دمج PDF</span></a>
       <a href="split-pdf.html"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M3 8h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><span id="T_split">تقسيم PDF</span></a>
       <a href="compress-pdf.html"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M5 10l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><span id="T_compress">ضغط PDF</span></a>
@@ -253,6 +258,7 @@ html[lang="en"] .priv-cta .ar{display:none}
   </div>
 
   <div class="nav-sep"></div>
+  <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
 
 
   <!-- Privacy badge -->

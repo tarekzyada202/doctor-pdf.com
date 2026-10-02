@@ -217,6 +217,10 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
   .content{height:70vh;flex:none}
 }
 
+/* dpdf-forms-nav-v1: "Forms" in the nav bar on wide screens; phones reach it through the tools menu and the homepage card */
+.nav-forms{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--radius-sm,6px);color:var(--text,var(--tx));text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-forms:hover{background:var(--bg3)}
+@media(max-width:860px){.nav-forms{display:none}}
 /* dpdf-nav-fit-v1 */
 @media(max-width:430px){
   .nav{padding:0 12px;gap:8px}
@@ -240,6 +244,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
       <svg viewBox="0 0 10 6" fill="none" width="10"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="tools-menu" id="toolsMenu">
+      <a href="forms/"><span id="T_forms">النماذج الرسمية</span></a>
       <a href="merge-pdf.html"><span id="T_merge">دمج PDF</span></a>
       <a href="split-pdf.html"><span id="T_split">تقسيم PDF</span></a>
       <a href="compress-pdf.html"><span id="T_compress">ضغط PDF</span></a>
@@ -257,6 +262,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar)}
     </div>
   </div>
   <div class="nav-sep"></div>
+  <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
 
   <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
