@@ -29,10 +29,13 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4SP6D9Z565');</script>
 <script>/* dpdf_lang_redirect */
 (function(){try{
-  if(localStorage.getItem('dpdf_lang'))return;
-  if(/^\/ar(\/|$)/.test(location.pathname))return;
-  var ls=navigator.languages||[navigator.language||''];
-  if(!ls.some(function(l){return /^ar\b/i.test(l);}))return;
+  if(location.pathname==='/ar'||location.pathname.slice(0,4)==='/ar/')return;        /* already on an Arabic URL */
+  var pref=localStorage.getItem('dpdf_lang');
+  var goAr;
+  if(pref==='ar')goAr=true;
+  else if(pref==='en')goAr=false;
+  else{var ls=navigator.languages||[navigator.language||''];goAr=ls.some(function(l){return (l||'').slice(0,2).toLowerCase()==='ar';});}
+  if(!goAr)return;
   var p=location.pathname;
   var target=(p==='/'||p==='')?'/ar/':'/ar'+p;
   location.replace(target+location.search+location.hash);
@@ -42,7 +45,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -469,7 +472,7 @@ const LANGS={
     F_h2:'كيفية تعديل ملف PDF أونلاين',F_s1:'افتح أداة تعديل PDF وأسقط ملفك في الصفحة.',F_s2:'اختر أداة — أضف نص، ارسم، ظلّل، أشكال، صورة، تغطية أو إخفاء.',F_s3:'اضغط أو اسحب على الصفحة لتطبيقها، ثم استخدم "تحديد" للتحريك أو التكبير.',F_s4:'حمّل ملفك المعدّل فوراً — ملفك لا يغادر جهازك أبداً.',
     F_faqH:'الأسئلة الشائعة',F_q1:'هل تعديل PDF مجاني؟',F_a1:'نعم. يتيح لك Doctor PDF تعديل ملفات PDF مجاناً 100% بدون حدود أو علامة مائية أو تسجيل.',F_q2:'هل يمكنني إضافة نص والرسم على الملف؟',F_a2:'نعم. أضف نصاً في أي مكان، ارسم بحرية، ظلّل، أضف أشكالاً وصوراً، وغطِّ أو أخفِ أجزاء.',F_q3:'هل ملفاتي خاصة؟',F_a3:'تماماً. كل التعديل يتم داخل متصفحك — ملفك لا يُرفع أبداً إلى أي خادم.',F_q4:'هل يمكنني تعديل النص الموجود في الملف؟',F_a4:'يمكنك تغطية المحتوى الموجود بأداة Whiteout والكتابة فوقه. تعديل النص الأصلي مباشرةً غير مدعوم في المتصفح.',F_q5:'هل تعمل على الهاتف؟',F_a5:'نعم، على أي متصفح حديث — هاتف أو تابلت أو كمبيوتر.'}
 };
-let lang=localStorage.getItem('dpdf_lang')||'ar';
+let lang='ar';
 function tr(k){return (LANGS[lang]||LANGS.en)[k]||k;}
 function applyLang(l){lang=l;const t=LANGS[l]||LANGS.en;document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';Object.keys(t).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=t[id];});document.getElementById('langLabel').textContent=l==='ar'?'EN':'AR';buildToolGrid();}
 function applyTheme(dark){document.documentElement.setAttribute('data-theme',dark?'dark':'');document.getElementById('iconSun').style.display=dark?'none':'';document.getElementById('iconMoon').style.display=dark?'':'none';localStorage.setItem('dpdf_dark',dark?'1':'0');}
@@ -1285,5 +1288,19 @@ function boot(){
 boot();
 </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"e55edcf19fc84aa49ad61fd80da69995"}'></script>
+<script>/* dpdf_lang_nav */
+document.addEventListener("click",function(e){
+  if(!e.target.closest)return;
+  if(!e.target.closest("#langBtn"))return;
+  e.preventDefault();e.stopImmediatePropagation();
+  var p=location.pathname;
+  var isAr=p==="/ar"||p.slice(0,4)==="/ar/";
+  try{localStorage.setItem("dpdf_lang",isAr?"en":"ar");}catch(_){}
+  var t;
+  if(isAr){t=p==="/ar"?"/":p.slice(3);if(t==="")t="/";}
+  else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
+  location.href=t+location.search+location.hash;
+},true);
+</script>
 </body>
 </html>

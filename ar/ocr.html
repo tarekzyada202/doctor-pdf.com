@@ -42,7 +42,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -533,7 +533,7 @@ const TESS_LANG   = 'https://cdn.jsdelivr.net/gh/naptha/tessdata@806cd9adc8c6e8a
 // ══════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════
-let currentLang = localStorage.getItem('dpdf_lang')||'ar';
+let currentLang = 'ar';
 let pageSources = [];   // [{src: canvas|File, kind:'page'|'image'}]
 let pageTexts = [];     // recognized text per source
 let currentTab = 'all';

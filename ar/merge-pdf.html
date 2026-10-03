@@ -45,7 +45,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -413,7 +413,7 @@ var S={
   files:[],  /* original File objects */
   pages:[]   /* [{cv, fi, pi, name, rot}] */
 };
-var lang=localStorage.getItem('dpdf_lang')||'ar';
+var lang='ar';
 
 /* drag state */
 var DR={on:false,el:null,ghost:null,idx:-1,ox:0,oy:0};

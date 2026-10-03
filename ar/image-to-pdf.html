@@ -43,7 +43,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -501,7 +501,7 @@ const LANGS = {
 // ══════════════════════════════════════════
 let images = []; // [{id, file, name, dataUrl, width, height}]
 let dragSrc = null;
-let currentLang = localStorage.getItem('dpdf_lang')||'ar';
+let currentLang = 'ar';
 
 // ══════════════════════════════════════════
 // BOOT

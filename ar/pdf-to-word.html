@@ -42,7 +42,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -460,7 +460,7 @@ const LANGS = {
 // ══════════════════════════════════════════
 const DOCX_CDN = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js';
 const DOCX_SRI = 'sha384-4xaIisuLEy2lo2HkB2C4rEf7v8jbTb2kuogX6TkuEt9feTWKBSFSOzsqNNbV+sKh';
-let currentLang = localStorage.getItem('dpdf_lang')||'ar';
+let currentLang = 'ar';
 let pagesLines = [];   // [pageIdx] -> [{runs:[{str,bold,ital,fs}], y, fs}]
 let pagesHLines = [];  // [pageIdx] -> [{y,x0,x1}] full-width separator lines
 let pagesImages = [];  // [pageIdx] -> [{bytes,dataUrl,top,dispW,dispH}] extracted images

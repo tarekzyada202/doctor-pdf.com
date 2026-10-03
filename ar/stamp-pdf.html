@@ -44,7 +44,7 @@
 (function(){
   var d=localStorage.getItem('dpdf_dark');
   if(d==='1'||(d===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');
-  var l=localStorage.getItem('dpdf_lang')||'ar';
+  var l='ar';
   document.documentElement.lang=l;
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
 })();
@@ -588,7 +588,7 @@ var S = {
   copied:      null, /* stamp object copy */
   undoStack:   [],
   dark: localStorage.getItem('dpdf_dark') === '1',
-  lang: localStorage.getItem('dpdf_lang') ||'ar',
+  lang: 'ar',
 };
 
 /* drag & resize */
