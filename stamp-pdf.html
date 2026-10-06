@@ -167,10 +167,10 @@ html[lang="en"] .priv-cta .ar{display:none}
 .stamp-el.selected .stamp-del{display:flex}
 .stamp-rsz{position:absolute;bottom:-5px;right:-5px;width:14px;height:14px;background:var(--p);border-radius:50%;cursor:se-resize;border:2.5px solid #fff;touch-action:none;z-index:5}
 [dir=rtl] .stamp-del{right:auto;left:-9px}
-[dir=rtl] .stamp-rsz{right:auto;left:-5px;cursor:sw-resize}
+/* the resize handle stays bottom-right in Arabic too: on the left, pulling it outwards made the stamp smaller */
 
 /* GHOST CURSOR */
-#ghost-cursor{position:fixed;pointer-events:none;display:none;z-index:9999;transform:translate(-50%,-55%)}
+#ghost-cursor{position:fixed;pointer-events:none;display:none;z-index:9999;transform:translate(-50%,-50%)}
 #ghost-cursor img{display:block;opacity:.65;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
 
 /* ── RIGHT PANEL ── */
@@ -543,6 +543,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261006a"></script>
 <script>
 /* =====================================================
    STAMP PDF – Doctor PDF
@@ -778,6 +779,7 @@ function doRemoveBG() {
   img.onload = function() {
     var cv  = document.createElement('canvas');
     cv.width = img.width; cv.height = img.height;
+    S.customAspect = img.height / img.width;
     var ctx = cv.getContext('2d');
     ctx.drawImage(img, 0, 0);
     var id = ctx.getImageData(0, 0, cv.width, cv.height);
@@ -812,6 +814,18 @@ function doRemoveBG() {
    zoom level on the page object. */
 var RENDER = { gen:0, queue:[], busy:false, task:null, io:null };
 
+/* dpdf-stamp-place-fix */
+/* how many device pixels wide a page is drawn for a given width on screen */
+function targetPx(pg, cssW) {
+  var dpr = Math.min(window.devicePixelRatio || 1, 3);
+  var cap = Math.floor(Math.sqrt(16e6 * pg.nativeW / pg.nativeH));   /* keep one page under ~16 megapixels */
+  return Math.max(1, Math.min(Math.round(cssW * dpr), cap));
+}
+/* a drawn page is reusable only while it matches the size it is shown at — zoom, window width and screen scaling all change that */
+function pageFresh(pg, cssW) {
+  return !!pg.cachedCanvas && pg.cachedCanvas.width === targetPx(pg, cssW);
+}
+
 async function pumpStampPages() {
   if (RENDER.busy) return;
   RENDER.busy = true;
@@ -829,18 +843,18 @@ async function pumpStampPages() {
       var job = RENDER.queue.splice(pick, 1)[0];
       var pg  = S.pages[job.i];
       if (job.gen !== RENDER.gen || !pg) continue;
-      if (!(pg.cachedZoom === job.zoom && pg.cachedCanvas)) {
+      if (!pageFresh(pg, job.w)) {
         try {
-          var dpr = Math.min(window.devicePixelRatio || 1, 3);
-          var vp  = pg.pdfPage.getViewport({ scale: (job.w / pg.nativeW) * dpr });
+          var px  = targetPx(pg, job.w);
+          var vp  = pg.pdfPage.getViewport({ scale: px / pg.nativeW });
           var raw = document.createElement('canvas');
-          raw.width  = Math.round(vp.width);
+          raw.width  = px;
           raw.height = Math.round(vp.height);
           RENDER.task = pg.pdfPage.render({ canvasContext: raw.getContext('2d'), viewport: vp });
           await RENDER.task.promise;
           RENDER.task = null;
           if (job.gen !== RENDER.gen) continue;
-          pg.cachedCanvas = raw; pg.cachedZoom = job.zoom;
+          pg.cachedCanvas = raw;
         } catch (e) { RENDER.task = null; continue; }
       }
       if (job.gen !== RENDER.gen) continue;
@@ -864,8 +878,7 @@ function showStampPage(i) {
   if (old && old !== cv) card.replaceChild(cv, old);
   else if (!old) card.insertBefore(cv, card.firstChild);
   pg.canvas = cv;
-  Array.prototype.forEach.call(card.querySelectorAll('.stamp-el'), function(e){ e.remove(); });
-  pg.stamps.forEach(function(st, si) { card.appendChild(buildStampEl(st, i, si, cv)); });
+  /* the stamps are left alone: they sit in CSS pixels relative to the card, and rebuilding them here would drop a drag in progress */
 }
 
 /* ───────────────────────────────────────────────── */
@@ -886,10 +899,15 @@ function renderPages() {
   RENDER.queue = [];
   if (RENDER.task) { try { RENDER.task.cancel(); } catch(e){} RENDER.task = null; }
   if (RENDER.io) { RENDER.io.disconnect(); RENDER.io = null; }
+  /* every stamp action rebuilds the cards, and an emptied list scrolls back to the top — remember where the reader was */
+  var keepTop = area.scrollTop, keepLeft = area.scrollLeft, oldH = area.scrollHeight, oldW = area.scrollWidth;
   area.innerHTML = '';
   area.style.display = 'flex';
   var cssW = Math.round(getBaseWidth() * S.zoom);
   S.pages.forEach(function(pg, i) { area.appendChild(buildCard(pg, i, cssW)); });
+  /* same place again; after a zoom, the same place in proportion */
+  if (keepTop)  area.scrollTop  = Math.round(keepTop  * (oldH ? area.scrollHeight / oldH : 1));
+  if (keepLeft) area.scrollLeft = Math.round(keepLeft * (oldW ? area.scrollWidth  / oldW : 1));
   RENDER.io = new IntersectionObserver(function(ents) {
     ents.forEach(function(en) {
       if (en.isIntersecting) {
@@ -901,7 +919,7 @@ function renderPages() {
   }, { root: area, rootMargin: '600px' });
   Array.prototype.forEach.call(area.querySelectorAll('.page-card'), function(c) {
     var p = S.pages[+c.dataset.pi];
-    if (!(p.cachedZoom === S.zoom && p.cachedCanvas)) RENDER.io.observe(c);
+    if (!pageFresh(p, cssW)) RENDER.io.observe(c);
   });
   updateThumbBadges();
 }
@@ -967,8 +985,8 @@ function buildCard(pg, pi, cssW) {
    * We set CSS width/height explicitly so it displays crisp on HiDPI screens.
    */
   if (cssW == null) cssW = Math.round(getBaseWidth() * S.zoom);
-  var cached = (pg.cachedZoom === S.zoom && pg.cachedCanvas);
-  var cv = cached ? pg.cachedCanvas : document.createElement('canvas');
+  /* a page drawn at another size is shown stretched until its new render arrives, so it never goes blank */
+  var cv = pg.cachedCanvas || document.createElement('canvas');
   cv._cssW = cssW;
   cv._cssH = Math.round(pg.nativeH * cssW / pg.nativeW);
   pg.canvas = cv;
@@ -999,11 +1017,15 @@ function buildCard(pg, pi, cssW) {
   card.addEventListener('click', function(e) {
     if (!S.placing) return;
     if (e.target.closest('.stamp-el')) return;
-    var rect = cv.getBoundingClientRect(); /* getBoundingClientRect = CSS pixels */
-    var xPct = Math.max(0.01, Math.min(0.95, (e.clientX - rect.left)  / rect.width));
-    var yPct = Math.max(0.01, Math.min(0.95, (e.clientY - rect.top)   / rect.height));
+    /* ask the card for its canvas now: the one this card was built with is replaced when the page finishes rendering,
+       and a canvas that left the page measures 0×0, which used to send every stamp to the bottom corner */
+    var live = card.querySelector('canvas');
+    var rect = live.getBoundingClientRect(); /* getBoundingClientRect = CSS pixels */
+    if (!rect.width || !rect.height) return;
+    var xPct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    var yPct = Math.max(0, Math.min(1, (e.clientY - rect.top)  / rect.height));
     pushUndo();
-    placeStamp(pi, xPct, yPct, cv);
+    placeStamp(pi, xPct, yPct, live);
     if (S.type !== 'preset') {
       S.placing = false;
       refreshPlacingUI();
@@ -1067,14 +1089,14 @@ function buildStampEl(st, pi, si, cv) {
     if (e.target.classList.contains('stamp-rsz') || e.target.classList.contains('stamp-del')) return;
     e.preventDefault(); e.stopPropagation();
     selectStamp(el);
-    DG = { on:true, el:el, ox:el.offsetLeft, oy:el.offsetTop, sx:e.clientX, sy:e.clientY };
+    startDrag(el, e.clientX, e.clientY);
   });
   el.addEventListener('touchstart', function(e) {
     if (e.target.classList.contains('stamp-rsz') || e.target.classList.contains('stamp-del')) return;
     e.preventDefault(); e.stopPropagation();
     var t = e.touches[0];
     selectStamp(el);
-    DG = { on:true, el:el, ox:el.offsetLeft, oy:el.offsetTop, sx:t.clientX, sy:t.clientY };
+    startDrag(el, t.clientX, t.clientY);
   }, { passive:false });
 
   el.addEventListener('click', function(e) { e.stopPropagation(); selectStamp(el); });
@@ -1096,6 +1118,34 @@ function deselect() {
   hideCloneBox();
 }
 
+/* the page's size on screen in CSS pixels. Never canvas.width / canvas.height: those are device pixels
+   (bigger or smaller than the page on a scaled screen) and 300×150 until the page has been drawn */
+function pageBox(el) {
+  var card = el && el.closest ? el.closest('.page-card') : null;
+  var cv   = card ? card.querySelector('canvas') : null;
+  if (!cv) return null;
+  return { w: cv._cssW || cv.offsetWidth, h: cv._cssH || cv.offsetHeight };
+}
+function startDrag(el, cx, cy) {
+  var area = document.getElementById('pagesArea');
+  DG = { on:true, el:el, ox:el.offsetLeft, oy:el.offsetTop, sx:cx, sy:cy, sl:area.scrollLeft, st:area.scrollTop };
+}
+function dragTo(cx, cy) {
+  var box = pageBox(DG.el);
+  if (!box) { DG.on = false; DG.el = null; return; }
+  var area = document.getElementById('pagesArea');   /* the page may be scrolled with the wheel while a stamp is held */
+  var dx = cx - DG.sx + area.scrollLeft - DG.sl, dy = cy - DG.sy + area.scrollTop - DG.st;
+  DG.el.style.left = Math.max(0, Math.min(DG.ox + dx, box.w - DG.el.offsetWidth))  + 'px';
+  DG.el.style.top  = Math.max(0, Math.min(DG.oy + dy, box.h - DG.el.offsetHeight)) + 'px';
+}
+function resizeTo(cx) {
+  var box = pageBox(RS.el), img = RS.el.querySelector('img');
+  if (!box || !img) { RS.on = false; RS.el = null; return; }
+  var maxW = box.w - RS.el.offsetLeft;                                    /* stay inside the page, right and bottom */
+  if (img.naturalWidth) maxW = Math.min(maxW, (box.h - RS.el.offsetTop) * img.naturalWidth / img.naturalHeight);
+  img.style.width = Math.max(28, Math.min(RS.sw + cx - RS.sx, maxW)) + 'px';
+}
+
 function savePos(el) {
   var card = el.closest('.page-card');
   if (!card) return;
@@ -1103,8 +1153,8 @@ function savePos(el) {
   var pi   = +el.dataset.pi, si = +el.dataset.si;
   var st   = S.pages[pi] && S.pages[pi].stamps[si];
   if (!cv || !st) return;
-  var cW   = cv._cssW || cv.width;
-  var cH   = cv._cssH || cv.height;
+  var cW   = cv._cssW || cv.offsetWidth;
+  var cH   = cv._cssH || cv.offsetHeight;
   var img  = el.querySelector('img');
   st.xPct  = el.offsetLeft  / cW;
   st.yPct  = el.offsetTop   / cH;
@@ -1121,21 +1171,13 @@ function wireMouseTouch() {
       var g = document.getElementById('ghost-cursor');
       g.style.left = e.clientX + 'px';
       g.style.top  = e.clientY + 'px';
+      /* only over a page — over the side panel it would cover the controls */
+      g.style.visibility = (e.target && e.target.closest && e.target.closest('.page-card')) ? 'visible' : 'hidden';
     }
     /* drag stamp */
-    if (DG.on && DG.el) {
-      var cv = DG.el.closest('.page-card').querySelector('canvas');
-      var nx = Math.max(0, Math.min(DG.ox + e.clientX - DG.sx, cv.width  - DG.el.offsetWidth));
-      var ny = Math.max(0, Math.min(DG.oy + e.clientY - DG.sy, cv.height - DG.el.offsetHeight));
-      DG.el.style.left = nx + 'px';
-      DG.el.style.top  = ny + 'px';
-    }
+    if (DG.on && DG.el) dragTo(e.clientX, e.clientY);
     /* resize stamp */
-    if (RS.on && RS.el) {
-      var img = RS.el.querySelector('img');
-      var cv2 = RS.el.closest('.page-card').querySelector('canvas');
-      if (img) img.style.width = Math.max(28, Math.min(RS.sw + e.clientX - RS.sx, cv2 ? cv2.width * 0.9 : 400)) + 'px';
-    }
+    if (RS.on && RS.el) resizeTo(e.clientX);
   });
 
   document.addEventListener('mouseup', function() {
@@ -1147,17 +1189,11 @@ function wireMouseTouch() {
     var t = e.touches[0];
     if (DG.on && DG.el) {
       e.preventDefault();
-      var cv = DG.el.closest('.page-card').querySelector('canvas');
-      var nx = Math.max(0, Math.min(DG.ox + t.clientX - DG.sx, cv.width  - DG.el.offsetWidth));
-      var ny = Math.max(0, Math.min(DG.oy + t.clientY - DG.sy, cv.height - DG.el.offsetHeight));
-      DG.el.style.left = nx + 'px';
-      DG.el.style.top  = ny + 'px';
+      dragTo(t.clientX, t.clientY);
     }
     if (RS.on && RS.el) {
       e.preventDefault();
-      var img = RS.el.querySelector('img');
-      var cv2 = RS.el.closest('.page-card').querySelector('canvas');
-      if (img) img.style.width = Math.max(28, Math.min(RS.sw + t.clientX - RS.sx, cv2 ? cv2.width * 0.9 : 400)) + 'px';
+      resizeTo(t.clientX);
     }
   }, { passive:false });
 
@@ -1193,10 +1229,13 @@ function placeStamp(pi, xPct, yPct, cv) {
   if (!url) return;
   var op   = S.type === 'text' ? S.textOp : S.type === 'image' ? S.imageOp : S.presetOp;
   var wPct = S.sizePct / 100;
-  S.pages[pi].stamps.push({
+  var pg   = S.pages[pi];
+  var hPct = wPct * stampAspect() * pg.nativeW / pg.nativeH;   /* the stamp's height as a share of the page's */
+  pg.stamps.push({
     dataUrl: url,
-    xPct:    Math.max(0, xPct - wPct / 2),
-    yPct:    Math.max(0, yPct - 0.06),
+    /* centred on the click, like the preview under the cursor, and kept inside the page */
+    xPct:    Math.max(0, Math.min(xPct - wPct / 2, 1 - wPct)),
+    yPct:    Math.max(0, Math.min(yPct - hPct / 2, 1 - hPct)),
     wPct:    wPct,
     opacity: op
   });
@@ -1219,7 +1258,7 @@ function makeStampCanvas(text, color, opacity) {
   var cv  = document.createElement('canvas');
   cv.width = 520; cv.height = 186;
   var ctx = cv.getContext('2d');
-  ctx.globalAlpha = opacity / 100;
+  /* drawn solid: the opacity is applied once, by the page and by the PDF */
   ctx.strokeStyle = color;
   ctx.lineWidth = 9;
   ctx.strokeRect(6, 6, cv.width-12, cv.height-12);
@@ -1459,18 +1498,31 @@ function refreshPlacingUI() {
 /* ───────────────────────────────────────────────── */
 /* GHOST                                              */
 /* ───────────────────────────────────────────────── */
+/* the preview is as wide as the stamp will be on the page */
+function ghostW() {
+  var c = document.querySelector('.page-card canvas');
+  var w = (c && c._cssW) ? c._cssW : Math.round(getBaseWidth() * S.zoom);
+  return Math.max(32, Math.round(w * S.sizePct / 100));
+}
+/* height ÷ width of the stamp about to be placed */
+function stampAspect() {
+  return S.type === 'image' ? (S.customAspect || 0.36) : 186 / 520;
+}
+
 function showGhost() {
   var url = getDataUrl();
   if (!url || !S.placing) { hideGhost(); return; }
   var gi = document.getElementById('ghost-img');
   if (gi.src !== url) gi.src = url;
-  gi.style.width = Math.max(32, Math.round(THUMB_W * S.sizePct / 100)) + 'px';
-  document.getElementById('ghost-cursor').style.display = 'block';
+  gi.style.width = ghostW() + 'px';
+  var g = document.getElementById('ghost-cursor');
+  if (g.style.display !== 'block') g.style.visibility = 'hidden';   /* shown by the first mouse move over a page */
+  g.style.display = 'block';
 }
 
 function updateGhostSize() {
   document.getElementById('ghost-img').style.width =
-    Math.max(32, Math.round(THUMB_W * S.sizePct / 100)) + 'px';
+    ghostW() + 'px';
 }
 
 function hideGhost() {
@@ -1514,32 +1566,32 @@ async function doApply() {
 
   try {
     var pdfBytes = await S.pdfFile.arrayBuffer();
-    var doc      = await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
+    /* an owner-locked PDF is decrypted first — saved as it is, it would ask for a password (js/pdf-unlock.js) */
+    var doc      = await DpdfUnlock.load(pdfBytes);
     var pages    = doc.getPages();
+    /* take every stamp's position from the screen once, in CSS pixels */
+    Array.prototype.forEach.call(document.querySelectorAll('.stamp-el'), savePos);
 
     for (var pi = 0; pi < S.pages.length; pi++) {
       if (!S.pages[pi].stamps.length) continue;
       setProgress(10 + Math.round(pi / S.pages.length * 82), 'Stamping page ' + (pi+1) + '…');
 
       var pdfPage = pages[pi];
-      var W = pdfPage.getWidth();
-      var H = pdfPage.getHeight();
+      /* the page as it is shown: its crop box, turned by its rotation */
+      var rot = ((pdfPage.getRotation().angle % 360) + 360) % 360;
+      var box = pdfPage.getCropBox();
+      var turned = (rot === 90 || rot === 270);
+      var vw = turned ? box.height : box.width;
+      var vh = turned ? box.width  : box.height;
+
+      /* A picture with transparency makes Acrobat blend the whole page. Without a stated blending colour space it
+         uses its own, and every colour on the page turns pale. Saying "blend in RGB" keeps the page as it was. */
+      if (!pdfPage.node.get(PDFLib.PDFName.of('Group'))) {
+        pdfPage.node.set(PDFLib.PDFName.of('Group'), doc.context.obj({ Type:'Group', S:'Transparency', CS:'DeviceRGB' }));
+      }
 
       for (var si = 0; si < S.pages[pi].stamps.length; si++) {
         var stamp = S.pages[pi].stamps[si];
-        var xPct = stamp.xPct, yPct = stamp.yPct, wPct = stamp.wPct;
-
-        /* read live DOM position if available */
-        var liveEl = document.querySelector('.stamp-el[data-pi="'+pi+'"][data-si="'+si+'"]');
-        if (liveEl) {
-          var liveCv = liveEl.closest('.page-card') ? liveEl.closest('.page-card').querySelector('canvas') : null;
-          if (liveCv) {
-            xPct = liveEl.offsetLeft / liveCv.width;
-            yPct = liveEl.offsetTop  / liveCv.height;
-            var li = liveEl.querySelector('img');
-            if (li) wPct = li.offsetWidth / liveCv.width;
-          }
-        }
 
         /* ── KEY FIX: use atob() not fetch() ── */
         var imgBytes = dataUrlToBytes(stamp.dataUrl);
@@ -1547,13 +1599,21 @@ async function doApply() {
         try       { emb = await doc.embedPng(imgBytes); }
         catch(e)  { try { emb = await doc.embedJpg(imgBytes); } catch(e2) { continue; } }
 
-        var sW = W * wPct;
+        var sW = vw * stamp.wPct;
         var sH = sW * (emb.height / emb.width);
+        /* the stamp's bottom-left corner as seen on screen, measured from the top-left of the shown page */
+        var sx = vw * stamp.xPct, sy = vh * stamp.yPct + sH;
+        var X, Y;
+        if (rot === 90)       { X = box.x + sy;             Y = box.y + sx; }
+        else if (rot === 180) { X = box.x + box.width - sx; Y = box.y + sy; }
+        else if (rot === 270) { X = box.x + box.width - sy; Y = box.y + box.height - sx; }
+        else                  { X = box.x + sx;             Y = box.y + box.height - sy; }
         pdfPage.drawImage(emb, {
-          x:       W * xPct,
-          y:       H - (H * yPct) - sH,
+          x:       X,
+          y:       Y,
           width:   sW,
           height:  sH,
+          rotate:  PDFLib.degrees(rot),
           opacity: stamp.opacity / 100
         });
       }
@@ -1580,7 +1640,9 @@ async function doApply() {
     if (typeof gtag !== 'undefined') gtag('event','pdf_stamped',{event_category:'PDF Tools',value:total});
 
   } catch(err) {
-    alert('Processing error: ' + err.message);
+    alert(err && err.code === 'locked'
+      ? (S.lang === 'ar' ? 'هذا الملف مقفل ولم نتمكن من فتحه لوضع الختم. افتح قفله أولاً بأداة «فك قفل PDF» ثم أعد المحاولة.' : 'This PDF is locked and could not be opened for stamping. Unlock it first with the Unlock PDF tool, then try again.')
+      : 'Processing error: ' + err.message);
     console.error(err);
   }
 
