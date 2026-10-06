@@ -290,6 +290,8 @@ html[lang="en"] .priv-cta .ar{display:none}
 .nav-forms{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--radius-sm,6px);color:var(--text,var(--tx));text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
 .nav-forms:hover{background:var(--bg3)}
 @media(max-width:860px){.nav-forms{display:none}}
+/* the page toolbar is one centred row; on a phone it was wider than the screen and its first button was cut off */
+@media(max-width:430px){.viewer-toolbar{flex-wrap:wrap;gap:6px;padding:6px 8px}}
 /* dpdf-nav-fit-v1 */
 @media(max-width:430px){
   .nav{padding:0 12px;gap:8px}

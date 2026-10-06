@@ -174,6 +174,23 @@ html[lang="en"] .priv-cta .ar{display:none}
 .pg-thumb:hover .pg-thumb-del{display:flex}
 .pg-thumb.dragging{opacity:.25;transform:scale(.95)}
 .pg-thumb.drag-over{border-color:var(--primary);background:var(--primary-light)}
+/* dpdf-merge-select: page selection */
+.pg-thumb.selected{border-color:var(--primary);background:var(--primary-light);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pg-chk{position:absolute;top:3px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center;z-index:6;pointer-events:none}
+.pg-thumb.selected .pg-chk{display:flex}
+.sel-bar{display:none;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;position:sticky;top:0;z-index:20;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+.sel-bar.show{display:flex}
+.sel-btn{height:28px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text2);font-size:.72em;font-weight:600;font-family:inherit;cursor:pointer}
+.sel-btn:hover:not(:disabled){background:var(--bg3);color:var(--text)}
+.sel-btn:disabled{opacity:.45;cursor:default}
+.sel-btn.danger{color:var(--danger);border-color:var(--danger)}
+.sel-count{display:none;font-size:.74em;font-weight:700;color:var(--primary)}
+.sel-acts{display:none;gap:6px;align-items:center;margin-inline-start:auto}
+.sel-bar.has-sel .sel-count{display:inline}
+.sel-bar.has-sel .sel-acts{display:flex}
+.rubber-band{position:absolute;border:2px solid var(--primary);background:rgba(99,102,241,.1);border-radius:3px;pointer-events:none;display:none;z-index:50}
+.thumb-item.sel{box-shadow:inset 0 0 0 2px var(--primary)}
+.drag-count{position:absolute;top:4px;inset-inline-end:4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
 
 /* PANEL */
 .panel{width:var(--panel);flex-shrink:0;background:var(--bg);border-inline-start:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
@@ -215,7 +232,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 .btn-ghost:hover{background:var(--primary);color:#fff}
 .result-wrap{display:none;background:var(--success-light);border:1px solid var(--success);border-radius:10px;padding:12px;flex-direction:column;gap:7px}
 .result-title{color:var(--success);font-weight:800;font-size:.8em;text-align:center}
-@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);max-height:58vh}.content{flex:none;min-height:42vh}}
+@media(max-width:780px){.workspace{flex-direction:column-reverse}.panel{width:100%;border-inline-start:none;border-top:1px solid var(--border);max-height:58vh}.viewer-body{min-height:42vh}.content{flex:1;min-width:0}}
 
 /* dpdf-forms-nav-v1: "Forms" in the nav bar on wide screens; phones reach it through the tools menu and the homepage card */
 .nav-forms{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--radius-sm,6px);color:var(--text,var(--tx));text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
@@ -306,7 +323,18 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="stat-item"><span class="stat-num" id="statPages">0</span> <span id="T_statPages">صفحات</span></div>
       <button class="add-more-btn" id="addMoreBtn"><span id="T_addMore">+ إضافة المزيد</span></button>
     </div>
+    <div class="sel-bar" id="selBar">
+      <button class="sel-btn" id="selAllBtn"><span id="T_selAll">تحديد الكل</span></button>
+      <button class="sel-btn" id="selNoneBtn" disabled><span id="T_selNone">إلغاء التحديد</span></button>
+      <span class="sel-count" id="selCount"></span>
+      <div class="sel-acts">
+        <button class="sel-btn" id="selRotL">↺</button>
+        <button class="sel-btn" id="selRotR">↻</button>
+        <button class="sel-btn danger" id="selDel"><span id="T_selDel">حذف</span></button>
+      </div>
+    </div>
     <div class="pages-grid" id="pagesGrid"></div>
+    <div class="rubber-band" id="rubberBand"></div>
   </div>
   </div>
 
@@ -331,7 +359,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     </div>
 
     <div class="panel-section">
-      <div class="hint-box">💡 <span id="T_hint">اسحب الصفحات لإعادة ترتيبها. مرر الماوس فوق صفحة لحذفها.</span></div>
+      <div class="hint-box">💡 <span id="T_hint">اضغط على صفحة لتحديدها، أو اسحب في المساحة الفارغة لتحديد عدة صفحات. اسحب الصفحات لإعادة ترتيبها.</span></div>
       <div class="privacy-note">
         <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
         <span id="T_privacy">كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.</span>
@@ -511,6 +539,7 @@ function render(){
   var has=S.pages.length>0;
   document.getElementById('zoomBar').classList.toggle('show',has);
   document.getElementById('thumbSidebar').classList.toggle('open',has);
+  updateSelUI();
 }
 
 /* ── ZOOM — pages are re-rendered by pdf.js at the new width, lazily ── */
@@ -624,7 +653,7 @@ function renderGrid(){
   S.pages.forEach(function(pg,i){
     var color=FILE_COLORS[pg.fi%FILE_COLORS.length];
     var thumb=document.createElement('div');
-    thumb.className='pg-thumb';
+    thumb.className='pg-thumb'+(pg.sel?' selected':'');
     thumb.dataset.i=i;
     thumb.__pg=pg;pg.__thumb=thumb;
 
@@ -632,7 +661,7 @@ function renderGrid(){
     var cv=pg.cv;
     if(!cv){cv=document.createElement('canvas');cv.width=pg.w;cv.height=pg.h;}
     var rotDeg=pg.rot||0;
-    var rotScale=(rotDeg===90||rotDeg===270)?'scale('+Math.round(pg.h/pg.w*100)/100+')':'';
+    var rotScale=(rotDeg===90||rotDeg===270)?'scale('+Math.round(Math.min(pg.w,pg.h)/Math.max(pg.w,pg.h)*100)/100+')':'';
     cv.style.cssText='border:2.5px solid '+color+';border-radius:5px;box-shadow:0 2px 8px '+color+'44;background:var(--bg3);transform:rotate('+rotDeg+'deg) '+rotScale+';transition:transform .25s;';
     thumb.appendChild(cv);
     if(!pg.cv)io.observe(thumb);
@@ -645,17 +674,17 @@ function renderGrid(){
     var del=document.createElement('button');
     del.className='pg-thumb-del';
     del.textContent='✕';
-    del.onclick=function(e){e.stopPropagation();S.pages.splice(i,1);releaseDocs();render();};
+    del.onclick=function(e){e.stopPropagation();deletePages(targetsOf(pg));};
     thumb.appendChild(del);
 
     var rotWrap=document.createElement('div');
     rotWrap.className='pg-thumb-rotate';
     var rCCW=document.createElement('button');
-    rCCW.className='pg-rot-btn';rCCW.textContent='↺';rCCW.title='Rotate left';
-    rCCW.onclick=function(e){e.stopPropagation();rotatePage(i,-90);};
+    rCCW.className='pg-rot-btn';rCCW.textContent='↺';rCCW.title=tr('tRotL');
+    rCCW.onclick=function(e){e.stopPropagation();rotatePages(targetsOf(pg),-90);};
     var rCW=document.createElement('button');
-    rCW.className='pg-rot-btn';rCW.textContent='↻';rCW.title='Rotate right';
-    rCW.onclick=function(e){e.stopPropagation();rotatePage(i,90);};
+    rCW.className='pg-rot-btn';rCW.textContent='↻';rCW.title=tr('tRotR');
+    rCW.onclick=function(e){e.stopPropagation();rotatePages(targetsOf(pg),90);};
     rotWrap.appendChild(rCCW);rotWrap.appendChild(rCW);
     thumb.appendChild(rotWrap);
     var rotBadge=document.createElement('div');
@@ -663,30 +692,57 @@ function renderGrid(){
     if(pg.rot){rotBadge.textContent=pg.rot+'°';rotBadge.style.display='block';}
     thumb.appendChild(rotBadge);
 
-    /* drag to reorder */
+    var chk=document.createElement('div');
+    chk.className='pg-chk';chk.textContent='✓';
+    thumb.appendChild(chk);
+
+    /* a press becomes a drag only once the pointer really moves; a plain click selects the page */
     thumb.addEventListener('mousedown',function(e){
       if(e.button!==0)return;
       if(e.target.closest('.pg-thumb-del')||e.target.closest('.pg-thumb-rotate'))return;
       e.preventDefault();
-      var rect=thumb.getBoundingClientRect();
-      var gh=document.createElement('div');
-      gh.style.cssText='position:fixed;pointer-events:none;z-index:9999;opacity:.8;transform:scale(1.06) rotate(2deg);box-shadow:0 12px 32px rgba(0,0,0,.25);border-radius:8px;width:'+rect.width+'px;height:'+rect.height+'px;left:'+rect.left+'px;top:'+rect.top+'px;background:var(--bg);overflow:hidden;';
-      var ghCv=document.createElement('canvas');
-      ghCv.width=pg.w;ghCv.height=pg.h;
-      if(pg.cv)ghCv.getContext('2d').drawImage(pg.cv,0,0);
-      ghCv.style.cssText='display:block;width:100%;';
-      gh.appendChild(ghCv);
-      document.body.appendChild(gh);
-      thumb.classList.add('dragging');
-      DR={on:true,el:thumb,ghost:gh,idx:i,ox:e.clientX-rect.left,oy:e.clientY-rect.top};
-      document.body.style.cursor='grabbing';
+      DR={on:false,pending:true,el:thumb,pg:pg,ghost:null,sx:e.clientX,sy:e.clientY};
     });
 
     grid.appendChild(thumb);
   });
 }
 
+/* dragging a selected page moves the whole selection; dragging any other page moves just that page */
+function startDrag(){
+  var thumb=DR.el,pg=DR.pg;
+  var group=pg.sel?selPages():[pg];
+  var rect=thumb.getBoundingClientRect();
+  var gh=document.createElement('div');
+  gh.style.cssText='position:fixed;pointer-events:none;z-index:9999;opacity:.8;transform:scale(1.06) rotate(2deg);box-shadow:0 12px 32px rgba(0,0,0,.25);border-radius:8px;width:'+rect.width+'px;height:'+rect.height+'px;left:'+rect.left+'px;top:'+rect.top+'px;background:var(--bg);overflow:hidden;';
+  var ghCv=document.createElement('canvas');
+  ghCv.width=pg.w;ghCv.height=pg.h;
+  if(pg.cv)ghCv.getContext('2d').drawImage(pg.cv,0,0);
+  ghCv.style.cssText='display:block;width:100%;';
+  gh.appendChild(ghCv);
+  if(group.length>1){var n=document.createElement('div');n.className='drag-count';n.textContent=group.length;gh.appendChild(n);}
+  document.body.appendChild(gh);
+  group.forEach(function(p){if(p.__thumb)p.__thumb.classList.add('dragging');});
+  DR.on=true;DR.pending=false;DR.ghost=gh;DR.group=group;DR.ox=DR.sx-rect.left;DR.oy=DR.sy-rect.top;
+  document.body.style.cursor='grabbing';
+}
+
+/* the group lands after the page it is dropped on when moving forward, before it when moving back —
+   the same feel single-page dragging always had */
+function movePages(group,target){
+  var after=S.pages.indexOf(target)>S.pages.indexOf(group[0]);
+  var rest=S.pages.filter(function(p){return group.indexOf(p)<0;});
+  var at=rest.indexOf(target)+(after?1:0);
+  Array.prototype.splice.apply(rest,[at,0].concat(group));
+  S.pages=rest;
+  render();
+}
+
 document.addEventListener('mousemove',function(e){
+  if(DR.pending&&!DR.on){
+    if(Math.abs(e.clientX-DR.sx)<5&&Math.abs(e.clientY-DR.sy)<5)return;
+    startDrag();
+  }
   if(!DR.on)return;
   DR.ghost.style.left=(e.clientX-DR.ox)+'px';
   DR.ghost.style.top=(e.clientY-DR.oy)+'px';
@@ -695,26 +751,95 @@ document.addEventListener('mousemove',function(e){
   DR.ghost.style.display='';
   var tgt=under&&under.closest('.pg-thumb');
   document.querySelectorAll('.pg-thumb.drag-over').forEach(function(t){t.classList.remove('drag-over');});
-  if(tgt&&tgt!==DR.el)tgt.classList.add('drag-over');
+  if(tgt&&tgt.__pg&&DR.group.indexOf(tgt.__pg)<0)tgt.classList.add('drag-over');
 });
 
 document.addEventListener('mouseup',function(e){
+  if(DR.pending&&!DR.on){var clicked=DR.pg;DR={on:false};toggleSel(clicked,e);return;}
   if(!DR.on)return;
   DR.ghost.remove();
-  DR.el.classList.remove('dragging');
+  DR.group.forEach(function(p){if(p.__thumb)p.__thumb.classList.remove('dragging');});
   document.body.style.cursor='';
   /* find drop target */
   var under=document.elementFromPoint(e.clientX,e.clientY);
   var tgt=under&&under.closest('.pg-thumb');
   document.querySelectorAll('.pg-thumb.drag-over').forEach(function(t){t.classList.remove('drag-over');});
-  if(tgt&&tgt!==DR.el){
-    var toIdx=parseInt(tgt.dataset.i);
-    var moved=S.pages.splice(DR.idx,1)[0];
-    S.pages.splice(toIdx,0,moved);
-    render();
-  }
-  DR.on=false;
+  var group=DR.group;
+  DR={on:false};
+  if(tgt&&tgt.__pg&&group.indexOf(tgt.__pg)<0)movePages(group,tgt.__pg);
 });
+
+/* ── SELECTION ── kept on the page objects themselves, so it survives reorder, rotate and delete */
+var SEL={last:null};
+function selPages(){return S.pages.filter(function(p){return p.sel;});}
+/* a page's own buttons act on the whole selection when that page is part of it */
+function targetsOf(pg){return pg.sel?selPages():[pg];}
+function updateSelUI(){
+  var n=selPages().length,has=S.pages.length>0;
+  var bar=document.getElementById('selBar');
+  bar.classList.toggle('show',has);
+  bar.classList.toggle('has-sel',n>0);
+  document.getElementById('selCount').textContent=tr('tSelCount').replace('{n}',n);
+  document.getElementById('selNoneBtn').disabled=n===0;
+  document.getElementById('selAllBtn').disabled=!has||n===S.pages.length;
+  Array.prototype.forEach.call(document.querySelectorAll('#pagesGrid .pg-thumb'),function(t){t.classList.toggle('selected',!!(t.__pg&&t.__pg.sel));});
+  Array.prototype.forEach.call(document.querySelectorAll('#thumbList .thumb-item'),function(t){var p=S.pages[+t.dataset.i];t.classList.toggle('sel',!!(p&&p.sel));});
+}
+function toggleSel(pg,e){
+  var a=SEL.last?S.pages.indexOf(SEL.last):-1,b=S.pages.indexOf(pg);
+  if(e&&e.shiftKey&&a>=0){for(var j=Math.min(a,b);j<=Math.max(a,b);j++)S.pages[j].sel=true;}
+  else pg.sel=!pg.sel;
+  SEL.last=pg;
+  updateSelUI();
+}
+function selAll(){S.pages.forEach(function(p){p.sel=true;});updateSelUI();}
+function clearSel(){S.pages.forEach(function(p){p.sel=false;});SEL.last=null;updateSelUI();}
+function rotatePages(list,delta){list.forEach(function(p){rotatePage(S.pages.indexOf(p),delta);});}
+function deletePages(list){
+  S.pages=S.pages.filter(function(p){return list.indexOf(p)<0;});
+  releaseDocs();
+  render();
+}
+
+/* drag on empty space to select several pages; Shift keeps what was already selected */
+function initRubberBand(){
+  var scroll=document.getElementById('contentArea'),band=document.getElementById('rubberBand');
+  var active=false,x0=0,y0=0,base=[];
+  scroll.addEventListener('mousedown',function(e){
+    if(e.button!==0||!S.pages.length)return;
+    if(e.target.closest('.pg-thumb,.sel-bar,.stats-bar,.zoom-bar,button'))return;
+    var r=scroll.getBoundingClientRect();
+    var inX=e.clientX-r.left-scroll.clientLeft,inY=e.clientY-r.top-scroll.clientTop;
+    if(inX<0||inX>scroll.clientWidth||inY<0||inY>scroll.clientHeight)return;   /* the scrollbar */
+    active=true;
+    x0=e.clientX-r.left+scroll.scrollLeft;
+    y0=e.clientY-r.top+scroll.scrollTop;
+    band.style.cssText='display:block;left:'+x0+'px;top:'+y0+'px;width:0;height:0';
+    if(!e.shiftKey)clearSel();
+    base=selPages();
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',function(e){
+    if(!active)return;
+    var r=scroll.getBoundingClientRect();
+    var cx=e.clientX-r.left+scroll.scrollLeft,cy=e.clientY-r.top+scroll.scrollTop;
+    var bx=Math.min(x0,cx),by=Math.min(y0,cy),bw=Math.abs(cx-x0),bh=Math.abs(cy-y0);
+    band.style.left=bx+'px';band.style.top=by+'px';band.style.width=bw+'px';band.style.height=bh+'px';
+    if(bw<4&&bh<4)return;
+    Array.prototype.forEach.call(document.querySelectorAll('#pagesGrid .pg-thumb'),function(card){
+      var c=card.getBoundingClientRect();
+      var cl=c.left-r.left+scroll.scrollLeft,ct=c.top-r.top+scroll.scrollTop;
+      var hit=bx<cl+c.width&&bx+bw>cl&&by<ct+c.height&&by+bh>ct;
+      if(card.__pg)card.__pg.sel=hit||base.indexOf(card.__pg)>=0;
+    });
+    updateSelUI();
+  });
+  document.addEventListener('mouseup',function(){
+    if(!active)return;
+    active=false;
+    band.style.display='none';
+  });
+}
 
 function renderFileList(){
   var list=document.getElementById('fileList');
@@ -758,7 +883,7 @@ function rotatePage(idx, delta){
   if(thumb){
     var cv=thumb.querySelector('canvas');
     if(cv){
-      var rotScale=(pg.rot===90||pg.rot===270)?'scale('+Math.round(pg.h/pg.w*100)/100+')':'';
+      var rotScale=(pg.rot===90||pg.rot===270)?'scale('+Math.round(Math.min(pg.w,pg.h)/Math.max(pg.w,pg.h)*100)/100+')':'';
       cv.style.transform='rotate('+pg.rot+'deg) '+rotScale;
     }
     var badge=document.getElementById('rb-'+idx);
@@ -902,6 +1027,7 @@ function resetTool(){
   document.getElementById('statsBar').style.display='none';
   document.getElementById('emptyState').style.display='flex';
   document.getElementById('actionBtn').disabled=true;
+  SEL.last=null;updateSelUI();
 }
 
 /* ── LANGUAGE ── */
@@ -912,7 +1038,8 @@ var LANGS={
     T_pages:'Pages',T_zoomReset:'Reset',T_emptyMain:'Click or drop PDF files here',T_emptySub:'Add multiple PDFs to merge them into one · Drag to reorder',
     T_filesLabel:'PDF Files',T_pdfBtn:'Click or drop PDF files here',T_pdfSub:'Select multiple files at once',
     T_statFiles:'files',T_statPages:'pages',T_addMore:'+ Add more',
-    T_hint:'Drag pages to reorder them. Hover a page to delete it.',
+    T_hint:'Click a page to select it, or drag on empty space to select several. Drag pages to reorder them.',
+    T_selAll:'Select all',T_selNone:'Deselect',T_selDel:'Delete',tSelCount:'{n} selected',tRotL:'Rotate left',tRotR:'Rotate right',
     T_privacy:'All processing happens locally in your browser. No files are ever uploaded.',
     T_actionBtn:'Merge PDFs',T_resultTitle:'✅ PDFs merged!',T_again:'Merge other files',
     T_pCreate:'Creating PDF…',T_pLoad:'Loading',T_pAdd:'Adding page',T_pSave:'Saving…',T_pDone:'Done!',
@@ -953,7 +1080,8 @@ var LANGS={
 T_emptySub:'أضف عدة ملفات PDF لدمجها في ملف واحد',
     T_filesLabel:'ملفات PDF',T_pdfBtn:'اضغط أو أسقط ملفات PDF هنا',T_pdfSub:'اختر عدة ملفات دفعة واحدة',
     T_statFiles:'ملفات',T_statPages:'صفحات',T_addMore:'+ إضافة المزيد',
-    T_hint:'اسحب الصفحات لإعادة ترتيبها. مرر الماوس فوق صفحة لحذفها.',
+    T_hint:'اضغط على صفحة لتحديدها، أو اسحب في المساحة الفارغة لتحديد عدة صفحات. اسحب الصفحات لإعادة ترتيبها.',
+    T_selAll:'تحديد الكل',T_selNone:'إلغاء التحديد',T_selDel:'حذف',tSelCount:'المحدد: {n}',tRotL:'تدوير لليسار',tRotR:'تدوير لليمين',
     T_privacy:'كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.',
     T_actionBtn:'دمج الملفات',T_resultTitle:'✅ تم الدمج!',T_again:'دمج ملفات أخرى',
     T_pCreate:'جاري إنشاء PDF…',T_pLoad:'تحميل',T_pAdd:'إضافة صفحة',T_pSave:'جاري الحفظ…',T_pDone:'تم!',
@@ -997,6 +1125,9 @@ function applyLang(l){
   document.documentElement.dir=l==='ar'?'rtl':'ltr';
   Object.keys(t).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=t[id];});
   document.getElementById('langLabel').textContent=l==='ar'?'EN':'AR';
+  document.getElementById('selRotL').title=t.tRotL;
+  document.getElementById('selRotR').title=t.tRotR;
+  updateSelUI();
 }
 function applyTheme(dark){
   document.documentElement.setAttribute('data-theme',dark?'dark':'');
@@ -1019,6 +1150,21 @@ function boot(){
   document.getElementById('addMoreBtn').onclick=function(){fi.click();};
   document.getElementById('actionBtn').onclick=doMerge;
   document.getElementById('resetBtn').onclick=resetTool;
+
+  /* selection */
+  document.getElementById('selAllBtn').onclick=selAll;
+  document.getElementById('selNoneBtn').onclick=clearSel;
+  document.getElementById('selRotL').onclick=function(){rotatePages(selPages(),-90);};
+  document.getElementById('selRotR').onclick=function(){rotatePages(selPages(),90);};
+  document.getElementById('selDel').onclick=function(){deletePages(selPages());};
+  initRubberBand();
+  document.addEventListener('keydown',function(e){
+    var tag=e.target&&e.target.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||!S.pages.length)return;
+    if((e.ctrlKey||e.metaKey)&&(e.key==='a'||e.key==='A')){e.preventDefault();selAll();}
+    else if(e.key==='Escape')clearSel();
+    else if(e.key==='Delete'&&selPages().length){e.preventDefault();deletePages(selPages());}
+  });
 
   /* nav */
   document.getElementById('themeBtn').onclick=function(){applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');};
