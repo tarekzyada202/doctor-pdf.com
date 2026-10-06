@@ -190,6 +190,10 @@ html[lang="en"] .priv-cta .ar{display:none}
 .sel-bar.has-sel .sel-acts{display:flex}
 .rubber-band{position:absolute;border:2px solid var(--primary);background:rgba(99,102,241,.1);border-radius:3px;pointer-events:none;display:none;z-index:50}
 .thumb-item.sel{box-shadow:inset 0 0 0 2px var(--primary)}
+/* dpdf-merge-keys: the keyboard focus ring */
+.pg-thumb.cursor{outline:2px dashed var(--primary);outline-offset:2px}
+.kbd-hint{margin-top:-4px}
+@media(max-width:780px){.kbd-hint{display:none}}
 .drag-count{position:absolute;top:4px;inset-inline-end:4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
 
 /* PANEL */
@@ -360,6 +364,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
     <div class="panel-section">
       <div class="hint-box">💡 <span id="T_hint">اضغط على صفحة لتحديدها، أو اسحب في المساحة الفارغة لتحديد عدة صفحات. اسحب الصفحات لإعادة ترتيبها.</span></div>
+      <div class="hint-box kbd-hint">⌨️ <span id="T_kbd">لوحة المفاتيح: الأسهم للتنقل · المسافة للتحديد · Shift مع الأسهم لتحديد مدى · R و L للتدوير · Delete للحذف · Ctrl مع الأسهم لنقل الصفحات.</span></div>
       <div class="privacy-note">
         <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
         <span id="T_privacy">كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.</span>
@@ -653,7 +658,7 @@ function renderGrid(){
   S.pages.forEach(function(pg,i){
     var color=FILE_COLORS[pg.fi%FILE_COLORS.length];
     var thumb=document.createElement('div');
-    thumb.className='pg-thumb'+(pg.sel?' selected':'');
+    thumb.className='pg-thumb'+(pg.sel?' selected':'')+(pg===SEL.cur?' cursor':'');
     thumb.dataset.i=i;
     thumb.__pg=pg;pg.__thumb=thumb;
 
@@ -770,7 +775,7 @@ document.addEventListener('mouseup',function(e){
 });
 
 /* ── SELECTION ── kept on the page objects themselves, so it survives reorder, rotate and delete */
-var SEL={last:null};
+var SEL={last:null,cur:null,range:null};
 function selPages(){return S.pages.filter(function(p){return p.sel;});}
 /* a page's own buttons act on the whole selection when that page is part of it */
 function targetsOf(pg){return pg.sel?selPages():[pg];}
@@ -790,15 +795,100 @@ function toggleSel(pg,e){
   if(e&&e.shiftKey&&a>=0){for(var j=Math.min(a,b);j<=Math.max(a,b);j++)S.pages[j].sel=true;}
   else pg.sel=!pg.sel;
   SEL.last=pg;
+  setCursor(pg);
   updateSelUI();
 }
 function selAll(){S.pages.forEach(function(p){p.sel=true;});updateSelUI();}
-function clearSel(){S.pages.forEach(function(p){p.sel=false;});SEL.last=null;updateSelUI();}
+function clearSel(){S.pages.forEach(function(p){p.sel=false;});SEL.last=null;SEL.range=null;updateSelUI();}
 function rotatePages(list,delta){list.forEach(function(p){rotatePage(S.pages.indexOf(p),delta);});}
 function deletePages(list){
+  /* keep the keyboard focus where it was: on the page that followed the deleted ones */
+  var ci=SEL.cur?S.pages.indexOf(SEL.cur):-1,gone=0;
+  if(ci>=0)list.forEach(function(p){var x=S.pages.indexOf(p);if(x>=0&&x<ci)gone++;});
   S.pages=S.pages.filter(function(p){return list.indexOf(p)<0;});
+  if(SEL.cur&&S.pages.indexOf(SEL.cur)<0)SEL.cur=S.pages[Math.min(ci-gone,S.pages.length-1)]||null;
+  if(SEL.last&&S.pages.indexOf(SEL.last)<0)SEL.last=null;
+  SEL.range=null;
   releaseDocs();
   render();
+}
+
+/* ── KEYBOARD ── a focus ring (SEL.cur) moves with the arrows, and everything the mouse can do has a key */
+function setCursor(pg,scroll){
+  SEL.cur=pg||null;
+  Array.prototype.forEach.call(document.querySelectorAll('#pagesGrid .pg-thumb'),function(t){t.classList.toggle('cursor',!!SEL.cur&&t.__pg===SEL.cur);});
+  if(scroll&&SEL.cur&&SEL.cur.__thumb)SEL.cur.__thumb.scrollIntoView({block:'nearest',inline:'nearest'});
+}
+/* the page an arrow key leads to, judged by what is on screen — so it is right for RTL and for any number of columns */
+function neighbour(pg,key){
+  var i=S.pages.indexOf(pg),rtl=document.documentElement.dir==='rtl';
+  if(key==='Home')return S.pages[0];
+  if(key==='End')return S.pages[S.pages.length-1];
+  if(key==='ArrowLeft'||key==='ArrowRight')return S.pages[i+((key==='ArrowRight')!==rtl?1:-1)]||pg;
+  var up=key==='ArrowUp',me=pg.__thumb.getBoundingClientRect(),cx=me.left+me.width/2,best=null,bestRow=0,bestDx=0;
+  S.pages.forEach(function(p){
+    if(p===pg||!p.__thumb)return;
+    var r=p.__thumb.getBoundingClientRect();
+    if(up?r.bottom>me.top+1:r.top<me.bottom-1)return;            /* not in a row above / below */
+    var row=up?-r.top:r.top,dx=Math.abs(r.left+r.width/2-cx);    /* nearest row first, then nearest column */
+    if(best===null||row<bestRow-1||(Math.abs(row-bestRow)<=1&&dx<bestDx)){best=p;bestRow=row;bestDx=dx;}
+  });
+  return best||pg;
+}
+/* move a group one place earlier (-1) or later (+1) */
+function nudgePages(group,dir){
+  var edge=dir<0?group[0]:group[group.length-1];
+  var rest=S.pages.filter(function(p){return group.indexOf(p)<0;});
+  var before=S.pages.slice(0,S.pages.indexOf(edge)).filter(function(p){return group.indexOf(p)<0;}).length;
+  var at=before+dir;
+  if(at<0||at>rest.length)return;
+  Array.prototype.splice.apply(rest,[at,0].concat(group));
+  S.pages=rest;
+  render();
+}
+function onKey(e){
+  var tag=e.target&&e.target.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||!S.pages.length||e.altKey)return;
+  var k=e.key,ctrl=e.ctrlKey||e.metaKey,rtl=document.documentElement.dir==='rtl';
+  var has=function(p){return !!p&&S.pages.indexOf(p)>=0;};
+  if(k==='ArrowLeft'||k==='ArrowRight'||k==='ArrowUp'||k==='ArrowDown'||k==='Home'||k==='End'){
+    e.preventDefault();
+    /* the first key only shows where the focus is */
+    if(!has(SEL.cur)){SEL.range=null;setCursor(has(SEL.last)?SEL.last:S.pages[0],true);return;}
+    if(ctrl){
+      if(k==='Home'||k==='End')return;
+      var dir=k==='ArrowUp'?-1:k==='ArrowDown'?1:((k==='ArrowRight')!==rtl?1:-1);
+      nudgePages(selPages().length?selPages():[SEL.cur],dir);
+      setCursor(SEL.cur,true);
+      return;
+    }
+    var to=neighbour(SEL.cur,k);
+    if(e.shiftKey){
+      /* a range from where Shift was first pressed; what was selected before stays selected */
+      if(!SEL.range||!has(SEL.range.anchor))SEL.range={anchor:SEL.cur,base:selPages()};
+      var a=S.pages.indexOf(SEL.range.anchor),b=S.pages.indexOf(to),lo=Math.min(a,b),hi=Math.max(a,b),base=SEL.range.base;
+      S.pages.forEach(function(p,j){p.sel=(j>=lo&&j<=hi)||base.indexOf(p)>=0;});
+      SEL.last=to;
+      updateSelUI();
+    }else SEL.range=null;
+    setCursor(to,true);
+    return;
+  }
+  if(ctrl){if(e.code==='KeyA'){e.preventDefault();selAll();}return;}   /* never touch Ctrl+R and friends */
+  if(k==='Escape'){clearSel();return;}
+  if(e.code==='Space'){
+    if(tag==='BUTTON'||tag==='A'||!has(SEL.cur))return;                 /* Space on a focused button presses that button */
+    e.preventDefault();
+    SEL.cur.sel=!SEL.cur.sel;SEL.last=SEL.cur;
+    updateSelUI();
+    return;
+  }
+  /* actions go to the selection, or to the focused page when nothing is selected */
+  var targets=selPages().length?selPages():(has(SEL.cur)?[SEL.cur]:[]);
+  if(!targets.length)return;
+  if(k==='Delete'){e.preventDefault();deletePages(targets);}
+  else if(e.code==='KeyL'||(e.code==='KeyR'&&e.shiftKey))rotatePages(targets,-90);
+  else if(e.code==='KeyR')rotatePages(targets,90);
 }
 
 /* drag on empty space to select several pages; Shift keeps what was already selected */
@@ -1027,7 +1117,7 @@ function resetTool(){
   document.getElementById('statsBar').style.display='none';
   document.getElementById('emptyState').style.display='flex';
   document.getElementById('actionBtn').disabled=true;
-  SEL.last=null;updateSelUI();
+  SEL.last=null;SEL.cur=null;SEL.range=null;updateSelUI();
 }
 
 /* ── LANGUAGE ── */
@@ -1040,6 +1130,7 @@ var LANGS={
     T_statFiles:'files',T_statPages:'pages',T_addMore:'+ Add more',
     T_hint:'Click a page to select it, or drag on empty space to select several. Drag pages to reorder them.',
     T_selAll:'Select all',T_selNone:'Deselect',T_selDel:'Delete',tSelCount:'{n} selected',tRotL:'Rotate left',tRotR:'Rotate right',
+    T_kbd:'Keyboard: arrows move · Space selects · Shift+arrows select a range · R / L rotate · Delete removes · Ctrl+arrows move the pages.',
     T_privacy:'All processing happens locally in your browser. No files are ever uploaded.',
     T_actionBtn:'Merge PDFs',T_resultTitle:'✅ PDFs merged!',T_again:'Merge other files',
     T_pCreate:'Creating PDF…',T_pLoad:'Loading',T_pAdd:'Adding page',T_pSave:'Saving…',T_pDone:'Done!',
@@ -1082,6 +1173,7 @@ T_emptySub:'أضف عدة ملفات PDF لدمجها في ملف واحد',
     T_statFiles:'ملفات',T_statPages:'صفحات',T_addMore:'+ إضافة المزيد',
     T_hint:'اضغط على صفحة لتحديدها، أو اسحب في المساحة الفارغة لتحديد عدة صفحات. اسحب الصفحات لإعادة ترتيبها.',
     T_selAll:'تحديد الكل',T_selNone:'إلغاء التحديد',T_selDel:'حذف',tSelCount:'المحدد: {n}',tRotL:'تدوير لليسار',tRotR:'تدوير لليمين',
+    T_kbd:'لوحة المفاتيح: الأسهم للتنقل · المسافة للتحديد · Shift مع الأسهم لتحديد مدى · R و L للتدوير · Delete للحذف · Ctrl مع الأسهم لنقل الصفحات.',
     T_privacy:'كل المعالجة تتم في متصفحك. لا تُرفع أي ملفات.',
     T_actionBtn:'دمج الملفات',T_resultTitle:'✅ تم الدمج!',T_again:'دمج ملفات أخرى',
     T_pCreate:'جاري إنشاء PDF…',T_pLoad:'تحميل',T_pAdd:'إضافة صفحة',T_pSave:'جاري الحفظ…',T_pDone:'تم!',
@@ -1158,13 +1250,10 @@ function boot(){
   document.getElementById('selRotR').onclick=function(){rotatePages(selPages(),90);};
   document.getElementById('selDel').onclick=function(){deletePages(selPages());};
   initRubberBand();
-  document.addEventListener('keydown',function(e){
-    var tag=e.target&&e.target.tagName;
-    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||!S.pages.length)return;
-    if((e.ctrlKey||e.metaKey)&&(e.key==='a'||e.key==='A')){e.preventDefault();selAll();}
-    else if(e.key==='Escape')clearSel();
-    else if(e.key==='Delete'&&selPages().length){e.preventDefault();deletePages(selPages());}
-  });
+  document.addEventListener('keydown',onKey);
+  document.addEventListener('keyup',function(e){if(e.key==='Shift')SEL.range=null;});
+  /* a mouse click on the bar must not take the keyboard focus, or Space would press that button again */
+  document.getElementById('selBar').addEventListener('mousedown',function(e){e.preventDefault();});
 
   /* nav */
   document.getElementById('themeBtn').onclick=function(){applyTheme(document.documentElement.getAttribute('data-theme')!=='dark');};
