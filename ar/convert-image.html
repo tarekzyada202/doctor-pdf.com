@@ -285,11 +285,11 @@ html[lang="en"] .priv-cta .ar{display:none}
   <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
 
   <!-- Privacy badge -->
-  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+  <div class="nav-privacy" title="كل المعالجة تتم داخل متصفحك — ملفاتك لا تغادر جهازك.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -385,7 +385,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)">
         <span id="T_small">حجم أصغر</span><span id="T_hq">جودة أفضل</span>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="qualityNote">Applies to JPG output</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="qualityNote">تُطبّق على مخرجات JPG</div>
     </div>
 
     <div class="panel-section">
@@ -393,11 +393,11 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="resize-grid">
         <div class="resize-field">
           <label id="T_widthLabel">العرض (px)</label>
-          <input type="number" id="resizeW" placeholder="Auto" min="1" max="8000">
+          <input type="number" id="resizeW" placeholder="تلقائي" min="1" max="8000">
         </div>
         <div class="resize-field">
           <label id="T_heightLabel">الارتفاع (px)</label>
-          <input type="number" id="resizeH" placeholder="Auto" min="1" max="8000">
+          <input type="number" id="resizeH" placeholder="تلقائي" min="1" max="8000">
         </div>
       </div>
       <div class="toggle-row" style="margin-top:10px">
@@ -711,7 +711,7 @@ function renderGrid() {
     const sizeKB = (img.file.size / 1024).toFixed(0);
     card.innerHTML = `
       <img class="img-preview" src="${img.dataUrl}" alt="${img.name}">
-      <button class="img-remove" data-id="${img.id}" title="Remove">
+      <button class="img-remove" data-id="${img.id}" title="حذف">
         <svg viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
       </button>
       <div class="img-progress" id="prog-${img.id}"></div>

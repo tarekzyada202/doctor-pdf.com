@@ -342,11 +342,11 @@ html[lang="en"] .priv-cta .ar{display:none}
   </div>
   <div class="nav-sep"></div>
   <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
-  <div class="nav-privacy" title="All processing in your browser — files never leave your device">
+  <div class="nav-privacy" title="كل المعالجة داخل متصفحك — ملفاتك لا تغادر جهازك">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -379,16 +379,16 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="zoom-bar" id="zoomBar">
         <span class="zt-label" id="T_zoomLabel">تكبير:</span>
         <button class="zt-btn" onclick="zoomOut()">−</button>
-        <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="Click to reset">100%</span>
+        <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="اضغط لإعادة الضبط">100%</span>
         <button class="zt-btn" onclick="zoomIn()">+</button>
         <div class="zt-sep"></div>
-        <button class="zt-btn" onclick="zoomFit()" title="Fit">↔</button>
+        <button class="zt-btn" onclick="zoomFit()" title="ملاءمة">↔</button>
         <button class="zt-btn" onclick="zoomTo(1)" title="100%">1:1</button>
         <button class="zt-btn" onclick="zoomTo(1.5)">1.5×</button>
         <button class="zt-btn" onclick="zoomTo(2)">2×</button>
         <div class="zt-sep"></div>
         <!-- Selection count + actions in toolbar -->
-        <span class="sel-count-badge" id="selCountBadge">0 selected</span>
+        <span class="sel-count-badge" id="selCountBadge">0 محدد</span>
         <button class="sel-action-btn" id="selAllBtn" onclick="selectAll()"><span id="T_selAll">تحديد الكل</span></button>
         <button class="sel-action-btn" id="selNoneBtn" onclick="clearSelection()" style="display:none"><span id="T_selNone">إلغاء التحديد</span></button>
         <button class="sel-action-btn danger" id="delSelBtn" onclick="deleteSelected()" style="display:none"><span id="T_delSel">حذف المحدد</span></button>
@@ -467,14 +467,14 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-footer">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-label" id="progressLabel">Processing…</div>
+        <div class="progress-label" id="progressLabel">جارٍ المعالجة…</div>
       </div>
       <button class="action-btn" id="actionBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span id="T_actionBtn">تقسيم وتحميل</span>
       </button>
       <div class="result-box" id="resultBox">
-        <div class="result-title" id="resultTitle">✅ Done!</div>
+        <div class="result-title" id="resultTitle">✅ تم!</div>
         <a class="dl-btn" id="downloadLink" href="#" download style="display:none">
           <svg viewBox="0 0 16 16" fill="none" width="14"><path d="M8 1v10M4 7l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span id="T_downloadBtn">تحميل</span>
@@ -496,6 +496,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 
 <script>
 const LANGS = {
@@ -787,15 +788,17 @@ function deleteSelected() {
   updateSelectionUI();
 }
 
+/* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */
+/* All pages in ONE copy call. Copying page by page writes the fonts and pictures the pages share once per page:
+   a 1.06 MB six-page contract came out as 1.80 MB (measured 2026-10-09). */
+async function copyInto(doc, src, indices) { const ps = await doc.copyPages(src, indices); ps.forEach(function(p){ doc.addPage(p); }); }
+
 async function extractSelected() {
   if(!S.pdfBytes||!S.selected.size) return;
   const pages = Array.from(S.selected).sort((a,b)=>a-b);
-  const src = await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+  const src = await DpdfUnlock.load(S.pdfBytes);
   const doc = await PDFLib.PDFDocument.create();
-  for(const pi of pages) {
-    const [pg] = await doc.copyPages(src,[pi]);
-    doc.addPage(pg);
-  }
+  await copyInto(doc, src, pages);
   const out = await doc.save();
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
@@ -1089,7 +1092,7 @@ function toggleDelete(i) {
 
 async function extractSinglePage(i) {
   if(!S.pdfBytes) return;
-  const src=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+  const src=await DpdfUnlock.load(S.pdfBytes);
   const doc=await PDFLib.PDFDocument.create();
   const [pg]=await doc.copyPages(src,[i]); doc.addPage(pg);
   const out=await doc.save();
@@ -1136,20 +1139,18 @@ async function doSplit() {
 
   try {
     const baseName=S.file.name.replace(/\.pdf$/i,'');
-    const srcDoc=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+    const srcDoc=await DpdfUnlock.load(S.pdfBytes);
 
     // ── FIX: إذا في صفحات محددة → استخرجها فقط ──
     if(S.selected.size > 0) {
       const pages = Array.from(S.selected).sort((a,b)=>a-b);
-      setProgress(30,'Extracting selected pages…');
+      setProgress(30,'جارٍ استخراج الصفحات المحددة…');
       const doc = await PDFLib.PDFDocument.create();
-      for(const pi of pages){
-        const [pg]=await doc.copyPages(srcDoc,[pi]); doc.addPage(pg);
-      }
+      await copyInto(doc, srcDoc, pages);
       const out = await doc.save();
       const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
       const fname = baseName+'_selected.pdf';
-      setProgress(100,'Done!');
+      setProgress(100,'تم!');
       const a=document.createElement('a'); a.href=url; a.download=fname;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       showResult(
@@ -1162,11 +1163,11 @@ async function doSplit() {
     }
 
     const activePages=[]; for(let i=0;i<S.pageCount;i++) if(!S.deleted.has(i)) activePages.push(i);
-    setProgress(10,'Loading…');
+    setProgress(10,'جارٍ التحميل…');
 
     if(S.mode==='each') {
       for(let j=0;j<activePages.length;j++) {
-        setProgress(10+Math.round(j/activePages.length*85),'Page '+(j+1)+'…');
+        setProgress(10+Math.round(j/activePages.length*85),'صفحة '+(j+1)+'…');
         const doc=await PDFLib.PDFDocument.create();
         const [pg]=await doc.copyPages(srcDoc,[activePages[j]]); doc.addPage(pg);
         const out=await doc.save();
@@ -1176,19 +1177,19 @@ async function doSplit() {
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         await new Promise(r=>setTimeout(r,150));
       }
-      setProgress(100,'Done!');
+      setProgress(100,'تم!');
       showResult(currentLang==='ar'?'✅ تم! '+activePages.length+' ملفات':'✅ '+activePages.length+' files downloaded',null,null);
 
     } else if(S.mode==='range') {
       const from=Math.max(1,parseInt(document.getElementById('rangeFrom').value)||1)-1;
       const to=Math.min(S.pageCount,parseInt(document.getElementById('rangeTo').value)||S.pageCount)-1;
-      setProgress(50,'Extracting…');
+      setProgress(50,'جارٍ الاستخراج…');
       const doc=await PDFLib.PDFDocument.create();
-      for(let k=from;k<=to;k++){ const [pg]=await doc.copyPages(srcDoc,[k]); doc.addPage(pg); }
+      { const idx=[]; for(let k=from;k<=to;k++) idx.push(k); await copyInto(doc, srcDoc, idx); }
       const out=await doc.save();
       const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
       const fname=baseName+'_pages'+(from+1)+'to'+(to+1)+'.pdf';
-      setProgress(100,'Done!');
+      setProgress(100,'تم!');
       const _ar=document.createElement('a'); _ar.href=url; _ar.download=fname;
       document.body.appendChild(_ar); _ar.click(); document.body.removeChild(_ar);
       showResult(currentLang==='ar'?'✅ تم!':'✅ Pages extracted!',url,fname);
@@ -1197,22 +1198,20 @@ async function doSplit() {
       const groups=buildGroups(activePages);
       if(groups.length===1&&S.deleted.size===0) {
         const doc=await PDFLib.PDFDocument.create();
-        for(let n=0;n<activePages.length;n++){
-          setProgress(10+Math.round(n/activePages.length*85),'Page '+(n+1)+'…');
-          const [pg]=await doc.copyPages(srcDoc,[activePages[n]]); doc.addPage(pg);
-        }
+        setProgress(50,'جارٍ الاستخراج…');
+        await copyInto(doc, srcDoc, activePages);
         const out=await doc.save();
         const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
         const fname=baseName+'_split.pdf';
-        setProgress(100,'Done!');
+        setProgress(100,'تم!');
         const _a=document.createElement('a'); _a.href=url; _a.download=fname;
         document.body.appendChild(_a); _a.click(); document.body.removeChild(_a);
         showResult(currentLang==='ar'?'✅ تم!':'✅ Done!',url,fname);
       } else {
         for(let g=0;g<groups.length;g++){
-          setProgress(10+Math.round(g/groups.length*85),'Group '+(g+1)+'…');
+          setProgress(10+Math.round(g/groups.length*85),'مجموعة '+(g+1)+'…');
           const doc=await PDFLib.PDFDocument.create();
-          for(let m=0;m<groups[g].length;m++){ const [pg]=await doc.copyPages(srcDoc,[groups[g][m]]); doc.addPage(pg); }
+          await copyInto(doc, srcDoc, groups[g]);
           const out=await doc.save();
           const a=document.createElement('a');
           a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
@@ -1220,7 +1219,7 @@ async function doSplit() {
           document.body.appendChild(a); a.click(); document.body.removeChild(a);
           await new Promise(r=>setTimeout(r,150));
         }
-        setProgress(100,'Done!');
+        setProgress(100,'تم!');
         const msg=groups.length>1?(currentLang==='ar'?'✅ '+groups.length+' ملفات':'✅ '+groups.length+' files'):(currentLang==='ar'?'✅ تم!':'✅ Done!');
         showResult(msg,null,null);
       }

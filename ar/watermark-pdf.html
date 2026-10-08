@@ -275,7 +275,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -327,7 +327,7 @@ html[lang="en"] .priv-cta .ar{display:none}
   <aside class="panel">
     <div class="panel-section">
       <div class="ps-title" id="T_textTitle">نص العلامة المائية</div>
-      <input type="text" class="text-field" id="wmText" placeholder="CONFIDENTIAL" maxlength="40" value="CONFIDENTIAL">
+      <input type="text" class="text-field" id="wmText" placeholder="سري" maxlength="40" value="CONFIDENTIAL">
     </div>
 
     <div class="panel-section">
@@ -367,7 +367,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-footer">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-lbl" id="progressLbl">Processing…</div>
+        <div class="progress-lbl" id="progressLbl">جارٍ المعالجة…</div>
       </div>
       <button class="action-btn" id="actionBtn" disabled onclick="doWatermark()">
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M3 13l4-5 3 3 4-5 5 7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="14" height="14" rx="3" stroke="#fff" stroke-width="1.5"/></svg>
@@ -394,6 +394,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 
 <script>
 /* ── TRANSLATIONS ── */
@@ -690,8 +691,9 @@ async function doWatermark() {
   btn.disabled = true; pw.style.display='block';
   document.getElementById('resultBox').style.display='none';
   try {
-    setProgress(10,'Loading PDF…');
-    const pdf = await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});
+    setProgress(10,'جارٍ تحميل الملف…');
+    /* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */ 
+    const pdf = await DpdfUnlock.load(pdfBytes);
     const pages = pdf.getPages();
     const font = await pdf.embedFont(PDFLib.StandardFonts.HelveticaBold);
     const hex = S.color.replace('#','');
@@ -716,7 +718,7 @@ async function doWatermark() {
       imgH = S.fontSize * 1.4; imgW = imgH * (mc.width / mc.height);
     }
     pages.forEach((page,i) => {
-      setProgress(20+Math.round(i/pages.length*65), 'Page '+(i+1)+'…');
+      setProgress(20+Math.round(i/pages.length*65), 'صفحة '+(i+1)+'…');
       const W = page.getWidth(), H = page.getHeight();
       const fs = S.fontSize;
       /* A see-through watermark makes Acrobat blend the whole page. Without a stated blending colour space it
@@ -736,14 +738,14 @@ async function doWatermark() {
         });
       }
     });
-    setProgress(92,'Saving…');
+    setProgress(92,'جارٍ الحفظ…');
     const out = await pdf.save();
     const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
     const fname = fileName.replace(/\.pdf$/i,'')+'_watermarked.pdf';
     const dl = document.getElementById('dlLink');
     dl.href = url; dl.download = fname;
     document.getElementById('resultBox').style.display='flex';
-    setProgress(100,'Done!');
+    setProgress(100,'تم!');
     setTimeout(()=>{ const a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); document.body.removeChild(a); }, 300);
     toast(tr('T_resultTitle'),'success');
     if(typeof gtag!=='undefined') gtag('event','pdf_watermarked',{event_category:'PDF Tools'});

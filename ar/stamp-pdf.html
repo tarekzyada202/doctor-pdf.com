@@ -306,7 +306,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 <body>
 
 <!-- Ghost cursor shown when placing stamps -->
-<div id="ghost-cursor"><img id="ghost-img" src="" alt=""></div>
+<div id="ghost-cursor"><img id="ghost-img" alt=""></div>
 
 <!-- NAV -->
 <nav>
@@ -348,7 +348,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -376,14 +376,14 @@ html[lang="en"] .priv-cta .ar{display:none}
     <!-- ZOOM TOOLBAR -->
     <div class="viewer-toolbar" id="zoomBar">
       <!-- Toggle thumbnail sidebar -->
-      <button class="zt-btn" onclick="toggleThumbSidebar()" title="Toggle pages panel" id="thumbToggleBtn">☰</button>
+      <button class="zt-btn" onclick="toggleThumbSidebar()" title="إظهار أو إخفاء لوحة الصفحات" id="thumbToggleBtn">☰</button>
       <div class="zt-sep"></div>
       <span class="zt-label" id="T_zoom">تكبير:</span>
       <button class="zt-btn" onclick="zoomOut()">−</button>
-      <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="Click to fit width">100%</span>
+      <span class="zt-pct" id="zoomPct" onclick="zoomFit()" title="اضغط للملاءمة بعرض الصفحة">100%</span>
       <button class="zt-btn" onclick="zoomIn()">+</button>
       <div class="zt-sep"></div>
-      <button class="zt-btn" onclick="zoomFit()" title="Fit to width">↔</button>
+      <button class="zt-btn" onclick="zoomFit()" title="ملاءمة بعرض الصفحة">↔</button>
       <button class="zt-btn" onclick="zoomTo(1)" title="100%">1:1</button>
       <button class="zt-btn" onclick="zoomTo(1.5)" title="150%">1.5×</button>
       <button class="zt-btn" onclick="zoomTo(2)" title="200%">2×</button>
@@ -453,7 +453,7 @@ html[lang="en"] .priv-cta .ar{display:none}
           <div class="uz-main" id="T_imgBtn">اضغط أو اسحب صورة</div>
           <div class="uz-sub" id="T_imgSub">PNG بخلفية شفافة يعطي أفضل نتيجة</div>
         </div>
-        <div class="img-prev-wrap" id="imgPrev"><img id="imgPrevEl" src="" alt="stamp"></div>
+        <div class="img-prev-wrap" id="imgPrev"><img id="imgPrevEl" alt="stamp"></div>
         <div id="bgSection" style="display:none">
           <div class="label" id="T_bgLabel">حساسية إزالة الخلفية</div>
           <div class="slider-row">
@@ -473,7 +473,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <!-- SEC: TEXT -->
       <div id="secText" style="display:none">
         <div class="label" id="T_textLabel">نص الختم</div>
-        <input type="text" class="text-field" id="textInput" placeholder="e.g. APPROVED" maxlength="16" spellcheck="false">
+        <input type="text" class="text-field" id="textInput" placeholder="مثال: معتمد" maxlength="16" spellcheck="false">
         <div class="label" id="T_textColorLabel">اللون</div>
         <div class="color-row" id="colorRowText"></div>
         <div class="label" id="T_textOpLabel">الشفافية</div>
@@ -525,14 +525,14 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-footer">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-txt" id="progressTxt">Processing…</div>
+        <div class="progress-txt" id="progressTxt">جارٍ المعالجة…</div>
       </div>
       <button class="btn-primary" id="applyBtn" disabled onclick="doApply()">
         <span id="T_applyBtn">تطبيق الأختام وتحميل</span>
       </button>
       <div class="result-wrap" id="resultWrap">
         <div class="result-title" id="T_resultTitle">✅ تم تطبيق الأختام!</div>
-        <a class="download-link" id="downloadLink" href="#" download>📥 Download</a>
+        <a class="download-link" id="downloadLink" href="#" download>📥 تحميل</a>
         <button class="again-btn" onclick="resetAll()"><span id="T_again">ختم ملف آخر</span></button>
       </div>
     </div>
@@ -546,7 +546,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
-<script src="/js/pdf-unlock.js?v=20261006a"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 <script>
 /* =====================================================
    STAMP PDF – Doctor PDF
@@ -729,7 +729,7 @@ function wireDropZones() {
 /* LOAD PDF                                           */
 /* ───────────────────────────────────────────────── */
 async function loadPDF(file) {
-  if (!file || file.type !== 'application/pdf') { alert('Please select a valid PDF file.'); return; }
+  if (!file || file.type !== 'application/pdf') { dpToast(dpAr()?'اختر ملف PDF صالح.':'Please select a valid PDF file.','error'); return; }
   S.pdfFile = file;
   S.pages   = [];
   S.undoStack = [];
@@ -755,7 +755,7 @@ async function loadPDF(file) {
     buildThumbnails();
     renderPages();
   } catch (err) {
-    alert('Error reading PDF: ' + err.message);
+    dpToast((dpAr()?'تعذّرت قراءة الملف: ':'Error reading PDF: ') + err.message,'error');
     document.getElementById('emptyState').style.display = 'flex';
     S.pdfFile = null;
   }
@@ -1000,7 +1000,7 @@ function buildCard(pg, pi, cssW) {
   /* label */
   var lbl = document.createElement('div');
   lbl.className   = 'pg-label';
-  lbl.textContent = 'Page ' + (pi + 1);
+  lbl.textContent = (dpAr() ? 'صفحة ' : 'Page ') + (pi + 1);
   card.appendChild(lbl);
 
   /* badge */
@@ -1559,13 +1559,13 @@ function dataUrlToBytes(dataUrl) {
 }
 
 async function doApply() {
-  if (!S.pdfFile) { alert('Please upload a PDF file first.'); return; }
+  if (!S.pdfFile) { dpToast(dpAr()?'ارفع ملف PDF أولاً.':'Please upload a PDF file first.','error'); return; }
   var total = S.pages.reduce(function(n,p){ return n + p.stamps.length; }, 0);
-  if (!total) { alert('Please add at least one stamp first.'); return; }
+  if (!total) { dpToast(dpAr()?'أضف ختماً واحداً على الأقل أولاً.':'Please add at least one stamp first.','error'); return; }
 
   document.getElementById('applyBtn').disabled = true;
   document.getElementById('progressWrap').style.display = 'block';
-  setProgress(5, 'Loading PDF…');
+  setProgress(5, 'جارٍ تحميل الملف…');
 
   try {
     var pdfBytes = await S.pdfFile.arrayBuffer();
@@ -1577,7 +1577,7 @@ async function doApply() {
 
     for (var pi = 0; pi < S.pages.length; pi++) {
       if (!S.pages[pi].stamps.length) continue;
-      setProgress(10 + Math.round(pi / S.pages.length * 82), 'Stamping page ' + (pi+1) + '…');
+      setProgress(10 + Math.round(pi / S.pages.length * 82), 'جارٍ ختم الصفحة ' + (pi+1) + '…');
 
       var pdfPage = pages[pi];
       /* the page as it is shown: its crop box, turned by its rotation */
@@ -1622,7 +1622,7 @@ async function doApply() {
       }
     }
 
-    setProgress(96, 'Saving…');
+    setProgress(96, 'جارٍ الحفظ…');
     var out  = await doc.save();
     var blob = new Blob([out], { type:'application/pdf' });
     var url  = URL.createObjectURL(blob);
@@ -1631,7 +1631,7 @@ async function doApply() {
     var link = document.getElementById('downloadLink');
     link.href = url; link.download = name; link.textContent = '📥 ' + name;
     document.getElementById('resultWrap').style.display = 'block';
-    setProgress(100, 'Done!');
+    setProgress(100, 'تم!');
 
     /* auto-trigger download */
     setTimeout(function(){
@@ -1643,9 +1643,9 @@ async function doApply() {
     if (typeof gtag !== 'undefined') gtag('event','pdf_stamped',{event_category:'PDF Tools',value:total});
 
   } catch(err) {
-    alert(err && err.code === 'locked'
+    dpToast(err && err.code === 'locked'
       ? (S.lang === 'ar' ? 'هذا الملف مقفل ولم نتمكن من فتحه لوضع الختم. افتح قفله أولاً بأداة «فك قفل PDF» ثم أعد المحاولة.' : 'This PDF is locked and could not be opened for stamping. Unlock it first with the Unlock PDF tool, then try again.')
-      : 'Processing error: ' + err.message);
+      : (dpAr()?'خطأ في المعالجة: ':'Processing error: ') + err.message, 'error');
     console.error(err);
   }
 
@@ -1997,6 +1997,11 @@ document.addEventListener("click",function(e){
   else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
   location.href=t+location.search+location.hash;
 },true);
+</script>
+<script>
+/* dpdf-toast: a message that does not block the page (used instead of alert) */
+function dpAr(){return document.documentElement.lang==='ar';}
+function dpToast(msg,type){var t=document.createElement('div');t.setAttribute('role','alert');t.className='dp-toast';t.textContent=msg;t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;max-width:min(92vw,520px);padding:12px 18px;border-radius:10px;font-weight:600;font-size:14px;line-height:1.5;color:#fff;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25);background:'+(type==='error'?'#ef4444':'#22c55e');document.body.appendChild(t);setTimeout(function(){t.style.transition='opacity .3s';t.style.opacity='0';setTimeout(function(){t.remove();},300);},type==='error'?6000:3500);}
 </script>
 </body>
 </html>

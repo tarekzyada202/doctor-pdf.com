@@ -345,7 +345,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -386,7 +386,7 @@ html[lang="en"] .priv-cta .ar{display:none}
         <button class="file-bar-btn" id="changeFileBtn">تغيير</button>
       </div>
       <div class="zoom-bar">
-        <button class="zt-btn" id="thumbToggleBtn" onclick="toggleSidebar()" title="Pages panel">☰</button>
+        <button class="zt-btn" id="thumbToggleBtn" onclick="toggleSidebar()" title="لوحة الصفحات">☰</button>
         <div class="zt-sep"></div>
         <span class="zt-lbl" id="T_zoomLbl">تكبير:</span>
         <button class="zt-btn" onclick="zoomStep(-1)">−</button>
@@ -417,7 +417,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="panel-section">
         <div class="ps-title" id="T_yourSig">توقيعك</div>
         <div class="sig-preview-box" id="sigPreviewBox" onclick="openModal()">
-          <img id="sigPreviewImg" src="" alt="">
+          <img id="sigPreviewImg" alt="">
           <span class="sig-preview-empty" id="sigPreviewEmpty">اضغط للرسم…</span>
           <span class="sig-preview-edit" id="T_clickEdit">✎ تعديل</span>
         </div>
@@ -461,13 +461,13 @@ html[lang="en"] .priv-cta .ar{display:none}
       </button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-lbl" id="progressLbl">Saving…</div>
+        <div class="progress-lbl" id="progressLbl">جارٍ الحفظ…</div>
       </div>
       <button class="save-btn" id="saveBtn" onclick="doSave()">
         <svg viewBox="0 0 18 18" fill="none" width="16"><path d="M9 1v12M5 9l4 4 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M2 15h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span id="T_saveBtn">تحميل PDF الموقّع</span>
       </button>
-      <button class="reset-btn" id="resetBtn" onclick="resetTool()" id="T_again">توقيع ملف آخر</button>
+      <button class="reset-btn" id="resetBtn" onclick="resetTool()"><span id="T_again">توقيع ملف آخر</span></button>
     </div>
   </aside>
 </div>
@@ -516,6 +516,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 <script>
 const LANGS={
   en:{T_tools:'All Tools',T_merge:'Merge PDF',T_split:'Split PDF',T_compress:'Compress PDF',T_rotate:'Rotate PDF',T_sign:'Sign PDF',T_protect:'Protect PDF',T_watermark:'Watermark',T_stamp:'Stamp PDF',T_img2pdf:'Image to PDF',T_pdf2img:'PDF to Image',T_extract:'Extract Text',T_convert:'Convert Image',T_removebg:'Remove BG',T_privacyBadge:'100% Private',T_dropTitle:'Sign PDF File',T_dropSub:'Drop a PDF here, then draw your signature in the popup and place it on any page.',T_browse:'Choose PDF File',T_zoomLbl:'Zoom:',T_clickToPlace:'Click anywhere on a page to place your signature',T_cancelPlace:'Cancel',T_yourSig:'Your Signature',T_clickEdit:'✎ Edit',T_settingsTitle:'Signature Settings',T_szLbl:'Size',T_opLbl:'Opacity',T_applyAll:'↻ Apply to all pages',T_hint:'Draw your signature, then place it on any page. Drag to reposition, drag corner to resize.',T_privacy:'All processing in your browser. No files are ever uploaded.',T_pages:'Pages',T_drawBtn:'Draw Signature',T_saveBtn:'Download Signed PDF',T_modalTitle:'Draw Your Signature',T_modalHint:'Sign here…',T_szThin:'Thin',T_szNorm:'Normal',T_szThick:'Thick',T_clearSig:'Clear',T_modalCancel:'Cancel',T_placeBtn:'Place Signature →',T_dropHere:'Drop PDF here',T_again:'Sign another file',changeFileBtn:'Change',sigPreviewEmpty:'Click to draw…',resetSigsBtn:'🗑 Remove all signatures',langLabel:'AR',A_h2:"What does signing a PDF online mean?",A_p1:"Signing a PDF electronically means adding your handwritten signature, initials, or a typed name onto the document as a visual mark — exactly where a paper signature would go. It lets you complete contracts, agreements, consent forms, and official paperwork without printing, signing by hand, and scanning the page back in. The result is a normal PDF that anyone can open and that keeps your signature fixed in place.",A_p2:"With Doctor PDF you draw your signature with a mouse or finger, place it anywhere on any page, then drag and resize it until it looks right. You can sign a single page or stamp the same signature across every page of a multi-page document.",A_useH:"When is an electronic PDF signature useful?",A_u1:"Signing rental, employment, or freelance contracts sent to you by email.",A_u2:"Approving invoices, quotations, and purchase orders quickly.",A_u3:"Completing bank, school, or government consent and authorization forms.",A_u4:"Signing NDAs and agreements when you don't have a printer or scanner.",A_u5:"Adding your initials to several pages of a long document at once.",A_howH:"How Doctor PDF keeps your signed documents private",A_hp1:"Your signature and your document are among the most sensitive things you handle, so Doctor PDF never uploads them. Drawing the signature and embedding it into the PDF both happen entirely inside your browser, on your own device — nothing is sent to any server, and no copy of your signed contract is stored anywhere online.",A_hp2:"Because everything is processed locally, signing is instant, works without an internet connection once the page has loaded, and has no limit on how many documents you can sign per day.",W_h2:"Why is Doctor PDF better than iLovePDF and Smallpdf?",W_lead:"Tired of ads, file limits, and uploading your documents to a stranger's server? Doctor PDF is built differently:",W1:"No annoying ads — ever",W2:"No daily limits — Smallpdf allows only 2 tasks/day, Sejda 3 per hour",W3:"100% private — competitors upload your files to their servers; Doctor PDF never does",W4:"Completely free — no watermarks, no sign-up, no hidden charges",W5:"Instant — runs right in your browser",F_h2:"How to sign a PDF online",F_s1:"Open the Sign PDF tool and drop your PDF into the page.",F_s2:"Draw your signature, then place it anywhere on the page.",F_s3:"Drag and resize the signature until it looks right — add it to more pages if needed.",F_s4:"Download your signed PDF instantly — your document never leaves your device.",F_faqH:"Frequently asked questions",F_q1:"Is signing PDF free?",F_a1:"Yes. Doctor PDF lets you sign PDFs 100% free with no limits, watermarks, or sign-up.",F_q2:"Is an electronic signature legal?",F_a2:"A drawn electronic signature is widely accepted for most everyday documents. For legal certainty, check your local rules.",F_q3:"Can I sign on multiple pages?",F_a3:"Yes. Place your signature on any page, and reuse it across pages.",F_q4:"Are my files private?",F_a4:"Yes. Everything runs locally in your browser — your files are never uploaded to any server.",F_q5:"Does it work on mobile?",F_a5:"Yes, on any modern browser — phone, tablet, or computer."},
@@ -819,8 +820,9 @@ async function doSave(){
   const btn=document.getElementById('saveBtn');btn.disabled=true;
   document.getElementById('progressWrap').style.display='block';
   try{
-    setProgress(10,'Loading…');
-    const pdf=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});const pages=pdf.getPages();
+    setProgress(10,'جارٍ التحميل…');
+    /* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */ 
+    const pdf=await DpdfUnlock.load(pdfBytes);const pages=pdf.getPages();
     for(let pi=0;pi<pdfPages.length;pi++){
       /* A picture with transparency makes Acrobat blend the whole page. Without a stated blending colour space it
          uses its own, and every colour on the page turns pale. Saying "blend in RGB" keeps the page as it was. */
@@ -835,10 +837,10 @@ async function doSave(){
         pg.drawImage(img,{x:pw*sig.xPct,y:ph-(ph*sig.yPct)-sh,width:sw,height:sh,opacity:sig.opacity});
       }
     }
-    setProgress(85,'Saving…');const out=await pdf.save();
+    setProgress(85,'جارٍ الحفظ…');const out=await pdf.save();
     const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
     const fname=pdfFile.name.replace(/\.pdf$/i,'')+'_signed.pdf';
-    setProgress(100,'Done!');
+    setProgress(100,'تم!');
     setTimeout(()=>{const a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);},300);
     showToast(lang==='ar'?'✅ تم التوقيع وتحميل الملف':'✅ Signed PDF downloaded!','success');
     if(typeof gtag!=='undefined')gtag('event','pdf_signed',{event_category:'PDF Tools'});

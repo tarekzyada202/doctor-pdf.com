@@ -343,7 +343,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">100% Private</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="Toggle dark mode">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -493,6 +493,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 
 <script>
 const LANGS = {
@@ -784,15 +785,17 @@ function deleteSelected() {
   updateSelectionUI();
 }
 
+/* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */
+/* All pages in ONE copy call. Copying page by page writes the fonts and pictures the pages share once per page:
+   a 1.06 MB six-page contract came out as 1.80 MB (measured 2026-10-09). */
+async function copyInto(doc, src, indices) { const ps = await doc.copyPages(src, indices); ps.forEach(function(p){ doc.addPage(p); }); }
+
 async function extractSelected() {
   if(!S.pdfBytes||!S.selected.size) return;
   const pages = Array.from(S.selected).sort((a,b)=>a-b);
-  const src = await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+  const src = await DpdfUnlock.load(S.pdfBytes);
   const doc = await PDFLib.PDFDocument.create();
-  for(const pi of pages) {
-    const [pg] = await doc.copyPages(src,[pi]);
-    doc.addPage(pg);
-  }
+  await copyInto(doc, src, pages);
   const out = await doc.save();
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
@@ -1086,7 +1089,7 @@ function toggleDelete(i) {
 
 async function extractSinglePage(i) {
   if(!S.pdfBytes) return;
-  const src=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+  const src=await DpdfUnlock.load(S.pdfBytes);
   const doc=await PDFLib.PDFDocument.create();
   const [pg]=await doc.copyPages(src,[i]); doc.addPage(pg);
   const out=await doc.save();
@@ -1133,16 +1136,14 @@ async function doSplit() {
 
   try {
     const baseName=S.file.name.replace(/\.pdf$/i,'');
-    const srcDoc=await PDFLib.PDFDocument.load(S.pdfBytes,{ignoreEncryption:true});
+    const srcDoc=await DpdfUnlock.load(S.pdfBytes);
 
     // ── FIX: إذا في صفحات محددة → استخرجها فقط ──
     if(S.selected.size > 0) {
       const pages = Array.from(S.selected).sort((a,b)=>a-b);
       setProgress(30,'Extracting selected pages…');
       const doc = await PDFLib.PDFDocument.create();
-      for(const pi of pages){
-        const [pg]=await doc.copyPages(srcDoc,[pi]); doc.addPage(pg);
-      }
+      await copyInto(doc, srcDoc, pages);
       const out = await doc.save();
       const url = URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
       const fname = baseName+'_selected.pdf';
@@ -1181,7 +1182,7 @@ async function doSplit() {
       const to=Math.min(S.pageCount,parseInt(document.getElementById('rangeTo').value)||S.pageCount)-1;
       setProgress(50,'Extracting…');
       const doc=await PDFLib.PDFDocument.create();
-      for(let k=from;k<=to;k++){ const [pg]=await doc.copyPages(srcDoc,[k]); doc.addPage(pg); }
+      { const idx=[]; for(let k=from;k<=to;k++) idx.push(k); await copyInto(doc, srcDoc, idx); }
       const out=await doc.save();
       const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
       const fname=baseName+'_pages'+(from+1)+'to'+(to+1)+'.pdf';
@@ -1194,10 +1195,8 @@ async function doSplit() {
       const groups=buildGroups(activePages);
       if(groups.length===1&&S.deleted.size===0) {
         const doc=await PDFLib.PDFDocument.create();
-        for(let n=0;n<activePages.length;n++){
-          setProgress(10+Math.round(n/activePages.length*85),'Page '+(n+1)+'…');
-          const [pg]=await doc.copyPages(srcDoc,[activePages[n]]); doc.addPage(pg);
-        }
+        setProgress(50,'Extracting…');
+        await copyInto(doc, srcDoc, activePages);
         const out=await doc.save();
         const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
         const fname=baseName+'_split.pdf';
@@ -1209,7 +1208,7 @@ async function doSplit() {
         for(let g=0;g<groups.length;g++){
           setProgress(10+Math.round(g/groups.length*85),'Group '+(g+1)+'…');
           const doc=await PDFLib.PDFDocument.create();
-          for(let m=0;m<groups[g].length;m++){ const [pg]=await doc.copyPages(srcDoc,[groups[g][m]]); doc.addPage(pg); }
+          await copyInto(doc, srcDoc, groups[g]);
           const out=await doc.save();
           const a=document.createElement('a');
           a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));

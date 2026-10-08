@@ -287,11 +287,11 @@ html[lang="en"] .priv-cta .ar{display:none}
   <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
 
   <!-- Privacy badge -->
-  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+  <div class="nav-privacy" title="كل المعالجة تتم داخل متصفحك — ملفاتك لا تغادر جهازك.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -381,14 +381,14 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="panel-section-title" id="T_bgReplaceTitle">استبدال الخلفية</div>
       <div class="field-label" id="T_bgColorLabel">لون الاستبدال</div>
       <div class="bg-colors">
-        <button class="bg-color-btn active" data-color="transparent" style="background:transparent;background-image:var(--checker);background-size:8px 8px" title="Transparent"></button>
-        <button class="bg-color-btn" data-color="#ffffff" style="background:#ffffff" title="White"></button>
-        <button class="bg-color-btn" data-color="#000000" style="background:#000000" title="Black"></button>
-        <button class="bg-color-btn" data-color="#6366f1" style="background:#6366f1" title="Purple"></button>
-        <button class="bg-color-btn" data-color="#22c55e" style="background:#22c55e" title="Green"></button>
-        <button class="bg-color-btn" data-color="#ef4444" style="background:#ef4444" title="Red"></button>
-        <button class="bg-color-btn" data-color="#f59e0b" style="background:#f59e0b" title="Yellow"></button>
-        <div class="bg-color-custom" title="Custom color" style="background:linear-gradient(135deg,#f0f,#0ff,#ff0)">
+        <button class="bg-color-btn active" data-color="transparent" style="background:transparent;background-image:var(--checker);background-size:8px 8px" title="شفاف"></button>
+        <button class="bg-color-btn" data-color="#ffffff" style="background:#ffffff" title="أبيض"></button>
+        <button class="bg-color-btn" data-color="#000000" style="background:#000000" title="أسود"></button>
+        <button class="bg-color-btn" data-color="#6366f1" style="background:#6366f1" title="بنفسجي"></button>
+        <button class="bg-color-btn" data-color="#22c55e" style="background:#22c55e" title="أخضر"></button>
+        <button class="bg-color-btn" data-color="#ef4444" style="background:#ef4444" title="أحمر"></button>
+        <button class="bg-color-btn" data-color="#f59e0b" style="background:#f59e0b" title="أصفر"></button>
+        <div class="bg-color-custom" title="لون مخصص" style="background:linear-gradient(135deg,#f0f,#0ff,#ff0)">
           <input type="color" id="customColorPicker" value="#3b82f6">
         </div>
       </div>

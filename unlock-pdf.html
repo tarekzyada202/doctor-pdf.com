@@ -227,7 +227,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">100% Private</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="Toggle dark mode">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -318,7 +318,7 @@ var S={file:null};
 var lang=localStorage.getItem('dpdf_lang')||((navigator.language||'').slice(0,2)==='ar'?'ar':'en');
 
 function loadFile(f){
-  if(!f||(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))){alert(lang==='ar'?'اختر ملف PDF صالح.':'Please select a valid PDF file.');return;}
+  if(!f||(f.type!=='application/pdf'&&!f.name.toLowerCase().endsWith('.pdf'))){dpToast(lang==='ar'?'اختر ملف PDF صالح.':'Please select a valid PDF file.','error');return;}
   S.file=f;
   document.getElementById('emptyState').style.display='none';
   document.getElementById('readyCard').style.display='flex';
@@ -554,6 +554,11 @@ document.addEventListener("click",function(e){
   else{t=(p==="/"||p==="")?"/ar/":"/ar"+p;}
   location.href=t+location.search+location.hash;
 },true);
+</script>
+<script>
+/* dpdf-toast: a message that does not block the page (used instead of alert) */
+function dpAr(){return document.documentElement.lang==='ar';}
+function dpToast(msg,type){var t=document.createElement('div');t.setAttribute('role','alert');t.className='dp-toast';t.textContent=msg;t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;max-width:min(92vw,520px);padding:12px 18px;border-radius:10px;font-weight:600;font-size:14px;line-height:1.5;color:#fff;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25);background:'+(type==='error'?'#ef4444':'#22c55e');document.body.appendChild(t);setTimeout(function(){t.style.transition='opacity .3s';t.style.opacity='0';setTimeout(function(){t.remove();},300);},type==='error'?6000:3500);}
 </script>
 </body>
 </html>

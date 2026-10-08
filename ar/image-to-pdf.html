@@ -262,11 +262,11 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 
   <!-- Privacy badge -->
-  <div class="nav-privacy" title="All processing happens in your browser — files never leave your device.">
+  <div class="nav-privacy" title="كل المعالجة تتم داخل متصفحك — ملفاتك لا تغادر جهازك.">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn" title="Toggle theme">
+  <button class="nav-btn" id="themeBtn" title="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14" height="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" height="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -302,7 +302,7 @@ html[lang="en"] .priv-cta .ar{display:none}
         <span class="fmt-badge">ICO</span>
         <span class="fmt-badge">JXL</span>
       </div>
-      <button class="browse-btn" id="browseBtn" id="T_browse">اختر الصور</button>
+      <button class="browse-btn" id="browseBtn"><span id="T_browse">اختر الصور</span></button>
     </div>
 
     <!-- Thumbnails -->
@@ -335,12 +335,12 @@ html[lang="en"] .priv-cta .ar{display:none}
         <label class="field-label" id="T_pageSizeLabel">حجم الصفحة</label>
         <div class="select-wrap">
           <select id="pageSizeSelect">
-            <option value="A4">A4 (210 × 297 mm)</option>
-            <option value="Letter">Letter (8.5 × 11 in)</option>
-            <option value="A3">A3 (297 × 420 mm)</option>
-            <option value="A5">A5 (148 × 210 mm)</option>
-            <option value="Legal">Legal (8.5 × 14 in)</option>
-            <option value="img">Same as image</option>
+            <option value="A4">A4 (210 × 297 مم)</option>
+            <option value="Letter">Letter (8.5 × 11 بوصة)</option>
+            <option value="A3">A3 (297 × 420 مم)</option>
+            <option value="A5">A5 (148 × 210 مم)</option>
+            <option value="Legal">Legal (8.5 × 14 بوصة)</option>
+            <option value="img">نفس مقاس الصورة</option>
           </select>
         </div>
       </div>
@@ -363,7 +363,7 @@ html[lang="en"] .priv-cta .ar{display:none}
         <button class="fit-btn" data-fit="fill" id="T_fitFill">تعبئة</button>
         <button class="fit-btn" data-fit="stretch" id="T_fitStretch">تمديد</button>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="fitHint">Image fits inside the page, maintaining aspect ratio</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3)" id="fitHint">تُلائم الصورة الصفحة مع الحفاظ على نسبة الأبعاد</div>
     </div>
 
     <div class="panel-section">
@@ -392,7 +392,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       <div class="panel-section-title" id="T_outputLabel">الملف الناتج</div>
       <div class="field">
         <label class="field-label" id="T_filenameLabel">اسم الملف</label>
-        <input type="text" id="filenameInput" value="images-converted" style="width:100%;height:36px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:13px;outline:none" placeholder="filename">
+        <input type="text" id="filenameInput" value="images-converted" style="width:100%;height:36px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);color:var(--text);font-size:13px;outline:none" placeholder="اسم الملف">
       </div>
       <div class="info-box">
         <svg viewBox="0 0 14 14" fill="none" width="14" height="14" style="flex-shrink:0;margin-top:1px"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 6v4M7 4.5v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -411,7 +411,7 @@ html[lang="en"] .priv-cta .ar{display:none}
       </button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-label" id="progressLabel">Processing...</div>
+        <div class="progress-label" id="progressLabel">جارٍ المعالجة...</div>
       </div>
     </div>
   </aside>
@@ -696,13 +696,13 @@ function renderThumbs() {
       <div class="thumb-num">${idx + 1}</div>
       <div class="thumb-name">${img.name}</div>
       <div class="thumb-overlay">
-        <button class="thumb-btn" title="Move up" data-action="up" data-id="${img.id}">
+        <button class="thumb-btn" title="تحريك لأعلى" data-action="up" data-id="${img.id}">
           <svg viewBox="0 0 14 14" fill="none" width="14"><path d="M7 11V3M4 6l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </button>
-        <button class="thumb-btn" title="Remove" data-action="remove" data-id="${img.id}" style="background:rgba(239,68,68,.9);color:#fff">
+        <button class="thumb-btn" title="حذف" data-action="remove" data-id="${img.id}" style="background:rgba(239,68,68,.9);color:#fff">
           <svg viewBox="0 0 14 14" fill="none" width="14"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </button>
-        <button class="thumb-btn" title="Move down" data-action="down" data-id="${img.id}">
+        <button class="thumb-btn" title="تحريك لأسفل" data-action="down" data-id="${img.id}">
           <svg viewBox="0 0 14 14" fill="none" width="14"><path d="M7 3v8M4 8l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </button>
       </div>

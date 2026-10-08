@@ -279,11 +279,11 @@ html[lang="en"] .priv-cta .ar{display:none}
   </div>
   <div class="nav-sep"></div>
   <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
-  <div class="nav-privacy" title="All processing in your browser — files never leave your device">
+  <div class="nav-privacy" title="كل المعالجة داخل متصفحك — ملفاتك لا تغادر جهازك">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
     <span id="T_privacyBadge">خصوصية 100%</span>
   </div>
-  <button class="nav-btn" id="themeBtn">
+  <button class="nav-btn" id="themeBtn" aria-label="تبديل الوضع الليلي">
     <svg id="iconSun" viewBox="0 0 16 16" fill="none" width="14"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <svg id="iconMoon" viewBox="0 0 16 16" fill="none" width="14" style="display:none"><path d="M13 9.5A5.5 5.5 0 016.5 3c0-.5.1-1 .2-1.5A6.5 6.5 0 1014 10c-.2 0-.5-.1-.7-.1.2.3.5.9.7 1.5z" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
@@ -417,7 +417,7 @@ html[lang="en"] .priv-cta .ar{display:none}
     <div class="panel-footer">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-label" id="progressLabel">Processing…</div>
+        <div class="progress-label" id="progressLabel">جارٍ المعالجة…</div>
       </div>
       <button class="compress-btn" id="compressBtn" disabled>
         <svg viewBox="0 0 18 18" fill="none" width="18"><path d="M9 3v9M6 9l3 3 3-3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><path d="M3 14h12" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -443,6 +443,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
 
 <script>
 // ══════════════════════════════════════════
@@ -689,24 +690,25 @@ async function compressPDF() {
   const origSize = uploadedFile.size;
 
   try {
-    setProgress(10, 'Analysing PDF…');
+    setProgress(10, 'جارٍ تحليل الملف…');
 
     // ── STRATEGY 1: pdf-lib structure compression ──
-    const pdfDoc = await PDFLib.PDFDocument.load(origBytes, { ignoreEncryption:true });
+    /* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */ 
+    const pdfDoc = await DpdfUnlock.load(origBytes);
     pdfDoc.setTitle('');pdfDoc.setAuthor('');pdfDoc.setSubject('');
     pdfDoc.setKeywords([]);pdfDoc.setProducer('Doctor PDF');pdfDoc.setCreator('Doctor PDF');
-    setProgress(30, 'Compressing structure…');
+    setProgress(30, 'جارٍ ضغط بنية الملف…');
     const strategy1 = await pdfDoc.save({ useObjectStreams:true, addDefaultPage:false });
 
     // ── STRATEGY 2: image recompression — re-encode oversized JPEG images smaller, KEEP text/vectors ──
-    setProgress(45, 'Recompressing images…');
+    setProgress(45, 'جارٍ إعادة ضغط الصور…');
     const N = s => PDFLib.PDFName.of(s);
-    const imgDoc = await PDFLib.PDFDocument.load(origBytes, { ignoreEncryption:true });
+    const imgDoc = await DpdfUnlock.load(origBytes);
     imgDoc.setTitle('');imgDoc.setAuthor('');imgDoc.setSubject('');imgDoc.setKeywords([]);imgDoc.setProducer('Doctor PDF');imgDoc.setCreator('Doctor PDF');
     const maxDim = imgMaxDim[currentLevel], iq = imgQuality[currentLevel];
     const objs = imgDoc.context.enumerateIndirectObjects();
     for (let oi=0; oi<objs.length; oi++) {
-      if (oi % 3 === 0) setProgress(45 + Math.round((oi/objs.length)*20), 'Recompressing images…');
+      if (oi % 3 === 0) setProgress(45 + Math.round((oi/objs.length)*20), 'جارٍ إعادة ضغط الصور…');
       const ref = objs[oi][0], obj = objs[oi][1];
       if (!(obj instanceof PDFLib.PDFRawStream)) continue;
       const d = obj.dict; const st = d.get(N('Subtype')); if (!st || st.toString() !== '/Image') continue;
@@ -732,7 +734,7 @@ async function compressPDF() {
     // ── STRATEGY 4: qpdf on top of strategy 2 — also recompresses non-JPEG (Flate/Indexed) images, KEEPS text ──
     let strategy4 = null;
     try {
-      setProgress(62, 'Optimising images…');
+      setProgress(62, 'جارٍ تحسين الصور…');
       const pageCount = imgDoc.getPageCount();
       let q4 = await qpdfOptimize(strategy2, qpdfJpegQ[currentLevel]);
       if (!q4) q4 = await qpdfOptimize(new Uint8Array(origBytes), qpdfJpegQ[currentLevel]);
@@ -748,12 +750,12 @@ async function compressPDF() {
     const keepTextEl = document.getElementById('keepText');
     const keepText = keepTextEl ? keepTextEl.checked : false;
     if (!keepText) {
-      setProgress(66, 'Optimising pages…');
+      setProgress(66, 'جارٍ تحسين الصفحات…');
       const pdfJs = await pdfjsLib.getDocument({isEvalSupported:false,  data: origBytes.slice(0) }).promise;
       const total = pdfJs.numPages;
       const rPdf = await PDFLib.PDFDocument.create();
       for(let i=1; i<=total; i++) {
-        setProgress(66 + Math.round((i/total)*28), `Page ${i} / ${total}…`);
+        setProgress(66 + Math.round((i/total)*28), `صفحة ${i} / ${total}…`);
         const page = await pdfJs.getPage(i);
         const vp0 = page.getViewport({ scale:1 });
         const vp  = page.getViewport({ scale:renderScale });
@@ -775,7 +777,7 @@ async function compressPDF() {
       strategy3 = await rPdf.save({ useObjectStreams:true });
     }
 
-    setProgress(95, 'Choosing best result…');
+    setProgress(95, 'جارٍ اختيار أفضل نتيجة…');
 
     // ── PICK SMALLEST ──
     const candidates = [
@@ -790,7 +792,7 @@ async function compressPDF() {
     const winner = candidates[0];
     const saved  = Math.max(0, Math.round((1 - winner.size/origSize)*100));
 
-    setProgress(100, 'Done!');
+    setProgress(100, 'تم!');
 
     // Stats
     document.getElementById('statComp').textContent = formatSize(winner.size);

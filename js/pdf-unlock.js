@@ -44,7 +44,7 @@
     return false;
   }
 
-  function locked() { var e = new Error('This PDF is locked and could not be opened for editing'); e.code = 'locked'; return e; }
+  function locked() { var e = new Error(document.documentElement.lang === 'ar' ? 'هذا الملف مقفل ولم نتمكن من فتحه للتعديل. افتح قفله أولاً بأداة «فك قفل PDF».' : 'This PDF is locked and could not be opened for editing. Unlock it first with the Unlock PDF tool.'); e.code = 'locked'; return e; }
 
   /* the same file, decrypted. Throws (code 'locked') when qpdf cannot do it. */
   async function decrypt(bytes) {

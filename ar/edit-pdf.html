@@ -242,18 +242,18 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
   <div class="nav-sep"></div>
   <a class="nav-forms" href="forms/"><span id="T_formsNav">النماذج</span></a>
   <div class="nav-privacy"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1l4 1.5v3C10 8.5 6 11 6 11S2 8.5 2 5.5v-3L6 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="T_privacyBadge">خصوصية 100%</span></div>
-  <button class="nav-btn" id="themeBtn" title="Theme"><svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg><svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
-  <button class="nav-btn" id="langBtn"><span id="langLabel">AR</span></button>
+  <button class="nav-btn" id="themeBtn" title="تبديل الوضع الليلي"><svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round"/></svg><svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+  <button class="nav-btn" id="langBtn"><span id="langLabel">EN</span></button>
   <div class="tools-dd">
     <button class="nav-btn" id="toolsBtn"><span id="T_allTools">الأدوات</span> ▾</button>
     <div class="tools-menu" id="toolsMenu">
       <a href="forms/"><span id="T_forms">النماذج الرسمية</span></a>
-      <a href="merge-pdf.html">Merge PDF</a><a href="split-pdf.html">Split PDF</a><a href="compress-pdf.html">Compress PDF</a>
-      <a href="rotate-pdf.html">Rotate PDF</a><a href="sign-pdf.html">Sign PDF</a><a href="protect-pdf.html">Protect PDF</a>
-      <a href="watermark-pdf.html">Watermark</a><a href="stamp-pdf.html">Stamp PDF</a><a href="image-to-pdf.html">Image to PDF</a>
-      <a href="pdf-to-image.html">PDF to Image</a><a href="extract-text.html">Extract Text</a><a href="convert-image.html">Convert Image</a>
-      <a href="remove-background.html">Remove BG</a><a href="ocr.html">OCR</a>
-      <a href="pdf-to-word.html">PDF to Word</a><a href="unlock-pdf.html">Unlock PDF</a>
+      <a href="merge-pdf.html">دمج PDF</a><a href="split-pdf.html">تقسيم PDF</a><a href="compress-pdf.html">ضغط PDF</a>
+      <a href="rotate-pdf.html">تدوير PDF</a><a href="sign-pdf.html">توقيع PDF</a><a href="protect-pdf.html">حماية PDF</a>
+      <a href="watermark-pdf.html">علامة مائية</a><a href="stamp-pdf.html">ختم PDF</a><a href="image-to-pdf.html">صورة إلى PDF</a>
+      <a href="pdf-to-image.html">PDF إلى صورة</a><a href="extract-text.html">استخراج النص</a><a href="convert-image.html">تحويل الصور</a>
+      <a href="remove-background.html">إزالة الخلفية</a><a href="ocr.html">OCR</a>
+      <a href="pdf-to-word.html">PDF إلى Word</a><a href="unlock-pdf.html">فك قفل PDF</a>
     </div>
   </div>
 </nav>
@@ -271,26 +271,26 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
         <span class="zpct" id="zoomPct">100%</span>
         <button class="z-btn" id="zoomIn">+</button>
         <div class="vsep"></div>
-        <button class="z-btn" id="undoBtn" title="Undo">↶</button>
-        <button class="z-btn" id="redoBtn" title="Redo">↷</button>
+        <button class="z-btn" id="undoBtn" title="تراجع">↶</button>
+        <button class="z-btn" id="redoBtn" title="إعادة">↷</button>
         <div class="vsep"></div>
-        <button class="z-btn" id="delBtn" title="Delete selected" style="color:var(--danger)">🗑</button>
+        <button class="z-btn" id="delBtn" title="حذف المحدد" style="color:var(--danger)">🗑</button>
         <div class="vsep"></div>
-        <button class="z-btn" id="frontBtn" title="Bring to front">⤒</button>
-        <button class="z-btn" id="backBtn" title="Send to back">⤓</button>
+        <button class="z-btn" id="frontBtn" title="إحضار للأمام">⤒</button>
+        <button class="z-btn" id="backBtn" title="إرسال للخلف">⤓</button>
       </div>
       <div class="text-bar" id="textBar" style="display:none">
-        <select id="tbFamily" class="tb-ctrl tb-select" title="Font family"><option value="sans">Sans</option><option value="serif">Serif</option><option value="mono">Mono</option></select>
+        <select id="tbFamily" class="tb-ctrl tb-select" title="نوع الخط"><option value="sans">عادي (Sans)</option><option value="serif">بزوائد (Serif)</option><option value="mono">ثابت العرض (Mono)</option></select>
         <span class="tb-sep"></span>
         <div class="tb-seg">
-          <button class="tb-ctrl tb-bi" id="tbBold" style="font-weight:800" title="Bold">B</button>
-          <button class="tb-ctrl tb-bi" id="tbItalic" style="font-style:italic;font-family:Georgia,serif" title="Italic">I</button>
-          <button class="tb-ctrl tb-bi" id="tbUnderline" style="text-decoration:underline" title="Underline">U</button>
+          <button class="tb-ctrl tb-bi" id="tbBold" style="font-weight:800" title="غامق">B</button>
+          <button class="tb-ctrl tb-bi" id="tbItalic" style="font-style:italic;font-family:Georgia,serif" title="مائل">I</button>
+          <button class="tb-ctrl tb-bi" id="tbUnderline" style="text-decoration:underline" title="تسطير">U</button>
         </div>
         <div class="tb-seg">
-          <button class="tb-ctrl tb-ico" id="tbAlignL" title="Align left"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="2.5" y1="8" x2="9.5" y2="8"/><line x1="2.5" y1="12" x2="12" y2="12"/></svg></button>
-          <button class="tb-ctrl tb-ico" id="tbAlignC" title="Align center"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="4.5" y1="8" x2="11.5" y2="8"/><line x1="3.5" y1="12" x2="12.5" y2="12"/></svg></button>
-          <button class="tb-ctrl tb-ico" id="tbAlignR" title="Align right"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="6.5" y1="8" x2="13.5" y2="8"/><line x1="4" y1="12" x2="13.5" y2="12"/></svg></button>
+          <button class="tb-ctrl tb-ico" id="tbAlignL" title="محاذاة لليسار"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="2.5" y1="8" x2="9.5" y2="8"/><line x1="2.5" y1="12" x2="12" y2="12"/></svg></button>
+          <button class="tb-ctrl tb-ico" id="tbAlignC" title="توسيط"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="4.5" y1="8" x2="11.5" y2="8"/><line x1="3.5" y1="12" x2="12.5" y2="12"/></svg></button>
+          <button class="tb-ctrl tb-ico" id="tbAlignR" title="محاذاة لليمين"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="2.5" y1="4" x2="13.5" y2="4"/><line x1="6.5" y1="8" x2="13.5" y2="8"/><line x1="4" y1="12" x2="13.5" y2="12"/></svg></button>
         </div>
         <span class="tb-sep"></span>
         <div class="tb-size">
@@ -302,33 +302,33 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
         <span class="tb-presets"><button class="tb-ps" data-sz="12">12</button><button class="tb-ps" data-sz="14">14</button><button class="tb-ps" data-sz="18">18</button><button class="tb-ps" data-sz="24">24</button><button class="tb-ps" data-sz="36">36</button></span>
         <span class="tb-sep"></span>
         <div class="tb-sw-wrap" id="tbSwatches"></div>
-        <input type="color" id="tbColorPick" class="tb-color" value="#ef4444" title="Custom color">
+        <input type="color" id="tbColorPick" class="tb-color" value="#ef4444" title="لون مخصص">
         <span class="tb-sep"></span>
-        <button class="tb-ctrl tb-ico" id="tbCopyFmt" title="Copy format"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg></button>
+        <button class="tb-ctrl tb-ico" id="tbCopyFmt" title="نسخ التنسيق"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg></button>
       </div>
       <div class="text-bar" id="drawBar" style="display:none">
-        <span class="tb-a" title="Stroke width" style="display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4-1L19 8l-3-3L4 17l-1 4z"/></svg></span>
+        <span class="tb-a" title="سُمك الخط" style="display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4-1L19 8l-3-3L4 17l-1 4z"/></svg></span>
         <input type="range" id="dbSize" min="1" max="30" value="3" class="tb-range">
         <input type="number" id="dbSizeNum" min="1" max="50" value="3" class="tb-num">
         <span class="tb-sep"></span>
         <div class="tb-sw-wrap" id="dbSwatches"></div>
-        <input type="color" id="dbColorPick" class="tb-color" value="#ef4444" title="Custom color">
+        <input type="color" id="dbColorPick" class="tb-color" value="#ef4444" title="لون مخصص">
       </div>
       <div class="text-bar" id="symBar" style="display:none">
         <div class="tb-seg" id="symBtns">
-          <button class="tb-ctrl tb-ico active" data-sym="check" title="Check ✓"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 6L20 5"/></svg></button>
-          <button class="tb-ctrl tb-ico" data-sym="cross" title="Cross / X ✗"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
-          <button class="tb-ctrl tb-ico" data-sym="dot" title="Dot ●"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></button>
-          <button class="tb-ctrl tb-ico" data-sym="circle" title="Circle ○"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8"/></svg></button>
-          <button class="tb-ctrl tb-ico" data-sym="square" title="Filled square ■"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="5" y="5" width="14" height="14" rx="1.5" fill="currentColor"/></svg></button>
-          <button class="tb-ctrl tb-ico" data-sym="squareO" title="Square outline ▢"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg></button>
+          <button class="tb-ctrl tb-ico active" data-sym="check" title="علامة صح ✓"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 6L20 5"/></svg></button>
+          <button class="tb-ctrl tb-ico" data-sym="cross" title="علامة خطأ ✗"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+          <button class="tb-ctrl tb-ico" data-sym="dot" title="نقطة ●"><svg viewBox="0 0 24 24" width="15" height="15"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg></button>
+          <button class="tb-ctrl tb-ico" data-sym="circle" title="دائرة ○"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="8"/></svg></button>
+          <button class="tb-ctrl tb-ico" data-sym="square" title="مربع مصمت ■"><svg viewBox="0 0 24 24" width="15" height="15"><rect x="5" y="5" width="14" height="14" rx="1.5" fill="currentColor"/></svg></button>
+          <button class="tb-ctrl tb-ico" data-sym="squareO" title="مربع مفرّغ ▢"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg></button>
         </div>
         <span class="tb-sep"></span>
         <input type="range" id="smSize" min="8" max="120" value="28" class="tb-range">
         <input type="number" id="smSizeNum" min="8" max="200" value="28" class="tb-num">
         <span class="tb-sep"></span>
         <div class="tb-sw-wrap" id="smSwatches"></div>
-        <input type="color" id="smColorPick" class="tb-color" value="#16a34a" title="Custom color">
+        <input type="color" id="smColorPick" class="tb-color" value="#16a34a" title="لون مخصص">
       </div>
       <div class="viewer-body">
         <div class="thumb-sidebar open" id="thumbSidebar">
@@ -375,9 +375,9 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
       <div class="row" id="rowFamily" style="display:none">
         <label id="T_family">نوع الخط</label>
         <select id="familySel">
-          <option value="sans">Sans</option>
-          <option value="serif">Serif</option>
-          <option value="mono">Mono</option>
+          <option value="sans">عادي (Sans)</option>
+          <option value="serif">بزوائد (Serif)</option>
+          <option value="mono">ثابت العرض (Mono)</option>
         </select>
       </div>
       <div class="row" id="rowStyle" style="display:none">
@@ -389,7 +389,7 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
     <div class="psec">
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-lbl" id="progressLbl">Saving…</div>
+        <div class="progress-lbl" id="progressLbl">جارٍ الحفظ…</div>
       </div>
       <label style="display:flex;align-items:flex-start;gap:7px;font-size:11.5px;line-height:1.4;color:var(--text2);margin:0 0 10px;cursor:pointer"><input type="checkbox" id="secureRemove" style="width:15px;height:15px;margin-top:1px;cursor:pointer;flex-shrink:0"><span id="T_secure">إزالة آمنة للنص المغطّى/المحجوب (تُسطّح الصفحات المعدّلة)</span></label>
       <button class="btn-primary" id="saveBtn" disabled><span id="T_save">تحميل الملف المعدّل</span></button>
@@ -442,6 +442,8 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
+<script src="/js/pdf-unlock.js?v=20261009a"></script>
+<script src="/js/ar-text.js?v=20261009a"></script>
 <script src="/js/form-fill.js?v=20261002a"></script>
 <script>
 const LANGS={
@@ -884,68 +886,7 @@ function sampleTextColor(p,run){
     return '#'+h2(rs/take)+h2(gs/take)+h2(bs/take);
   }catch(e){return null;}
 }
-/* some fonts/producers (Chrome, many Arabic PDFs) map Arabic yeh/heh glyphs to the Persian code points
-   ی (U+06CC) / ھ (U+06BE): looks identical but breaks search in Word. Fold them to ي / ه when the page
-   is Arabic (has ة) and has no Persian/Urdu-only letters (پ چ ژ گ ڈ ٹ ں ے). */
-function foldPersianForms(content) {
-  const nf = t => (t && t.normalize) ? t.normalize('NFKC') : (t || '');
-  const all = content.items.map(it => nf(it.str)).join('');
-  if (!/[\u06CC\u06BE]/.test(all) || !/\u0629/.test(all) || /[\u067E\u0686\u0698\u06AF\u0688\u0679\u06BA\u06D2]/.test(all)) return;
-  content.items.forEach(it => { if (typeof it.str === 'string') it.str = nf(it.str).replace(/\u06CC/g, '\u064A').replace(/\u06BE/g, '\u0647'); });
-}
-
-/* pdf.js reverses RTL text CHARACTER by character, so a ligature glyph whose ToUnicode is two
-   characters (Word's lam-alef "لأ") comes out swapped ("األعمال", "كابالت"). The operator list has
-   the glyphs in visual order with each ligature as ONE unit, so we know where every ligature sits
-   and which letters surround it, and swap only those occurrences ("ألف", "إلى" stay untouched). */
-function fixRtlLigatures(ol, content) {
-  const OPS = pdfjsLib.OPS, arRe = /[؀-ۿ]/;
-  const units = [];
-  for (let i = 0; i < ol.fnArray.length; i++) {
-    const fn = ol.fnArray[i];
-    if (fn !== OPS.showText && fn !== OPS.showSpacedText) continue;
-    const gl = ol.argsArray[i] && ol.argsArray[i][0];
-    if (!Array.isArray(gl)) continue;
-    gl.forEach(g => { if (g && typeof g === 'object' && typeof g.unicode === 'string' && g.unicode !== '') units.push(g.unicode); });
-  }
-  const rev = t => [...t].reverse().join('');
-  const isAr = ch => !!ch && arRe.test(ch) && !/\s/.test(ch);
-  const fixes = [];
-  units.forEach((u, i) => {
-    if ([...u].length < 2 || !arRe.test(u)) return;
-    /* up to 2 Arabic neighbour glyphs each side; 'edge' = the word ends there */
-    const side = dir => { const out = []; let k = i + dir;
-      for (; k >= 0 && k < units.length && out.length < 2; k += dir) { if (!isAr(units[k])) break; out.push(units[k]); }
-      return { g: out, edge: out.length < 2 }; };
-    const L = side(-1), R = side(1);            /* visual left / right */
-    /* pdf.js output = reverse(L2 L1 lig R1 R2) = rev(R2) rev(R1) rev(lig) rev(L1) rev(L2) */
-    /* a neighbouring ligature may already be fixed (or not yet): accept both spellings of the context */
-    const variants = [];
-    [true, false].forEach(revNb => {
-      const nb = g => ([...g].length > 1 && !revNb) ? g : rev(g);
-      const before = R.g.map(nb).reverse().join(''), after = L.g.map(nb).join('');
-      const v = { bad: before + rev(u) + after, good: before + u + after };
-      if (!variants.some(x => x.bad === v.bad)) variants.push(v);
-    });
-    fixes.push({ variants, needStart: R.edge, needEnd: L.edge });
-  });
-  if (!fixes.length) return;
-  const items = content.items.filter(it => typeof it.str === 'string' && arRe.test(it.str));
-  fixes.forEach(f => {
-    for (const v of f.variants) {
-      if (v.bad === v.good) return;
-      for (const it of items) {
-        let from = 0, at;
-        while ((at = it.str.indexOf(v.bad, from)) >= 0) {
-          const okS = !f.needStart || !isAr(it.str[at - 1]);
-          const okE = !f.needEnd || !isAr(it.str[at + v.bad.length]);
-          if (okS && okE) { it.str = it.str.slice(0, at) + v.good + it.str.slice(at + v.bad.length); return; }
-          from = at + 1;
-        }
-      }
-    }
-  });
-}
+/* foldPersianForms and fixRtlLigatures live in /js/ar-text.js (one copy for every tool). */
 
 /* the chunks of a right-to-left line arrive left to right: read them (and the spaces between them) right to left,
    then put runs of Latin/number chunks back in left-to-right order — the same rule as extract-text / PDF→Word */
@@ -960,11 +901,6 @@ function arabicLineText(toks){
     else i++;
   }
   return r;
-}
-function reorderVisualAr(s){
-  const arr=[...s].reverse();const L=/[A-Za-z0-9@._\-\/:#&%]/,LS=/[A-Za-z0-9@._\-\/:#&%\s]/;let i=0;
-  while(i<arr.length){if(L.test(arr[i])){let j=i;while(j<arr.length&&LS.test(arr[j]))j++;const seg=arr.slice(i,j).reverse();for(let k=i;k<j;k++)arr[k]=seg[k-i];i=j;}else i++;}
-  return arr.join('').replace(/\s+/g,' ').trim();
 }
 async function extractTextRuns(p){
   if(p.textRuns)return p.textRuns;
@@ -1189,18 +1125,25 @@ async function doSave(){
   try{
     if(formFields.length){setProgress(25,tr('T_save'));finishSave(await exportWithForm());return;}
     let src=null;
-    try{src=await PDFLib.PDFDocument.load(pdfBytes,{ignoreEncryption:true});}catch(e){src=null;}
+    try{src=await DpdfUnlock.load(pdfBytes);}catch(e){src=null;}   /* an owner-locked PDF is decrypted first (js/pdf-unlock.js): rewritten as it is, it asks for a password or its pages come out blank */
     const out=await PDFLib.PDFDocument.create();
     const secure=!!(document.getElementById('secureRemove')&&document.getElementById('secureRemove').checked);
     const fontCache={};
     const getFont=async(name)=>{if(!fontCache[name])fontCache[name]=await out.embedFont(PDFLib.StandardFonts[name]);return fontCache[name];};
+    /* All pages in ONE copy call. Copying page by page writes the fonts and pictures the pages share once per page:
+       a 1.06 MB six-page contract came out as 1.80 MB (measured 2026-10-09). */
+    const mustDraw=p=>{const r=(((p.pdfPage.rotate||0)%360)+360)%360;return r!==0||!src||(secure&&p.objects.some(o=>o.type==='redact'||o.type==='white'));};
+    const copied=new Map();
+    if(src){const want=pages.filter(p=>!mustDraw(p)).map(p=>p.origIndex);
+      if(want.length){try{const cp=await out.copyPages(src,want);want.forEach((ix,k)=>copied.set(ix,cp[k]));}catch(e){copied.clear();}}}
     for(let i=0;i<pages.length;i++){
       const p=pages[i];setProgress(Math.round(i/pages.length*90),tr('T_save')+' '+(i+1)+'/'+pages.length);
       const rot=(((p.pdfPage.rotate||0)%360)+360)%360;
       const flat=secure&&p.objects.some(o=>o.type==='redact'||o.type==='white');
       if(rot!==0||!src||flat){await rasterPageInto(out,p);continue;}
       let page;
-      try{const cp=await out.copyPages(src,[p.origIndex]);page=out.addPage(cp[0]);}
+      try{if(copied.has(p.origIndex)){page=out.addPage(copied.get(p.origIndex));copied.delete(p.origIndex);}
+          else{const cp=await out.copyPages(src,[p.origIndex]);page=out.addPage(cp[0]);}}   /* one page alone: the group copy failed, or the page is there twice */
       catch(e){await rasterPageInto(out,p);continue;}
       const H=page.getHeight();
       for(const o of p.objects){try{await drawObjPdf(out,page,H,o,getFont);}catch(e){}}
