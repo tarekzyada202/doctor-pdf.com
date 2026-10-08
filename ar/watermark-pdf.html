@@ -719,6 +719,11 @@ async function doWatermark() {
       setProgress(20+Math.round(i/pages.length*65), 'Page '+(i+1)+'…');
       const W = page.getWidth(), H = page.getHeight();
       const fs = S.fontSize;
+      /* A see-through watermark makes Acrobat blend the whole page. Without a stated blending colour space it
+         uses its own, and every colour on the page turns pale. Saying "blend in RGB" keeps the page as it was. */
+      if (!page.node.get(PDFLib.PDFName.of('Group'))) {
+        page.node.set(PDFLib.PDFName.of('Group'), pdf.context.obj({ Type:'Group', S:'Transparency', CS:'DeviceRGB' }));
+      }
       if (isArabic) {
         const pos = getXYPdf(S.position, W, H, imgW, fs, S.diagonal);
         page.drawImage(wmImg, { x: pos.x, y: pos.y, width: imgW, height: imgH, opacity: S.opacity/100, rotate: PDFLib.degrees(angleDeg) });
