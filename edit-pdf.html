@@ -441,7 +441,7 @@ select,input[type=number]{padding:6px 8px;border:1px solid var(--border);border-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ==" crossorigin="anonymous"></script>
 <script src="/js/pdf-unlock.js?v=20261009a"></script>
-<script src="/js/ar-text.js?v=20261009a"></script>
+<script src="/js/ar-text.js?v=20261009b"></script>
 <script src="/js/form-fill.js?v=20261002a"></script>
 <script>
 const LANGS={
@@ -908,6 +908,8 @@ async function extractTextRuns(p){
   try{foldPersianForms(tc);}catch(e){}
   /* the operator list is only needed when the text shows the reversed lam-alef spellings (Word-made Arabic PDFs) */
   try{if(/ا[آأإا]ل/.test(tc.items.map(i=>i.str||'').join(''))){const ol=await p.pdfPage.getOperatorList();fixRtlLigatures(ol,tc);}}catch(e){}
+  /* a Word file set in Calibri carries wrong text for joined letters (alef maksura and yeh go missing): read them from the glyphs (js/ar-text.js) */
+  try{if(tc.items.some(i=>i.str&&/[؀-ۿ]/.test(i.str))&&mayNeedCalibriRepair(tc))await repairCalibriText(await p.pdfPage.getOperatorList(),tc,p.pdfPage);}catch(e){}
   const vp=p.pdfPage.getViewport({scale:1});const items=[];
   tc.items.forEach(it=>{if(!it.str)return;const t=it.transform;const pt=vp.convertToViewportPoint(t[4],t[5]);const sz=Math.hypot(t[2],t[3])||it.height||12;items.push({str:it.str,x:pt[0],y:pt[1],w:it.width||it.str.length*sz*0.5,sz,font:it.fontName||'',sp:!it.str.trim()});});
   items.sort((a,b)=>a.y-b.y||a.x-b.x);

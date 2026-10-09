@@ -431,7 +431,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
 </script>
-<script src="/js/ar-text.js?v=20261009a"></script>
+<script src="/js/ar-text.js?v=20261009b"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 
 <script>
@@ -631,7 +631,11 @@ async function loadPDF(file) {
          impossible spellings "األ / اإل / اآل / اال", since the operator list costs time) + fold Persian forms */
       if (content.items.some(it => it.str && /[\u0600-\u06FF]/.test(it.str))) {
         const pageStr = content.items.map(it => it.str || '').join(' ').normalize('NFKC');
-        if (/\u0627[\u0622\u0623\u0625\u0627]\u0644/.test(pageStr)) { try { fixRtlLigatures(await page.getOperatorList(), content); } catch(e) {} }
+        let ol = null; const opList = async () => ol || (ol = await page.getOperatorList());
+        if (/\u0627[\u0622\u0623\u0625\u0627]\u0644/.test(pageStr)) { try { fixRtlLigatures(await opList(), content); } catch(e) {} }
+        /* a Word file set in Calibri carries wrong text for joined letters (alef maksura and yeh go missing): read them from the glyphs.
+           The operator list costs time, so it is fetched only for a page with a font that may be such a Calibri. */
+        if (mayNeedCalibriRepair(content)) { try { await repairCalibriText(await opList(), content, page); } catch(e) {} }
         try { foldPersianForms(content); } catch(e) {}
       }
       const text = extractTextFromContent(content);
