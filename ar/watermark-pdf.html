@@ -622,6 +622,7 @@ async function pumpThumbs(){
         const v0=page.getViewport({scale:1});
         const vp=page.getViewport({scale:90/v0.width});
         cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
+        cv.getContext("2d").direction="ltr"; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
         await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
         if(job.gen===THUMB.gen)cv.dataset.done="1";
       }catch(e){}
@@ -651,7 +652,9 @@ async function updatePreview() {
   cv.width = Math.round(vp.width);
   cv.height = Math.round(vp.height);
   const ctx = cv.getContext('2d');
+  ctx.direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
   await page.render({canvasContext:ctx, viewport:vp}).promise;
+  ctx.direction='inherit'; /* the watermark text drawn next keeps the page's own direction, as before */
   if(token!==renderToken) return;
   drawWatermarkOnCanvas(ctx, S.text||'WATERMARK', cv.width, cv.height);
 }

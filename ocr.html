@@ -700,6 +700,7 @@ async function renderPdfToSources(file) {
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.direction = 'ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
     await page.render({ canvasContext: ctx, viewport }).promise;
     pageSources.push({ src: canvas, kind: 'page' });
     await new Promise(r => setTimeout(r, 0));

@@ -649,6 +649,7 @@ async function pumpThumbs(){
       if(!cv)continue;
       try{
         const vp=p.pdfPage.getViewport({scale:90/p.nativeW});
+        cv.getContext('2d').direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
         await p.pdfPage.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
         if(job.gen===THUMB.gen)p.thumbDone=true;
       }catch(e){}
@@ -701,6 +702,7 @@ async function renderPages(){
     const base=document.createElement('canvas'); base.className='base';
     base.width=Math.round(cssW*dpr); base.height=Math.round(cssH*dpr); base.style.width=cssW+'px'; base.style.height=cssH+'px';
     const vp=p.pdfPage.getViewport({scale:ds*dpr});
+    base.getContext('2d').direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
     await p.pdfPage.render({canvasContext:base.getContext('2d'),viewport:vp}).promise;
     wrap.appendChild(base);
     const anno=document.createElement('canvas'); anno.className='anno';
@@ -1052,6 +1054,7 @@ async function rasterPageInto(out,p){
   const ES=2;
   const cv=document.createElement('canvas');cv.width=Math.round(p.nativeW*ES);cv.height=Math.round(p.nativeH*ES);const cx=cv.getContext('2d');
   const vp=p.pdfPage.getViewport({scale:ES});
+  cx.direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
   await p.pdfPage.render({canvasContext:cx,viewport:vp}).promise;
   cx.save();cx.scale(ES,ES);p.objects.forEach(o=>drawObj(cx,o));cx.restore();
   const blob=await new Promise(r=>cv.toBlob(r,'image/png'));

@@ -516,6 +516,7 @@ async function pumpThumbs(){
         var vp=page.getViewport({scale:thumbW()/vp0.width});
         var cv=document.createElement('canvas');
         cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);
+        cv.getContext('2d').direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
         await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
         if(gen!==TH.gen)continue;
         pg.cv=cv;pg.w=cv.width;pg.h=cv.height;
@@ -624,6 +625,7 @@ async function pumpSideThumbs(){
         var vp0=page.getViewport({scale:1});
         var vp=page.getViewport({scale:90/vp0.width});
         cv.width=Math.round(vp.width); cv.height=Math.round(vp.height);
+        cv.getContext('2d').direction='ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
         await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
         if(job.gen===THUMB.gen)cv.dataset.done='1';
       }catch(e){}

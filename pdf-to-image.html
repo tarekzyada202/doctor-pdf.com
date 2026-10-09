@@ -698,6 +698,7 @@ async function renderPageThumb(pageNum) {
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     const ctx = canvas.getContext('2d');
+    ctx.direction = 'ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
     await page.render({ canvasContext: ctx, viewport }).promise;
 
     renderedCanvases[pageNum] = canvas;
@@ -896,6 +897,7 @@ async function renderPageFull(pageNum, scale, fmt) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
+  ctx.direction = 'ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
   await page.render({ canvasContext: ctx, viewport }).promise;
   return canvas;
 }

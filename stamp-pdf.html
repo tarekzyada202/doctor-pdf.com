@@ -850,6 +850,7 @@ async function pumpStampPages() {
           var raw = document.createElement('canvas');
           raw.width  = px;
           raw.height = Math.round(vp.height);
+          raw.getContext('2d').direction = 'ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
           RENDER.task = pg.pdfPage.render({ canvasContext: raw.getContext('2d'), viewport: vp });
           await RENDER.task.promise;
           RENDER.task = null;
@@ -1776,6 +1777,7 @@ async function pumpStampThumbs() {
       if (!cv) continue;
       try {
         var vp = pg.pdfPage.getViewport({ scale: THUMB_SIDEBAR_W / pg.nativeW });
+        cv.getContext('2d').direction = 'ltr'; /* pdf.js places every glyph itself: on a canvas that inherits rtl from an Arabic page they land in the wrong place */
         await pg.pdfPage.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
         if (job.gen === THUMB.gen) pg.thumbDone = true;
       } catch (e) {}
