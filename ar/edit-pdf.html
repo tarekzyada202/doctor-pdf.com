@@ -899,7 +899,8 @@ function arabicLineText(toks){
   let i=0;
   while(i<r.length){
     if(r[i].s!=null&&hasLat(r[i].s)&&!hasAr(r[i].s)){let j=i+1;while(j<r.length&&(r[j].sp||(r[j].s!=null&&!hasAr(r[j].s))))j++;
-      const seg=r.slice(i,j).reverse();for(let k=0;k<seg.length;k++)r[i+k]=seg[k];i=j;}
+      let e=j;while(e>i+1&&r[e-1].sp)e--;   /* the space after the run stays between it and the Arabic word that follows */
+      const seg=r.slice(i,e).reverse();for(let k=0;k<seg.length;k++)r[i+k]=seg[k];i=j;}
     else i++;
   }
   return r;

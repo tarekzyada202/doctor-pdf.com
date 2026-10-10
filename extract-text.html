@@ -712,7 +712,8 @@ function extractTextFromContent(content) {
       while (i < toks.length) {
         if (toks[i].s != null && hasLat(toks[i].s) && !hasArab(toks[i].s)) {
           let j = i + 1; while (j < toks.length && (toks[j].sp || (toks[j].s != null && !hasArab(toks[j].s)))) j++;
-          const rev = toks.slice(i, j).reverse(); for (let k = 0; k < rev.length; k++) toks[i + k] = rev[k]; i = j;
+          let e = j; while (e > i + 1 && (toks[e - 1].sp || !toks[e - 1].s.trim())) e--;   /* the space after the run (a gap, or a piece that is only a space) stays between it and the Arabic word that follows */
+          const rev = toks.slice(i, e).reverse(); for (let k = 0; k < rev.length; k++) toks[i + k] = rev[k]; i = j;
         } else i++;
       }
     }
