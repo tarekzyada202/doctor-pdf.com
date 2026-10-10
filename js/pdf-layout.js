@@ -89,6 +89,13 @@ function bidiCellText(frs) {
 
 /* foldPersianForms and fixRtlLigatures live in /js/ar-text.js (one copy for every tool). */
 
+/* is this piece nothing but harakat? (a fathatan, a shadda ... drawn as a piece of its own) */
+function onlyHarakat(s) {
+  if (!s) return false;
+  for (let k = 0; k < s.length; k++) { const c = s.charCodeAt(k); if (!((c >= 0x64B && c <= 0x65F) || c === 0x670)) return false; }
+  return true;
+}
+
 function pageToLines(page, content, pageW, colors) {
   const gapF = (typeof wordGapFactor === 'function') ? wordGapFactor(content) : 0.18;   /* how wide a gap is a space on this page (js/ar-text.js) */
   /* 1) collect non-rotated chunks with position + width + style */
@@ -139,12 +146,23 @@ function pageToLines(page, content, pageW, colors) {
     const runs = [];
     for (let i = 0; i < ln.chunks.length; i++) {
       const c = ln.chunks[i];
-      if (i > 0) {
-        const pc = ln.chunks[i - 1];
+      /* A piece that is only harakat does not open or close a gap: the gap is measured from the last piece that has a
+         letter (pc), and its space is written on the far side of the harakat from the piece they sit on. Measured from
+         the haraka itself, the room it stands in became a space inside the word ("yawman" read "yaw", space, "man"). */
+      if (i > 0 && !onlyHarakat(c.str)) {
+        let b = i - 1; while (b > 0 && onlyHarakat(ln.chunks[b].str)) b--;
+        if (onlyHarakat(ln.chunks[b].str)) b = i - 1;                      /* nothing but harakat before this piece */
+        const pc = ln.chunks[b];
         const gap = c.x - (pc.x + pc.w);
-        const last = runs[runs.length - 1];
+        let last = runs[runs.length - 1];
+        if (b < i - 1) {
+          const m0 = ln.chunks[b + 1], m1 = ln.chunks[i - 1];
+          if ((m0.x - (pc.x + pc.w)) > (c.x - (m1.x + m1.w))) last = runs[b];   /* the harakat sit on this piece: the space goes before them */
+        }
+        const had = last ? last.str : null;
         if (gap > c.fs * 4 && last && !/[؀-ۿ]/.test(pc.str) && !/[؀-ۿ]/.test(c.str)) last.str = last.str.replace(/ +$/, '') + ' '.repeat(Math.max(2, Math.min(6, Math.round(gap / (c.fs * 2)))));
         if (((typeof gapIsSpace === 'function') ? gapIsSpace(gap / c.fs, gapF, pc.str, c.str) : gap > c.fs * 0.18) && last && !/\s$/.test(last.str) && !/^\s/.test(c.str)) last.str += ' ';
+        if (last && last.str !== had) last.gapSp = last.str.length - last.str.replace(/ +$/, '').length;   /* spaces at its end that stand for the gap to the next piece (fixVisualArabic moves them when it turns the line round) */
       }
       var _str = c.str;
       if (_str.length > 0 && _str.trim() === "" && c.w > c.fs * 1.4) {
@@ -207,8 +225,20 @@ function fixVisualArabic(line) {
   const xs = line.runs.map(r=>r.x).filter(v=>typeof v === 'number');
   /* only legacy VISUAL-order lines (chunks advance left->right) need reordering */
   if (!(xs.length > 1 && xs[xs.length-1] > xs[0])) return;
+  /* A gap is written as spaces at the END of the piece on its left (gapSp, set in pageToLines). Turned round together with
+     that piece, the space lands on the far side of the word: the first two words of the line glued and a space left at the
+     end of it (A-030). So it becomes a piece of its own, placed between the two pieces it separates. A space that is part
+     of a piece's own text stays where the file put it. */
+  const src = [];
+  line.runs.forEach((run, k) => {
+    const nx = line.runs[k + 1], n = run.gapSp || 0;
+    if (n > 0 && nx && typeof run.x === 'number' && typeof nx.x === 'number' && nx.x > run.x && run.str.length > n) {
+      src.push(Object.assign({}, run, { str: run.str.slice(0, -n), gapSp: 0 }));
+      src.push(Object.assign({}, run, { str: run.str.slice(-n), x: (run.x + nx.x) / 2, gapSp: 0 }));
+    } else src.push(run);
+  });
   /* reverse to logical base-RTL order (rightmost chunk reads first) */
-  const r = line.runs.slice().sort((a,b)=>(typeof b.x==='number'?b.x:-Infinity)-(typeof a.x==='number'?a.x:-Infinity));
+  const r = src.sort((a,b)=>(typeof b.x==='number'?b.x:-Infinity)-(typeof a.x==='number'?a.x:-Infinity));
   /* bidi: re-flip maximal runs of Latin/number chunks so they read left->right */
   const hasArab = z => /[؀-ۿ]/.test(z);
   const hasLatin = z => /[A-Za-z0-9]/.test(z);
