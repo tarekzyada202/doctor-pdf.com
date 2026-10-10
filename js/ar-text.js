@@ -11,6 +11,54 @@ function foldPersianForms(content) {
   content.items.forEach(it => { if (typeof it.str === 'string') it.str = nf(it.str).replace(/\u06CC/g, '\u064A').replace(/\u06BE/g, '\u0647'); });
 }
 
+/* How wide must the gap between two pieces of a line be to count as a space? The tools' rule is 0.18 of the font size.
+   That is too wide for a file whose pieces are whole words with a narrow space between them: Word + Sakkal Majalla has a
+   space 0.15 wide, so every space was lost, and Word tucks the space before an initial kaf to 0.12 in Calibri. On such
+   a page a gap is either "touching" (under 0.04) or a space, with nothing in between - so when a page has gaps between
+   0.10 and 0.18 and (almost) none between 0.04 and 0.10, a gap wider than 0.10 is a space on that page. A page whose
+   letters are separate pieces has gaps of every size inside its words and keeps 0.18. Lines are found the way the tools
+   find them (pieces whose baselines are within half a font size). */
+function wordGapFactor(content) {
+  const rows = [];
+  for (const it of (content && content.items) || []) {
+    if (!it.str || !it.str.trim() || !it.transform) continue;
+    const t = it.transform, sx = Math.hypot(t[0], t[1]) || 1;
+    if (Math.abs(t[1]) / sx > 0.15) continue;                          /* rotated text is not part of a line */
+    rows.push({ x: t[4], y: t[5], w: it.width || 0, fs: Math.abs(t[3]) || Math.abs(t[0]) || it.height || 12, s: it.str });
+  }
+  rows.sort((a, b) => (b.y - a.y) || (a.x - b.x));
+  const lines = []; let cur = null;
+  for (const r of rows) {
+    if (!cur || Math.abs(r.y - cur.y) > Math.max(2, r.fs * 0.5)) { cur = { y: r.y, rows: [] }; lines.push(cur); }
+    cur.rows.push(r);
+  }
+  let pairs = 0, band = 0, narrow = 0;
+  for (const ln of lines) {
+    ln.rows.sort((a, b) => a.x - b.x);
+    for (let i = 1; i < ln.rows.length; i++) {
+      const p = ln.rows[i - 1], c = ln.rows[i], g = (c.x - (p.x + p.w)) / c.fs;
+      pairs++;
+      if (g <= 0.04 || g > 0.18 || harakaAtGap(p.s, c.s)) continue;       /* touching, a plain space, or a haraka's own room */
+      if (g <= 0.10) band++; else narrow++;
+    }
+  }
+  return (pairs >= 10 && narrow >= 3 && band <= Math.max(1, pairs * 0.02)) ? 0.10 : 0.18;
+}
+/* A narrow gap beside a haraka is where the haraka sits, not a space: a word that ends in fathatan + alef is drawn as the
+   word, the fathatan, then the alef a little apart. In a right-to-left line the gap touches the START of the left
+   piece's text and the END of the right piece's text. */
+function harakaAtGap(leftStr, rightStr) {
+  const mark = c => (c >= 0x64B && c <= 0x65F) || c === 0x670;
+  const l = leftStr || '', r = rightStr || '';
+  return (l.length > 0 && mark(l.charCodeAt(0))) || (r.length > 0 && mark(r.charCodeAt(r.length - 1)));
+}
+/* Is the gap between two neighbouring pieces of a line a space? g = the gap in font sizes, f = the page's wordGapFactor,
+   the two strings = the text of the piece on the left and of the piece on the right. With f = 0.18 this is the old rule. */
+function gapIsSpace(g, f, leftStr, rightStr) {
+  if (g > 0.18) return true;
+  return g > f && !harakaAtGap(leftStr, rightStr);
+}
+
 /* pdf.js unfolds presentation forms (ONE character that stands for two or three letters, like the joined lam-meem
    U+FCCC of many book fonts) BEFORE it puts a right-to-left line into reading order, so the letters of every such
    character come out swapped: "ila al-janna allati" reads alef-maksura-lam, jeem-lam, yeh-teh. The four text tools ask

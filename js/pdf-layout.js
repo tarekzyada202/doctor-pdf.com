@@ -69,7 +69,7 @@ function bidiCellText(frs) {
   const cvis = chs.length>1 && chs[chs.length-1].x > chs[0].x;
   let toks = [];
   for (let k = 0; k < chs.length; k++) {
-    if (k>0){ const g = chs[k].x - chs[k-1].x1; if (g > (chs[k].fs||10)*0.18) toks.push(' '); }
+    if (k>0){ const g = chs[k].x - chs[k-1].x1; if ((typeof gapIsSpace === 'function') ? gapIsSpace(g / (chs[k].fs||10), chs[k].gf||0.18, chs[k-1].str, chs[k].str) : g > (chs[k].fs||10)*0.18) toks.push(' '); }
     toks.push(chs[k].str);
   }
   if (ar > 0 && cvis) {
@@ -90,6 +90,7 @@ function bidiCellText(frs) {
 /* foldPersianForms and fixRtlLigatures live in /js/ar-text.js (one copy for every tool). */
 
 function pageToLines(page, content, pageW, colors) {
+  const gapF = (typeof wordGapFactor === 'function') ? wordGapFactor(content) : 0.18;   /* how wide a gap is a space on this page (js/ar-text.js) */
   /* 1) collect non-rotated chunks with position + width + style */
   const raw = [];
   const shownCount = content.items.filter(it => it.str !== undefined && it.str !== '').length;
@@ -143,7 +144,7 @@ function pageToLines(page, content, pageW, colors) {
         const gap = c.x - (pc.x + pc.w);
         const last = runs[runs.length - 1];
         if (gap > c.fs * 4 && last && !/[؀-ۿ]/.test(pc.str) && !/[؀-ۿ]/.test(c.str)) last.str = last.str.replace(/ +$/, '') + ' '.repeat(Math.max(2, Math.min(6, Math.round(gap / (c.fs * 2)))));
-        if (gap > c.fs * 0.18 && last && !/\s$/.test(last.str) && !/^\s/.test(c.str)) last.str += ' ';
+        if (((typeof gapIsSpace === 'function') ? gapIsSpace(gap / c.fs, gapF, pc.str, c.str) : gap > c.fs * 0.18) && last && !/\s$/.test(last.str) && !/^\s/.test(c.str)) last.str += ' ';
       }
       var _str = c.str;
       if (_str.length > 0 && _str.trim() === "" && c.w > c.fs * 1.4) {
@@ -167,12 +168,12 @@ function pageToLines(page, content, pageW, colors) {
     }
     if (cell) cells.push(cell);
     cells.forEach(cl => {
-      cl.frags = cl.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs }));
+      cl.frags = cl.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs, gf: gapF }));
       cl.str = bidiCellText(cl.frags);
       delete cl.chunks;
     });
     ln.cells = cells;
-    ln.frags = ln.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs }));
+    ln.frags = ln.chunks.map(c => ({ str: c.str, x: c.x, x1: c.x + (c.w||0), fs: c.fs, gf: gapF }));
     delete ln.chunks;
     if (ln.runs.some(r => r.str.trim() !== '')) out.push(ln);
   }

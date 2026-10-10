@@ -434,7 +434,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
 </script>
-<script src="/js/ar-text.js?v=20261010a"></script>
+<script src="/js/ar-text.js?v=20261010b"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 
 <script>
@@ -688,6 +688,7 @@ function extractTextFromContent(content) {
     raw.push({ str: str, x: t[4], y: t[5], w: it.width || 0, fs: fs });
   }
   if (!raw.length) return '';
+  const gapF = (typeof wordGapFactor === 'function') ? wordGapFactor(content) : 0.18;   /* how wide a gap is a space on this page (js/ar-text.js) */
   /* 2) group chunks into lines by y proximity */
   raw.sort((a, b) => (b.y - a.y) || (a.x - b.x));
   const lines = []; let cur = null;
@@ -702,7 +703,7 @@ function extractTextFromContent(content) {
     let toks = [];
     for (let i = 0; i < ln.chunks.length; i++) {
       const c = ln.chunks[i];
-      if (i > 0) { const pc = ln.chunks[i - 1]; const gap = c.x - (pc.x + pc.w); if (gap > c.fs * 0.18) toks.push({ sp: true }); }
+      if (i > 0) { const pc = ln.chunks[i - 1]; const gap = c.x - (pc.x + pc.w); if ((typeof gapIsSpace === 'function') ? gapIsSpace(gap / c.fs, gapF, pc.str, c.str) : gap > c.fs * 0.18) toks.push({ sp: true }); }
       toks.push({ s: c.str });
     }
     const text = ln.chunks.map(c => c.str).join('');
