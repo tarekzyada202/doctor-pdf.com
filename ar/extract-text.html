@@ -434,7 +434,7 @@ html[lang="ar"] .text-block{font-family:var(--font-ar);direction:rtl;text-align:
 <script>
 (function(){var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token":"e55edcf19fc84aa49ad61fd80da69995"}');document.body.appendChild(s)})();
 </script>
-<script src="/js/ar-text.js?v=20261009b"></script>
+<script src="/js/ar-text.js?v=20261010a"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 
 <script>
@@ -629,7 +629,10 @@ async function loadPDF(file) {
       document.getElementById('extBarTxt').textContent = `${tr('T_extracting')} ${i} / ${numPages}`;
 
       const page = await pdfDoc.getPage(i);
-      const content = await page.getTextContent();
+      /* pdf.js is asked not to unfold joined letters itself: it does that before it puts a right-to-left line in
+         reading order, which swaps the letters of a joined glyph. unfoldForms (js/ar-text.js) does it afterwards. */
+      const content = await page.getTextContent({ disableNormalization: true });
+      try { unfoldForms(content); } catch(e) {}
       /* Arabic pages: repair lam-alef ligatures reversed by pdf.js (only when the text shows the tell-tale
          impossible spellings "األ / اإل / اآل / اال", since the operator list costs time) + fold Persian forms */
       if (content.items.some(it => it.str && /[\u0600-\u06FF]/.test(it.str))) {

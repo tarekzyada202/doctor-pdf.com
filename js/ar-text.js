@@ -11,6 +11,38 @@ function foldPersianForms(content) {
   content.items.forEach(it => { if (typeof it.str === 'string') it.str = nf(it.str).replace(/\u06CC/g, '\u064A').replace(/\u06BE/g, '\u0647'); });
 }
 
+/* pdf.js unfolds presentation forms (ONE character that stands for two or three letters, like the joined lam-meem
+   U+FCCC of many book fonts) BEFORE it puts a right-to-left line into reading order, so the letters of every such
+   character come out swapped: "ila al-janna allati" reads alef-maksura-lam, jeem-lam, yeh-teh. The four text tools ask
+   pdf.js not to unfold (getTextContent's disableNormalization) and call this afterwards, when the line is in reading
+   order. It unfolds exactly the characters pdf.js itself would have (the ranges of its NormalizeRegex, pdf.js 3.11.174),
+   so every other character reaches the tools as it did before. */
+const DPDF_UNFOLD = [[0xA0, 0xA0], [0xB5, 0xB5], [0x37E, 0x37E], [0xEB3, 0xEB3], [0x2000, 0x200A], [0x202F, 0x202F], [0x2126, 0x2126],
+  [0xFB00, 0xFB04], [0xFB06, 0xFB06], [0xFB20, 0xFB36], [0xFB38, 0xFB3C], [0xFB3E, 0xFB3E], [0xFB40, 0xFB41], [0xFB43, 0xFB44],
+  [0xFB46, 0xFBA1], [0xFBA4, 0xFBA9], [0xFBAE, 0xFBB1], [0xFBD3, 0xFBDC], [0xFBDE, 0xFBE7], [0xFBEA, 0xFBF8], [0xFBFC, 0xFBFD],
+  [0xFC00, 0xFC5D], [0xFC64, 0xFCF1], [0xFCF5, 0xFD3D], [0xFD88, 0xFD88], [0xFDF4, 0xFDF4], [0xFDFA, 0xFDFB],
+  [0xFE71, 0xFE71], [0xFE77, 0xFE77], [0xFE79, 0xFE79], [0xFE7B, 0xFE7B], [0xFE7D, 0xFE7D]];
+function unfoldForms(content) {
+  const inSet = c => { if (c < 0xA0) return false; for (let i = 0; i < DPDF_UNFOLD.length; i++) { const r = DPDF_UNFOLD[i]; if (c < r[0]) return false; if (c <= r[1]) return true; } return false; };
+  const longSt = String.fromCharCode(0x17F) + 't';                     /* pdf.js writes U+FB05 as long-s + t */
+  /* alef with fathatan drawn as one glyph (U+FD3C / U+FD3D): the fathatan first, on the letter before the alef - what
+     the tools gave before this function existed and what Chrome's PDF engine gives for the same glyph */
+  const tanweenAlef = String.fromCharCode(0x64B, 0x627);
+  content.items.forEach(it => {
+    const s = it.str;
+    if (typeof s !== 'string' || !s) return;
+    let out = '', run = '', hit = false;
+    for (const ch of s) {
+      const c = ch.codePointAt(0);
+      if (c === 0xFD3C || c === 0xFD3D) { if (run) { out += run.normalize('NFKC'); run = ''; } out += tanweenAlef; hit = true; continue; }
+      if (inSet(c)) { run += ch; hit = true; continue; }
+      if (run) { out += run.normalize('NFKC'); run = ''; }
+      if (c === 0xFB05) { out += longSt; hit = true; } else out += ch;
+    }
+    if (hit) it.str = out + (run ? run.normalize('NFKC') : '');
+  });
+}
+
 /* pdf.js reverses RTL text CHARACTER by character, so a ligature glyph whose ToUnicode is two
    characters (Word's lam-alef "لأ") comes out swapped ("األعمال", "كابالت"). The operator list has
    the glyphs in visual order with each ligature as ONE unit, so we know where every ligature sits

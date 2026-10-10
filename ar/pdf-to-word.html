@@ -383,7 +383,7 @@ html[lang="en"] .priv-cta .ar{display:none}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
 
-<script src="/js/ar-text.js?v=20261009b"></script>
+<script src="/js/ar-text.js?v=20261010a"></script>
 <script src="/js/pdf-layout.js?v=20261009a"></script>
 <script>
 // ══════════════════════════════════════════
@@ -584,7 +584,10 @@ async function loadPDF(file) {
       let colors = [], hlines = [], images = [];
       let _olRef = null;
       try { const _ol = await page.getOperatorList(); _olRef = _ol; colors = extractTextColors(_ol); hlines = extractHLines(_ol, vp.width); images = await extractImages(_ol, page, vp); } catch(e) {}
-      const content = await page.getTextContent();
+      /* pdf.js is asked not to unfold joined letters itself: it does that before it puts a right-to-left line in
+         reading order, which swaps the letters of a joined glyph. unfoldForms (js/ar-text.js) does it afterwards. */
+      const content = await page.getTextContent({ disableNormalization: true });
+      try { unfoldForms(content); } catch(e) {}
       try { if (_olRef) fixRtlLigatures(_olRef, content); } catch(e) {}
       /* a Word file set in Calibri carries wrong text for joined letters (alef maksura and yeh go missing): read them from the glyphs (js/ar-text.js) */
       try { if (_olRef) await repairCalibriText(_olRef, content, page); } catch(e) {}
